@@ -1,0 +1,14 @@
+.err {
+    font-weight: 700;
+    text-align: center;
+    margin-top: 30px;
+    color: red;
+}
+
+.container-fluid{
+    width: 100%;
+}
+
+.min-vh-100 {
+    min-height: 100.3vh!important;
+}

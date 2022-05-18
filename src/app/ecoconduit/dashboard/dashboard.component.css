@@ -1,0 +1,55 @@
+.container-fluid {
+    width: 95%;
+}
+
+.card-l {
+    width: 19% !important;
+    margin-left: 1% !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+}
+
+.card-header-title {
+    margin-left: 1%;
+}
+
+.header-pretitle {
+    letter-spacing: .04em !important;
+}
+
+.vehicules .col-md-6 {
+    width: 49% !important;
+}
+
+.dropdown-menu-card .card-body {
+    max-height: 122px !important;
+    height: 120px !important;
+}
+
+.card-body {
+    padding: 7px !important;
+}
+
+.list-group-item {
+    padding: 0 !important;
+}
+
+.list-group-item li {
+    cursor: pointer !important;
+}
+
+form.dropdown-menu {
+    position: absolute;
+    inset: 0px 0px auto auto;
+    margin: 0px;
+    transform: translate(0px, 31px);
+}
+
+.img-no-data {
+    width: 300px;
+    display: block;
+    margin: auto;
+}
+
+.fa-car{
+    font-size: 20px;
+}

@@ -1,0 +1,203 @@
+<section class="page-clients">
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Conducteurs
+            </h6>
+            <h2 class="header-title">
+                Liste des conducteurs
+            </h2>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-outline-primary mb-2 btn-ajouter" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear()">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <br><br><br>
+                <div *ngIf="message" class="alert alert-success" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="table-responsive row">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Véhicule attribué</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Badge</th>
+                                <th>CNI</th>
+                                <th>Type permis</th>
+                                <th>Date d'expiration</th>
+                                <th>Address</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            <tr *ngFor="let conducteur of conducteurs['records']">
+                                <td class="nom">{{conducteur.nom}}</td>
+                                <td class="prenom">{{conducteur.prenom}}</td>
+                                <td class="matricule">{{conducteur.matricule}}</td>
+                                <td class="phone">{{conducteur.tel}}</td>
+                                <td class="email">{{conducteur.email}}</td>
+                                <td class="n_badge">{{conducteur.n_badge}}</td>
+                                <td class="cni">{{conducteur.cni}}</td>
+                                <td class="categorie_permis">{{conducteur.categorie_permis}}</td>
+                                <td class="date_expiration">{{conducteur.date_expiration | date:"dd/MM/yyyy"}}</td>
+                                <td class="categorie_permis">{{conducteur.adresse}}</td>
+                                <td width="75">
+                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getConducteur(conducteur.id)">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="singleConducteur.id=conducteur.id">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation" class="pag-tab col-md-12" *ngIf="conducteurs.total_records && conducteurs.total_pages>1">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#!" [routerLink]="['/conducteurs/page', conducteurs.current_page-1]" [ngClass]="{'_disabled':conducteurs.current_page==1}">
+                                    Précédent
+                                </a>
+                            </li>
+                            <li class="page-item" *ngFor="let p of [].constructor(conducteurs.total_pages); let i=index" [ngClass]="{'active':conducteurs.current_page==i+1}">
+                                <a class="page-link" [routerLink]="['/conducteurs/page', i+1]">{{i+1}}</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" [routerLink]="['/conducteurs/page', conducteurs.current_page+1]" [ngClass]="{'_disabled':conducteurs.current_page==conducteurs.total_pages}">
+                                    Suivant 
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** *** Modal L'ayout & modification *** *** -->
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-card card" data-list=''>
+                    <div class="card-header">
+                        <h4 class="card-header-title" id="exampleModalCenterTitle">
+                            Conducteur
+                        </h4>
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="card-body">
+                        <form #conducteurForm="ngForm" (ngSubmit)="update(conducteurForm.value)" class="p-3 bg-white rounded">
+                            <div class="row">
+                                <input type="hidden" [(ngModel)]="singleConducteur.id" name="id" value="singleConducteur.id">
+                                <!-- <div class="row"> -->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="nom" class="form-label">
+                                                Nom
+                                                <strong class="text-danger" *ngIf="!singleConducteur.nom">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleConducteur.nom" name="nom" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control form-control-sm" placeholder="Email" [(ngModel)]="singleConducteur.email" name="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="categorie_permis" class="form-label">Type de permis</label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Type de permis" [(ngModel)]="singleConducteur.categorie_permis" name="categorie_permis">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pays_id" class="form-label">Véhicles</label>
+                                            <select class="form-select form-select-sm" name="vehicule_id" [(ngModel)]="singleConducteur.vehicule_id">
+                                                <option value=null disabled>Veuillez choisir...</option>
+                                                <option *ngFor="let vehicule of vehicules" [value]="vehicule.id">{{vehicule.matricule}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="prenom" class="form-label">
+                                                Prénom
+                                                <strong class="text-danger" *ngIf="!singleConducteur.prenom">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Prénom" [(ngModel)]="singleConducteur.prenom" name="prenom" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tel" class="form-label">Tel</label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="tel" [(ngModel)]="singleConducteur.tel" name="tel">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nom" class="form-label">Date expiration</label>
+                                            <input type="date" class="form-control form-control-sm" [ngModel]="singleConducteur.date_expiration | date:'yyyy-MM-dd'" name="date_expiration">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="cni" class="form-label">CNI</label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="CNI" [(ngModel)]="singleConducteur.cni" name="cni">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="cni" class="form-label">N° permis</label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="N° permis" [(ngModel)]="singleConducteur.n_permis" name="n_permis">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="cni" class="form-label">N° badge</label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="N° badge" [(ngModel)]="singleConducteur.n_badge" name="n_badge">
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pwd" class="form-label">Adresse</label>
+                                        <textarea class="form-control form-control-sm" [(ngModel)]="singleConducteur.adresse" name="adresse"></textarea>
+                                    </div>
+
+                                <div class="col-md-12">
+                                    <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                    <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!conducteurForm.valid">Enregister</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- **** **** **** Modal de confirmation **** **** **** -->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="material-icons">
+                            <i class="fa-solid fa-x"></i>
+                        </i>
+                    </div>
+                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment supprimer ce conducteur <i class="fa-solid fa-question"></i></p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                    <button type="button" class="btn btn-danger" (click)="delete()">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br><br>
+</section>

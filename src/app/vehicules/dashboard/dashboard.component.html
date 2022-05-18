@@ -1,0 +1,597 @@
+<section class="dashboard-v">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Vehicules
+            </h6>
+            <h2 class="header-title">
+                Tableau de bord des véhicules
+            </h2>
+        </div>
+    </div>
+    <!--*** *** *** -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="infos-generales">
+                    <div class="row">
+                        <h3></h3>
+                        <div class="col-md-3">
+                            <img src="https://up.uplogistix.net/doc/images_vehicule/image_vehicule_par_defaut.png" alt="">
+                        </div>
+                        <div class="col-md-9">
+                            <h3>{{singleVehicule.marque}} CLASSE {{singleVehicule.classe_energitique}}</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li>Matricule: <strong class="text-primary">{{singleVehicule.matricule}}</strong> </li>
+                                        <li>Statut: <strong class="text-primary">{{singleVehicule.statut}}</strong></li>
+                                        <li>Boîte de vitesse: <strong class="text-primary">{{singleVehicule.boite_vitesse}}</strong></li>
+                                        <li>Puissance cv: <strong class="text-primary">{{singleVehicule.puissance_cv}}</strong> </li>
+                                        <li>Consommation théorique: <strong class="text-primary">{{singleVehicule.consommation_theorique}}</strong></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li>Compteur actuel: <strong class="text-primary">{{resume.compteur_km}}</strong></li>
+                                        <li>Periode revision: <strong class="text-primary">{{singleVehicule.Periode_revision}}</strong></li>
+                                        <li>Volume reservoir: <strong class="text-primary">{{singleVehicule.volume_reservoir}}</strong></li>
+                                        <li>Type contrat: <strong class="text-primary">{{singleVehicule.type_contrat}}</strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="infos-detaillees">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <ul class="nav nav-tabs nav-overflow header-tabs">
+                                <li class="nav-item">
+                                    <button class="nav-link active" (click)="type='details'" [ngClass]="{'active': type=='details'}"> 
+                                        Détails
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" (click)="type='cycle_de_vie'" [ngClass]="{'active': type=='cycle_de_vie'}"> 
+                                        Cycle de vie 
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" (click)="type='specifications'" [ngClass]="{'active': type=='specifications'}"> 
+                                        Spécifications 
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" (click)="type='moteur_transmission'" [ngClass]="{'active': type=='moteur_transmission'}"> 
+                                        Moteur/transmission 
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" (click)="type='roues_pneus'" [ngClass]="{'active': type=='roues_pneus'}"> 
+                                        Roues et pneus 
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" (click)="type='liquides'" [ngClass]="{'active': type=='liquides'}"> 
+                                        Liquides 
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <br><br><br><br>
+                    </div>
+                    <div class="contient">
+                        <div class="details" *ngIf="type=='details'">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center gx-0">
+                                                <div class="col">
+                                                    <h6 class="text-uppercase text-muted mb-2">Coût total/Km</h6>
+                                                    <span class="h2 mb-0">{{resume.cout_km.toFixed(2)}} Dhs</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fa-solid fa-car text-muted mb-0"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center gx-0">
+                                                <div class="col">
+                                                    <h6 class="text-uppercase text-muted mb-2">Coût total carburants</h6>
+                                                    <span class="h2 mb-0">{{resume.montant_carburant.toFixed(2)}} Dhs</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fa-solid fa-car text-muted mb-0"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center gx-0">
+                                                <div class="col">
+                                                    <h6 class="text-uppercase text-muted mb-2">Coût total</h6>
+                                                    <span class="h2 mb-0">{{resume.montant_carburant.toFixed(2)}} Dhs</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fa-solid fa-car text-muted mb-0"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- *** *** *** *** -->
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center gx-0">
+                                                <div class="col">
+                                                    <h6 class="text-uppercase text-muted mb-2">Coût des maintenances</h6>
+                                                    <span class="h2 mb-0">0.00 Dhs</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fa-solid fa-car text-muted mb-0"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center gx-0">
+                                                <div class="col">
+                                                    <h6 class="text-uppercase text-muted mb-2">Autres coûts</h6>
+                                                    <span class="h2 mb-0">0.00 Dhs</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fa-solid fa-car text-muted mb-0"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center gx-0">
+                                                <div class="col">
+                                                    <h6 class="text-uppercase text-muted mb-2">KM/Jour</h6>
+                                                    <span class="h2 mb-0">{{resume.km_aujourdhui.toFixed(2)}} Km</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fa-solid fa-car text-muted mb-0"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cycle_de_vie" *ngIf="type=='cycle_de_vie'">
+                            <div class="row">
+                                <div class="list-group list-group-flush my-n3 col-md-5">
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h5 class="mb-0">Mise en service</h5>
+                                            </div>
+                                            <div class="col-auto">
+                                                <time class="small text-muted" datetime="">{{singleVehicule.mise_en_circulation | date:'dd/MM/yyyy'}}</time>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h5 class="mb-0">Durée de vie estimée en mois</h5>
+                                            </div>
+                                            <div class="col-auto">
+                                                <strong class="small">{{singleVehicule.cycle_vie_km}}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group list-group-flush my-n3 col-md-5">
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h5 class="mb-0">Durée de vie estimée en KM</h5>
+                                            </div>
+                                            <div class="col-auto">
+                                                <strong class="small">{{singleVehicule.cycle_vie_mois}}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h5 class="mb-0">Date de mise hors service</h5>
+                                            </div>
+                                            <div class="col-auto">
+                                                <time class="small text-muted" date="12-12-2012">{{singleVehicule.date_hors_service}}</time>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="specifications" *ngIf="type=='specifications'">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="text-primary">Dimensions</h3>
+                                    <div class="list-group list-group-flush my-n3" style="padding: 19px 20px !important;">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Longueur</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.longeur}} m</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Largeur</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.largeur}} m</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Hauteur</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.hauteur}} m</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Volume interieur</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.volume}} m³</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="text-primary">Poids</h3>
+                                    <div class="list-group list-group-flush my-n3">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Poids à vide</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.poids}} KG</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <br>
+                                    <!---->
+                                    <h3 class="text-primary">Performance</h3>
+                                    <div class="list-group list-group-flush my-n3">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Capacité de remorquage</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.capacite_remorquage}} KG</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Charge maximale</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.charge_maximale}} KG</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="moteur_transmission" *ngIf="type=='moteur_transmission'">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="text-primary">Moteur et transmission</h3>
+                                    <div class="list-group list-group-flush my-n3">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Technologie moteur</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.technologie_moteur}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">nbre Cylindrée</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.nbre_cylindre}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Volume Cylindrée</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.volume_cylindre}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Puissance fiscale</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.puissance_fiscale}} cv</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Vitesse maximale</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.limite_vitesse}} KM/H</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="text-primary">Ecologie</h3>
+                                    <div class="list-group list-group-flush my-n3">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Consommation en ville</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.consommation_ville}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Consommation en autoroute</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.consommation_autoroute}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Consommation mixte</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.consommation_mixte}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Emission CO2</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.emission_co2}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="roues_pneus" *ngIf="type=='roues_pneus'">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="list-group list-group-flush my-n3">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Système du freinage</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.systeme_freinage}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Largeur du pneu</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.longeur_pneu}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Rapport hauteur/largeur</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.rapport_hauteur_longeur}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Indice de charge</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.indice_charge}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="list-group list-group-flush my-n3">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Indice de vitesse</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.indice_vitesse}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Empattement</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.empattement}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Diamètre de la roue avant</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.diametre_roue_avant}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h5 class="mb-0">Diamètre de la roue arrière</h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <strong class="small">{{singleVehicule.diametre_roue_arriere}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="liquides" *ngIf="type=='liquides'">
+                            <div class="list-group list-group-flush my-n3">
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h5 class="mb-0">Capacité du huile (L)</h5>
+                                        </div>
+                                        <div class="col-auto">
+                                            <strong class="small">{{singleVehicule.capacite_huile}}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h5 class="mb-0">Capacité réservoir carburant</h5>
+                                        </div>
+                                        <div class="col-auto">
+                                            <strong class="small">{{singleVehicule.volume_reservoir}}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <br><br>
+                   <div class="autre-infos" [ngClass]="{'d-none':type!='details'}">
+                        <div class="row padding-top">
+                           <div class="col-md-6 margin-right">
+                                <h3 class="titre">Coût total carburants</h3>
+                                <canvas id="chart1"></canvas>
+                           </div>
+                           <div class="col-md-6">
+                                <h3 class="titre">Coût total</h3>
+                                <canvas id="chart2"></canvas>
+                           </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 margin-right">
+                                <h3 class="titre">Maintenance prevue</h3>
+                                <div class="no-data">
+                                    <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
+                                    <p class="text-muted text-center">Pas de donnée ...</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="titre">Rappels</h3>
+                                <div class="no-data">
+                                    <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
+                                    <p class="text-muted text-center">Pas de donnée ...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 margin-right">
+                                <h3 class="titre">Alerts</h3>
+                                <div class="no-data">
+                                    <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
+                                    <p class="text-muted text-center">Pas de donnée ...</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="titre">Derniere position</h3>
+                                <div class="map-container">
+                                    <div class="map-frame">
+                                        <div id="map"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                   </div>
+                <!-- -->
+                <br><br>
+            </div>
+        </div>
+    </div>
+</section>

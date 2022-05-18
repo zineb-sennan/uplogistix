@@ -1,0 +1,156 @@
+<section class="marque-v">
+
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Vehicules
+            </h6>
+            <h2 class="header-title">
+                Gestion des marques
+            </h2>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group input-group-lg input-group-merge input-group-reverse">
+                            <input class="form-control list-search" type="text" placeholder="Rechercher" [(ngModel)]="search" name="search" (keyup)="searchMarque(1)">
+                            <div class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7"></div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-outline-primary mb-2 btn-ajouter" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear()">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div *ngIf="message" class="alert alert-success" role="alert">
+                        {{message}}
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <div class="marques-list row">
+                    <!--div class="row"-->
+                    <div title="La marque {{marque.nom}}" class="thumbnail marque text-ellipsis" (mouseenter)="onMouseMarque(marque.id)" *ngFor="let marque of marques['records']">
+                        <div class="caption">{{marque.nom}}</div>
+                        <div class="photo">
+                            <div class="content-overlay"></div>
+                            <img src="{{marque.logo ? imageURL + marque.logo : 'assets/img/no-image.png'}}" width="130" class="lazy-container observer lazy-fade-in">
+                            <div class="opration">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn-edit" (click)="getMarque(marque.id)">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn-delete" (click)="singleMarque.id = marque.id">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <a [routerLink]="['/vehicules/marque/',marque.id,'modeles']">
+                                    <button type="button" class="btn-info" placement="bottom" ngbTooltip="Tooltip on bottom">
+                                        <i class="fa-solid fa-link"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        <!--/div-->
+                    </div>
+                    <!-- ** ** ** -->
+                    <nav aria-label="Page navigation" class="pag-tab col-md-12" *ngIf="marques.total_records && marques.total_pages>1">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#!" [routerLink]="['/vehicules/marques/page', marques.current_page-1]" [ngClass]="{'_disabled':marques.current_page==1}">
+                                    Précédent
+                                </a>
+                            </li>
+                            <li class="page-item" *ngFor="let p of [].constructor(marques.total_pages); let i=index" [ngClass]="{'active':marques.current_page==i+1}">
+                                <a class="page-link" [routerLink]="['/vehicules/marques/page', i+1]">{{i+1}}</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" [routerLink]="['/vehicules/marques/page', marques.current_page+1]" [ngClass]="{'_disabled':marques.current_page==marques.total_pages}">
+                                    Suivant
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- ** ** ** -->
+                </div>
+
+                <br><br>
+                <!-- *** ***-->
+            </div>
+        </div>
+        <!-- *** *** Modal L'ayout & modification *** *** -->
+        <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-card card" data-list=''>
+                        <div class="card-header">
+                            <h4 class="card-header-title" id="exampleModalCenterTitle">
+                                Marque vehicule
+                            </h4>
+                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="card-body">
+                            <form #mrqForm="ngForm" (ngSubmit)="update(mrqForm.value)">
+                                <div class="frm-region">
+                                    <input type="hidden" [(ngModel)]="singleMarque.id" name="id" value="singleMarque.id">
+                                    <div class="form-group">
+                                        <label for="nom" class="form-label">
+                                            Nom
+                                            <strong class="text-danger" *ngIf="!singleMarque.nom">*</strong>
+                                        </label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleMarque.nom" name="nom" required>
+                                        <!-- <small class="form-text text-danger" *ngIf="!singleMarque.nom">
+                                            Ce champ est obligatoire.
+                                        </small> -->
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="logo" class="form-label">Logo</label>
+                                        <input type="file" class="form-control form-control-sm" [(ngModel)]="logo" name="logo" (change)="onFileChange($event)">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                    <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!mrqForm.valid">Enregister</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- **** **** **** Modal de confirmation **** **** **** -->
+        <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header flex-column">
+                        <div class="icon-box">
+                            <i class="material-icons">
+                                <i class="fa-solid fa-x"></i>
+                            </i>
+                        </div>
+                        <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                        <br>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                        <button type="button" class="btn btn-danger" (click)="delete(singleMarque.id)">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

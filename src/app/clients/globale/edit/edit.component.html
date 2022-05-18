@@ -1,0 +1,368 @@
+<section class="page-clients">
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Clients
+            </h6>
+            <h2 class="header-title">
+                Gestion des clients
+            </h2>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row align-items-center" *ngIf="singleClient.id">
+                    <div class="col">
+                        <ul class="nav nav-tabs nav-overflow header-tabs">
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="changeType('client')" [ngClass]="{'active': type=='client'}">
+                                    Client
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="changeType('identifiants_fiscaux')" [ngClass]="{'active': type=='identifiants_fiscaux'}">
+                                    Identifiants fiscaux <span class="badge bg-info-soft">{{fiscaux.length}}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="changeType('contacts')" [ngClass]="{'active': type=='contacts'}">
+                                    Contact <span class="badge bg-info-soft">{{contacts.length}}</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <br><br><br><br>
+                </div>
+
+                <div class="client" *ngIf="type == 'client'">
+                    <!-- Titre Page -->
+                    <div class="header mt-md-3">
+                        <div class="header-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="header-pretitle">Client</h6>
+                                    <h2 class="header-title">{{ singleClient.id ? 'Modifiez le client' : 'Créer un nouveau client'}}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div *ngIf="message" class="alert alert-success" role="alert">
+                        {{message}}
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #clientForm="ngForm" (ngSubmit)="update(clientForm.value)">
+                        <!-- *** *** *** Forms *** *** *** -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="hidden" name="id" [(ngModel)]="singleClient.id">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Raison sociale
+                                        <strong class="text-danger" *ngIf="!singleClient.raison_sociale">*</strong>
+                                    </label>
+                                    <input type="text" class="form-control" name="raison_sociale" [(ngModel)]="singleClient.raison_sociale" placeholder="Raison sociale" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Prénom
+                                        <strong class="text-danger" *ngIf="!singleClient.prenom">*</strong>
+                                    </label>
+                                    <input type="text" class="form-control" name="prenom" [(ngModel)]="singleClient.prenom" placeholder="Prénom">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Region</label>
+                                    <select id="inputState" name="region_id" class="form-select" (change)="changeRegion($event)" [ngModel]="singleClient.region_id">
+                                        <option value=null disabled>Veuillez choisir...</option>
+                                        <option *ngFor="let reg of regions" value="{{reg.id}}">{{reg.nom}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Email
+                                        <strong class="text-danger" *ngIf="!singleClient.email">*</strong>
+                                    </label>
+                                    <input type="email" class="form-control" name="email" [(ngModel)]="singleClient.email" placeholder="Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Tel bureau</label>
+                                    <input type="text" class="form-control" name="tel_bureau" [(ngModel)]="singleClient.tel_bureau" placeholder="Tel bureau">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Nombre vehicules
+                                        <strong class="text-danger" *ngIf="!singleClient.nbre_vehicules">*</strong>
+                                    </label>
+                                    <input type="number" class="form-control" name="nbre_vehicules" [(ngModel)]="singleClient.nbre_vehicules" placeholder="Nombre vehicules" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Nom
+                                        <strong class="text-danger" *ngIf="!singleClient.nom">*</strong>
+                                    </label>
+                                    <input type="text" class="form-control" name="nom" [(ngModel)]="singleClient.nom" placeholder="Nom" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pays_id" class="form-label">Pays</label>
+                                    <select class="form-select" name="pays_id" (change)="changePays($event)" [ngModel]="singleClient.pays_id" [disabled]="singleClient.id">
+                                        <option value=null disabled>Veuillez choisir...</option>
+                                        <option *ngFor="let pay of pays" [value]="pay.id">{{pay.nom}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Ville
+                                        <strong class="text-danger" *ngIf="!singleClient.ville_id">*</strong>
+                                    </label>
+                                    <select id="inputState" class="form-select" name="ville_id" [(ngModel)]="singleClient.ville_id" required>
+                                        <option value=null disabled>Veuillez choisir...</option>
+                                        <option *ngFor="let vil of villes" value="{{vil.id}}">{{vil.nom}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Tel mobile
+                                        <strong class="text-danger" *ngIf="!singleClient.tel_mobile">*</strong>
+                                    </label>
+                                    <input type="text" class="form-control" name="tel_mobile" [(ngModel)]="singleClient.tel_mobile" placeholder="Tel mobile" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Fax</label>
+                                    <input type="text" class="form-control" name="fax" [(ngModel)]="singleClient.fax" placeholder="Fax">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Adresse</label>
+                                <textarea class="form-control" rows="3" name="adresse" [(ngModel)]="singleClient.adresse" placeholder="Adresse"></textarea>
+                            </div>
+
+                        </div>
+                        <hr class="mt-4 mb-4">
+                        <small class="text-danger">*: Ce champ est obligatoire.</small>
+                        <!-- Buttons -->
+                        <button type="submit" class="btn w-10 btn-float" [ngClass]="{'btn-primary': fiscaux.length == 0, 'btn-danger': fiscaux.length > 0}" [disabled]="!clientForm.valid">
+                            {{ singleClient.id ? 'Enregistrer' : 'Créer'}}
+                        </button>
+                        <button type="button" class="btn btn-secondary w-10 btn-float" (click)="fermer()">Annuler</button>
+                    </form>
+                </div>
+                <!-- *** *** identifiant_fisccale *** ***-->
+                <div class="identifiants_fiscaux" *ngIf="type == 'identifiants_fiscaux'">
+                    <!-- Titre Page -->
+                    <div class="header mt-md-3">
+                        <div class="header-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="header-pretitle">Identifiants fiscaux</h6>
+                                    <h2 class="header-title">Créer les identifiants fiscaux</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div *ngIf="message" class="alert alert-success" role="alert">
+                        {{message}}
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form class="mb-4 shadow p-3 mb-5 bg-white rounded" #FiscauxForm="ngForm" (ngSubmit)="upadateIdentifiantsFiscaux()">
+                                <input type="hidden" name="id" [(ngModel)]="singleClient.id">
+                                <div class="form-group" *ngFor="let fis of fiscaux; let i=index">
+                                    <label class="form-label">{{fis.identifiant_fisccale}}</label>
+                                    <input type="text" class="form-control" [(ngModel)]="fis.valeur" name="valeur[{{i}}]">
+                                </div>
+                                <hr class="mt-4 mb-4">
+                                <!-- Buttons -->
+                                <button type="submit" class="btn w-10 btn-float btn-primary" [disabled]="!FiscauxForm.valid">
+                                   Enregistrer
+                                </button>
+                                <button type="button" class="btn btn-secondary w-10 btn-float" (click)="fermer()">Annuler</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- *** *** fin clients *** *** -->
+                <div class="contacts" *ngIf="type == 'contacts'">
+                    <!-- Header -->
+                    <div class="header mt-md-3">
+                        <div class="header-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="header-pretitle">Contacts</h6>
+                                    <h2 class="header-title">List de Contacts</h2>
+                                </div>
+                            </div>
+                            <!-- / .row -->
+                        </div>
+                        <!-- fin titre -->
+                        <br>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn btn-outline-primary mb-2 btn-add-contact" (click)="clearContact()">
+                            <i class="fa-solid fa-plus"></i>
+                        </button><br><br><br>
+                        <div class="row">
+                            <div *ngIf="message" class="alert alert-success" role="alert">
+                                {{message}}
+                                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <div class="table-responsive row">
+                            <table class="table table-sm table-nowrap card-table">
+                                <thead>
+                                    <tr>
+                                        <th>Titre</th>
+                                        <th>Fonction</th>
+                                        <th>Nom complet</th>
+                                        <th>Email</th>
+                                        <th>Tel mobile</th>
+                                        <th>Tel bureau</th>
+                                        <th>Fax</th>
+                                        <th>Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="list">
+                                    <tr *ngFor="let contact of contacts">
+                                        <td class="titre">{{contact.titre}}</td>
+                                        <td class="fonction">{{contact.fonction}}</td>
+                                        <td class="nom complet">{{contact.prenom}} {{contact.nom}}</td>
+                                        <td class="email">{{contact.email}}</td>
+                                        <td class="tel_mobile">{{contact.tel_mobile}}</td>
+                                        <td class="tel_bureau">{{contact.tel_bureau}}</td>
+                                        <td class="fax">{{contact.fax}}</td>
+                                        <td (click)="setContact(contact)">
+                                            <!-- *** edit ***-->
+                                            <button _ngcontent-oxg-c56="" type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn btn-operation">
+                                                <i _ngcontent-oxg-c56="" class="fa-solid fa-pen"></i>
+                                            </button>&nbsp;
+                                            <!-- *** delete ***-->
+                                            <button _ngcontent-oxg-c56="" type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-operation">
+                                                <i _ngcontent-oxg-c56="" class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- **** **** **** Modal **** **** **** -->
+                    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-card card" data-list=''>
+                                    <div class="card-header">
+                                        <h4 class="card-header-title" id="exampleModalCenterTitle">
+                                            {{type}}
+                                        </h4>
+                                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form #contactForm="ngForm" (ngSubmit)="updateContact(contactForm.value)">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <input type="hidden" [ngModel]="singleContact.id" name="id">
+                                                    <input type="hidden" [ngModel]="singleClient.id" name="client_id">
+                                                    <div class="form-group">
+                                                        <label for="titre" class="form-label">
+                                                            Titre
+                                                            <strong class="text-danger" *ngIf="!singleContact.titre">*</strong>
+                                                        </label>
+                                                        <select class="form-select form-select-sm" [(ngModel)]="singleContact.titre" name="titre" required>
+                                                            <option value=null disabled>Veuillez choisir...</option>
+                                                            <option value="Mr">Mr</option>
+                                                            <option value="Mlle">Mlle</option>
+                                                            <option value="Mme">Mme</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="nom" class="form-label">
+                                                            Nom
+                                                            <strong class="text-danger" *ngIf="!singleContact.nom">*</strong>
+                                                        </label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleContact.nom" name="nom" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="email" class="form-label">
+                                                            Email
+                                                            <strong class="text-danger" *ngIf="!singleContact.email">*</strong>
+                                                        </label>
+                                                        <input type="email" class="form-control form-control-sm" placeholder="Email" [(ngModel)]="singleContact.email" name="email" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="tel_bureau" class="form-label">Tel bureau</label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="Tel bureau" [(ngModel)]="singleContact.tel_bureau" name="tel_bureau">
+                                                    </div>
+                                                </div>
+                                                <!-- *** *** **** **** **** ***-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="fonction" class="form-label">Fonction</label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="Fonction" [(ngModel)]="singleContact.fonction" name="fonction">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="prenom" class="form-label">
+                                                            Prénom
+                                                            <strong class="text-danger" *ngIf="!singleContact.prenom">*</strong>
+                                                        </label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="Prenom" [(ngModel)]="singleContact.prenom" name="prenom" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="tel_mobile" class="form-label">
+                                                            Tel mobile
+                                                            <strong class="text-danger" *ngIf="!singleContact.tel_mobile">*</strong>
+                                                        </label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="Tel mobile" [(ngModel)]="singleContact.tel_mobile" name="tel_mobile" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="fax" class="form-label">Fax</label>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="fax" [(ngModel)]="singleContact.fax" name="fax">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                                                <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!contactForm.valid">Enregister</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- **** **** **** Modal de confirmation **** **** **** -->
+                    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-confirm">
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div class="icon-box">
+                                        <i class="material-icons">
+                                            <i class="fa-solid fa-x"></i>
+                                        </i>
+                                    </div>
+                                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                                    <br>
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                                    <button type="button" class="btn btn-danger" (click)="deleteContact(singleContact.id)">Supprimer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- --- - - - -->
+                </div>
+                <!-- *** *** fin contact *** *** -->
+
+            </div>
+        </div>
+    </div>
+</section>

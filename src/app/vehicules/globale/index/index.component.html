@@ -1,0 +1,171 @@
+<section>
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Véhicule
+            </h6>
+            <h2 class="header-title">
+                Listes des véhicule
+            </h2>
+        </div>
+    </div><!-- fin titre -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!--strong class="text-muted">
+                    Max vehicules <span class="badge rounded-pill bg-secondary-soft">{{infosVehicule.total_vehicules}}</span>
+                </strong-->
+                <strong class="text-muted">
+                    Nombre total des véhicules <span class="badge rounded-pill bg-secondary-soft">{{vehicules.total_records}}</span>
+                </strong>
+                <strong class="text-muted">
+                    Équipés en GPS <span class="badge rounded-pill bg-secondary-soft">{{infosVehicule.nombre_GPS}}</span>
+                </strong>
+                <strong class="text-muted">
+                    Équipé en GPS et Eco-conduite <span class="badge rounded-pill bg-secondary-soft">{{infosVehicule.total_GPS_active}}</span>
+                </strong>
+                <strong class="text-muted">
+                    Non équipés en GPS <span class="badge rounded-pill bg-secondary-soft">{{infosVehicule.Total_GPS_inactive}}</span>
+                </strong>
+
+                <a [routerLink]="['/vehicules/edit']" class="btn btn-outline-primary btn-ajouter">
+                    <i class="fa-solid fa-plus"></i>
+                </a><br><br><br>
+                <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchVehicule(searchForm.value)">
+                    <div class="row">
+                        <div class="col-md-11">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="matricule">Matricule</label>
+                                        <input type="search" class="form-control" name="matricule"
+                                            [(ngModel)]="search.matricule" placeholder="Rechercher">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Groupe</label>
+                                        <select class="form-select" name="groupe_id" [(ngModel)]="search.groupe_id">
+                                            <option value=''>Tous</option>
+                                            <option value="{{groupe.id}}" *ngFor="let groupe of groupes">{{groupe.nom}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Marque</label>
+                                        <select class="form-select" name="marque_id" [(ngModel)]="search.marque_id">
+                                            <option value=''>Tous</option>
+                                            <option value="{{marque.id}}" *ngFor="let marque of marques">{{marque.nom}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-primary btn-search">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-nowrap card-table">
+                            <thead>
+                                <tr>
+                                    <th>Matricule</th>
+                                    <th>Statut</th>
+                                    <th>Catégorie</th>
+                                    <th>Groupe</th>
+                                    <th>Compteur actuel</th>
+                                    <!--th>Énergie</th>
+                                    <th>Boite à vitesse</th>
+                                    <th>Puissance CV</th-->
+                                    <th>Mise en circulation</th>
+                                    <th>Source</th>
+                                    <th class="text-center">Options</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <tr *ngFor="let vehicule of vehicules['records']">
+                                    <td class="matricule"> {{vehicule.matricule}} </td>
+                                    <td class="statut">{{vehicule.statut}}</td>
+                                    <td class="categorie">{{vehicule.categorie}}</td>
+                                    <td class="groupe"> {{vehicule.groupe}} </td>
+                                    <td class="compteur-actuel">{{vehicule.compteur}}</td>
+                                    <!--td class="energie"> {{vehicule.energie}} </td>
+                                    <td class="boite_vitesse"> {{vehicule.boite_vitesse}} </td>
+                                    <td class="puissance_cv"> {{vehicule.puissance_cv}} </td-->
+                                    <td class="mise_en_circulation"> {{vehicule.mise_en_circulation | date:"dd/MM/yyyy"}} </td>
+                                    <td class="type_saisie" style="font-size: 16px;">
+                                        <i class="fa-solid fa-satellite-dish text-primary" *ngIf="vehicule.balise"></i>&nbsp;
+                                        <i class="fa-solid fa-leaf text-success" *ngIf="vehicule.eco_conduite"></i>
+                                    </td>
+                                    <td width="100">
+                                        <a [routerLink]="['/vehicules/',vehicule.id,'edit']" class="btn btn-operation">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </a>&nbsp;
+                                        <a [routerLink]="['/vehicules/',vehicule.id,'dashboard']"
+                                            class="btn btn-operation">
+                                            <i class="fa-solid fa-info"></i>
+                                        </a>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-operation" (click)="idVehicule=vehicule.id">
+                                            <i _ngcontent-hhv-c59="" class="fa-solid fa-trash"></i>
+                                        </button> &nbsp;
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- fin table-responsive -->
+                <nav aria-label="Page navigation" class="pag-tab col-md-12"
+                    *ngIf="vehicules.total_records && vehicules.total_pages>1">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#!"
+                                [routerLink]="['/vehicules/page', vehicules.current_page-1]" [ngClass]="{'_disabled':vehicules.current_page==1}">
+                                Précédent
+                            </a>
+                        </li>
+                        <li class="page-item" *ngFor="let p of [].constructor(vehicules.total_pages); let i=index" [ngClass]="{'active':vehicules.current_page==i+1}">
+                            <a class="page-link" [routerLink]="['/vehicules/page', i+1]">{{i+1}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" [routerLink]="['/vehicules/page', vehicules.current_page+1]" [ngClass]="{'_disabled':vehicules.current_page==vehicules.total_pages}">
+                                Suivant
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- **** **** **** Modal de confirmation **** **** **** -->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="material-icons">
+                            <i class="fa-solid fa-x"></i>
+                        </i>
+                    </div>
+                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" (click)="delete(idVehicule)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+</section>

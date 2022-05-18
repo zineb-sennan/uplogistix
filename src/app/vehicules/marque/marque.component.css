@@ -1,0 +1,113 @@
+.marques-list {
+    margin-left: 0px;
+}
+
+.marques-list .marque .caption {
+    padding: 7px 10px;
+    background-color: #fbfafa;
+    font-size: 14px;
+    font-weight: 200;
+    color: #2d3538;
+    text-transform: capitalize;
+    text-align: center;
+    display: block;
+}
+
+.marques-list .marque .photo {
+    color: #fff;
+    text-align: center;
+    height: auto;
+}
+
+.marques-list .marque {
+    padding: 0;
+    background-color: #fff;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: block;
+    margin-bottom: 10px;
+    height: 150px;
+    margin-right: 10.2px !important;
+    width: 163.2px;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-info {
+    background-color: transparent;
+    border-color: transparent;
+    font-size: 20px;
+    padding: 0 2px;
+    color: #fff;
+}
+
+.marque .content-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    height: 99%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+}
+
+.marque:hover .content-overlay {
+    opacity: 1;
+}
+
+.opration {
+    position: absolute;
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.marque:hover .opration {
+    top: 55%;
+    left: 50%;
+    opacity: 1;
+}
+
+.btn-edit:hover,
+.btn-delete:hover,
+.btn-info:hover {
+    color: #a40b1d !important;
+}
+
+.marque img {
+    object-fit: contain;
+    width: auto;
+    height: 105px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.btn-ajouter {
+    float: right;
+    width: auto;
+    margin-right: 1%;
+    padding: 7px 10px;
+}
+
+.list-search {
+    padding: 1.5px;
+}

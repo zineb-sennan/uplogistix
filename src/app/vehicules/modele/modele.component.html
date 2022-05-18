@@ -1,0 +1,158 @@
+<section class="modele-v">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Vehicules
+            </h6>
+            <h2 class="header-title">
+                Gestion des modèles
+            </h2>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="row align-items-center">
+                <div class="col">
+                    <ul class="nav nav-tabs nav-overflow header-tabs">
+                        <li class="nav-item">
+                            <a [routerLink]="['/vehicules/marques/page/1']" class="nav-link">
+                                Marques
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link active">
+                                Modèles
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <br><br><br><br>
+            </div>
+            <div class="col-md-12">
+                <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" style="float:right" (click)="clear()">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <br><br><br>
+                <div class="row">
+                    <div *ngIf="message" class="alert alert-success" role="alert">
+                        {{message}}
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div class="card bg-light border" *ngIf="modeles.length==0">
+                        <div class="card-body">
+                            <h4 class="mb-2">
+                                <i class="fas fa-exclamation-triangle"></i> Pas de donnée
+                            </h4>
+                            <!-- <p class="small text-muted mb-0">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            </p> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modeles-list row" *ngIf="modeles.length>0">
+                    <div class="col-xs-4 col-sm-3 col-md-3" *ngFor="let modele of modeles">
+                        <div class="modele">
+                            <h3>{{modele.nom}}</h3>
+                            <small class="text-muted categorie" *ngIf="modele.categorie"> {{modele.categorie}} </small>
+                            <div class="operations">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-danger btn-delete" (click)="singleModele.id=modele.id">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn btn-success btn-edit" (click)="getModele(modele.id)">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- *** *** Modal L'ayout & modification *** *** -->
+        <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-card card" data-list=''>
+                        <div class="card-header">
+                            <h4 class="card-header-title" id="exampleModalCenterTitle">
+                                Modele vehicule
+                            </h4>
+                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="card-body">
+                            <form #grpForm="ngForm" (ngSubmit)="update(grpForm.value)">
+                                <div class="frm-region">
+                                    <input type="hidden" [(ngModel)]="singleModele.id" name="id" value="singleModele.id">
+                                    <input type="hidden" [(ngModel)]="singleModele.marque_id" name="marque_id" value="singleModele.marque_id">
+                                    <div class="form-group">
+                                        <label for="nom" class="form-label">
+                                            Nom
+                                            <strong class="text-danger" *ngIf="!singleModele.nom">*</strong>
+                                        </label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleModele.nom" name="nom" required>
+                                        <!-- <small class="form-text text-danger" *ngIf="!singleModele.nom">
+                                            Ce champ est obligatoire.
+                                        </small> -->
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="titre" class="form-label">
+                                            Categories
+                                            <strong class="text-danger" *ngIf="!singleModele.categorie_id">*</strong>
+                                        </label>
+                                        <select class="form-select form-select-sm" [(ngModel)]="singleModele.categorie_id" name="categorie_id" required>
+                                            <option value=null disabled>Veuillez choisir...</option>
+                                            <option *ngFor="let categorie of categories" value="{{categorie.id}}">
+                                                {{categorie.nom}}
+                                            </option>
+                                        </select>
+                                        <!-- <small class="form-text text-danger" *ngIf="!singleModele.categorie_id">
+                                            Ce champ est obligatoire.<br>
+                                        </small> -->
+                                        <small class="add-cat">
+                                            <a [routerLink]="['/vehicules/categories']" class="col-md-2">
+                                                Vous voulez ajouter une catégorie <i class="fa-solid fa-question"></i>
+                                            </a>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                    <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!grpForm.valid">Enregister</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- **** **** **** Modal de confirmation **** **** **** -->
+        <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                    <div class="modal-header flex-column">
+                        <div class="icon-box">
+                            <i class="material-icons">
+                                <i class="fa-solid fa-x"></i>
+                            </i>
+                        </div>
+                        <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                        <br>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                        <button type="button" class="btn btn-danger" (click)="delete(singleModele.id)">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

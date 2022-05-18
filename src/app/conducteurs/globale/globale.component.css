@@ -1,0 +1,12 @@
+.modal-dialog {
+    max-width: 900px !important;
+}
+
+.form-select-sm {
+    font-size: 0.93rem !important;
+}
+
+label.form-label {
+    font-size: 14px;
+    margin-bottom: 0px;
+}

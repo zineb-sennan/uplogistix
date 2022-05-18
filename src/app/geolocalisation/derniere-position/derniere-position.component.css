@@ -1,0 +1,19 @@
+.map-container {
+    top: 0;
+    left: 0;
+    height: 600px;
+    right: 0;
+    bottom: 0; 
+  }
+  
+  .map-frame {
+    height: 100%;
+  }
+  
+  #map {
+    height: 100%;
+  }
+
+  .form-search{
+    margin: auto;
+  }

@@ -1,0 +1,13 @@
+.icon_eco{
+    /*font-size: 45px;*/
+    font-size: 25px;
+    margin-left: 24px;
+}
+
+.align-items-center{
+    width: 32%;
+    display: inline-flex;
+    margin-left: 2%;
+}
+
+canvas{ height: 300px!important; }

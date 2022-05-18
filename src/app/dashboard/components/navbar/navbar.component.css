@@ -1,0 +1,26 @@
+.dropdown {
+    margin-right: 10px;
+}
+
+.infos-user {
+    font-weight: 500;
+    font-size: 14px;
+    margin-right: 15px;
+    text-align: center;
+    line-height: 15px;
+    display: inline-block;
+}
+
+.avatar{
+    display: inline-flex !important;
+}
+
+.fa-bars, .fa-xmark{
+    font-size: 25px;
+    color: #000;
+    text-shadow: #aab6c5 0.1em 0.015em 0.1em;
+}
+
+.container-fluid{
+    width: 100%;
+}

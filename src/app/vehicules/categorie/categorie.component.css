@@ -1,0 +1,45 @@
+.categories-list .categorie {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    padding: 12px 11px 9px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    min-height: 50px;
+    width: 100%;
+    margin-left: 0px;
+}
+
+.btn-edit,
+.btn-delete {
+    padding: 3px 5px !important;
+    float: right !important;
+    margin-left: 3px;
+    font-size: 13px;
+}
+
+.options {
+    height: 25px;
+}
+
+.categorie h3 {
+    font-weight: 300 !important;
+    margin-bottom: 0;
+    margin-top: 5px;
+}
+
+.options {
+    opacity: 0;
+}
+
+.categorie:hover .options {
+    opacity: 1 !important;
+}
+
+.categorie:hover {
+    color: #155724 !important;
+    background-color: #d4edda !important;
+    border-color: #c3e6cb !important;
+    font-weight: 400;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

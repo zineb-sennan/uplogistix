@@ -1,0 +1,34 @@
+<div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+    <div class="align-items-end">
+        <h6 class="header-pretitle">
+            Position
+        </h6>
+        <h2 class="header-title">
+            Dernière position connue
+        </h2>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row form-search row ng-untouched ng-pristine ng-valid pb-3">
+        <div class="col-3">
+            <div class="form-inline">
+                <label for="groupes">Groupe :</label>
+                <select class="form-select form-select-sm" name="groupes" id="groupes" (change)="changeGroupe($event)">
+                    <option value="">Tous</option>
+                    <option value="{{ groupe.id }}" *ngFor="let groupe of groupes">{{ groupe.nom }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h6 class="float-end" style="margin-top: 30px;">Dernière position connus ({{currDate | date: "dd/MM/yyyy HH:mm:ss"}})</h6>
+        </div>
+    </div>
+    <div class="row">
+        <div class="map-container">
+            <div class="map-frame">
+                <div id="map" style="border-radius: 10px;"></div>
+            </div>
+        </div>
+    </div>
+</div>

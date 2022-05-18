@@ -1,0 +1,144 @@
+.timeline {
+    width        : 100%;
+    /* max-width : 800px; */
+    background   : #fff;
+    padding      : 100px 50px;
+    position     : relative;
+    box-shadow   : 0.5rem 0.5rem 2rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.timeline:before {
+    content   : '';
+    position  : absolute;
+    top       : 0px;
+    left      : calc(33% + 15px);
+    bottom    : 0px;
+    width     : 4px;
+    background: #ddd;
+}
+
+.timeline:after {
+    content: "";
+    display: table;
+    clear  : both;
+}
+
+.entry {
+    clear     : both;
+    text-align: left;
+    position  : relative;
+}
+
+.entry .title {
+    margin-bottom: 0.5em;
+    float        : left;
+    width        : 33%;
+    padding-right: 35px;
+    text-align   : right;
+    position     : relative;
+}
+
+.entry .title:before {
+    content         : '';
+    position        : absolute;
+    width           : 20px;
+    height          : 20px;
+    border          : 3px solid rgb(236, 87, 70);
+    background-color: #fff;
+    border-radius   : 100%;
+    top             : 15%;
+    right           : -10px;
+    z-index         : 99;
+}
+
+.entry .title2 {
+    margin-bottom: 0.5em;
+    float        : left;
+    width        : 33%;
+    padding-right: 35px;
+    text-align   : right;
+    position     : relative;
+}
+
+.entry .title2:before {
+    content         : '';
+    position        : absolute;
+    width           : 20px;
+    height          : 20px;
+    border          : 3px solid rgb(18, 179, 18);
+    background-color: #fff;
+    border-radius   : 100%;
+    top             : 15%;
+    right           : -10px;
+    z-index         : 99;
+}
+
+.entry .title h3 {
+    margin   : 0;
+    font-size: 105%;
+}
+
+.entry .title p {
+    margin   : 0;
+    font-size: 95%;
+}
+
+.entry .title2 h3 {
+    margin   : 0;
+    font-size: 105%;
+}
+
+.entry .title2 p {
+    margin   : 0;
+    font-size: 95%;
+}
+
+.entry .body {
+    margin      : 0 0 3em;
+    float       : right;
+    width       : 66%;
+    padding-left: 30px;
+}
+
+.entry .body p {
+    line-height: 1.4em;
+}
+
+.entry .body p:first-child {
+    margin-top : 0;
+    font-weight: 400;
+}
+
+.entry .body ul {
+    color          : rgb(150, 146, 146);
+    padding-left   : 0;
+    list-style-type: none;
+}
+
+.entry .body ul li:before {
+    content     : "–>";
+    margin-right: 0.5em;
+}
+
+
+
+.map-container {
+    top   : 0;
+    left  : 0;
+    height: 600px;
+    right : 0;
+    bottom: 0;
+}
+
+.map-frame {
+    /* border: 1px solid black; */
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+.form-search{
+    margin: auto;
+}

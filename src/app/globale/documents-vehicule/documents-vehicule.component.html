@@ -1,0 +1,161 @@
+<section class="page-identifiant-fiscale">
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Globale
+            </h6>
+            <h2 class="header-title">
+                Documents du véhicule
+            </h2>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div *ngIf="message" class="alert alert-success" role="alert">
+                {{message}}
+                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="row">
+            <!-- *** *** *** Les pays *** *** *** -->
+            <div class="col-md-5 m-4 pays" [ngClass]="{'col-md-12': documents.length == 0}">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Payes <span class="badge bg-info-soft">{{pays.length}}</span>
+                    </h4>
+                </div>
+                <div class="list-group list-group-flush my-n3">
+                    <div class="list-group-item">
+                        <div class="row align-items-center mb-3 item-pays _shadow cursor" *ngFor="let pay of pays" [ngClass]="{'_active': singleDocument.pays_id==pay.id && documents.length > 0, '_red': documents.length == 0 && singleDocument.pays_id==pay.id}">
+                            <div class="col-10 ms-n2 par1" (click)="getDocumentsByPaysId(pay.id)">
+                                <h4 class="mb-1">
+                                    <i class="fa-solid fa-city"></i>&nbsp;{{pay.nom}}
+                                </h4>
+                                <p class="small text-muted">
+                                    <strong class="d-block text-reset" style="width: 100%;">
+                                        <i class="fa-solid fa-phone"></i> Indicatif: {{pay.indicatif}} &nbsp;&nbsp;
+                                        <i class="fa-solid fa-dollar-sign"></i> Devise: {{pay.indicatif}}
+                                    </strong>
+                                </p>
+                                <div *ngIf="documents.length == 0 && singleDocument.pays_id==pay.id">
+                                    <p class="small text-danger">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> aucun élément trouvé
+                                    </p>
+                                    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear()">
+                                        Ajouter Documents du véhicule
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- *** *** *** Vehicule Documents *** *** *** -->
+            <div class="col-md-5 m-4 fiscaux" *ngIf="documents.length > 0">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Documents du véhicule <span class="badge bg-info-soft">{{documents.length}}</span>
+                    </h4>
+                    <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear()">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <div class="list-group list-group-flush my-n3">
+                    <div class="list-group-item">
+                        <div class="row align-items-center item item-fis mb-3 _shadow _item" *ngFor="let doc of documents">
+                            <div class="col-9 ms-n2 par1">
+                                <h4 class="mb-1">
+                                    <i class="fa-solid fa-address-card"></i>&nbsp;{{doc.nom}}
+                                </h4>
+                            </div>
+                            <div class="col-3 col-auto operations">
+                                <button type="button" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="setDocument(doc)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-success btn-edit" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="setDocument(doc)">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- *** *** Modal L'ayout & modification *** *** -->
+            <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-card card" data-list=''>
+                            <div class="card-header">
+                                <h4 class="card-header-title" id="exampleModalCenterTitle">
+                                    Identifiant fiscale
+                                </h4>
+                                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="card-body">
+
+                                <form #docForm="ngForm" (ngSubmit)="update(docForm.value)">
+                                    <div *ngIf="message" class="alert alert-success" role="alert">
+                                        {{message}}
+                                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    <!-- *** *** Identifiant fiscale *** *** -->
+                                    <div class="frm-region">
+                                        <input type="hidden" [(ngModel)]="singleDocument.pays_id" name="pays_id" value="singleDocument.pays_id">
+                                        <input type="hidden" [(ngModel)]="singleDocument.id" name="id" value="singleDocument.id">
+                                        <div class="form-group">
+                                            <label for="nom" class="form-label">
+                                                Nom
+                                                <strong class="text-danger" *ngIf="!singleDocument.nom">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleDocument.nom" name="nom" required>
+                                            <!-- <small class="form-text text-danger" *ngIf="!singleDocument.nom">
+                                                Ce champ est obligatoire.
+                                            </small> -->
+                                        </div>
+                                    </div>
+                                    <!-- *** *** submit *** *** -->
+                                    <div class="col-md-12">
+                                        <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                        <button type="submit" class="btn btn-success mb-2 btn-save" [disabled]="!docForm.valid">Enregister</button>
+                                        <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- **** **** **** Modal de confirmation **** **** **** -->
+            <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                        <div class="modal-header flex-column">
+                            <div class="icon-box">
+                                <i class="material-icons">
+                                    <i class="fa-solid fa-x"></i>
+                                </i>
+                            </div>
+                            <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                            <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                            <button type="button" class="btn btn-danger" (click)="delete(singleDocument.id)">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+
+    <br><br>
+</section>

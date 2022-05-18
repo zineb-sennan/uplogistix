@@ -1,0 +1,101 @@
+<section>
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Utilistaeur
+            </h6>
+            <h2 class="header-title">
+                Réinitialisation de mot de passe
+            </h2>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row justify-content-between align-items-center mb-5">
+                    <p class="text-muted mb-md-0">
+                        Veuillez suivre les indications à droite pour modifier votre mot de passe.
+                    </p>
+
+                    <div *ngIf="messageSuccess" class="alert alert-success mt-5" role="alert">
+                        {{messageSuccess}}
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <form #passwordForm="ngForm" class="mb-4 shadow p-4 mb-5 bg-white rounded col-md-8" (ngSubmit)="changementPwd(passwordForm.value)">
+                        <div class="form-group">
+                            <label for="pwd-actuel">
+                                Mot de passe actuel
+                                <strong class="text-danger" *ngIf="!password.oldpassword">*</strong>
+                            </label>
+                            <input type="password" class="form-control" id="pwd-actuel" placeholder="Mot de passe actuel" [(ngModel)]="password.oldpassword" name="oldpassword" required>
+                            <!-- <small class="form-text text-danger" *ngIf="!password.oldpassword">
+                                Ce champ est obligatoire.
+                            </small> -->
+                        </div>
+                        <div class="form-group">
+                            <label for="nouveau-pwd">
+                                Nouveau mot de passe
+                                <strong class="text-danger" *ngIf="!password.newpassword">*</strong>
+                            </label>
+                            <input type="password" class="form-control" id="nouveau-pwd" placeholder="Nouveau mot de passe" [(ngModel)]="password.newpassword" name="newpassword" (keyup)="validationPWD($event)" required>
+                            <!-- <small class="form-text text-danger" *ngIf="!password.newpassword">
+                                Ce champ est obligatoire.
+                            </small> -->
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmation-pwd">
+                                Confirmation de nouveau mot de passe
+                                <strong class="text-danger" *ngIf="!password.confirmpassword">*</strong>
+                            </label>
+                            <input type="password" class="form-control" id="confirmation-pwd" placeholder="Confirmation de nouveau mot de passe" [(ngModel)]="password.confirmpassword" name="confirmpassword" required>
+                            <!-- <small class="form-text text-danger" *ngIf="!password.confirmpassword">
+                                Ce champ est obligatoire.
+                            </small> -->
+                        </div>
+                        <div class="col-md-12">
+                            <small class="text-danger">*: Ce champ est obligatoire.</small>
+                            <button type="submit" class="btn btn-success mb-2 float-right btn-up-pwd" [disabled]="!passwordForm.valid">Enregister</button>
+                        </div>
+                        <div id="pswd_info" class="d-none">
+                            <br><br>
+                            <h4>Le mot de passe doit contenir:</h4>
+                            <ul>
+                              <li id="letter" class="invalid">Au moins <strong>une lettre</strong></li>
+                              <li id="capital" class="invalid">Au moins <strong>une lettre majuscule</strong></li>
+                              <li id="number" class="invalid">Au moins <strong>un numéro</strong></li>
+                              <li id="length" class="invalid">Minimum <strong>8 caractères</strong></li>
+                            </ul>
+                        </div>
+                        <div *ngIf="messageError" class="alert alert-danger alert-dismissible fade show mt-7" role="alert">
+                            {{messageError}}
+                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </form>
+                    <div class="col-md-4">
+                        <div class="card bg-light border ms-md-4">
+                            <div class="card-body">
+                                <p class="mb-2">Mot de passe obligatoire</p>
+                                <p class="small text-muted mb-2">
+                                    Pour créer un nouveau mot de passe, vous devez remplir toutes les conditions suivantes :
+                                </p>
+                                <ul class="small text-muted ps-4 mb-0">
+                                    <li>Minimum 8 caractères</li>
+                                    <li>Au moins une lettre</li>
+                                    <li>Au moins une lettre majuscule</li>
+                                    <li>Au moins un numéro</li>
+                                    <li>Ne peut pas être le même qu'un mot de passe précédent</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>

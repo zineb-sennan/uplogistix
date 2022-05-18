@@ -1,0 +1,213 @@
+<section class="page-balise">
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Balises
+            </h6>
+            <h2 class="header-title">
+                Liste des balises
+            </h2>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-outline-primary mb-2 btn-ajouter" data-bs-toggle="modal"
+                    data-bs-target="#modal-edit" (click)="clear()">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <br><br><br>
+                <div *ngIf="message" class="alert alert-success" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="table-responsive row">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                            <tr>
+                                <th>IMEI</th>
+                                <th>Matricule</th>
+                                <th>Client</th>
+                                <th>Marque</th>
+                                <th>Modèle</th>
+                                <th>S.N</th>
+                                <th>Firmware</th>
+                                <th>Date d'achat</th>
+                                <th>Date de mise en service</th>
+                                <th>Eco-conduite</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            <tr *ngFor="let balise of balises">
+                                <td class="imei"> {{balise.imei}} </td>
+                                <td class="matricule"> {{balise.matricule}}</td>
+                                <td class="client"> {{balise.client}} </td>
+                                <td class="marque"> {{balise.marque}} </td>
+                                <td class="modele"> {{balise.modele}} </td>
+                                <td class="sn"> {{balise.sn}}</td>
+                                <td class="firmware"> {{balise.firmware}} </td>
+                                <td class="date_achat"> {{balise.date_achat | date:"dd/MM/yyyy"}} </td>
+                                <td class="date_mise_service"> {{balise.date_mise_service | date:"dd/MM/yyyy"}}</td>
+                                <td class="eco_conduite"> <img
+                                        src="{{balise.eco_conduite? 'assets/img/icones/eco.png':'assets/img/icones/not-eco.png' }}"
+                                        width="30"> </td>
+                                <td width="75">
+                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal"
+                                        data-bs-target="#modal-edit" (click)="getBalise(balise.id)">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal"
+                                        data-bs-target="#modal-delete" (click)="singleBalise.id=balise.id">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** *** Modal L'ayout & modification *** *** -->
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-card card" data-list=''>
+                    <div class="card-header">
+                        <h4 class="card-header-title" id="exampleModalCenterTitle">
+                            Balise
+                        </h4>
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="card-body">
+                        <form #baliseForm="ngForm" (ngSubmit)="update(baliseForm.value)">
+                            <div class="row">
+                                <input type="hidden" [(ngModel)]="singleBalise.id" name="id" value="singleBalise.id">
+                                    <div class="titre col-md-12 mb-3">
+                                        <h6 class="header-pretitle">Balise</h6>
+                                        <h3 class="header-title">Informations</h3>
+                                        <hr>
+                                    </div>   
+                                <!--**** *** ***-->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="imei" class="form-label">
+                                            imei
+                                            <strong class="text-danger" *ngIf="!singleBalise.imei">*</strong>
+                                        </label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="imei"
+                                            [(ngModel)]="singleBalise.imei" name="imei">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="marque" class="form-label">Marque</label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Marque"
+                                            [(ngModel)]="singleBalise.marque" name="marque">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="modele" class="form-label">Modèle</label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Modèle"
+                                            [(ngModel)]="singleBalise.modele" name="modele">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sn" class="form-label">S.N</label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="S.N"
+                                            [(ngModel)]="singleBalise.sn" name="sn">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="firmware" class="form-label">Firmware</label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Firmware"
+                                            [(ngModel)]="singleBalise.firmware" name="firmware">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="date_achat" class="form-label">Date d’achat</label>
+                                        <input type="date" class="form-control form-control-sm" placeholder="date_achat"
+                                            name="date_achat" [ngModel]="singleBalise.date_achat | date:'yyyy-MM-dd'">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="date_mise_service" class="form-label">Date de la mise en
+                                            service</label>
+                                        <input type="date" class="form-control form-control-sm" name="date_mise_service"
+                                            [ngModel]="singleBalise.date_mise_service | date:'yyyy-MM-dd'"
+                                            (ngModelChange)="singleBalise.date_mise_service = $event">
+                                    </div>
+                                    
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            [(ngModel)]="singleBalise.eco_conduite" name="eco_conduite">
+                                        <label class="form-check-label">
+                                            Eco Conduite <i class="fa-solid fa-question"></i>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="titre col-md-12 mb-3 mt-3">
+                                    <h6 class="header-pretitle">Balise</h6>
+                                    <h3 class="header-title">Affectation</h3>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="pays_id" class="form-label">Clients</label>
+                                        <select class="form-select form-select-sm" name="client_id"
+                                            [(ngModel)]="singleBalise.client_id" (change)="changeClient($event)">
+                                            <option value=null disabled>Veuillez choisir...</option>
+                                            <option *ngFor="let client of clients" [value]="client.id">{{client.prenom}}
+                                                {{client.nom}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="pays_id" class="form-label">Véhicles</label>
+                                        <select class="form-select form-select-sm" name="vehicule_id"
+                                            [(ngModel)]="singleBalise.vehicule_id">
+                                            <option value=null disabled>Veuillez choisir...</option>
+                                            <option *ngFor="let vehicule of vehicules" [value]="vehicule.id">
+                                                {{vehicule.matricule}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>  
+                                <div class="col-md-12">
+                                    <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                    <button type="submit" class="btn btn-success float-right" [disabled]="!baliseForm.valid">Enregister</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- **** **** **** Modal de confirmation **** **** **** -->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="material-icons">
+                            <i class="fa-solid fa-x"></i>
+                        </i>
+                    </div>
+                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment supprimer ce conducteur <i class="fa-solid fa-question"></i></p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal"
+                        aria-label="Close">Annuler</button>
+                    <button type="button" class="btn btn-danger" (click)="delete(singleBalise.id)">supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br><br>
+</section>

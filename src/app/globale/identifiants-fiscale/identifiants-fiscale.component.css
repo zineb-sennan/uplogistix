@@ -1,0 +1,55 @@
+.pays,
+.fiscaux {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    margin-top: 30px;
+    padding: 10px 25px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.card {
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.par1 {
+    padding: 18px 20px;
+}
+
+.dropdown-toggle {
+    float: right;
+}
+
+.operations .btn {
+    float: right !important;
+    margin-right: 3px !important;
+}
+
+.btn-delete,
+.btn-edit {
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%) !important;
+    padding: 3px 6px !important;
+    font-size: 15px;
+    margin-left: 2px;
+    float: right !important;
+}
+
+.btn-save {
+    float: right !important;
+}
+
+.operations {
+    opacity: 0;
+}
+
+._item:hover {
+    color: #155724 !important;
+    background-color: #d4edda !important;
+    border-color: #c3e6cb !important;
+    font-weight: 400;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+._item:hover .operations {
+    opacity: 1;
+}

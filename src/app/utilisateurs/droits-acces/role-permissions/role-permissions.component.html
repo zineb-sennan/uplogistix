@@ -1,0 +1,152 @@
+<section>
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Utilisateur
+            </h6>
+            <h2 class="header-title">
+                Droits d'accés
+            </h2>
+        </div>
+    </div>
+    <!-- *** *** Content *** ***  -->
+    <div class="container-fluid">
+        <div class="row">
+            <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #roleForm="ngForm"
+                (ngSubmit)="updateRole(roleForm.value)">
+                <!-- *** *** *** Forms *** *** *** -->
+                <div class="row">
+                    <input type="hidden" [(ngModel)]="singleRole.id" name="id" value="singleRole.id">
+                    <div class="form-group">
+                        <label for="nom" class="form-label">
+                            Libelle
+                            <strong class="text-danger" *ngIf="!singleRole.libelle">*</strong>
+                        </label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Libelle"
+                            [(ngModel)]="singleRole.libelle" name="libelle" required>
+                        <!-- <small class="form-text text-danger" *ngIf="!singleRole.libelle">
+                            Ce champ est obligatoire.
+                        </small> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="logo" class="form-label">Description</label>
+                        <textarea class="form-control" placeholder="Description" [(ngModel)]="singleRole.description"
+                            name="description"></textarea>
+                    </div>
+                </div>
+                <hr class="mt-4 mb-4">
+                <small class="text-danger">*: Ce champ est obligatoire.</small>
+                <!-- Buttons -->
+                <button type="submit" class="btn w-10 btn-float btn-primary" [disabled]="!roleForm.valid">
+                    Enregistrer
+                </button>
+                <button type="button" class="btn btn-secondary w-10 btn-float" (click)="fermer()">Annuler</button>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 shadow p-3 mb-5 bg-white rounded">
+                
+                <div class="header md-5">
+                    <div class="header-body">
+                        <h1 class="header-title">Permissions</h1>
+                        <p class="header-subtitle">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </p>
+                    </div>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="text-primary">Permissions</span>
+                        <div class="float-right align-middle d-flex" style="margin-right:40px">
+                            <small class="text-primary" style="margin-right:12px;">Modifie</small>
+                            <small class="text-primary">Supprimer</small>
+                        </div>
+                    </li>
+                    <li class="list-group-item" *ngFor="let rolePermission of rolePermissions">
+                        <span>{{rolePermission.permission}}</span>
+                        <div class="float-right align-middle d-flex">
+                            <input class="form-check-input can_can_edit mr mt-2" type="checkbox" [checked]="rolePermission.can_edit" name="can_edit" (change)="canEditChange($event,rolePermission)">
+                            <input class="form-check-input can_delete mr mt-2" type="checkbox" [checked]="rolePermission.can_delete" name="can_delete" (change)="canDeleteChange($event, rolePermission)">
+                            <button class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="singleRolePermission.permission_id=rolePermission.permission_id">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                        
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <!-- *** *** *** *** ***-->
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-card card" data-list=''>
+                    <div class="card-header">
+                        <h4 class="card-header-title" id="exampleModalCenterTitle">
+                            Lorem ipsum dolor
+                        </h4>
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <span class="text-primary">Permissions</span>
+                                    <div class="float-right align-middle d-flex">
+                                        <small class="text-primary" style="margin-right:12px;">Consulter</small>
+                                        <small class="text-primary" style="margin-right:12px;">Modifie</small>
+                                        <small class="text-primary">Supprimer</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item infos-permission" *ngFor="let permission of permissions; let index = index;" id="{{permission.id}}">
+                                    <span>{{permission.libelle}}</span>
+                                    <div class="float-right align-middle d-flex">
+                                        <input class="form-check-input can_consulter_{{index}} mr" type="checkbox">
+                                        <input class="form-check-input can_edit_{{index}} ml" type="checkbox" (click)="checkConsulter($event,index)">
+                                        <input class="form-check-input can_delete_{{index}} ml" type="checkbox" (click)="checkConsulter($event,index)">
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary mb-2 mt-4 float-right" (click)="addRolePermossion()">Enregister</button>
+                                <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- *** *** *** *** -->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="material-icons">
+                            <i class="fa-solid fa-x"></i>
+                        </i>
+                    </div>
+                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                    <br>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                    <button type="button" class="btn btn-danger" (click)="deleteRolePermission(singleRole.id, singleRolePermission.permission_id)">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

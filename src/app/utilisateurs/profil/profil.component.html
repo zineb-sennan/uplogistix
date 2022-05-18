@@ -1,0 +1,122 @@
+<section>
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Utilistaeur
+            </h6>
+            <h2 class="header-title">
+                Profil et visibilité
+            </h2>
+        </div>
+    </div>
+ 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row justify-content-between align-items-center mb-5">
+
+                    <p class="text-muted mb-md-0">
+                        Veuillez entrer les informations du compte.
+                    </p>
+                    <div *ngIf="message" class="alert alert-success mt-5" role="alert">
+                        {{message}}
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                <form #utilisateurForm="ngForm" class="mb-4 shadow p-3 mb-5 bg-white rounded" (ngSubmit)="update(utilisateurForm.value)">
+                    <div class="row">
+                        <input type="hidden" [(ngModel)]="singleUtilisateur.id" name="id" value="singleUtilisateur.id">
+                        <input type="hidden" [(ngModel)]="singleUtilisateur.type_compte" name="type_compte" value="singleUtilisateur.type_compte">
+                        <input type="hidden" [(ngModel)]="singleUtilisateur.role_id" name="role_id" value="singleUtilisateur.role_id">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nom" class="form-label">
+                                    Nom
+                                    <strong class="text-danger" *ngIf="!singleUtilisateur.nom">*</strong>
+                                </label>
+                                <input type="text" class="form-control" placeholder="Nom" [(ngModel)]="singleUtilisateur.nom" name="nom" required>
+                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.nom">
+                                    Ce champ est obligatoire.
+                                </small> -->
+                            </div>
+                            <div class="form-group">
+                                <label for="cni" class="form-label">CNI</label>
+                                <input type="text" class="form-control" placeholder="CNI" [(ngModel)]="singleUtilisateur.cni" name="cni">
+                            </div>
+                            <div class="form-group">
+                                <label for="tel" class="form-label">
+                                    Tel
+                                    <strong class="text-danger" *ngIf="!singleUtilisateur.tel">*</strong>
+                                </label>
+                                <input type="text" class="form-control" placeholder="tel" [(ngModel)]="singleUtilisateur.tel" name="tel" required>
+                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.tel">
+                                    Ce champ est obligatoire.
+                                </small> -->
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Région</label>
+                                <select name="region_id" class="form-select" (change)="changeRegion($event)" [ngModel]="singleUtilisateur.region_id">
+                                    <option value="0" selected disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let reg of regions" value="{{reg.id}}">{{reg.nom}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="prenom" class="form-label">
+                                    Prénom
+                                    <strong class="text-danger" *ngIf="!singleUtilisateur.prenom">*</strong>
+                                </label>
+                                <input type="text" class="form-control" placeholder="Prénom" [(ngModel)]="singleUtilisateur.prenom" name="prenom" required>
+                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.prenom">
+                                    Ce champ est obligatoire.
+                                </small> -->
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">
+                                    Email
+                                    <strong class="text-danger" *ngIf="!singleUtilisateur.email">*</strong>
+                                </label>
+                                <input type="email" class="form-control" placeholder="Email" [(ngModel)]="singleUtilisateur.email" name="email" required>
+                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.email">
+                                    Ce champ est obligatoire.
+                                </small> -->
+                            </div>
+                            <div class="form-group">
+                                <label for="pays_id" class="form-label">Pays</label>
+                                <select class="form-select" name="pays_id" (change)="changePays($event)" [ngModel]="singleUtilisateur.pays_id">
+                                    <option value="0" disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let pay of pays" [value]="pay.id">{{pay.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Ville
+                                    <strong class="text-danger" *ngIf="!singleUtilisateur.ville_id">*</strong>
+                                </label>
+                                <select class="form-select" name="ville_id" [(ngModel)]="singleUtilisateur.ville_id">
+                                    <option value='' selected disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let vil of villes" value="{{vil.id}}">{{vil.nom}}</option>
+                                </select>
+                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.ville_id">
+                                    Ce champ est obligatoire.
+                                </small> -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd" class="form-label">Adresse</label>
+                            <textarea class="form-control" [(ngModel)]="singleUtilisateur.adresse" name="adresse"></textarea>
+                         </div>
+                        
+                        <div class="col-md-12">
+                            <small class="text-danger">*: Ce champ est obligatoire.</small>
+                            <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!utilisateurForm.valid">Enregister</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>

@@ -1,0 +1,54 @@
+.box-shadow-1{ 
+    border: 1px solid #edf2f9;
+    border-radius: 0.5rem;
+    border-color: #edf2f9;
+    box-shadow: 0 0.75rem 1.5rem rgb(18 38 63 / 3%); 
+}
+
+.infos-generales i { font-size: 22px; }
+
+.total-cost{ padding: 20px; }
+
+/*** *** *** *** *** *** *** ***/
+.total-cost{ height: 400px; }
+
+.card{
+    box-shadow: 0 0.46875rem 2.1875rem rgb(4 9 20 / 3%), 0 0.9375rem 1.40625rem rgb(4 9 20 / 3%), 0 0.25rem 0.53125rem rgb(4 9 20 / 5%), 0 0.125rem 0.1875rem rgb(4 9 20 / 3%) !important;
+}
+
+.card-header{
+    height: 35px;
+    border-bottom: none;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.infos-vehicules-conducteur .card ul{
+    list-style-type: none;
+}
+
+.infos-vehicules-conducteur .card-body{
+    padding: 5px;
+}
+
+/*.infos-vehicules-conducteur .card-body{
+    height: 160px;
+    max-height: 150px;
+    overflow-y: scroll;*/
+    /*height: 170px;
+}*/
+
+.infos-vehicules-conducteur ul{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.infos-vehicules-conducteur ul span{
+    float: right;
+}
+
+.ml{ margin-left: 15px; }
+
+.d-height{
+    height: 183px;
+}

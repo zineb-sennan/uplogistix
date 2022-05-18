@@ -1,0 +1,34 @@
+{
+    "pays":[
+        {
+           "id":1,
+            "nom": "nom 1",
+            "indicatif": "indicatif 1",
+            "devise": "devise 1"
+        },
+        {
+            "id":2,
+            "nom": "nom 2",
+            "indicatif": "indicatif 2",
+            "devise": "devise 2"
+        },
+        {
+            "id":3,
+             "nom": "nom 3",
+             "indicatif": "indicatif 3",
+             "devise": "devise 3"
+        },
+        {
+            "id":4,
+             "nom": "nom 4",
+             "indicatif": "indicatif 4",
+             "devise": "devise 4"
+        },
+        {
+            "id":5,
+             "nom": "nom 5",
+             "indicatif": "indicatif 5",
+             "devise": "devise 5"
+        }
+    ]
+}

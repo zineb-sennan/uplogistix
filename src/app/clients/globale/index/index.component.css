@@ -1,0 +1,12 @@
+    .btn-ajouter {
+        float: right;
+    }
+    
+    .pag-tab {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+    }
+    
+    .btn-operation {
+        display: block;
+        margin: auto;
+    }

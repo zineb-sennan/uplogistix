@@ -1,0 +1,10 @@
+.modal-dialog {
+    max-width: 700px !important;
+}
+
+.eco_conduite img {
+    width: 30px;
+    height: auto;
+    display: block;
+    margin: auto;
+}

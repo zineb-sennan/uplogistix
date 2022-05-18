@@ -1,0 +1,258 @@
+<section class="page-clients">
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Utilisateurs
+            </h6>
+            <h2 class="header-title">
+                List des utilisateurs
+            </h2>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-outline-primary mb-2 btn-ajouter" data-bs-toggle="modal"
+                    data-bs-target="#modal-edit" (click)="clear()">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <br><br><br>
+                <div *ngIf="message" class="alert alert-success" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="table-responsive row">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                            <tr>
+                                <th>Nom complet</th>
+                                <th>CNI</th>
+                                <th>Email</th>
+                                <th>Tel</th>
+                                <th>Ville</th>
+                                <th>Rôle</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            <tr *ngFor="let utilisateur of utilisateurs">
+                                <td class="nom_complet"> {{utilisateur.prenom}} {{utilisateur.nom}} </td>
+                                <td class="cni"> {{utilisateur.cni}} </td>
+                                <td class="email"> {{utilisateur.email}} </td>
+                                <td class="tel"> {{utilisateur.tel}} </td>
+                                <td class="ville"> {{utilisateur.ville}} </td>
+                                <td class="role">{{ utilisateur.role_id == 0 ? 'Toutes les permissions' : utilisateur.role }}</td>
+                                <td width="75">
+                                    <button type="button"
+                                        class="btn blocker {{ utilisateur.locked_by ? 'text-danger' : 'text-success'}}" 
+                                        data-bs-toggle="modal" data-bs-target="#modal-delete" 
+                                        (click)="singleUtilisateur.id=utilisateur.id; singleUtilisateur.locked_by=utilisateur.locked_by;">
+                                        <i class="fa-solid {{ utilisateur.locked_by ? 'fa-lock' : 'fa-lock-open'}}"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal"
+                                        data-bs-target="#modal-edit" (click)="getUtilisateur(utilisateur.id)">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- *** *** Modal L'ayout & modification *** *** -->
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-card card" data-list=''>
+                    <div class="card-header">
+                        <h4 class="card-header-title" id="exampleModalCenterTitle">
+                            Utilisateur
+                        </h4>
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="card-body">
+                        <form #utilisateurForm="ngForm" (ngSubmit)="update(utilisateurForm.value)">
+                            <div class="row">
+                                <input type="hidden" [(ngModel)]="singleUtilisateur.id" name="id"
+                                    value="singleUtilisateur.id">
+                                <div class="row">
+                                    <div class="titre col-md-12 mb-3">
+                                        <h6 class="header-pretitle">Utilisateur</h6>
+                                        <h3 class="header-title">Permissions</h3>
+                                        <hr>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="titre" class="form-label">
+                                            Type de compte
+                                            <strong class="text-danger" *ngIf="!singleUtilisateur.type_compte">*</strong>
+                                        </label>
+                                        <select class="form-select form-select-sm"
+                                            [(ngModel)]="singleUtilisateur.type_compte" name="type_compte" required>
+                                            <option value=null disabled>Veuillez choisir...</option>
+                                            <option value="Super administrateur">Super administrateur</option>
+                                            <option value="Opérateur">Opérateur</option>
+                                        </select>
+                                        <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.type_compte">
+                                            Ce champ est obligatoire.
+                                        </small> -->
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="form-label">
+                                            Rôle
+                                            <strong class="text-danger" *ngIf="!singleUtilisateur.role_id">*</strong>
+                                        </label>
+                                        <select class="form-select form-select-sm" name="role_id"
+                                            [(ngModel)]="singleUtilisateur.role_id">
+                                            <option value=null selected disabled>Veuillez choisir...</option>
+                                            <option value="0">Toutes les permissions</option>
+                                            <option *ngFor="let role of roles" value="{{role.id}}">{{role.libelle}}
+                                            </option>
+                                        </select>
+                                        <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.role_id">
+                                            Ce champ est obligatoire.
+                                        </small> -->
+                                    </div>
+                                </div><!-- fin row -->
+                                <div class="row">
+                                    <div class="titre col-md-12 mb-3">
+                                        <h6 class="header-pretitle">Utilisateur</h6>
+                                        <h3 class="header-title">Informations</h3>
+                                        <hr>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="nom" class="form-label">
+                                                Nom
+                                                <strong class="text-danger" **ngIf="!singleUtilisateur.nom">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Nom"
+                                                [(ngModel)]="singleUtilisateur.nom" name="nom">
+                                            <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.nom">
+                                                Ce champ est obligatoire.
+                                            </small> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tel" class="form-label">
+                                                Téléphone
+                                                <strong class="text-danger" *ngIf="!singleUtilisateur.tel">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="tel"
+                                                [(ngModel)]="singleUtilisateur.tel" name="tel">
+                                            <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.tel">
+                                                Ce champ est obligatoire.
+                                            </small> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Région</label>
+                                            <select name="region_id" class="form-select form-select-sm"
+                                                (change)="changeRegion($event)" [ngModel]="singleUtilisateur.region_id">
+                                                <option value=null selected disabled>Veuillez choisir...</option>
+                                                <option *ngFor="let reg of regions" value="{{reg.id}}">{{reg.nom}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="prenom" class="form-label">
+                                                Prénom
+                                                <strong class="text-danger" *ngIf="!singleUtilisateur.prenom">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Prenom"
+                                                [(ngModel)]="singleUtilisateur.prenom" name="prenom">
+                                            <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.prenom">
+                                                Ce champ est obligatoire.
+                                            </small> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cni" class="form-label">CNI</label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="CNI"
+                                                [(ngModel)]="singleUtilisateur.cni" name="cni">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                Ville
+                                                <strong class="text-danger" *ngIf="!singleUtilisateur.ville_id">*</strong>
+                                            </label>
+                                            <select class="form-select form-select-sm" name="ville_id"
+                                                [(ngModel)]="singleUtilisateur.ville_id">
+                                                <option value=null selected disabled>Veuillez choisir...</option>
+                                                <option *ngFor="let vil of villes" value="{{vil.id}}">{{vil.nom}}
+                                                </option>
+                                            </select>
+                                            <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.ville_id">
+                                                Ce champ est obligatoire.
+                                            </small> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="email" class="form-label">
+                                                Email
+                                                <strong class="text-danger" *ngIf="!singleUtilisateur.email">*</strong>
+                                            </label>
+                                            <input type="email" class="form-control form-control-sm" placeholder="Email"
+                                                [(ngModel)]="singleUtilisateur.email" name="email">
+                                            <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.email">
+                                                Ce champ est obligatoire.
+                                            </small> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pays_id" class="form-label">Pays</label>
+                                            <select class="form-select form-select-sm" name="pays_id"
+                                                (change)="changePays($event)" [ngModel]="singleUtilisateur.pays_id">
+                                                <option value=null disabled>Veuillez choisir...</option>
+                                                <option *ngFor="let pay of pays" [value]="pay.id">{{pay.nom}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pwd" class="form-label">Adresse</label>
+                                        <textarea class="form-control" rows="3" [(ngModel)]="singleUtilisateur.adresse"
+                                            name="adresse"></textarea>
+                                    </div>
+                                </div><!-- fin row -->
+                                <div class="col-md-12">
+                                    <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                    <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!utilisateurForm.valid">Enregister</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- **** **** **** Modal de confirmation **** **** **** -->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="material-icons">
+                            <i class="fa-solid fa-x"></i>
+                        </i>
+                    </div>
+                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment {{ singleUtilisateur.locked_by ? 'débloquer' : 'bloquer'}} ce conducteur <i
+                            class="fa-solid fa-question"></i></p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal"
+                        aria-label="Close">Annuler</button>
+                    <button type="button" class="btn btn-danger" (click)="lock()">{{ singleUtilisateur.locked_by ?
+                        'débloquer' : 'bloquer'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+</section>

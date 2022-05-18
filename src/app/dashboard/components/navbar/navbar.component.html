@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-md navbar-light d-none d-md-flex" id="topbar">
+  <div class="container-fluid">
+    <!-- Toggler -->
+    <button type="button" class="btn btn-close-sidebar" id="toggler" (click)="closeSidebar()">
+      <i class="{{ isClose ? 'fa-solid fa-xmark' : 'fas fa-bars'}}"></i>
+    </button>
+
+    <!-- User infos -->
+    <div class="navbar-user">
+      <div class="dropdown">
+        <a href="#" class="navbar-user-link">
+          <div class="infos-user">
+            <small class="text-primary">{{singleUtilisateur.prenom}} {{singleUtilisateur.nom}}</small><br>
+            <small class="text-primary">{{singleUtilisateur.type_compte}}</small>
+          </div>
+        </a>
+        <!--- **** **** **** **** -->
+        <a href="#" class="avatar avatar-sm avatar-online dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="./assets/img/avatars/profiles/avatar-1.jpg" alt="..." class="avatar-img rounded-circle">
+        </a>
+        <!-- Menu -->
+        <div class="dropdown-menu dropdown-menu-end">
+          <a [routerLink]="['/utilisateurs/profile']" class="dropdown-item">Profil et visibilité</a>
+          <a [routerLink]="['/utilisateurs/changement-pwd']" class="dropdown-item">Mot de passe</a>
+          <a href="#" class="dropdown-item">Aide</a>
+          <hr class="dropdown-divider">
+          <button class="dropdown-item" (click)="logout()">Se déconnecter</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>

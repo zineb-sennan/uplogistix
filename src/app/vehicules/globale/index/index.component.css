@@ -1,0 +1,9 @@
+.card-header {
+    background-color: #fff;
+    display: list-item;
+}
+
+strong.text-muted{
+    font-weight: 100;
+    margin-right: 30px;
+}

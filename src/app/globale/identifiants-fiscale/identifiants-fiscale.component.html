@@ -1,0 +1,151 @@
+<section class="page-identifiant-fiscale">
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Globale
+            </h6>
+            <h2 class="header-title">
+                Identifiants fiscaux
+            </h2>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div *ngIf="message" class="alert alert-success" role="alert">
+                {{message}}
+                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="row">
+            <!-- *** *** *** Les pays *** *** *** -->
+            <div class="col-md-5 m-4 pays" [ngClass]="{'col-md-12': fiscaux.length == 0}">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Payes <span class="badge bg-info-soft">{{pays.length}}</span>
+                    </h4>
+                </div>
+                <div class="list-group list-group-flush my-n3">
+                    <div class="list-group-item">
+                        <div class="row align-items-center mb-3 item-pays _shadow" *ngFor="let pay of pays" [ngClass]="{'_active': pay.id == singleFisc.pays_id && fiscaux.length > 0, '_red': pay.id == singleFisc.pays_id && fiscaux.length == 0}">
+                            <div class="col-10 ms-n2 par1" (click)="getIdFiscaleByPays(pay.id)">
+                                <h4 class="mb-1">
+                                    <i class="fa-solid fa-city"></i>&nbsp;{{pay.nom}}
+                                </h4>
+                                <p class="small text-muted">
+                                    <strong class="d-block text-reset" style="width: 100%;">
+                                        <i class="fa-solid fa-phone"></i> Indicatif: {{pay.indicatif}} &nbsp;&nbsp;
+                                        <i class="fa-solid fa-dollar-sign"></i> Devise: {{pay.indicatif}}
+                                    </strong>
+                                </p>
+                                <div *ngIf="singleFisc.pays_id==pay.id && fiscaux.length == 0 ">
+                                    <p class="small text-danger">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> aucun élément trouvé
+                                    </p>
+                                    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear()">
+                                        Ajouter identifiant fiscale
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- *** *** *** identifiants fiscale *** *** *** -->
+            <div class="col-md-5 m-4 fiscaux" *ngIf="fiscaux.length > 0">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Identifiant fiscale <span class="badge bg-info-soft">{{fiscaux.length}}</span>
+                    </h4>
+                    <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear()">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <div class="list-group list-group-flush my-n3">
+                    <div class="list-group-item">
+                        <div class="row align-items-center item item-fis mb-3 _shadow _item cursor" *ngFor="let fis of fiscaux">
+                            <div class="col-9 ms-n2 par1">
+                                <h4 class="mb-1">
+                                    <i class="fa-solid fa-address-card"></i>&nbsp;{{fis.nom}}
+                                </h4>
+                            </div>
+                            <div class="col-3 col-auto operations">
+                                <button type="button" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="setIdFiscale(fis)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-success btn-edit" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="setIdFiscale(fis)">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- *** *** Modal L'ayout & modification *** *** -->
+            <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-card card" data-list=''>
+                            <div class="card-header">
+                                <h4 class="card-header-title" id="exampleModalCenterTitle">
+                                    Identifiant fiscale
+                                </h4>
+                                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="card-body">
+                                <form #fisForm="ngForm" (ngSubmit)="update(fisForm.value)">
+                                    <div class="frm-region">
+                                        <input type="hidden" [(ngModel)]="singleFisc.pays_id" name="pays_id" value="singleFisc.pays_id">
+                                        <input type="hidden" [(ngModel)]="singleFisc.id" name="id" value="singleFisc.id">
+                                        <div class="form-group">
+                                            <label for="nom" class="form-label">
+                                                Nom
+                                                <strong class="text-danger" *ngIf="!singleFisc.nom">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleFisc.nom" name="nom" required>
+                                            <!-- <small class="form-text text-danger" *ngIf="!singleFisc.nom">Ce champ est obligatoire.</small> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                        <button type="submit" class="btn btn-success mb-2 btn-save" [disabled]="!fisForm.valid">Enregister</button>
+                                        <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- **** **** **** Modal de confirmation **** **** **** -->
+            <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                        <div class="modal-header flex-column">
+                            <div class="icon-box">
+                                <i class="material-icons">
+                                    <i class="fa-solid fa-x"></i>
+                                </i>
+                            </div>
+                            <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                            <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                            <button type="button" class="btn btn-danger" (click)="delete(singleFisc.id)">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+
+    <br><br>
+</section>

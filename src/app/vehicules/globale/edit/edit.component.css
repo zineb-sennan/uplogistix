@@ -1,0 +1,15 @@
+.header {
+    margin-bottom: 0 !important;
+}
+
+form {
+    padding: 10px 40px !important;
+}
+
+.documents_vehicule .border {
+    margin-top: 50px;
+}
+
+.border_red{
+    border: 1px solid red;
+}

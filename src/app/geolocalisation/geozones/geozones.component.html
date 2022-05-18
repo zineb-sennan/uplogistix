@@ -1,0 +1,61 @@
+<div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+    <div class="align-items-end">
+        <h6 class="header-pretitle">
+            Géozones
+        </h6>
+        <h2 class="header-title">
+            Liste des zones
+        </h2>
+    </div>
+</div>
+<div class="container-fluid">
+    <button class="btn btn-outline-primary float-end" [routerLink]="['create']" style="margin-top: 4px; margin-bottom: 10px">Créer une zone</button>
+    <br><br><br>
+    <div class="table-responsive">
+        <table class="table table-sm table-nowrap card-table">
+            <thead>
+                <tr>
+                    <th>Dénomination</th>
+                    <th>Description</th>
+                    <th>Date opération</th>
+                    <th width="100">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let zone of zones">
+                    <td>{{ zone.nom }}</td>
+                    <td>{{ zone.description }}</td>
+                    <td>{{ zone.created_at | date: "dd/MM/yyyy" }}</td>
+                    <td>
+                        <a class="btn btn-operation" [routerLink]="[zone.id, 'edit']" (click)="$event.preventDefault()" style="width: 30px; padding: 2px 5px">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <button class="btn btn-operation" style="width: 30px; padding: 2px 5px; margin-left: 3px;" data-bs-toggle="modal" data-bs-target="#deleteConfirmation" (click)="currZone(zone.id)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+<div class="modal" tabindex="-1" id="deleteConfirmation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Attention</h5>
+                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Confirmez-vous la suppression de cette zone?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary">Annuler</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                    (click)="deleteZone()">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>

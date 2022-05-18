@@ -1,0 +1,245 @@
+<section class="page-pays-region-ville">
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Localisations
+            </h6>
+            <h2 class="header-title">
+                Pays & Regions & Villes
+            </h2>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div *ngIf="message" class="alert alert-success" role="alert">
+                {{message}}
+                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- *** *** *** Les pays *** *** *** -->
+            <div class="col-md-4 pays m-3 card-item" [ngClass]="{'col-md-12': regions.length == 0}">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Pays <span class="badge bg-info-soft">{{pays.length}}</span>
+                    </h4>
+                    <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clearPays()">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <div class="list-group list-group-flush my-n3">
+                    <div class="list-group-item">
+                        <div class="row align-items-center item-pays mb-3 _shadow _item cursor" *ngFor="let pay of pays" [ngClass]="{'_active': pay.id == pays_id && regions.length > 0, '_red': pay.id == pays_id && regions.length == 0}" (click)="getRegionsByPays(pay.id)">
+                            <div class="col-9 ms-n2 par1">
+                                <h4 class="mb-1">
+                                    <i class="fa-solid fa-city"></i>&nbsp;{{pay.nom}}
+                                </h4>
+                                <p class="small text-muted">
+                                    <strong class="d-block text-reset" style="width: 100%;">
+                                        <i class="fa-solid fa-phone"></i> Indicatif: {{pay.indicatif}} &nbsp;&nbsp;
+                                        <i class="fa-solid fa-dollar-sign"></i> Devise: {{pay.devise}}
+                                    </strong>
+                                </p>
+                                <div *ngIf="pay.id == pays_id && regions.length == 0">
+                                    <p class="text-danger">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> aucun élément trouvé
+                                    </p>
+                                    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear('region')">
+                                        Ajouter une region
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-3 col-auto options" (click)="setData(pay,'pays')" *ngIf="pay.id==pays_id">
+                                <button type="button" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-success btn-edit" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- *** *** *** Les regions *** *** *** -->
+            <div class="col-md-3 regions m-3 card-item" *ngIf="regions.length > 0" [ngClass]="{'col-md-6': villes.length == 0}">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Regions <span class="badge bg-info-soft">{{regions.length}}</span>
+                    </h4>
+                    <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear('region')">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <div class="list-group list-group-flush my-n3">
+                    <div class="list-group-item">
+                        <div class="row align-items-centeritem item-region mb-3 _shadow _item" (click)="getVillesByRegion(reg.id)" [ngClass]="{'_active': reg.id==region_id && villes.length > 0, '_red': reg.id==region_id && villes.length == 0}" *ngFor="let reg of regions">
+                            <div class="col-8 ms-n2 par1">
+                                <h4 class="mb-1">
+                                    <i class="fa-solid fa-city"></i>&nbsp;{{reg.nom}}
+                                </h4>
+                                <div *ngIf="reg.id==region_id && villes.length == 0">
+                                    <p class="small text-danger">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> aucun élément trouvé
+                                    </p>
+                                    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear('ville')">
+                                        Ajouter une ville
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-4 col-auto options" (click)="setData(reg,'region')" *ngIf="reg.id==region_id">
+                                <button type="button" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-success btn-edit" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- *** *** *** Les villes *** *** *** -->
+            <div class="col-md-3 villes m-3 card-item" *ngIf="villes.length > 0 && regions.length > 0">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Villes <span class="badge bg-info-soft">{{villes.length}}</span>
+                    </h4>
+                    <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="clear('ville')">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <div class="list-group list-group-flush my-n3">
+                    <div class="list-group-item">
+                        <div class="row align-items-center item item-ville mb-3 _shadow _item_ville" *ngFor="let ville of villes">
+                            <div class="col-8 ms-n2">
+                                <h4 class="mb-1">
+                                    <i class="fa-solid fa-city"></i>&nbsp;{{ville.nom}}
+                                </h4>
+                            </div>
+                            <div class="col-4 col-auto options">
+                                <button type="button" class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="setData(ville,'ville')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-success btn-edit" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="setData(ville,'ville')">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- **** **** **** Modal **** **** **** -->
+            <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-card card" data-list=''>
+                            <div class="card-header">
+                                <h4 class="card-header-title" id="exampleModalCenterTitle">
+                                    {{type}}
+                                </h4>
+                                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="card-body">
+                                <form #paysForm="ngForm" (ngSubmit)="update(paysForm.value)">
+                                    <!-- *** **** *** Pays *** **** *** -->
+                                    <div class="frm-pays" *ngIf="type == 'pays'">
+                                        <input type="hidden" [(ngModel)]="singlePays.id" name="id" value="singlePays.id">
+                                        <div class="form-group">
+                                            <label for="nom" class="form-label">
+                                                Nom
+                                                <strong class="text-danger" *ngIf="!singlePays.nom">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singlePays.nom" name="nom" required>
+                                            <!-- <small class="form-text text-danger" *ngIf="!singlePays.nom">Ce champ est obligatoire.</small> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="indicatif" class="form-label">
+                                                Indicatif
+                                                <strong class="text-danger" *ngIf="!singlePays.indicatif">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Indicatif" [(ngModel)]="singlePays.indicatif" name="indicatif" required>
+                                            <!-- <small class="form-text text-danger" *ngIf="!singlePays.indicatif">Ce champ est obligatoire.</small> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="devise" class="form-label">
+                                                Devise
+                                                <strong class="text-danger" *ngIf="!singlePays.devise">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Devise" [(ngModel)]="singlePays.devise" name="devise" required>
+                                            <!-- <small class="form-text text-danger" *ngIf="!singlePays.devise">Ce champ est obligatoire.</small> -->
+                                        </div>
+                                    </div>
+                                    <!-- *** *** Région *** *** -->
+                                    <div class="frm-region" *ngIf="type == 'region'">
+                                        <input type="hidden" [(ngModel)]="pays_id" name="pays_id" value="singleRegion.pays_id">
+                                        <input type="hidden" [(ngModel)]="singleRegion.id" name="id" value="singleRegion.id">
+                                        <div class="form-group">
+                                            <label for="nom" class="form-label">
+                                                Nom
+                                                <strong class="text-danger" *ngIf="!singleRegion.nom">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleRegion.nom" name="nom" required>
+                                            <!-- <small class="form-text text-danger" *ngIf="!singleRegion.nom">Ce champ est obligatoire.</small> -->
+                                        </div>
+                                    </div>
+                                    <!-- *** *** Ville *** *** -->
+                                    <div class="frm-region" *ngIf="type == 'ville'">
+                                        <input type="hidden" [(ngModel)]="pays_id" name="pays_id" value="singleRegion.pays_id">
+                                        <input type="hidden" [(ngModel)]="region_id" name="region_id" value="singleVille.region_id">
+                                        <input type="hidden" [(ngModel)]="singleVille.id" name="id" value="singleVille.id">
+                                        <div class="form-group">
+                                            <label for="nom" class="form-label">
+                                                Nom
+                                                <strong class="text-danger" *ngIf="!singleVille.nom">*</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleVille.nom" name="nom" required>
+                                            <!-- <small class="form-text text-danger" *ngIf="!singleVille.nom">Ce champ est obligatoire.</small> -->
+                                        </div>
+                                    </div>
+                                    <!-- *** *** submit *** *** -->
+                                    <div class="col-md-12">
+                                        <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                        <button type="submit" class="btn btn-success mb-2 btn-save" [disabled]="!paysForm.valid">Enregister</button>
+                                        <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- **** **** **** Modal de confirmation **** **** **** -->
+            <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true" *ngIf="!message">
+                <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                        <div class="modal-header flex-column">
+                            <div class="icon-box">
+                                <i class="material-icons">
+                                    <i class="fa-solid fa-x"></i>
+                                </i>
+                            </div>
+                            <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                            <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                            <button type="button" class="btn btn-danger" (click)="delete()" data-bs-dismiss="modal">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- *** model *** -->
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+
+    <br><br>
+</section>

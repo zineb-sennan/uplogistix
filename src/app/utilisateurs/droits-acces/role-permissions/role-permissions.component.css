@@ -1,0 +1,20 @@
+.list-group-item{
+    padding: 5px 1rem;
+}
+
+.list-group-item span{
+    margin-top: 3px;
+    position: absolute;
+}
+
+.modal-dialog {
+    max-width: 700px !important;
+}
+
+.mr{
+    margin-right: 37px;
+}
+
+.ml{
+    margin-right: 36px;
+}

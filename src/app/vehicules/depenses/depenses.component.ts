@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/_services/auth.service';
-import { VehiculeService } from 'src/app/_services/vehicule.service';
-
-import { Chart, registerables } from 'chart.js';
-
-import * as $ from 'jquery';
-import { VehiculeDepensesService } from 'src/app/_services/vehicule-depenses.service';
 import { ActivatedRoute } from '@angular/router';
+import { Chart, registerables } from 'chart.js';
+import { VehiculeService } from '../../_services/vehicule.service';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
+import { VehiculeDepensesService } from '../../_services/vehicule-depenses.service';
+import * as $ from 'jquery';
+
 
 @Component({
   selector: 'app-depenses',
@@ -16,7 +16,8 @@ import { ActivatedRoute } from '@angular/router';
 export class DepensesComponent implements OnInit {
 
   constructor(
-    private authService: AuthService,
+    private securiteClass: SecuriteClass,
+    private globalFunctions:GlobalFunctions,
     private vehiculeService:VehiculeService,
     private vehiculeDepensesService:VehiculeDepensesService,
     private activatedRoute: ActivatedRoute
@@ -46,25 +47,11 @@ export class DepensesComponent implements OnInit {
     });
   }
 
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
   getAllVehicule() {
     this.vehiculeService.getAll().subscribe(
       result => this.vehicules = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllVehicule();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllVehicule();
       }
     );
   }
@@ -79,20 +66,20 @@ export class DepensesComponent implements OnInit {
         res => {
           this.searchDepenses(this.search);
           this.message = "La dépense est ajoutée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.vehiculeDepensesService.update(form).subscribe(
         res => {
           this.searchDepenses(this.search);
           this.message = "La dépense est modifiée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -102,10 +89,10 @@ export class DepensesComponent implements OnInit {
       res => {
         this.searchDepenses(this.search);
         this.message = "La dépense est supprimée avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.delete(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
       })
   }
 
@@ -113,7 +100,7 @@ export class DepensesComponent implements OnInit {
     this.vehiculeDepensesService.getDepenses(id).subscribe(
       res=> this.singleDepense=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getDepense(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getDepense(id);
     })
   }
 
@@ -121,7 +108,7 @@ export class DepensesComponent implements OnInit {
     this.vehiculeDepensesService.search(record, this.page).subscribe(
       res => this.depenses = res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.searchDepenses(record);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.searchDepenses(record);
       }
     );
   }
@@ -137,14 +124,14 @@ export class DepensesComponent implements OnInit {
     this.myChart = new Chart(chart, {
       type: 'doughnut',
       data: {
-          labels: ['Services', 'Autre', 'Aucun'],
+          labels: ['Services', 'Autre'],
           datasets: [{
               label: '# Total consommation',
               data:  [300, 50, 100],
               backgroundColor: [
                 'rgb(44, 123, 226)',
                 'rgb(165, 197, 246)',
-                'rgb(210, 222, 236)'
+                //'rgb(210, 222, 236)'
               ],
               hoverOffset: 4
           }],

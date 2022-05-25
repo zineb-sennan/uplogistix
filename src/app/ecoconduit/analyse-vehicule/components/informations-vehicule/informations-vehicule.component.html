@@ -1,0 +1,149 @@
+<div>
+    <div class="row">
+        <div class="col-md-9"></div>
+        <form class="gx-0 mb-3 frm-search-vehicule col-md-3 float-right" #searchForm="ngForm">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Véhicules</label>
+                <select class="form-select" id="exampleFormControlSelect1">
+                    <option>Veuillez choisir ...</option>
+                    <option>Vehicule 1</option>
+                    <option>Vehicule 2</option>
+                    <option>Vehicule 3</option>
+                    <option>Vehicule 4</option>
+                </select>
+            </div>
+        </form><!-- ./form -->
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Score
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_score"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div><!-- ./row fiche vehicule -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Vitesse maximale
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_vitesse_maximale"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Vitesse moyenne Km
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_vitesse_moyenne"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Consommation carburants
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_consommation_carburants"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+        </div><!-- ./row-->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Distance parcourue Km
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_distance_parcourue"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Emission CO2 kg
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_emition_co2"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Temps de conduite
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_temps_conduite"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+        </div><!-- ./row-->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Fuel consomme
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_fuel_consomme"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Fuel gaspillé
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_fuel_gaspille"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Bilan carbone
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_bilan_carbone"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div><!-- ./row-->
+    </div>
+</div>

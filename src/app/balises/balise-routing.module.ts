@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardUser } from '../_helpers/auth-guard-user';
 import { AuthGuardAdmin } from '../_helpers/auth-guard-admin';
 import { GlobaleComponent } from './globale/globale.component';
+import { InformationsComponent } from './informations/informations.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,12 @@ const routes: Routes = [
         component: GlobaleComponent,
         data: { title: 'Gestion des balises' },
         canActivate: [AuthGuardAdmin]
+      },
+      {
+        path: 'informations',
+        component: InformationsComponent,
+        data: { title: 'informations des balises' },
+        canActivate: [AuthGuardUser]
       },
     ]
   }

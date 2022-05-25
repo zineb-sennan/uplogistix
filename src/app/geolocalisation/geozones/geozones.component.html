@@ -1,7 +1,7 @@
 <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
     <div class="align-items-end">
         <h6 class="header-pretitle">
-            Géozones
+            Géolocalisation
         </h6>
         <h2 class="header-title">
             Liste des zones
@@ -9,7 +9,9 @@
     </div>
 </div>
 <div class="container-fluid">
-    <button class="btn btn-outline-primary float-end" [routerLink]="['create']" style="margin-top: 4px; margin-bottom: 10px">Créer une zone</button>
+    <button class="btn btn-outline-primary float-end" [routerLink]="['create']" style="margin-top: 4px; margin-bottom: 10px">
+        <i class="fa-solid fa-plus"></i>
+    </button>
     <br><br><br>
     <div class="table-responsive">
         <table class="table table-sm table-nowrap card-table">

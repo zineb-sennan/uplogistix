@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../../_services/token.service';
 import { AuthService } from '../../../_services/auth.service';
 import { UtilisateurService } from '../../../_services/utilisateur.service';
-
+import { SecuriteClass } from '../../../_globale/securite';
 import * as $ from 'jquery';
+
 
 @Component({
   selector: 'app-navbar',
@@ -13,12 +14,14 @@ import * as $ from 'jquery';
 export class NavbarComponent implements OnInit {
 
   constructor(
+    private securiteClass: SecuriteClass,
     private authService: AuthService,
     private tokenService: TokenService,
     private utilisateurService:UtilisateurService
   ) { }
 
-  singleUtilisateur: any={nom:null, prenom:null, type_compte:null, email:null}; singleClient: any; isClose:boolean=false;
+  singleClient: any; isClose:boolean=false;
+  singleUtilisateur: any={nom:null, prenom:null, type_compte:null, email:null}; 
 
   ngOnInit(): void {
     const payload = this.tokenService.payload(this.tokenService.getToken() ?? '');
@@ -27,11 +30,6 @@ export class NavbarComponent implements OnInit {
 
     if($(window).width()! < 1426) this.isClose=true;
     this.closeSidebar();
-    
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
   }
 
   logout(){
@@ -47,7 +45,7 @@ export class NavbarComponent implements OnInit {
         this.singleUtilisateur.email=result.email;
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.geUtlisateurById(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.geUtlisateurById(id);
     });
   }
   

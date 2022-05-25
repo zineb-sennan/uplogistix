@@ -2,7 +2,7 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Vehicules
+                Véhicules
             </h6>
             <h2 class="header-title">
                 Tableau de bord des véhicules
@@ -10,7 +10,7 @@
         </div>
     </div>
     <!--*** *** *** -->
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="infos-generales">
@@ -20,7 +20,7 @@
                             <img src="https://up.uplogistix.net/doc/images_vehicule/image_vehicule_par_defaut.png" alt="">
                         </div>
                         <div class="col-md-9">
-                            <h3>{{singleVehicule.marque}} CLASSE {{singleVehicule.classe_energitique}}</h3>
+                            <h3>{{singleVehicule.marque}}</h3>
                             <div class="row">
                                 <div class="col-md-6">
                                     <ul>
@@ -28,7 +28,6 @@
                                         <li>Statut: <strong class="text-primary">{{singleVehicule.statut}}</strong></li>
                                         <li>Boîte de vitesse: <strong class="text-primary">{{singleVehicule.boite_vitesse}}</strong></li>
                                         <li>Puissance cv: <strong class="text-primary">{{singleVehicule.puissance_cv}}</strong> </li>
-                                        <li>Consommation théorique: <strong class="text-primary">{{singleVehicule.consommation_theorique}}</strong></li>
                                     </ul>
                                 </div>
                                 <div class="col-md-6">

@@ -6,7 +6,7 @@
                 Utilistaeur
             </h6>
             <h2 class="header-title">
-                Profil et visibilité
+                Profil
             </h2>
         </div>
     </div>
@@ -36,9 +36,6 @@
                                     <strong class="text-danger" *ngIf="!singleUtilisateur.nom">*</strong>
                                 </label>
                                 <input type="text" class="form-control" placeholder="Nom" [(ngModel)]="singleUtilisateur.nom" name="nom" required>
-                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.nom">
-                                    Ce champ est obligatoire.
-                                </small> -->
                             </div>
                             <div class="form-group">
                                 <label for="cni" class="form-label">CNI</label>
@@ -50,9 +47,6 @@
                                     <strong class="text-danger" *ngIf="!singleUtilisateur.tel">*</strong>
                                 </label>
                                 <input type="text" class="form-control" placeholder="tel" [(ngModel)]="singleUtilisateur.tel" name="tel" required>
-                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.tel">
-                                    Ce champ est obligatoire.
-                                </small> -->
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Région</label>
@@ -69,9 +63,6 @@
                                     <strong class="text-danger" *ngIf="!singleUtilisateur.prenom">*</strong>
                                 </label>
                                 <input type="text" class="form-control" placeholder="Prénom" [(ngModel)]="singleUtilisateur.prenom" name="prenom" required>
-                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.prenom">
-                                    Ce champ est obligatoire.
-                                </small> -->
                             </div>
                             <div class="form-group">
                                 <label for="email" class="form-label">
@@ -79,9 +70,6 @@
                                     <strong class="text-danger" *ngIf="!singleUtilisateur.email">*</strong>
                                 </label>
                                 <input type="email" class="form-control" placeholder="Email" [(ngModel)]="singleUtilisateur.email" name="email" required>
-                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.email">
-                                    Ce champ est obligatoire.
-                                </small> -->
                             </div>
                             <div class="form-group">
                                 <label for="pays_id" class="form-label">Pays</label>
@@ -99,18 +87,14 @@
                                     <option value='' selected disabled>Veuillez choisir...</option>
                                     <option *ngFor="let vil of villes" value="{{vil.id}}">{{vil.nom}}</option>
                                 </select>
-                                <!-- <small class="form-text text-danger" *ngIf="!singleUtilisateur.ville_id">
-                                    Ce champ est obligatoire.
-                                </small> -->
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="pwd" class="form-label">Adresse</label>
                             <textarea class="form-control" [(ngModel)]="singleUtilisateur.adresse" name="adresse"></textarea>
-                         </div>
-                        
+                        </div>
                         <div class="col-md-12">
-                            <small class="text-danger">*: Ce champ est obligatoire.</small>
+                            <small class="text-danger">*: Ces champs sont obligatoires.</small>
                             <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!utilisateurForm.valid">Enregister</button>
                         </div>
                     </div>

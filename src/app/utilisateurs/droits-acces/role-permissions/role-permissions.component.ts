@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RolesService } from 'src/app/_services/roles.service';
 import { Location } from '@angular/common';
-import { RolePermissionsService } from 'src/app/_services/role-permissions.service';
-import { PermissionsService } from 'src/app/_services/permissions.service';
-import { AuthService } from 'src/app/_services/auth.service';
-
+import { RolePermissionsService } from '../../../_services/role-permissions.service';
+import { PermissionsService } from '../../../_services/permissions.service';
+import { AuthService } from '../../../_services/auth.service';
+import { SecuriteClass } from '../../../_globale/securite';
+import { GlobalFunctions } from '../../../_globale/global-functions';
 import * as $ from 'jquery';
 
 @Component({
@@ -15,13 +16,13 @@ import * as $ from 'jquery';
 })
 export class RolePermissionsComponent implements OnInit {
 
-  role_id = -1;
+  role_id = -1; permissions: any[] = []; rolePermissions: any[] = [];
   singleRole: any = { id: null, libelle: null, description: null }
-  rolePermissions: any[] = [];
   singleRolePermission: any = { id:null, role_id: null, permission_id: null, can_edit: null, can_delete: null }
-  permissions: any[] = [];
 
   constructor(
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
     private rolesService: RolesService,
     private rolePermissionsService: RolePermissionsService,
     private activatedRoute: ActivatedRoute,
@@ -37,20 +38,6 @@ export class RolePermissionsComponent implements OnInit {
     });
   }
 
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
   getRole(id: number) {
     this.rolesService.getRole(id).subscribe(
       res => {
@@ -58,7 +45,7 @@ export class RolePermissionsComponent implements OnInit {
         this.getAllPermissions();
       },
       error => {
-        if (error.status == 401 && this.refreshToken()) this.getRole(id);
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.getRole(id);
       }
     )
   }
@@ -66,9 +53,10 @@ export class RolePermissionsComponent implements OnInit {
   updateRole(form: any) {
     this.rolesService.update(form).subscribe(
       res => {
+        //bien modifie
       },
       error => {
-        if (error.status == 401 && this.refreshToken()) this.updateRole(form);
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.updateRole(form);
       }
     )
   }
@@ -84,7 +72,7 @@ export class RolePermissionsComponent implements OnInit {
         this.filterPermissions();
       },
       error => {
-        if (error.status == 401 && this.refreshToken()) this.getAllRolePermissions(role_id);
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.getAllRolePermissions(role_id);
       }
     )
   }
@@ -93,7 +81,7 @@ export class RolePermissionsComponent implements OnInit {
     this.rolePermissionsService.getRolePermission(role_id, permission_id).subscribe(
       res => this.singleRolePermission = res,
       error => {
-        if (error.status == 401 && this.refreshToken()) this.getRolePermission(role_id, permission_id);
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.getRolePermission(role_id, permission_id);
       },
     )
   }
@@ -103,10 +91,10 @@ export class RolePermissionsComponent implements OnInit {
       res => {
         this.getAllRolePermissions(role_id);
         this.getAllPermissions();
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if (error.status == 401 && this.refreshToken()) this.deleteRolePermission(role_id, permission_id);
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.deleteRolePermission(role_id, permission_id);
       }
     )
   }
@@ -118,11 +106,10 @@ export class RolePermissionsComponent implements OnInit {
         this.getAllRolePermissions(this.singleRole.id);
       },
       error => {
-        if (error.status == 401 && this.refreshToken()) this.getAllPermissions();
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.getAllPermissions();
       }
     )
   }
-
 
   createRolePermissions(form: any){
     this.rolePermissionsService.create(form).subscribe(
@@ -130,7 +117,7 @@ export class RolePermissionsComponent implements OnInit {
         this.getAllRolePermissions(form.role_id);
       },
       error => {
-        if (error.status == 401 && this.refreshToken()) this.createRolePermissions(form);
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.createRolePermissions(form);
       }
     )
   }
@@ -141,7 +128,7 @@ export class RolePermissionsComponent implements OnInit {
         this.getAllRolePermissions(form.role_id);
       },
       error => {
-        if (error.status == 401 && this.refreshToken()) this.editeRolePermissions(form);
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.editeRolePermissions(form);
       }
     )
   
@@ -162,7 +149,7 @@ export class RolePermissionsComponent implements OnInit {
       } 
     });
 
-    this.closeModal();
+    this.globalFunctions.closeModal();
   }
 
   filterPermissions() {

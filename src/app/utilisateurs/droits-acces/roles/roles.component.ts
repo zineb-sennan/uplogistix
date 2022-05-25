@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RolesService } from '../../../_services/roles.service';
-import { AuthService } from '../../../_services/auth.service';
-
-import * as $ from 'jquery';
+import { SecuriteClass } from '../../../_globale/securite';
+import { GlobalFunctions } from '../../../_globale/global-functions';
 
 
 @Component({
@@ -17,18 +16,13 @@ export class RolesComponent implements OnInit {
   singleRole: any= { id: null, libelle:null, description:null }
 
   constructor(
-    private rolesService:RolesService,
-    private authService:AuthService
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
+    private rolesService:RolesService
   ) { }
 
   ngOnInit(): void {
     this.getAllRoles();
-  }
-
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
   }
 
   getAllRoles(){
@@ -42,10 +36,10 @@ export class RolesComponent implements OnInit {
       res=>{
         this.getAllRoles();
         this.message="Le rôle est ajouté avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error=>{
-       //if(error.status==401 && this.refreshToken()) this.updateContact(form);
+       if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       }
     )
   }
@@ -55,10 +49,10 @@ export class RolesComponent implements OnInit {
       res=>{
         this.getAllRoles();
         this.message="Le rôle est supprimé avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error=>{
-       //if(error.status==401 && this.refreshToken()) this.updateContact(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.delete();
       }
     )
   }
@@ -68,7 +62,7 @@ export class RolesComponent implements OnInit {
     this.rolesService.getRole(id).subscribe(
       res=>this.singleRole=res,
       error=>{
-        //if(error.status==401 && this.refreshToken()) this.updateContact(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getRole(id);
       }
     )
   }

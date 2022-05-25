@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
 import { BaliseService } from '../../_services/balise.service';
 import { ClientService } from '../../_services/client.service';
-
-import * as $ from 'jquery';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 
 @Component({
   selector: 'app-globale',
@@ -17,35 +16,22 @@ export class GlobaleComponent implements OnInit {
   singleBalise: any = { id:null ,imei: null, marque:null, modele:null, sn:null, firmware:null, date_achat:null, date_mise_service:null, eco_conduite:false, vehicule_id:null, client_id:null};
   
   constructor(
-    private authService:AuthService,
     private baliseService:BaliseService,
-    private clientService:ClientService
+    private clientService:ClientService,
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
   ) { }
 
   ngOnInit(): void {
     this.getAllBalise();
     this.getAllClients();
   }
-
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
+  
   getAllClients(){
     this.clientService.getAllClients().subscribe(
       res=> this.clients=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllClients();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllClients();
     })
   }
 
@@ -57,7 +43,7 @@ export class GlobaleComponent implements OnInit {
     this.baliseService.getAll().subscribe(
       result => this.balises = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllBalise();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllBalise();
       });
   }
 
@@ -65,13 +51,12 @@ export class GlobaleComponent implements OnInit {
     this.message=null;
     this.baliseService.getBalise(id).subscribe(
       res=> {
-        //this.vehicules=[];
         this.singleBalise=res;
         this.singleBalise._client_id=res.client_id;
         if(res.client_id) this.getVehiculesByClientWithoutGPS(res.client_id);
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getBalise(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getBalise(id);
       })
   }
 
@@ -80,19 +65,19 @@ export class GlobaleComponent implements OnInit {
       this.baliseService.create(form).subscribe(res => {
         this.getAllBalise();
         this.message = "La balise est ajoutée avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.baliseService.update(form).subscribe(res => {
         this.getAllBalise();
         this.message = "La balise est modifiée avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -101,10 +86,10 @@ export class GlobaleComponent implements OnInit {
     this.baliseService.delete(id).subscribe(res => {
       this.getAllBalise();
       this.message = "La balise est supprimée avec succès !";
-      this.closeModal();
+      this.globalFunctions.closeModal();
     },
     error => {
-      if(error.status==401 && this.refreshToken()) this.delete(id);
+      if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
     })
   }
 
@@ -122,7 +107,7 @@ export class GlobaleComponent implements OnInit {
         
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.delete(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
       }
     )
   }

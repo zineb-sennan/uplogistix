@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { GlobalFunctions } from 'src/app/_globale/global-functions';
+import { SecuriteClass } from 'src/app/_globale/securite';
 import { AuthService } from '../../../_services/auth.service';
 import { ClientService } from '../../../_services/client.service';
 import { PaysService } from '../../../_services/pays.service';
@@ -19,8 +21,9 @@ export class IndexComponent implements OnInit {
   search:  any = { pays_id: '', region_id: '', ville_id:'', filtre:null };
 
   constructor(
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
     private clientService: ClientService,
-    private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private paysService: PaysService,
     private regionsService: RegionsService,
@@ -35,19 +38,11 @@ export class IndexComponent implements OnInit {
     });
   }
 
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
   getAllPays() {
     this.paysService.getAll().subscribe(
       result => this.pays = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllPays();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllPays();
       });
   }
 
@@ -59,7 +54,7 @@ export class IndexComponent implements OnInit {
         this.villes = [];
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getRegionsByPays(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getRegionsByPays(id);
     });
   }
 
@@ -67,7 +62,7 @@ export class IndexComponent implements OnInit {
     this.villesService.villesByRegion(id).subscribe(
       result => this.villes = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getVillesByRegion(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getVillesByRegion(id);
     });
   }
 
@@ -83,7 +78,7 @@ export class IndexComponent implements OnInit {
     this.clientService.search(form, this.page).subscribe(
       res=>this.clients=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.searchClient(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.searchClient(form);
     });
   }
 

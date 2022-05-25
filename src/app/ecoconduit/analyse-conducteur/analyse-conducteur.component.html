@@ -2,7 +2,7 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Eco Conduite
+                Éco conduite
             </h6>
             <h2 class="header-title">
                 Analyse des conducteurs
@@ -15,19 +15,19 @@
                 <form class="row gx-0 mb-3 frm-search-jms" #searchForm="ngForm">
                     <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
                         <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
-                            data-action="toggle" data-dataset="0">
+                            data-action="toggle" data-dataset="0" (click)="changeData('jour')">
                             <a class="nav-link active" href="#" data-bs-toggle="tab">
                                 Jour
                             </a>
                         </li>
                         <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
-                            data-action="toggle" data-dataset="2">
+                            data-action="toggle" data-dataset="2" (click)="changeData('semaine')">
                             <a class="nav-link" href="#" data-bs-toggle="tab">
                                 Semaine
                             </a>
                         </li>
                         <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
-                            data-action="toggle" data-dataset="1">
+                            data-action="toggle" data-dataset="1" (click)="changeData('mois')">
                             <a class="nav-link" href="#" data-bs-toggle="tab">
                                 Mois
                             </a>
@@ -56,7 +56,7 @@
                         <thead>
                             <tr>
                                 <th class="col-vehicules text-muted">
-                                    &nbsp;&nbsp;Véhicule
+                                    &nbsp;&nbsp;Conducteurs
                                     <small class="dropdown">
                                         <div class="dropdown-ellipses dropdown-toggle float-right" role="button"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -76,23 +76,43 @@
                                     </small>
                                 </th>
                                 <th *ngFor="let chart of chartSelected"
-                                    class="text-muted text-center col-chart col-chart-{{chart.index}} cursor"
-                                    (click)="selectChart(chart.index)">
-                                    {{chart.libelle}}
+                                    class="text-muted text-center col-chart col-chart-{{chart.index}}" [ngClass]="{'d-none' : !chart.checked}">
+                                    <label (click)="remplissageChartPrincipale(chart.index)" class="cursor">
+                                        {{chart.libelle}}
+                                    </label>
+                                    <small class="dropdown" *ngIf="chart.last">
+                                        <div class="dropdown-ellipses dropdown-toggle float-right" role="button"
+                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i> &nbsp;
+                                        </div>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <h4 class="card-header-title dropdown-item">Veuillez choisir
+                                                {{maxChart}} type :</h4>
+                                            <li class="dropdown-item" *ngFor="let chart of chartSelected">
+                                                <input class="form-check-input check-vehicule" type="checkbox"
+                                                    id="chart_{{chart.index}}" checked="{{chart.checked}}"
+                                                    (click)="checkChart($event, chart.index)">
+                                                {{chart.libelle}}
+                                            </li>
+                                            <strong class="text-danger dropdown-item d-none mc-error">
+                                                <i class="fas fa-exclamation-triangle"></i> Le maximum est
+                                                {{maxChart}}
+                                            </strong>
+                                        </ul>
+                                    </small>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let conducteur of conducteursSelected">
-                                <td class="nom-prenom">
+                                <td class="nom-complet">
                                     {{conducteur.prenom}} {{conducteur.nom}}<br>
                                     <small class="text-muted">{{conducteur.matricule}}</small>
                                 </td>
-                                <td class="col-chart tchart chart-{{chart.index}}" *ngFor="let chart of chartSelected">
+                                <td class="col-chart tchart chart-{{chart.index}}" *ngFor="let chart of chartSelected" [ngClass]="{'d-none' : !chart.checked}">
                                     <strong class="text-dark small"
                                         id="max_{{conducteur.id}}{{chart.index}}">0</strong>
-                                    <canvas id="chart_conducteur_{{conducteur.id}}{{chart.index}}"
-                                            style="display: block; box-sizing: border-box; height: 80px; width: 100%;"></canvas>
+                                    <canvas id="chart_conducteur_{{conducteur.id}}{{chart.index}}" class="chat-conducteur"></canvas>
                                 </td>
                             </tr>
                         </tbody>

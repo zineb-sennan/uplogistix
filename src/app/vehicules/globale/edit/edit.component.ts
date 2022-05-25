@@ -8,6 +8,8 @@ import { VehiculeDocumentService } from '../../../_services/vehicule-document.se
 import { VehiculeMarqueService } from '../../../_services/vehicule-marque.service';
 import { AuthService } from '../../../_services/auth.service';
 import { VehiculeCategorieService } from '../../../_services/vehicule-categorie.service';
+import { GlobalFunctions } from '../../../_globale/global-functions';
+import { SecuriteClass } from '../../../_globale/securite';
 
 @Component({
   selector: 'app-edit',
@@ -36,6 +38,8 @@ export class EditComponent implements OnInit {
   };
 
   constructor(
+    private securiteClass: SecuriteClass,
+    private globalFunctions:GlobalFunctions,
     private vehiculeGroupeService: VehiculeGroupeService,
     private vehiculeModeleService: VehiculeModeleService,
     private vehiculeService: VehiculeService,
@@ -58,19 +62,11 @@ export class EditComponent implements OnInit {
     this.getAllCategorie();
   }
 
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout(){
-    this.authService.logout();
-  }
-
   getAllMarques(){
     this.vehiculeMarqueService.getAll().subscribe(
       res=>this.marques=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllMarques();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllMarques();
       }
     )
   }
@@ -79,7 +75,7 @@ export class EditComponent implements OnInit {
     this.vehiculeCategorieService.getAll().subscribe(
       res=>this.categories=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllCategorie();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllCategorie();
       }
     )
   }
@@ -91,7 +87,7 @@ export class EditComponent implements OnInit {
         this.categorie_id=id;
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getMarquesByCategorieId(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getMarquesByCategorieId(id);
       }
     )
   }
@@ -105,7 +101,7 @@ export class EditComponent implements OnInit {
     this.vehiculeModeleService.getModelesByCategorieAndMarque(categorie_id, marque_id).subscribe(
       res => this.modeles=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getModelesByCategorieAndMarque(categorie_id, marque_id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getModelesByCategorieAndMarque(categorie_id, marque_id);
       }
     )
   }
@@ -117,7 +113,7 @@ export class EditComponent implements OnInit {
       this.getModelesByMarqueId(this.singleVehicule.marque_id);
     },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getVehiculeById(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehiculeById(id);
     });
   }
 
@@ -125,7 +121,7 @@ export class EditComponent implements OnInit {
     this.vehiculeGroupeService.getAll().subscribe(
       result => this.groupes = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllGroupes();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllGroupes();
       }
     );
   }
@@ -134,7 +130,7 @@ export class EditComponent implements OnInit {
     this.vehiculeModeleService.getModelesByMarqueId(id).subscribe(
       result => this.modeles = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getModelesByMarqueId(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getModelesByMarqueId(id);
       }
     );
   }
@@ -149,7 +145,7 @@ export class EditComponent implements OnInit {
           this.type="documents";
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
         }
       )
     }
@@ -161,7 +157,7 @@ export class EditComponent implements OnInit {
         this.message = "Le vehicule est modifié avec succès !";
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       });
     }
   }
@@ -170,7 +166,7 @@ export class EditComponent implements OnInit {
     this.vehiculeDocumentService.getDocumentsByVehiculeId(id).subscribe(
       result => this.vehiculeDoc = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getDocumentsByVehiculeId(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getDocumentsByVehiculeId(id);
       }
     );
   }
@@ -179,7 +175,7 @@ export class EditComponent implements OnInit {
     this.vehiculeDocumentService.updateDocumentsByVehicule(doc).subscribe(
       res => console.log(res),
       error => {
-        if(error.status==401 && this.refreshToken()) this.updateDocumentByVehicule(doc);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.updateDocumentByVehicule(doc);
       }
     );
   }

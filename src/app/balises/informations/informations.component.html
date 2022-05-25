@@ -1,0 +1,42 @@
+<section class="page-balise">
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Administration
+            </h6>
+            <h2 class="header-title">
+                Liste des balises GPS
+            </h2>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive row">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                            <tr>
+                                <th>IMEI</th>
+                                <th>Marque</th>
+                                <th>Modèle</th>
+                                <th>Véhicule attribué</th>
+                                <th>Date de mise en service</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            <tr *ngFor="let balise of balises">
+                                <td class="imei"> {{balise.imei}} </td>
+                                <td class="marque"> {{balise.marque}} </td>
+                                <td class="modele"> {{balise.modele}} </td>
+                                <td class="matricule"> {{balise.matricule}}</td>
+                                <td class="date_mise_service"> {{balise.date_mise_service | date:"dd/MM/yyyy"}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

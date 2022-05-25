@@ -6,8 +6,8 @@ import { UtilisateurService } from '../../_services/utilisateur.service';
 import { VillesService } from '../../_services/villes.service';
 import { RolesService } from '../../_services/roles.service';
 import { TokenService } from '../../_services/token.service';
-
-import * as $ from 'jquery';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 
 @Component({
   selector: 'app-globale',
@@ -17,7 +17,8 @@ import * as $ from 'jquery';
 export class GlobaleComponent implements OnInit {
 
   constructor(
-    private authService:AuthService,
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
     private utilisateurService:UtilisateurService,
     private paysService: PaysService,
     private regionsService: RegionsService,
@@ -36,22 +37,8 @@ export class GlobaleComponent implements OnInit {
     this.getAllRoles();
   }
 
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
   clear(){
     this.singleUtilisateur={ id:null, type_compte:null, role_id:null, nom: null, prenom:null, cni:null, email:null, tel:null, password:null, adresse:null, ville_id:null, region_id:null, pays_id: null,locked_by:null };
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
   }
 
   getAllPays() {
@@ -71,7 +58,7 @@ export class GlobaleComponent implements OnInit {
         this.singleUtilisateur.pays_id = id;
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getRegionsByPays(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getRegionsByPays(id);
     });
   }
 
@@ -83,7 +70,7 @@ export class GlobaleComponent implements OnInit {
         this.singleUtilisateur.region_id = id;
     },
     error => {
-      if(error.status==401 && this.refreshToken()) this.getVillesByRegion(id);
+      if(error.status==401 && this.securiteClass.refreshToken()) this.getVillesByRegion(id);
     });
   }
 
@@ -102,7 +89,7 @@ export class GlobaleComponent implements OnInit {
         this.utilisateurs = result.filter((u:any)=>u.id!=payload.id);
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllUtilisateurs();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllUtilisateurs();
       }
     );
   }
@@ -116,7 +103,7 @@ export class GlobaleComponent implements OnInit {
         this.getVillesByRegion(res.region_id);
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllUtilisateurs();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllUtilisateurs();
       }
     )
   }
@@ -127,20 +114,20 @@ export class GlobaleComponent implements OnInit {
         res => {
           this.getAllUtilisateurs();
           this.message = "L'utilisateur est ajouté avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.utilisateurService.update(form).subscribe(
         res => {
           this.getAllUtilisateurs();
           this.message = "L'utilisateur est modifié avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -148,16 +135,15 @@ export class GlobaleComponent implements OnInit {
   lock(){
     let state=true;
     if(this.singleUtilisateur.locked_by) state=false;
-
     this.utilisateurService.lock(state,this.singleUtilisateur.id).subscribe(
       res=>{
         this.getAllUtilisateurs();
         this.message="L'utilisateur est bloqué avec succès !";
         if(this.singleUtilisateur.locked_by) this.message="L'utilisateur est débloqué avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-       if(error.status==401 && this.refreshToken()) this.lock();
+       if(error.status==401 && this.securiteClass.refreshToken()) this.lock();
     });
   }
 

@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-
-import * as $ from 'jquery';
 import { EcoconduiteService } from '../../_services/ecoconduite.service';
 import { VehiculeService } from '../../_services/vehicule.service';
+import * as $ from 'jquery';
+
 
 @Component({
   selector: 'app-index',

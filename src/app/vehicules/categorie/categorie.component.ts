@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
 import { VehiculeCategorieService } from '../../_services/vehicule-categorie.service';
-
-import * as $ from 'jquery';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 
 @Component({
   selector: 'app-categorie',
@@ -15,34 +14,21 @@ export class CategorieComponent implements OnInit {
   singleCategorie: any = { id:null ,nom: null};
   
   constructor(
-    private vehiculeCategorieService: VehiculeCategorieService,
-    private authService: AuthService
+    private securiteClass: SecuriteClass,
+    private globalFunctions:GlobalFunctions,
+    private vehiculeCategorieService: VehiculeCategorieService
   ) { }
 
   ngOnInit(): void {
     this.getAllCategorie();
-    this.closeModal();
-  }
-  
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
+    this.globalFunctions.closeModal();
   }
 
   getAllCategorie() {
     this.vehiculeCategorieService.getAll().subscribe(
       result => this.categories = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllCategorie();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllCategorie();
       }
     );
   }
@@ -52,7 +38,7 @@ export class CategorieComponent implements OnInit {
     this.vehiculeCategorieService.getCategorie(id).subscribe(
       res=> this.singleCategorie = res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllCategorie();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllCategorie();
       }
     )
     ;
@@ -64,20 +50,20 @@ export class CategorieComponent implements OnInit {
         res => {
           this.getAllCategorie();
           this.message = "La catégorie est ajoutée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.vehiculeCategorieService.update(form).subscribe(
         res => {
           this.getAllCategorie();
           this.message = "La catégorie est modifiée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -87,10 +73,10 @@ export class CategorieComponent implements OnInit {
       res => {
         this.getAllCategorie();
         this.message = "La catégorie est supprimée avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.delete(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
       })
   }
 

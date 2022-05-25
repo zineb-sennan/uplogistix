@@ -1,0 +1,146 @@
+
+<div class="row">
+    <div class="col-md-9"></div>
+    <form class="gx-0 mb-3 frm-search-vehicule col-md-3 float-right" #searchForm="ngForm">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Véhicules</label>
+            <select class="form-select" id="exampleFormControlSelect1">
+                <option>Veuillez choisir ...</option>
+                <option>Vehicule 1</option>
+                <option>Vehicule 2</option>
+                <option>Vehicule 3</option>
+                <option>Vehicule 4</option>
+            </select>
+        </div>
+    </form><!-- ./form -->
+</div>
+<div class="row">
+    <div class="main-card mb-3 card">
+        <div class="no-gutters row">
+            <div class="col-md-6 col-xl-3">
+                <div class="widget-content">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-right ml-0 mr-3">
+                            <div class="widget-numbers text-success">100</div>
+                        </div>
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Trajets</div>
+                            <div class="widget-subheading">Lorem ipsum dolor</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="widget-content">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-right ml-0 mr-3">
+                            <div class="widget-numbers text-warning">50%</div>
+                        </div>
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Score globale</div>
+                            <div class="widget-subheading">Lorem ipsum dolor</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="widget-content">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-right ml-0 mr-3">
+                            <div class="widget-numbers text-danger">10:14:00</div>
+                        </div>
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Durée de conduite</div>
+                            <div class="widget-subheading">Lorem ipsum dolor</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-md-block col-md-6 col-xl-3">
+                <div class="widget-content">
+                    <div class="widget-content-wrapper">
+                        <div class="widget-content-right ml-0 mr-3">
+                            <div class="widget-numbers text-primary">450 Km</div>
+                        </div>
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Distance parcourue</div>
+                            <div class="widget-subheading">Lorem ipsum dolor</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- ./ -->
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-header-title">
+                    Class énergétique
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="energy-class row">
+                    <div class="col-md-6">
+                        <div class="ecappp"></div>
+                        <div class="ecapp"></div>
+                        <div class="ecap"></div>
+                        <div class="eca"></div>
+                        <div class="ecb"></div>
+                        <div class="ecc"></div>
+                        <div class="ecd"></div>
+                        <div class="ece"></div>
+                        <div class="ecf"></div>
+                        <div class="ecg"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ecg" style="margin-top: 163px; margin-left: 33px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Consommation moyenne
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <circle-progress 
+                            [percent]="50" [space]="-10" [radius]="43" [animation]="true" [animationDuration]="1000">
+                        </circle-progress>
+                        <circle-progress 
+                            [percent]="50" [space]="-10" [radius]="43" [animation]="true" [animationDuration]="1000">
+                        </circle-progress>
+                    </div>
+                </div>
+            </div>
+        </div><!-- ./col-md-12 -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Emission Co2
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <circle-progress [percent]="50" [space]="-10" [radius]="40" [outerStrokeWidth]="10"
+                            [innerStrokeWidth]="7" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'"
+                            [animation]="true" [animationDuration]="1000">
+                        </circle-progress>
+                        <circle-progress [percent]="70" [space]="-10" [radius]="40" [outerStrokeWidth]="10"
+                            [innerStrokeWidth]="5" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'"
+                            [animation]="true" [animationDuration]="1000">
+                        </circle-progress>
+                    </div>
+                </div>
+            </div>
+        </div><!-- ./col-md-12 -->
+    </div>
+</div><!-- ./ -->

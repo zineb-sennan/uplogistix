@@ -68,3 +68,31 @@ ul.dropdown-menu.dropdown-menu-end.show{
     max-height: 200px;
     overflow-y: scroll;
 }
+
+canvas.chat-vehicule{ 
+    height: 9vh !important;
+    width: 15vw !important;
+    margin: 0 auto;
+    display: block;
+}
+
+label.cursor{ width: 80%; }
+
+
+@media (max-width: 1842px) { 
+    canvas.chat-vehicule{
+        width:13vw !important;
+    }
+}
+
+@media (max-width: 1298px) { 
+    canvas.chat-vehicule{
+        width:10vw !important;
+    }
+}
+
+@media (max-width: 650px) { 
+    .matricule{
+        font-size: 12px !important;
+    }
+}

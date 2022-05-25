@@ -181,7 +181,7 @@ form {
     max-height: fit-content !important;
 }
 
-.navbar-vertical .navbar-nav .nav-link[data-bs-toggle=collapse]:after {
+.nav-link[data-bs-toggle=collapse]:after {
     content: "" !important;
     background-image: url('../img/icones/icon-angle-down.png');
     background-size: cover;
@@ -349,13 +349,11 @@ ul.nav.nav-tabs.nav-overflow.header-tabs{
 
 /*** *** ** ***/
 .invalid {
-	/*background:url(../img/icones/invalid.png) no-repeat 0 50%;*/
 	padding-left:22px;
 	line-height:24px;
 	color:#ec3f41;
 }
 .valid {
-	/*background:url(../img/icones/valid.png) no-repeat 0 50%;*/
 	padding-left:22px;
 	line-height:24px;
 	color:#3a7d34;
@@ -366,3 +364,16 @@ ul.nav.nav-tabs.nav-overflow.header-tabs{
 }
 
 button.nav-link.active{ background-color: transparent !important; }
+
+@media (min-width: 768px){
+    .navbar-vertical.navbar-expand-md .navbar-nav .nav .nav-link {
+        padding-left: 10px !important;
+    }
+}
+
+/*nav {
+    background: url('../img/covers/navbar-cover.png') repeat-y;
+    width:200px; 
+    position:fixed; 
+    height:100%;  
+}*/

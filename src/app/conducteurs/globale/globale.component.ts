@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
 import { ConducteurService } from '../../_services/conducteur.service';
-import { ActivatedRoute } from '@angular/router';
-import { PaysService } from '../../_services/pays.service';
-import { RegionsService } from '../../_services/regions.service';
-import { VillesService } from '../../_services/villes.service';
 import { VehiculeService } from '../../_services/vehicule.service';
+import { GlobalFunctions } from '../../_globale/global-functions';
+import { SecuriteClass } from '../../_globale/securite';
+
 
 import * as $ from 'jquery';
 
@@ -18,12 +18,11 @@ import * as $ from 'jquery';
 export class GlobaleComponent implements OnInit {
 
   constructor(
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
     private authService: AuthService,
     private conducteurService: ConducteurService,
     private activatedRoute: ActivatedRoute,
-    private paysService: PaysService,
-    private regionsService: RegionsService,
-    private villesService: VillesService,
     private vehiculeService: VehiculeService
   ) { }
 
@@ -42,26 +41,12 @@ export class GlobaleComponent implements OnInit {
     });
   }
 
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
   clear() {
     this.message=null;
     this.singleConducteur = {
       id: null, nom: null, prenom: null, cni: null, email: null, tel: null, password: null, adresse: null, ville_id: null, n_badge:null,
       region_id: null, pays_id: null, locked_by: null, date_expiration: null, categorie_permis: null, vehicule_id: null, n_permis:null 
     }
-  }
-
-  logout() {
-    this.authService.logout();
   }
 
   getAllVehicules() {
@@ -78,7 +63,7 @@ export class GlobaleComponent implements OnInit {
         }
       },
       error => {
-        if (error.status == 401 && this.refreshToken()) this.getAllVehicules();
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.getAllVehicules();
       }
     )
   }
@@ -87,7 +72,7 @@ export class GlobaleComponent implements OnInit {
     this.conducteurService.getAll(this.page).subscribe(
       result => this.conducteurs = result,
       error => {
-        if (error.status == 401 && this.refreshToken()) this.getAllConducteurs();
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.getAllConducteurs();
       }
     );
   }
@@ -100,7 +85,7 @@ export class GlobaleComponent implements OnInit {
         this.getAllVehicules();
       },
       error => {
-        if (error.status == 401 && this.refreshToken()) this.getConducteur(id);
+        if (error.status == 401 && this.securiteClass.refreshToken()) this.getConducteur(id);
       }
     )
   }
@@ -111,19 +96,19 @@ export class GlobaleComponent implements OnInit {
         res => {
           this.getAllConducteurs();
           this.message = "Le conducteur est ajouté avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if (error.status == 401 && this.refreshToken()) this.update(form);
+          if (error.status == 401 && this.securiteClass.refreshToken()) this.update(form);
         })
     } else {
       this.conducteurService.update(form).subscribe(res => {
         this.getAllConducteurs();
         this.message = "Le conducteur est modifié avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
         error => {
-          if (error.status == 401 && this.refreshToken()) this.update(form);
+          if (error.status == 401 && this.securiteClass.refreshToken()) this.update(form);
         })
     }
   }
@@ -133,9 +118,9 @@ export class GlobaleComponent implements OnInit {
       res=>{
         this.getAllConducteurs();
         this.message = "Le conducteur est supprimé avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },error => {
-          if (error.status == 401 && this.refreshToken()) this.delete();
+          if (error.status == 401 && this.securiteClass.refreshToken()) this.delete();
       })
   }
 

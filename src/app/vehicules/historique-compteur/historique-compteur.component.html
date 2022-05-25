@@ -2,7 +2,7 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Vehicules
+                Véhicules
             </h6>
             <h2 class="header-title">
                 Historiques de compteur
@@ -28,7 +28,7 @@
                 </ul>
             </div>
         </div>
-        <div class="saisi-manuel" *ngIf="type=='saisi-manuel'">
+        <div class="saisi-manuel mb-5" *ngIf="type=='saisi-manuel'">
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
@@ -43,40 +43,37 @@
                         <i class="fa-solid fa-plus"></i>
                     </button><br><br><br>
                     <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchCompteurs(searchForm.value)">
-                        <div class="row">
-                            <div class="col-md-11">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="titre">Véhicules</label>
-                                            <select class="form-select" [(ngModel)]="search.vehicule_id"
-                                                name="vehicule_id">
-                                                <option value=''>Tous</option>
-                                                <option *ngFor="let vehicule of vehicules_sans_balise"
-                                                    value="{{vehicule.id}}">{{vehicule.matricule}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="date_debut">Date début</label>
-                                            <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
-                                                class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="date_fin">Date fin</label>
-                                            <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
-                                                class="form-control">
-                                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="titre">Véhicules</label>
+                                <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
+                                    <option value=''>Tous</option>
+                                    <option *ngFor="let vehicule of vehicules_sans_balise" value="{{vehicule.id}}">
+                                        {{vehicule.matricule}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="date_debut">Date début</label>
+                                <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="date_fin">Date fin</label>
+                                <div class="input-group">
+                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
+                                        class="form-control">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-outline-primary"
+                                            style="margin-left: 12px;">
+                                            <i class="fas fa-search"></i>
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-1">
-                                <button type="submit" class="btn btn-primary btn-search">
-                                    <i class="fas fa-search"></i>
-                                </button>
+
                             </div>
                         </div>
                     </form>
@@ -85,9 +82,7 @@
                             <thead>
                                 <tr>
                                     <th>Matricule</th>
-                                    <th>Date début</th>
                                     <th>Ancien compteur Km</th>
-                                    <th>Date Fin</th>
                                     <th>Nouveau compteur Km</th>
                                     <th>Kilométrage parcouru</th>
                                     <th width="100">Eco-conduite</th>
@@ -96,11 +91,16 @@
                             <tbody class="list">
                                 <tr *ngFor="let compteur of compteurs['records']">
                                     <td class="matricule">{{compteur.matricule}}</td>
-                                    <td class="date-debut">_</td>
-                                    <td class="ancien-compteur text-primary"><strong>_</strong></td>
-                                    <td class="date-fin">{{compteur.date_operation | date: 'dd/MM/yyyy HH:mm' }}</td>
-                                    <td class="nouveau-compteur text-primary"><strong>{{compteur.compteur}}</strong></td>
-                                    <td class="kilométrage-parcouru text-danger font-weight-bold"><strong>_</strong></td>
+                                    <td class="ancien-compteur">
+                                        <strong class="text-primary">_</strong><br>
+                                        <strong class="small">_</strong>
+                                    </td>
+                                    <td class="nouveau-compteur">
+                                        <strong class="text-primary">{{compteur.compteur}}</strong><br>
+                                        <strong class="small">{{compteur.date_operation | date: 'dd/MM/yyyy HH:mm' }}</strong>
+                                    </td>
+                                    <td class="kilométrage-parcouru text-danger font-weight-bold"><strong>_</strong>
+                                    </td>
                                     <td>
                                         <button type="button" ng-show="" class="btn btn-operation"
                                             data-bs-toggle="modal" data-bs-target="#modal-edit"
@@ -114,15 +114,6 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="7">
-                                        <h3 class="float-right text-danger font-weight-normal mt-3">
-                                            Total Kilométrage: <span>__:__</span>
-                                        </h3>
-                                    </td>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -151,15 +142,48 @@
                 </nav>
             </div>
         </div><!-- *** fin man *** -->
-        <div class="releve-automatique" *ngIf="type=='releve-automatique'">
+        <div class="releve-automatique mb-5" *ngIf="type=='releve-automatique'">
+            <form class="row form-search" #searchForm="ngForm">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="titre">Véhicules</label>
+                        <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
+                            <option value=''>Tous</option>
+                            <option *ngFor="let vehicule of vehicules_sans_balise" value="{{vehicule.id}}">
+                                {{vehicule.matricule}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="date_debut">Date début</label>
+                        <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="date_fin">Date fin</label>
+                        <div class="input-group">
+                            <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
+                                class="form-control">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-outline-primary"
+                                    style="margin-left: 12px;">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
             <div class="table-responsive row">
                 <table class="table table-sm table-nowrap card-table">
                     <thead>
                         <tr>
                             <th>Matricule</th>
-                            <th>Date début</th>
                             <th>Ancien compteur Km</th>
-                            <th>Date Fin</th>
                             <th>Nouveau compteur Km</th>
                             <th>Kilométrage parcouru</th>
                             <th width="100">Eco-conduite</th>
@@ -168,10 +192,14 @@
                     <tbody class="list">
                         <tr *ngFor="let vehicule of vehicules_avec_balise">
                             <td class="matricule">{{vehicule.matricule}}</td>
-                            <td class="date-debut text-muted"><strong>_</strong></td>
-                            <td class="ancien-compteur text-primary"><strong>_</strong></td>
-                            <td class="date-fin">{{currentDate | date: 'dd/MM/yyyy HH:mm' }}</td>
-                            <td class="nouveau-compteur text-primary font-weight-bold"><strong>{{vehicule.compteur}}</strong></td>
+                            <td class="ancien-compteur">
+                                <strong class="text-primary">_</strong><br>
+                                <strong class="small">_</strong>
+                            </td>
+                            <td class="nouveau-compteur">
+                                <strong class="text-primary ">{{vehicule.compteur}}</strong><br>
+                                <strong class="small">{{currentDate | date: 'dd/MM/yyyy HH:mm' }}</strong>
+                            </td>
                             <td class="kilométrage-parcouru text-danger"><strong>_</strong></td>
                             <td class="eco-conduite">
                                 <i class="fa-solid fa-leaf  icon_eco"
@@ -179,58 +207,45 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="7">
-                                <h3 class="float-right text-danger font-weight-normal mt-3">
-                                    Total Kilométrage: <span>__:__</span>
-                                </h3>
-                            </td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div><!-- *** fin aut *** -->
-        <div class="graphe" [ngClass]="{'d-none':type!='graphe'}">
+        <div class="graphe mb-5" [ngClass]="{'d-none':type!='graphe'}">
             <form class="row form-search" #searchForm="ngForm" (ngSubmit)="generateChart(searchForm.value)">
-                <div class="row">
-                    <div class="col-md-11">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="titre">Véhicules</label>
-                                    <select class="form-select" [(ngModel)]="search.vehicule_id"
-                                        name="vehicule_id">
-                                        <option value=''>Tous</option>
-                                        <option *ngFor="let vehicule of vehicules_sans_balise"
-                                            value="{{vehicule.id}}">{{vehicule.matricule}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="date_debut">Date début</label>
-                                    <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
-                                        class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="date_fin">Date fin</label>
-                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
-                                        class="form-control">
-                                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="titre">Véhicules</label>
+                        <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
+                            <option value='' disabled>Veuillez choisir ...</option>
+                            <option *ngFor="let vehicule of vehicules_sans_balise" value="{{vehicule.id}}">
+                                {{vehicule.matricule}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="date_debut">Date début</label>
+                        <input type="date" [(ngModel)]="search.date_debut" name="date_debut" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="date_fin">Date fin</label>
+                        <div class="input-group">
+                            <input type="date" [(ngModel)]="search.date_fin" name="date_fin" class="form-control">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-outline-primary" style="margin-left: 12px;">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-1">
-                        <button type="submit" class="btn btn-primary btn-search">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
                 </div>
             </form>
-            <div class="row bg-white" [ngClass]="{'d-none':!mychart}">
+            <div class="text-muted pt-3 pb-3 bg-white shadow-sm row" [ngClass]="{'d-none':mychart}">
+                <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>   
+            </div>
+            <div class="row bg-white pt-4" [ngClass]="{'d-none':!mychart}">
                 <canvas id="chart-compteurs"></canvas>
             </div>
         </div>
@@ -261,22 +276,17 @@
                                             <option *ngFor="let vehicule of vehicules_sans_balise"
                                                 value="{{vehicule.id}}">{{vehicule.matricule}}</option>
                                         </select>
-                                        <!-- <small class="form-text text-danger" *ngIf="!singleCompteur.vehicule_id">
-                                            Ce champ est obligatoire.
-                                        </small> -->
                                     </div>
                                     <div class="form-group">
                                         <label for="qtn" class="form-label">
                                             Date d'operation
-                                            <strong class="text-danger" *ngIf="!singleCompteur.date_operation">*</strong>
+                                            <strong class="text-danger"
+                                                *ngIf="!singleCompteur.date_operation">*</strong>
                                         </label>
                                         <input type="datetime-local" class="form-control form-control-sm"
                                             [ngModel]="singleCompteur.date_operation | date:'yyyy-MM-ddTHH:mm'"
                                             name="date_operation"
                                             (ngModelChange)="singleCompteur.date_operation = $event" required>
-                                        <!-- <small class="form-text text-danger" *ngIf="!singleCompteur.date_operation">
-                                            Ce champ est obligatoire.
-                                        </small> -->
                                     </div>
                                     <div class="form-group">
                                         <label for="nom" class="form-label">
@@ -285,13 +295,10 @@
                                         </label>
                                         <input type="number" class="form-control form-control-sm" placeholder="Compteur"
                                             [(ngModel)]="singleCompteur.compteur" name="compteur" required>
-                                        <!-- <small class="form-text text-danger" *ngIf="!singleCompteur.compteur">
-                                            Ce champ est obligatoire.
-                                        </small> -->
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                    <small class="text-danger">*: Ces champs sont obligatoires.</small>
                                     <button type="submit" class="btn btn-success mb-2 float-right"
                                         [disabled]="!compteurForm.valid">Enregister</button>
                                     <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal"

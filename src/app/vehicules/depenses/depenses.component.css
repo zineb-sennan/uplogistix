@@ -6,3 +6,6 @@ canvas{ height: 234px!important; }
     padding: 1rem;
     box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
 }
+
+.form-search{ border: 1px solid #e3ebf6; }
+

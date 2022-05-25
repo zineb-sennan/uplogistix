@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
 import { VehiculeMarqueService } from '../../_services/vehicule-marque.service';
-
-import { environment } from 'src/environments/environment';
-
-import * as $ from 'jquery';
+import { environment } from '../../../environments/environment';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 
 @Component({
   selector: 'app-marque',
@@ -19,6 +18,8 @@ export class MarqueComponent implements OnInit {
   singleMarque: any = { id: null, nom: null, description: null };
 
   constructor(
+    private securiteClass: SecuriteClass,
+    private globalFunctions:GlobalFunctions,
     private vehiculeMarqueService: VehiculeMarqueService,
     private authService: AuthService,
     private activatedRoute:ActivatedRoute
@@ -32,31 +33,11 @@ export class MarqueComponent implements OnInit {
     });
   }
 
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
+  
   clear() {
     this.message = null;
     this.singleMarque = { id: null, nom: null, logo: null }
   }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  // getAllMarques(page:any) {
-  //   this.vehiculeMarqueService.getAllByPage(page).subscribe(
-  //     result => this.marques = result, 
-  //     error => this.refreshToken()
-  //   );
-  // }
 
   getMarque(id: number) {
     this.message = null;
@@ -64,7 +45,7 @@ export class MarqueComponent implements OnInit {
     this.vehiculeMarqueService.getMarque(id).subscribe(
       res=> this.singleMarque=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getMarque(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getMarque(id);
       }
     )
   }
@@ -77,7 +58,7 @@ export class MarqueComponent implements OnInit {
     this.vehiculeMarqueService.uploadLogo(data).subscribe(
       res => this.searchMarque(),
       error => {
-        if(error.status==401 && this.refreshToken()) this.uploadFile(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.uploadFile(form);
       }
     )
   }
@@ -90,10 +71,10 @@ export class MarqueComponent implements OnInit {
           if (this.logo) this.uploadFile(form);
           else this.searchMarque();
           this.message = "La marque est ajoutée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
         })
     } else {
       this.vehiculeMarqueService.update(form).subscribe(
@@ -101,10 +82,10 @@ export class MarqueComponent implements OnInit {
           if (this.logo) this.uploadFile(form);
           else this.searchMarque();
           this.message = "La marque est modifiée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
         })
     }
   }
@@ -113,10 +94,10 @@ export class MarqueComponent implements OnInit {
     this.vehiculeMarqueService.delete(id).subscribe(res => {
       this.searchMarque();
       this.message = "La marque est supprimée avec succès !";
-      this.closeModal();
+      this.globalFunctions.closeModal();
     },
     error => {
-      if(error.status==401 && this.refreshToken()) this.delete(id);
+      if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
     })
   }
 
@@ -137,11 +118,11 @@ export class MarqueComponent implements OnInit {
 
   searchMarque(page?:any){
     if(page) this.page=page;
-
+    //
     this.vehiculeMarqueService.search({nom: this.search},this.page).subscribe(
       res=>this.marques = res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.searchMarque();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.searchMarque();
       }
     );
   }

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
 import { IdFiscaleService } from '../../_services/id-fiscale.service';
 import { PaysService } from '../../_services/pays.service';
-
-import * as $ from 'jquery';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 
 @Component({
   selector: 'app-identifiants-fiscale',
@@ -19,35 +18,21 @@ export class IdentifiantsFiscaleComponent implements OnInit {
   message:any = null;
 
   constructor(
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
     private paysService: PaysService,
-    private idFiscaleService:IdFiscaleService,
-    private authService: AuthService
+    private idFiscaleService:IdFiscaleService
   ) { }
 
   ngOnInit(): void {
     this.getAllPays();
   }
 
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-
-  logout() {
-    this.authService.logout();
-  }
-
   getAllPays() {
     this.paysService.getAll().subscribe(
       result => this.pays = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllPays();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllPays();
       });
   }
 
@@ -55,7 +40,7 @@ export class IdentifiantsFiscaleComponent implements OnInit {
     this.idFiscaleService.identifiantsByPays(id).subscribe(
       result => this.fiscaux = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getIdFiscaleByPays(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getIdFiscaleByPays(id);
       });
     this.singleFisc.pays_id=id;
   }
@@ -72,20 +57,20 @@ export class IdentifiantsFiscaleComponent implements OnInit {
         res => {
           this.getIdFiscaleByPays(form.pays_id);
           this.message = "L'identifiant fiscal est ajouté avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
         })
     } else {
       this.idFiscaleService.update(form).subscribe(
         res => {
           this.getIdFiscaleByPays(form.pays_id);
           this.message = "L'identifiant fiscal est modifie avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
         })
     }
   }
@@ -95,10 +80,10 @@ export class IdentifiantsFiscaleComponent implements OnInit {
         res => {
           this.getIdFiscaleByPays(this.singleFisc.pays_id);
           this.message = "L'identifiant fiscal est supprimé avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.delete(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
       })
   }
 

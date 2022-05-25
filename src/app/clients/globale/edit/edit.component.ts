@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { ClientService } from '../../../_services/client.service';
 import { IdFiscaleService } from '../../../_services/id-fiscale.service';
 import { PaysService } from '../../../_services/pays.service';
 import { RegionsService } from '../../../_services/regions.service';
 import { VillesService } from '../../../_services/villes.service';
-import { AuthService } from '../../../_services/auth.service';
-
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-
+import { SecuriteClass } from '../../../_globale/securite';
+import { GlobalFunctions } from '../../../_globale/global-functions';
 import * as $ from 'jquery';
+
 
 
 @Component({
@@ -32,39 +32,25 @@ export class EditComponent implements OnInit {
   type: string = "client";
 
   constructor(
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
     private paysService: PaysService,
     private regionsService: RegionsService,
     private villesService: VillesService,
     private clientService: ClientService,
     private idFiscaleService: IdFiscaleService,
     private activatedRoute: ActivatedRoute,
-    private location:Location,
-    private authService:AuthService
+    private location:Location
   ) { }
 
   ngOnInit(): void {
-
     this.activatedRoute.params.subscribe(param => {
       const { id } = param;
       if (id) this. getInfosClientById(id);
     });
-
     this.getAllPays();
   }
 
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
 
   fermer(){
     this.location.back();
@@ -88,7 +74,7 @@ export class EditComponent implements OnInit {
       this.getContcatsByClientId(id);
     },
     error => {
-      if(error.status==401 && this.refreshToken()) this.getInfosClientById(id);
+      if(error.status==401 && this.securiteClass.refreshToken()) this.getInfosClientById(id);
     }
     );
   }
@@ -97,7 +83,7 @@ export class EditComponent implements OnInit {
     this.paysService.getAll().subscribe(
       result => this.pays = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllPays();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllPays();
       });
   }
 
@@ -109,7 +95,7 @@ export class EditComponent implements OnInit {
         this.singleClient.pays_id = id;
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getRegionsByPays(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getRegionsByPays(id);
       });
   }
 
@@ -120,7 +106,7 @@ export class EditComponent implements OnInit {
         this.singleClient.region_id = id;
     },
     error => {
-      if(error.status==401 && this.refreshToken()) this.getVillesByRegion(id);
+      if(error.status==401 && this.securiteClass.refreshToken()) this.getVillesByRegion(id);
     });
   }
 
@@ -136,7 +122,7 @@ export class EditComponent implements OnInit {
     this.idFiscaleService.identifiantsByClient(id).subscribe(
       result => this.fiscaux = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getIdentifiantsByClient(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getIdentifiantsByClient(id);
       });
   }
 
@@ -144,7 +130,7 @@ export class EditComponent implements OnInit {
     this.idFiscaleService.updateIdentifiantsClient(record).subscribe(
       res=> console.log(),
       error => {
-        if(error.status==401 && this.refreshToken()) this.updateIdentifiantsClient(record);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.updateIdentifiantsClient(record);
       }
     )
   }
@@ -161,13 +147,13 @@ export class EditComponent implements OnInit {
             $('#error_email').text('');
           },
           error => {
-            if(error.status==401 && this.refreshToken()) this.update(form);
+            if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
             else if(error.status==409){
               //tel mobile
-              if(error.error.tel_double)  $('#error_tel_mobile').text("Le téléphone mobile est déjà existé, veuillez taper nouveau téléphone mobile !"); 
+              if(error.error.tel_double)  $('#error_tel_mobile').text("Ce téléphone mobile est déjà existé."); 
               else $('#error_tel_mobile').text('');
               //email
-              if(error.error.email_doubles) $('#error_email').text("l'adresse email est déjà existé, veuillez taper nouveau adresse email !");
+              if(error.error.email_doubles) $('#error_email').text("Cette adresse email est déjà existée.");
               else $('#error_email').text('');
             }
           }
@@ -178,7 +164,7 @@ export class EditComponent implements OnInit {
           this.message = "Le client est modifié avec succès !";
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
         })
       }
     }
@@ -196,7 +182,7 @@ export class EditComponent implements OnInit {
     this.clientService.getContactByClientId(id).subscribe(
       res=>this.contacts=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getContcatsByClientId(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getContcatsByClientId(id);
       }
     )
   }
@@ -206,10 +192,10 @@ export class EditComponent implements OnInit {
       this.clientService.createContact(form).subscribe(res=>{
         this.getContcatsByClientId(this.singleClient.id);
         this.message="Le contact est ajouté avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error=>{
-        if(error.status==401 && this.refreshToken()) this.updateContact(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.updateContact(form);
       })
     }
     else{
@@ -217,10 +203,10 @@ export class EditComponent implements OnInit {
         res=>{
           this.getContcatsByClientId(this.singleClient.id);
           this.message="Le contact est modifié avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error=>{
-          if(error.status==401 && this.refreshToken()) this.updateContact(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.updateContact(form);
         })
     }
   }
@@ -230,10 +216,10 @@ export class EditComponent implements OnInit {
       res=>{
         this.getContcatsByClientId(this.singleClient.id);
         this.message="Le contact est supprimé avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
     },
     error=>{
-      if(error.status==401 && this.refreshToken()) this.deleteContact(id);
+      if(error.status==401 && this.securiteClass.refreshToken()) this.deleteContact(id);
     })
   }
 

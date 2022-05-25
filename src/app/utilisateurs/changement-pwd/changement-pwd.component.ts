@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilisateurService } from 'src/app/_services/utilisateur.service';
-
+import { UtilisateurService } from '../../_services/utilisateur.service';
+import { SecuriteClass } from '../../_globale/securite';
 import * as $ from 'jquery';
+
 
 @Component({
   selector: 'app-changement-pwd',
@@ -14,6 +15,7 @@ export class ChangementPwdComponent implements OnInit {
   messageError: any; messageSuccess: any;
 
   constructor(
+    private securiteClass: SecuriteClass,
     private utilisateurService: UtilisateurService
   ) { }
 
@@ -26,9 +28,11 @@ export class ChangementPwdComponent implements OnInit {
         this.utilisateurService.changePassword(form).subscribe(
           res => {
             this.messageSuccess = "Le mot de passe est modifié avec succès !";
+            this.securiteClass.logout();
           },
           error => {
             if (error.status == 403) this.messageError = "Le mot de passe actuel est incorrect !";
+            else if(error.status==401 && this.securiteClass.refreshToken()) this.changementPwd(form);
           }
         )
       }

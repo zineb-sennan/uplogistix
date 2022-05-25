@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'src/app/_services/auth.service';
-import { VehiculeHistoriqueCompteurService } from 'src/app/_services/vehicule-historique-compteur.service';
-import { VehiculeService } from 'src/app/_services/vehicule.service';
-import * as $ from 'jquery';
-import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
-
 import { Chart, registerables } from 'chart.js';
+import { VehiculeHistoriqueCompteurService } from '../../_services/vehicule-historique-compteur.service';
+import { VehiculeService } from '../../_services/vehicule.service';
+import { EcoconduiteService } from '../../_services/ecoconduite.service';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-historique-compteur',
@@ -16,7 +16,8 @@ import { Chart, registerables } from 'chart.js';
 export class HistoriqueCompteurComponent implements OnInit {
 
   constructor(
-    private authService: AuthService,
+    private securiteClass: SecuriteClass,
+    private globalFunctions:GlobalFunctions,
     private activatedRoute: ActivatedRoute,
     private vehiculeHistoriqueCompteurService:VehiculeHistoriqueCompteurService,
     private vehiculeService: VehiculeService,
@@ -49,20 +50,6 @@ export class HistoriqueCompteurComponent implements OnInit {
     this.singleCompteur = { id:null, vehicule_id:null, date_operation:null, compteur:null };
   }
 
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
   getVehicules(){
     this.vehiculeService.getAll().subscribe(
       res=> {
@@ -73,7 +60,7 @@ export class HistoriqueCompteurComponent implements OnInit {
         this.vehicules_sans_balise=res.filter((v: any) => !v.balise);
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getVehicules();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
       }
     )
   }
@@ -82,7 +69,7 @@ export class HistoriqueCompteurComponent implements OnInit {
     this.vehiculeHistoriqueCompteurService.search(this.page,data).subscribe(
       res=> this.compteurs=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.searchCompteurs(data);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.searchCompteurs(data);
       }
     )
   }
@@ -92,7 +79,7 @@ export class HistoriqueCompteurComponent implements OnInit {
     this.vehiculeHistoriqueCompteurService.getCompteur(id).subscribe(
       res=> this.singleCompteur=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getCompteur(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getCompteur(id);
       }
     )
   }
@@ -103,20 +90,20 @@ export class HistoriqueCompteurComponent implements OnInit {
         res => {
           this.searchCompteurs(null);
           this.message = "Le carburant est ajouté avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.vehiculeHistoriqueCompteurService.update(form).subscribe(
         res => {
           this.searchCompteurs(null);
           this.message = "Le carburant est modifié avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -126,10 +113,10 @@ export class HistoriqueCompteurComponent implements OnInit {
       res => {
         this.searchCompteurs(null);
         this.message = "Le carburant est supprimé avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.delete(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
       })
   }
 

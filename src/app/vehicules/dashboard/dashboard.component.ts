@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../_services/auth.service';
 import { EcoconduiteService } from '../../_services/ecoconduite.service';
 import { VehiculeService } from '../../_services/vehicule.service';
 import { GeoLocalisationService } from '../../_services/geolocalisation.service';
-
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 import * as $ from 'jquery';
 import * as L from 'leaflet';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -17,10 +18,11 @@ import * as L from 'leaflet';
 export class DashboardComponent implements OnInit {
 
   constructor(
+    private securiteClass: SecuriteClass,
+    private globalFunctions:GlobalFunctions,
     private vehiculeService:VehiculeService,
     private activatedRoute: ActivatedRoute,
     private ecoconduiteService:EcoconduiteService,
-    private authService: AuthService,
     private geoLocalisationService: GeoLocalisationService
   ) { }
 
@@ -44,24 +46,16 @@ export class DashboardComponent implements OnInit {
   resume={ compteur_km:0, cout_km:0, distance:0, duree:0, kilometres_litre:0, km_aujourdhui:0, litres:0, litres_100km:0, montant_carburant:0 }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(param => {
-      const { id } = param;
-      if (id) {
-        this.getVehiculeById(id);
-        //
-        Chart.register(...registerables);
-        //this.createChart("chart1","Cout total carburants"); this.createChart("chart2","Cout total");
-        this.getEtatCarburant(id);
-      }
-    });
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
+    this.activatedRoute.params.subscribe(
+      param => {
+        const { id } = param;
+        if (id) {
+          this.getVehiculeById(id);
+          //
+          Chart.register(...registerables);
+          this.getEtatCarburant(id);
+        }
+      });
   } 
 
   getVehiculeById(id:number){
@@ -72,7 +66,7 @@ export class DashboardComponent implements OnInit {
         this.getPositions(id);
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getVehiculeById(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehiculeById(id);
       });
   }
 
@@ -82,7 +76,7 @@ export class DashboardComponent implements OnInit {
         this.resume=resume
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getResumeForVehicule(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getResumeForVehicule(id);
       });
   }
 
@@ -95,7 +89,7 @@ export class DashboardComponent implements OnInit {
         this.createChart("chart2","Cout total",data, labels);
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getEtatCarburant(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getEtatCarburant(id);
       }
     )
   }
@@ -188,7 +182,7 @@ export class DashboardComponent implements OnInit {
         this.initMap(33.9727213, -6.8867775, 5);
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this. getPositions(vehicule_id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this. getPositions(vehicule_id);
       });
   }
 

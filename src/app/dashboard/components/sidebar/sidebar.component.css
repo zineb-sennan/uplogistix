@@ -22,8 +22,13 @@ img.navbar-brand-img.mx-auto {
     color: #066db5 !important;
 }
 
-.navbar-bottom{
-    position:absolute;
-    bottom:30px;
+.sidepanel-footers{
+    width: 100%;
+    background-color: #fff;
+    bottom:0;
     left:0;
+}
+
+.ml-19{
+    padding-left: 10px !important;
 }

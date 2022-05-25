@@ -3,7 +3,7 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Localisations
+                International
             </h6>
             <h2 class="header-title">
                 Pays & Regions & Villes
@@ -154,7 +154,6 @@
                                                 <strong class="text-danger" *ngIf="!singlePays.nom">*</strong>
                                             </label>
                                             <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singlePays.nom" name="nom" required>
-                                            <!-- <small class="form-text text-danger" *ngIf="!singlePays.nom">Ce champ est obligatoire.</small> -->
                                         </div>
                                         <div class="form-group">
                                             <label for="indicatif" class="form-label">
@@ -162,7 +161,6 @@
                                                 <strong class="text-danger" *ngIf="!singlePays.indicatif">*</strong>
                                             </label>
                                             <input type="text" class="form-control form-control-sm" placeholder="Indicatif" [(ngModel)]="singlePays.indicatif" name="indicatif" required>
-                                            <!-- <small class="form-text text-danger" *ngIf="!singlePays.indicatif">Ce champ est obligatoire.</small> -->
                                         </div>
                                         <div class="form-group">
                                             <label for="devise" class="form-label">
@@ -170,7 +168,6 @@
                                                 <strong class="text-danger" *ngIf="!singlePays.devise">*</strong>
                                             </label>
                                             <input type="text" class="form-control form-control-sm" placeholder="Devise" [(ngModel)]="singlePays.devise" name="devise" required>
-                                            <!-- <small class="form-text text-danger" *ngIf="!singlePays.devise">Ce champ est obligatoire.</small> -->
                                         </div>
                                     </div>
                                     <!-- *** *** Région *** *** -->
@@ -183,7 +180,6 @@
                                                 <strong class="text-danger" *ngIf="!singleRegion.nom">*</strong>
                                             </label>
                                             <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleRegion.nom" name="nom" required>
-                                            <!-- <small class="form-text text-danger" *ngIf="!singleRegion.nom">Ce champ est obligatoire.</small> -->
                                         </div>
                                     </div>
                                     <!-- *** *** Ville *** *** -->
@@ -197,12 +193,11 @@
                                                 <strong class="text-danger" *ngIf="!singleVille.nom">*</strong>
                                             </label>
                                             <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleVille.nom" name="nom" required>
-                                            <!-- <small class="form-text text-danger" *ngIf="!singleVille.nom">Ce champ est obligatoire.</small> -->
                                         </div>
                                     </div>
                                     <!-- *** *** submit *** *** -->
                                     <div class="col-md-12">
-                                        <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                        <small class="text-danger">*: Ces champs sont obligatoires.</small>
                                         <button type="submit" class="btn btn-success mb-2 btn-save" [disabled]="!paysForm.valid">Enregister</button>
                                         <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
                                     </div>

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../_services/auth.service';
 import { VehiculeService } from '../../../_services/vehicule.service';
 import { VehiculeGroupeService } from '../../../_services/vehicule-groupe.service';
 import { VehiculeMarqueService } from '../../../_services/vehicule-marque.service';
 import { EcoconduiteService } from '../../../_services/ecoconduite.service';
+import { TokenService } from '../../../_services/token.service';
+import { UtilisateurService } from '../../../_services/utilisateur.service';
 import * as $ from 'jquery';
-import { ActivatedRoute } from '@angular/router';
-import { TokenService } from 'src/app/_services/token.service';
-import { UtilisateurService } from 'src/app/_services/utilisateur.service';
 
 @Component({
   selector: 'app-index',

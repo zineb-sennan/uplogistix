@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
 import { PaysService } from '../../_services/pays.service';
 import { VehiculeDocumentService } from '../../_services/vehicule-document.service';
-
-import * as $ from 'jquery';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 
 @Component({
   selector: 'app-documents-vehicule',
@@ -13,39 +12,25 @@ import * as $ from 'jquery';
 export class DocumentsVehiculeComponent implements OnInit {
 
   constructor(
-    private authService:AuthService,
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
     private vehiculeDocumentService:VehiculeDocumentService,
     private paysService:PaysService
   ) { }
 
-  pays: any = [];
-  documents: any=[];
-  message: any=null;
-
+  pays: any = []; documents: any=[]; message: any=null;
   singleDocument: any = { id:null, nom: null, pays_id: null };
 
   ngOnInit(): void {
     this.getAllPays();
   }
 
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
   getAllPays() {
      this.paysService.getAll().subscribe(
         result => this.pays = result,
-        error => this.refreshToken()
+        error => {
+          if(error.status==401 && this.securiteClass.refreshToken()) this.getAllPays();
+        }
       );
   }
 
@@ -56,7 +41,7 @@ export class DocumentsVehiculeComponent implements OnInit {
         this.singleDocument.pays_id=id;
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.getDocumentsByPaysId(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getDocumentsByPaysId(id);
       })
   }
 
@@ -72,20 +57,20 @@ export class DocumentsVehiculeComponent implements OnInit {
         res => {
           this.getDocumentsByPaysId(form.pays_id);
           this.message = "Document vehicule bien ajouter !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
         })
     } else {
       this.vehiculeDocumentService.update(form).subscribe(
         res => {
           this.getDocumentsByPaysId(form.pays_id);
           this.message = "Document vehicule bien modifie !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -96,10 +81,10 @@ export class DocumentsVehiculeComponent implements OnInit {
       res => {
         this.getDocumentsByPaysId(this.singleDocument.pays_id);
         this.message = "Document vehicule bien Supp !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.delete(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
       })
   }
 

@@ -20,31 +20,33 @@
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
                             <a class="nav-link" [routerLink]="['/']">
-                                <img src="assets/img/icones/icons-home.png" width="18"
-                                    style="margin-right: 5px; margin-top: -3px;">Tableau de bord
+                                <img src="assets/img/icones/icon-home.png" width="18"
+                                    style="margin-right: 5px; margin-top: -3px;">
+                                Tableau de bord
                             </a>
                         </li>
                         <li class="nav-item" *ngIf="!isAdmin">
                             <a href="#sidebarVehicules" class="nav-link collapsed" data-bs-toggle="collapse"
                                 role="button" aria-expanded="false" aria-controls="sidebarInternational">
+                                <img src="assets/img/icones/icon-car.png" width="25"
+                                    style="margin-right: 5px; margin-top: -3px; margin-left: -2px;">
                                 Gestion des véhicules
                             </a>
-                            <div class="collapse" id="sidebarVehicules" [routerLinkActive]="['show']">
+                            <div class="collapse ml-19" id="sidebarVehicules" [routerLinkActive]="['show']">
                                 <ul class="nav nav-sm flex-column">
-                                    
-                                    <li class="nav-item">
+                                    <li class="nav-item" *ngIf="this.permissionExiste('vehicules')">
                                         <a [routerLink]="['/vehicules/page/1']" class="nav-link"
                                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Liste des véhicules
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item" *ngIf="this.permissionExiste('carburants')">
                                         <a [routerLink]="['/vehicules/carburants/page/1']" class="nav-link"
                                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Historique carburants
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item" *ngIf="this.permissionExiste('compteurs')">
                                         <a [routerLink]="['vehicules/compteurs/page/1']" class="nav-link"
                                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Historique compteurs
@@ -62,7 +64,7 @@
                                             Groupes de véhicules
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item" *ngIf="this.permissionExiste('vehicules')">
                                         <a [routerLink]="['/vehicules/edit']" class="nav-link" routerLinkActive="active"
                                             [routerLinkActiveOptions]="{ exact:true }">
                                             Nouveau véhicule
@@ -72,8 +74,10 @@
                             </div>
                         </li>
 
-                        <li class="nav-item" *ngIf="!isAdmin">
+                        <li class="nav-item" *ngIf="!isAdmin && this.permissionExiste('conducteurs')">
                             <a [routerLink]="['/conducteurs/page/1']" class="nav-link" routerLinkActive="active">
+                                <img src="assets/img/icones/icon-driver.jpg" width="20"
+                                    style="margin-right: 5px; margin-top: -3px; margin-left: -3px;">
                                 Gestion des conducteurs
                             </a>
                         </li>
@@ -81,19 +85,21 @@
                         <li class="nav-item" *ngIf="!isAdmin">
                             <a href="#sidebarGeolocalisation" class="nav-link collapsed" data-bs-toggle="collapse"
                                 role="button" aria-expanded="false" aria-controls="sidebarInternational">
+                                <img src="assets/img/icones/icon-localisation.png" width="16"
+                                    style="margin-right: 5px; margin-top: -3px;">
                                 Géolocalisation
                             </a>
-                            <div class="collapse" id="sidebarGeolocalisation" [routerLinkActive]="['show']">
+                            <div class="collapse ml-19" id="sidebarGeolocalisation" [routerLinkActive]="['show']">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a [routerLink]="['/geolocalisation/derniere-position']" class="nav-link"
                                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Position par véhicule
+                                            Dernière position par véhicule
                                         </a>
                                     <li class="nav-item">
                                         <a [routerLink]="['/geolocalisation/derniere-position-groupe']" class="nav-link"
                                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Position par groupe
+                                            Dernière position par groupe
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -102,22 +108,25 @@
                                             Itinéraires par véhicule
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item" *ngIf="this.permissionExiste('geozones')">
                                         <a [routerLink]="['/geolocalisation/geozones']" class="nav-link"
                                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Géozones
+                                            Gestion des géozones
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
 
-                        <li class="nav-item" *ngIf="!isAdmin">
+                        <li class="nav-item" *ngIf="!isAdmin && this.permissionExiste('eco-conduite')">
                             <a href="#sidebarEcoconduit" class="nav-link collapsed" data-bs-toggle="collapse"
                                 role="button" aria-expanded="false" aria-controls="sidebarInternational">
+                                <img src="assets/img/icones/icon-eco.jpg" width="25"
+                                    style="margin-right: 5px; margin-top: -3px; margin-left: -4px;">
                                 Eco-conduite
                             </a>
-                            <div class="collapse" id="sidebarEcoconduit" [routerLinkActive]="['show']">
+                            <div class="collapse ml-19" id="sidebarEcoconduit" [routerLinkActive]="['show']"
+                                *ngIf="this.permissionExiste('eco-conduite')">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a [routerLink]="['/ecoconduit']" class="nav-link" routerLinkActive="active"
@@ -145,9 +154,11 @@
                         <li class="nav-item" *ngIf="isAdmin">
                             <a href="#sidebarInternational" class="nav-link collapsed" data-bs-toggle="collapse"
                                 role="button" aria-expanded="false" aria-controls="sidebarInternational">
+                                <img src="assets/img/icones/icon-international.png" width="25"
+                                    style="margin-right: 5px; margin-top: -3px; margin-left: -3px;">
                                 International
                             </a>
-                            <div class="collapse" id="sidebarInternational" [routerLinkActive]="['show']">
+                            <div class="collapse ml-19" id="sidebarInternational" [routerLinkActive]="['show']">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a [routerLink]="['/globale/localisations']" class="nav-link"
@@ -174,6 +185,8 @@
                         <li class="nav-item" *ngIf="isAdmin">
                             <a [routerLink]="['/clients/page',1]" class="nav-link" routerLinkActive="active"
                                 [routerLinkActiveOptions]="{ exact:true }">
+                                <img src="assets/img/icones/icon-client.png" width="20"
+                                    style="margin-right: 5px; margin-top: -3px;">
                                 Comptes client
                             </a>
                         </li>
@@ -181,25 +194,43 @@
                         <li class="nav-item" *ngIf="isAdmin">
                             <a [routerLink]="['/vehicules/marques/page/1']" class="nav-link" routerLinkActive="active"
                                 [routerLinkActiveOptions]="{ exact:true }">
+                                <img  src="assets/img/icones/icon-marque.png" width="25"
+                                      style="margin-right: 5px; margin-top: -3px; margin-left: -3px;">
                                 Marques de véhicule
                             </a>
                         </li>
                         <li class="nav-item" *ngIf="isAdmin">
                             <a [routerLink]="['/vehicules/categories']" class="nav-link" routerLinkActive="active"
                                 [routerLinkActiveOptions]="{ exact:true }">
+                                <img  src="assets/img/icones/icon-category.png" width="25"
+                                      style="margin-right: 5px; margin-top: -3px; margin-left: -3px;">
                                 Catégories de véhicule
                             </a>
                         </li>
                         <li class="nav-item" *ngIf="isAdmin">
                             <a [routerLink]="['/balises']" class="nav-link" routerLinkActive="active"
                                 [routerLinkActiveOptions]="{ exact:true }">
+                                <img src="assets/img/icones/icon-localisation.png" width="16"
+                                    style="margin-right: 5px; margin-top: -3px;">
                                 Gestion des balises
                             </a>
                         </li>
                     </ul>
-
-                    <div class="navbar-bottom">
-                        <hr class="navbar-divider my-3">
+                </div>
+            </ul>
+        </div><!-- / .navbar-collapse -->
+        
+        <div class="sidepanel-footers" *ngIf="this.permissionExiste('utilisateurs')">
+            <hr class="navbar-divider">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="#sidebarAdministation" class="nav-link collapsed" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarAdministation">
+                        <img src="assets/img/icones/icon-admin.png" width="25"
+                            style="margin-right: 5px; margin-top: -3px; margin-left: -3px;">
+                        Administration
+                    </a>
+                    <div class="collapse ml-19" id="sidebarAdministation" [routerLinkActive]="['show']">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item" *ngIf="isAdmin || !isAdmin">
                                 <a [routerLink]="['/utilisateurs']" class="nav-link" routerLinkActive="active"
@@ -208,26 +239,22 @@
                                 </a>
                             </li>
                             <li class="nav-item" *ngIf="isAdmin || !isAdmin">
-                                <a [routerLink]="['/utilisateurs/droits-acces']" class="nav-link" routerLinkActive="active"
-                                    [routerLinkActiveOptions]="{ exact:true }">
+                                <a [routerLink]="['/utilisateurs/droits-acces']" class="nav-link"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                     Droits d'acces
+                                </a>
+                            </li>
+                            <li class="nav-item" *ngIf="!isAdmin">
+                                <a [routerLink]="['/balises/informations']" class="nav-link"
+                                    routerLinkActive="active">Balises GPS
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    
-
-                </div>
-
-                <!--li class="nav-item d-md-none">
-                    <a class="nav-link" data-bs-toggle="offcanvas" href="#sidebarOffcanvasActivity" aria-contrtols="sidebarOffcanvasActivity">
-                        <span class="fe fe-bell"></span> Notifications
-                    </a>
-                </li-->
+                </li>
             </ul>
-
-        </div>
-        <!-- / .navbar-collapse -->
+        </div><!-- / .sidepanel-footers -->
+        
 
     </div>
 </nav>

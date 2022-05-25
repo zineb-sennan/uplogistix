@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
 import { VehiculeGroupeService } from '../../_services/vehicule-groupe.service';
-
-import * as $ from 'jquery';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 
 @Component({
   selector: 'app-groupe',
@@ -15,22 +14,13 @@ export class GroupeComponent implements OnInit {
   message:any=null;
 
   constructor(
-    private vehiculeGroupeService: VehiculeGroupeService,
-    private authService: AuthService
+    private securiteClass: SecuriteClass,
+    private globalFunctions:GlobalFunctions,
+    private vehiculeGroupeService: VehiculeGroupeService
   ) {}
 
   ngOnInit(): void {
     this.getAllGroupe();
-  }
-
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  logout() {
-    this.authService.logout();
   }
 
   clear() {
@@ -38,15 +28,11 @@ export class GroupeComponent implements OnInit {
     this.singleGroupe = {id:null, nom: null, description:null }
   }
 
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
   getAllGroupe() {
     this.vehiculeGroupeService.getAll().subscribe(
       result => this.groupes = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllGroupe();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllGroupe();
       }
     );
   }
@@ -56,7 +42,7 @@ export class GroupeComponent implements OnInit {
     this.vehiculeGroupeService.getGroupe(id).subscribe(
       res=>this.singleGroupe =res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getGroupe(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getGroupe(id);
       }
     )}
 
@@ -66,20 +52,20 @@ export class GroupeComponent implements OnInit {
         res => {
           this.getAllGroupe();
           this.message = "Le groupe est ajouté avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
         })
     } else {
       this.vehiculeGroupeService.update(form).subscribe(
         res => {
           this.getAllGroupe();
           this.message = "Le groupe est modifié avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.update(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
         })
     }
   }
@@ -89,10 +75,10 @@ export class GroupeComponent implements OnInit {
       res => {
         this.getAllGroupe();
         this.message = "Le groupe est supprimé avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
     },
     error => {
-      if(error.status==401 && this.refreshToken()) this.delete(id);
+      if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
     })
   }
 

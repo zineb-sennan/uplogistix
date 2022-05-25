@@ -16,60 +16,61 @@
                     Max vehicules <span class="badge rounded-pill bg-secondary-soft">{{infosVehicule.total_vehicules}}</span>
                 </strong-->
                 <strong class="text-muted">
-                    Nombre total des véhicules <span class="badge rounded-pill bg-secondary-soft">{{vehicules.total_records}}</span>
+                    Nombre total des véhicules <span
+                        class="badge rounded-pill bg-secondary-soft">{{vehicules.total_records}}</span>
                 </strong>
                 <strong class="text-muted">
-                    Équipés en GPS <span class="badge rounded-pill bg-secondary-soft">{{infosVehicule.nombre_GPS}}</span>
+                    Équipés en GPS <span
+                        class="badge rounded-pill bg-secondary-soft">{{infosVehicule.nombre_GPS}}</span>
                 </strong>
                 <strong class="text-muted">
-                    Équipé en GPS et Eco-conduite <span class="badge rounded-pill bg-secondary-soft">{{infosVehicule.total_GPS_active}}</span>
+                    Équipé en GPS et Eco-conduite <span
+                        class="badge rounded-pill bg-secondary-soft">{{infosVehicule.total_GPS_active}}</span>
                 </strong>
                 <strong class="text-muted">
-                    Non équipés en GPS <span class="badge rounded-pill bg-secondary-soft">{{infosVehicule.Total_GPS_inactive}}</span>
+                    Non équipés en GPS <span
+                        class="badge rounded-pill bg-secondary-soft">{{infosVehicule.Total_GPS_inactive}}</span>
                 </strong>
 
                 <a [routerLink]="['/vehicules/edit']" class="btn btn-outline-primary btn-ajouter">
                     <i class="fa-solid fa-plus"></i>
                 </a><br><br><br>
                 <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchVehicule(searchForm.value)">
-                    <div class="row">
-                        <div class="col-md-11">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="matricule">Matricule</label>
-                                        <input type="search" class="form-control" name="matricule"
-                                            [(ngModel)]="search.matricule" placeholder="Rechercher">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Groupe</label>
-                                        <select class="form-select" name="groupe_id" [(ngModel)]="search.groupe_id">
-                                            <option value=''>Tous</option>
-                                            <option value="{{groupe.id}}" *ngFor="let groupe of groupes">{{groupe.nom}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="">Marque</label>
-                                        <select class="form-select" name="marque_id" [(ngModel)]="search.marque_id">
-                                            <option value=''>Tous</option>
-                                            <option value="{{marque.id}}" *ngFor="let marque of marques">{{marque.nom}}
-                                            </option>
-                                        </select>
-                                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="matricule">Matricule</label>
+                            <input type="search" class="form-control" name="matricule" [(ngModel)]="search.matricule"
+                                placeholder="Rechercher">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Groupe</label>
+                            <select class="form-select" name="groupe_id" [(ngModel)]="search.groupe_id">
+                                <option value=''>Tous</option>
+                                <option value="{{groupe.id}}" *ngFor="let groupe of groupes">{{groupe.nom}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">Marque</label>
+                            <div class="input-group">
+                                <select class="form-select" name="marque_id" [(ngModel)]="search.marque_id">
+                                    <option value=''>Tous</option>
+                                    <option value="{{marque.id}}" *ngFor="let marque of marques">{{marque.nom}}
+                                    </option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-outline-primary" style="margin-left: 12px;">
+                                        <i class="fas fa-search"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-1">
-                            <button type="submit" class="btn btn-primary btn-search">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
                     </div>
+
                 </form>
                 <div class="row">
                     <div class="table-responsive">
@@ -99,9 +100,11 @@
                                     <!--td class="energie"> {{vehicule.energie}} </td>
                                     <td class="boite_vitesse"> {{vehicule.boite_vitesse}} </td>
                                     <td class="puissance_cv"> {{vehicule.puissance_cv}} </td-->
-                                    <td class="mise_en_circulation"> {{vehicule.mise_en_circulation | date:"dd/MM/yyyy"}} </td>
+                                    <td class="mise_en_circulation"> {{vehicule.mise_en_circulation |
+                                        date:"dd/MM/yyyy"}} </td>
                                     <td class="type_saisie" style="font-size: 16px;">
-                                        <i class="fa-solid fa-satellite-dish text-primary" *ngIf="vehicule.balise"></i>&nbsp;
+                                        <i class="fa-solid fa-satellite-dish text-primary"
+                                            *ngIf="vehicule.balise"></i>&nbsp;
                                         <i class="fa-solid fa-leaf text-success" *ngIf="vehicule.eco_conduite"></i>
                                     </td>
                                     <td width="100">
@@ -112,7 +115,8 @@
                                             class="btn btn-operation">
                                             <i class="fa-solid fa-info"></i>
                                         </a>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-operation" (click)="idVehicule=vehicule.id">
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete"
+                                            class="btn btn-operation" (click)="idVehicule=vehicule.id">
                                             <i _ngcontent-hhv-c59="" class="fa-solid fa-trash"></i>
                                         </button> &nbsp;
                                     </td>
@@ -126,16 +130,18 @@
                     *ngIf="vehicules.total_records && vehicules.total_pages>1">
                     <ul class="pagination">
                         <li class="page-item">
-                            <a class="page-link" href="#!"
-                                [routerLink]="['/vehicules/page', vehicules.current_page-1]" [ngClass]="{'_disabled':vehicules.current_page==1}">
+                            <a class="page-link" href="#!" [routerLink]="['/vehicules/page', vehicules.current_page-1]"
+                                [ngClass]="{'_disabled':vehicules.current_page==1}">
                                 Précédent
                             </a>
                         </li>
-                        <li class="page-item" *ngFor="let p of [].constructor(vehicules.total_pages); let i=index" [ngClass]="{'active':vehicules.current_page==i+1}">
+                        <li class="page-item" *ngFor="let p of [].constructor(vehicules.total_pages); let i=index"
+                            [ngClass]="{'active':vehicules.current_page==i+1}">
                             <a class="page-link" [routerLink]="['/vehicules/page', i+1]">{{i+1}}</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" [routerLink]="['/vehicules/page', vehicules.current_page+1]" [ngClass]="{'_disabled':vehicules.current_page==vehicules.total_pages}">
+                            <a class="page-link" [routerLink]="['/vehicules/page', vehicules.current_page+1]"
+                                [ngClass]="{'_disabled':vehicules.current_page==vehicules.total_pages}">
                                 Suivant
                             </a>
                         </li>

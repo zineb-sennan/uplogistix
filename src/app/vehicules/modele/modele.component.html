@@ -92,9 +92,6 @@
                                             <strong class="text-danger" *ngIf="!singleModele.nom">*</strong>
                                         </label>
                                         <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleModele.nom" name="nom" required>
-                                        <!-- <small class="form-text text-danger" *ngIf="!singleModele.nom">
-                                            Ce champ est obligatoire.
-                                        </small> -->
                                     </div>
                                     <div class="form-group">
                                         <label for="titre" class="form-label">
@@ -107,9 +104,6 @@
                                                 {{categorie.nom}}
                                             </option>
                                         </select>
-                                        <!-- <small class="form-text text-danger" *ngIf="!singleModele.categorie_id">
-                                            Ce champ est obligatoire.<br>
-                                        </small> -->
                                         <small class="add-cat">
                                             <a [routerLink]="['/vehicules/categories']" class="col-md-2">
                                                 Vous voulez ajouter une catégorie <i class="fa-solid fa-question"></i>
@@ -118,7 +112,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                    <small class="text-danger">*: Ces champs sont obligatoires.</small>
                                     <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!grpForm.valid">Enregister</button>
                                     <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
                                 </div>

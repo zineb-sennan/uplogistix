@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/_services/auth.service';
-import { UtilisateurService } from 'src/app/_services/utilisateur.service';
+import { UtilisateurService } from '../../../_services/utilisateur.service';
 import { TokenService } from '../../../_services/token.service';
 
 @Component({
@@ -10,49 +9,25 @@ import { TokenService } from '../../../_services/token.service';
 })
 export class SidebarComponent implements OnInit {
 
-  singleUtilisateur: any={nom:null, prenom:null, type_compte:null, email:null};
-  permissions:any=[]; permission:any;
-
   constructor(
     private tokenService: TokenService,
-    private utilisateurService:UtilisateurService,
-    private authService: AuthService
+    private utilisateurService:UtilisateurService
   ) { }
 
-  isAdmin:boolean=false;
+  isAdmin:boolean=false; idUtilisateur=0; permissions:any=[];
 
-  ngOnInit(): void {
+  async ngOnInit() {
     const payload = this.tokenService.payload(this.tokenService.getToken() ?? '');
     this.isAdmin = payload?.cid == null;
-    this.geUtlisateurById(payload.id);
+    //01
+    const utilsateur$ = await this.utilisateurService.getUtilisateur(payload.id).toPromise();
+    this.permissions=utilsateur$.permissions;
   }
 
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout(){
-    this.authService.logout();
-  }
-
-  geUtlisateurById(id:number){
-    this.utilisateurService.getUtilisateur(id).subscribe(
-      result =>{
-        this.singleUtilisateur.nom = result;
-        //console.log('result',result);
-        this.permissions=result.permissions;
-        //console.log('Permissions:',this.permissions);
-        this.getPermissionsBySlug("compteurs");
-      },
-      error => {
-        if(error.status==401 && this.refreshToken()) this.geUtlisateurById(id);
-    });
-  }
-
-  getPermissionsBySlug(slug: any){
-    this.permission=this.permissions.filter((x:any) => x.slug === slug);
-    if(this.permission.length) this.permission=this.permissions.filter((x:any) => x.slug === slug).shift();
-    else   this.permission=null;
+  permissionExiste(slug: any){
+    let p_length=this.permissions.filter((x:any) => x.slug === slug).length;
+    if(p_length==1) return true;
+    else return false;
   }
 
 }

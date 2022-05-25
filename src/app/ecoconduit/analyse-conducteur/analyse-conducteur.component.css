@@ -1,5 +1,3 @@
-th{ width: 16%; }
-
 table{ width: 100%; }
 
 .dropdown-menu-end{ z-index: 1040; }
@@ -67,4 +65,31 @@ table{
 ul.dropdown-menu.dropdown-menu-end.show{
     max-height: 200px;
     overflow-y: scroll;
+}
+
+canvas.chat-conducteur{ 
+    height: 9vh !important;
+    width: 16vw !important;
+    margin: 0 auto;
+    display: block;
+}
+
+label.cursor{ width: 80%; }
+
+@media (max-width: 1842px) { 
+    canvas.chat-conducteur{
+        width:13vw !important;
+    }
+}
+
+@media (max-width: 1298px) { 
+    canvas.chat-conducteur{
+        width:10vw !important;
+    }
+}
+
+@media (max-width: 650px) { 
+    .nom-complet{
+        font-size: 12px !important;
+    }
 }

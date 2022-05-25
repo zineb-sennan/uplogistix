@@ -1,34 +1,33 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { EcoconduiteService } from '../../_services/ecoconduite.service';
-import { VehiculeService } from '../../_services/vehicule.service';
-import { AuthService } from '../../_services/auth.service';
-import { map, switchMap } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
+import { VehiculeService } from 'src/app/_services/vehicule.service';
 import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-analyse-vehicule',
-  templateUrl: './analyse-vehicule.component.html',
-  styleUrls: ['./analyse-vehicule.component.css']
+  selector: 'app-comparaison-vehicule',
+  templateUrl: './comparaison-vehicule.component.html',
+  styleUrls: ['./comparaison-vehicule.component.css']
 })
-export class AnalyseVehiculeComponent implements OnInit {
-  viewChartPrincipale:any=null; typeFilter='jour';
-  vehicules: any[] = []; vehiculesSelected: any[] = []; maxVehicule = 3;
-  maxChart=5; minChartSelected=5;
+export class ComparaisonVehiculeComponent implements OnInit {
+  viewChartPrincipale:any=null; typeFilter='jour'; maxVehicule = 3;  maxChart=5;
+  vehicules: any[] = []; vehiculesSelected: any[] = [];
   chartSelected: any = [
-    { index: 1, checked:true, libelle: 'Vitesse moyenne', slug:'vitesse-moyenne', data: [] },
-    { index: 2, checked:true, libelle: 'Distance parcourue', slug:'distance-parcourue', data: [] },
-    { index: 3, checked:true, libelle: 'Temps de conduite', slug:'temps-conduite', data: [] },
-    { index: 4, checked:true, libelle: 'Consommation l/100km', slug:'Consommation-l-100km', data: [] },
-    { index: 5, checked:true, libelle: 'Emission CO2', slug:'emission-co2', data: [], last:true },
-    { index: 6, libelle: '... type chart 1', slug:'emission-co2', data: [] },
-    { index: 7, libelle: '... type chart 2', slug:'emission-co2', data: [], }
+    { index: 1, checked:true, libelle: 'Vitesse maximale Km', slug:'vitesse-moyenne', data: [] },
+    { index: 2, checked:true, libelle: 'Vitesse moyenne Km', slug:'vitesse-moyenne', data: [] },
+    { index: 3, checked:true, libelle: 'Consommation carburant', slug:'vitesse-moyenne', data: [] },
+    { index: 4, checked:true, libelle: 'Distance parcourue Km', slug:'distance-parcourue', data: [] },
+    { index: 5, checked:true, libelle: 'Emission CO2 kg', slug:'emission-co2', data: [], last:true },
+    { index: 6, libelle: 'Temps de conduite', slug:'temps-conduite', data: [] },
+    { index: 7, libelle: 'Consommation l/100km', slug:'Consommation-l-100km', data: []},
+    { index: 8, libelle: 'Fuel consomme', slug:'fuel-consomme', data: [] },
+    { index: 9, libelle: 'Fuel gaspillé', slug:'Fuel-gaspille', data: [], }
+    
   ];
 
   constructor(
     private vehiculeService: VehiculeService,
-    private ecoconduiteService: EcoconduiteService,
-    private authService: AuthService
+    private ecoconduiteService: EcoconduiteService
   ) { }
 
   ngOnInit(): void {
@@ -37,19 +36,10 @@ export class AnalyseVehiculeComponent implements OnInit {
     this.getVehiculeWitheEco();
   }
 
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
   getVehiculeWitheEco() {
     this.vehiculeService.getAll().subscribe(
       res => {
         this.vehicules = res.filter((v: any) => v.eco_conduite);
-        //
         for (let index = 0; index < this.maxVehicule; index++) {
           this.checkVehicules(null,this.vehicules[index]);
           this.vehicules[index].checked=true;
@@ -59,6 +49,11 @@ export class AnalyseVehiculeComponent implements OnInit {
   }
 
   checkVehicules(e: any, vehicule: any) {
+    //01
+    this.viewChartPrincipale=null;
+    $('.tchart').removeClass('active'); 
+    $('.col-chart').removeClass('border-bottom');
+    //02
     if(e!=null){
       if (this.vehiculesSelected.length == this.maxVehicule) {
         if (e.currentTarget.checked) {
@@ -130,6 +125,7 @@ export class AnalyseVehiculeComponent implements OnInit {
       this.createChart(index, _data, vehicule, Math.max(..._data.map((d:any)=> d.y)));
     });
   }
+
   mChart: any=[];
   createChart(index: any, data: any, vehicule: any, maxValue:any) {
     var chart: any = $('#chart_'+index); 
@@ -200,10 +196,6 @@ export class AnalyseVehiculeComponent implements OnInit {
     this.myChart = new Chart(chart, _infosChart);
   }
 
-  entierAleatoire(min: number, max: number){
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
   changeData(type:any){
     //01
     this.typeFilter=type; this.viewChartPrincipale=null;
@@ -222,31 +214,31 @@ export class AnalyseVehiculeComponent implements OnInit {
 
   checkChart(e: any, index:number){
     //01
-    let checkedChart= this.chartSelected.filter((c:any)=> c.checked==true);  this.minChartSelected=checkedChart.length;
-    this.chartSelected[(checkedChart[this.minChartSelected-1].index)-1].last=false;
+    this.viewChartPrincipale=null;
+    $('.tchart').removeClass('active'); 
+    $('.col-chart').removeClass('border-bottom');
     //02
+    let checkedChart= this.chartSelected.filter((c:any)=> c.checked==true);
+    this.chartSelected[(checkedChart[checkedChart.length-1].index)-1].last=false;
+    //03
     if(e.currentTarget.checked){
-      if(this.maxChart > this.minChartSelected){
-        //console.log("*** this.maxChart >= lengthCheckChart ***");
-        this.chartSelected[index-1].checked=true;
-      }
+      if(this.maxChart > checkedChart.length) this.chartSelected[index-1].checked=true;
       else{
-        //console.log("*** this.maxChart >= lengthCheckChart: else ***");
         e.currentTarget.checked=false;
         $('.mc-error').removeClass('d-none');
       }
     }
     else{
-      //console.log("*** else ***");
-      this.chartSelected[index-1].checked=null;
+      if(checkedChart.length==1) e.currentTarget.checked=true;
+      else this.chartSelected[index-1].checked=null;
     }
-    //03
+    //04
     checkedChart= this.chartSelected.filter((c:any)=> c.checked==true);
     this.chartSelected[(checkedChart[checkedChart.length-1].index)-1].last=true;
+  }
 
-    //this.chartSelected[(checkedChart[checkedChart.length-1])-1];
-    //console.log('** ap **',checkedChart[checkedChart.length-1]);
-    //console.log(this.chartSelected, this.chartSelected[(checkedChart[checkedChart.length-1].index)-1]);
+  entierAleatoire(min: number, max: number){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
 }

@@ -1,7 +1,7 @@
 <section>
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
-            <h6 class="header-pretitle">Vehicules</h6>
+            <h6 class="header-pretitle">Véhicules</h6>
             <h2 class="header-title">Liste des dépenses</h2>
         </div>
     </div><!-- fin titre -->
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <!-- *** *** *** ***-->
-                <div class="details" *ngIf="type=='details'">
+                <div class="details mb-5" *ngIf="type=='details'">
                     <div *ngIf="message" class="alert alert-success" role="alert">
                         {{message}}
                         <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert"
@@ -38,9 +38,9 @@
                         <i class="fa-solid fa-plus"></i>
                     </button><br><br><br>
                     <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchDepenses(searchForm.value)">
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-11">
-                                <div class="row">
+                                <div class="row"> -->
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="titre">Véhicules</label>
@@ -62,18 +62,26 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="date_fin">Date fin</label>
-                                            <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
+                                            <div class="input-group">
+                                                <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
                                                 class="form-control">
+                                                <div class="input-group-append">
+                                                    <button type="submit" class="btn btn-outline-primary" style="margin-left: 12px;">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                 </div>
+                                            </div>
+                                            
                                         </div>
                                     </div>
-                                </div>
+                                <!-- </div>
                             </div>
                             <div class="col-md-1">
                                 <button type="submit" class="btn btn-primary btn-search">
                                     <i class="fas fa-search"></i>
                                 </button>
-                            </div>
-                        </div>
+                            </div> 
+                        </div>-->
                     </form>
                     <div class="table-responsive row">
                         <table class="table table-sm table-nowrap card-table">
@@ -115,7 +123,7 @@
                                 <tr>
                                     <td colspan="8">
                                         <h3 class="float-right text-danger font-weight-normal mt-3">
-                                            Coût total: <span>__:__</span>
+                                            Coût total: <span>__,__</span>
                                         </h3>
                                     </td>
                                 </tr>
@@ -147,15 +155,11 @@
                     </nav>
                 </div>
 
-                <div class="graphe" [ngClass]="{'d-none':type!='graphe'}">
+                <div class="graphe mb-5" [ngClass]="{'d-none':type!='graphe'}">
                     <div class="row">
                         <div class="col-md-4">
                             <form class="row form-search" #searchForm="ngForm"
                                 (ngSubmit)="generateChart(searchForm.value)">
-                                <!-- <div class="row"> -->
-                                <!-- <div class="col-md-11">
-                                        <div class="row"> -->
-                                <!--div class="col-md-4"-->
                                 <div class="form-group">
                                     <label for="titre">Véhicules</label>
                                     <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
@@ -164,21 +168,11 @@
                                             {{vehicule.matricule}}</option>
                                     </select>
                                 </div>
-                                <!--/div-->
-                                <!--div class="col-md-4"-->
                                 <div class="form-group">
                                     <label for="date_debut">Date début</label>
                                     <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
                                         class="form-control">
                                 </div>
-                                <!--/div-->
-                                <!--div class="col-md-4"-->
-                                <!--div class="form-group">
-                                                    <label for="date_fin">Date fin</label>
-                                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
-                                                        class="form-control">
-                                                </div-->
-
                                 <div class="form-group">
                                     <label for="date_fin">Date fin</label>
                                     <div class="input-group">
@@ -191,16 +185,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!--/div-->
-                                <!-- </div>
-                                    </div> -->
-                                <!--div class="col-md-1">
-                                        <button type="submit" class="btn btn-primary btn-search">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div-->
-                                <!-- </div> -->
                             </form>
                         </div>
                         <div class="col-12 col-xl-8">
@@ -243,10 +227,6 @@
                                                         <option *ngFor="let vehicule of vehicules"
                                                             value="{{vehicule.id}}">{{vehicule.matricule}}</option>
                                                     </select>
-                                                    <!-- <small class="form-text text-danger"
-                                                        *ngIf="!singleDepense.vehicule_id">
-                                                        Ce champ est obligatoire.
-                                                    </small> -->
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="qtn" class="form-label">
@@ -257,10 +237,6 @@
                                                         placeholder="Designation"
                                                         [(ngModel)]="singleDepense.designation" name="designation"
                                                         required>
-                                                    <!-- <small class="form-text text-danger"
-                                                        *ngIf="!singleDepense.designation">
-                                                        Ce champ est obligatoire.
-                                                    </small> -->
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="recurrence" class="form-label">Recurrence</label>
@@ -277,9 +253,12 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="type_depense" class="form-label">Type de depense</label>
+                                                    <label for="type_depense" class="form-label">
+                                                        Type de depense
+                                                        <strong class="text-danger" *ngIf="!singleDepense.type_depense">*</strong>
+                                                    </label>
                                                     <select class="form-select form-select-sm"
-                                                        [(ngModel)]="singleDepense.type_depense" name="type_depense">
+                                                        [(ngModel)]="singleDepense.type_depense" name="type_depense" required>
                                                         <option value=null>Veuillez choisir ...</option>
                                                         <option value="Services">Services</option>
                                                         <option value="Autre">Autres</option>
@@ -293,9 +272,6 @@
                                                     <input type="number" class="form-control form-control-sm"
                                                         placeholder="Montant" [(ngModel)]="singleDepense.montant"
                                                         name="montant" required>
-                                                    <!-- <small class="form-text text-danger" *ngIf="!singleDepense.montant">
-                                                        Ce champ est obligatoire.
-                                                    </small> -->
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="type_depense" class="form-label">Fournisseur</label>
@@ -312,7 +288,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                            <small class="text-danger">*: Ces champs sont obligatoires.</small>
                                             <button type="submit" class="btn btn-success mb-2 float-right"
                                                 [disabled]="!depenseForm.valid">Enregister</button>
                                             <button type="button" class="btn btn-secondary float-right"

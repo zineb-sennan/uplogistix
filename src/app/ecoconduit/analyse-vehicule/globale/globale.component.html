@@ -1,0 +1,66 @@
+<section>
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Véhicules
+            </h6>
+            <h2 class="header-title">
+                Liste des carburants
+            </h2>
+        </div>
+    </div><!-- fin titre -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- tab -->
+                <div class="row align-items-center">
+                    <div class="col">
+                        <ul class="nav nav-tabs nav-overflow header-tabs">
+                            <li class="nav-item">
+                                <button class="nav-link active" (click)="type='analyse-vehicule'" [ngClass]="{'active':type=='analyse-vehicule'}">
+                                    Analye véhicules
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='analyse-par-vehicule'" [ngClass]="{'active':type=='analyse-par-vehicule'}">
+                                    Analye par véhicule
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='fiche-vehicule'" [ngClass]="{'active':type=='fiche-vehicule'}">
+                                    Fiche véhicule
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='classements-vehicule'" [ngClass]="{'active':type=='classements-vehicule'}">
+                                    Classements des véhicules
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!-- ./ tab -->
+                <div class="continents">
+                    <!-- 01- -->
+                    <app-comparaison-vehicule 
+                        *ngIf="type=='analyse-vehicule'">
+                    </app-comparaison-vehicule>
+                    <!-- 02- -->
+                    <app-informations-vehicule 
+                        *ngIf="type=='analyse-par-vehicule'">
+                    </app-informations-vehicule>
+                    <!-- 03- -->
+                    <app-fiche-vehicule 
+                        *ngIf="type=='fiche-vehicule'">
+                    </app-fiche-vehicule>
+                    <!-- 04- -->
+                    <app-classement-vehicule 
+                        *ngIf="type=='classements-vehicule'">
+                    </app-classement-vehicule>
+                </div><!-- ./ contenu -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

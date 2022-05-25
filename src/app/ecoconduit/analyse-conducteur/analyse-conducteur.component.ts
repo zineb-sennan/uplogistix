@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/_services/auth.service';
-import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
-import { VehiculeService } from 'src/app/_services/vehicule.service';
-
+import { EcoconduiteService } from '../../_services/ecoconduite.service';
+import { ConducteurService } from '../../_services/conducteur.service';
 import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
-import { ConducteurService } from 'src/app/_services/conducteur.service';
+
 
 @Component({
   selector: 'app-analyse-conducteur',
@@ -13,26 +11,21 @@ import { ConducteurService } from 'src/app/_services/conducteur.service';
   styleUrls: ['./analyse-conducteur.component.css']
 })
 export class AnalyseConducteurComponent implements OnInit {
-
-  conducteurs: any[] = []; conducteursSelected: any[] = []; maxConducteur = 2; viewChartPrincipale:any=null;
-  date = new Date();
-  date_ = this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.date.getDate())).slice(-2);
-  search: any = {
-    date_debut: new Date("2022-04-20T00:00:00"),
-    date_fin: new Date(this.date_ + "T23:59:00")
-  }
+  viewChartPrincipale:any=null; typeFilter='jour'; maxConducteur = 2; maxChart=4;
+  conducteurs: any[] = []; conducteursSelected: any[] = []; 
   chartSelected: any = [
-    { index: 1, libelle: 'Conduite dangereuse', data: [] },
-    { index: 2, libelle: 'Conduite dangereuse/100km', data: [] },
-    { index: 3, libelle: 'Freinage brusque', data: [] },
-    { index: 4, libelle: 'Emission CO2', data: [] },
-    { index: 5, libelle: '???', data: [] }
+    { index: 1, checked:true, libelle: 'Conduite dangereuse', slug:'', data: [] },
+    { index: 2, checked:true, libelle: 'Conduite dangereuse/100km', slug:'', data: [] },
+    { index: 3, checked:true, libelle: 'Freinage brusque', slug:'', data: [] },
+    { index: 4, checked:true, libelle: 'Emission CO2', slug:'', data: [], last:true },
+    { index: 5, libelle: 'Type 1', slug:'', data: [] },
+    { index: 6, libelle: 'Type 2', slug:'emission-co2', data: [] },
+    { index: 7, libelle: 'Type 3', slug:'emission-co2', data: [] }
   ];
 
   constructor(
     private conducteurService: ConducteurService,
-    private ecoconduiteService: EcoconduiteService,
-    private authService: AuthService
+    private ecoconduiteService: EcoconduiteService
   ) { }
 
   ngOnInit(): void {
@@ -41,19 +34,10 @@ export class AnalyseConducteurComponent implements OnInit {
     this.getConducteurs();
   }
 
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
   getConducteurs() {
     this.conducteurService.getAll(1).subscribe(
       res=>{
         this.conducteurs=res['records'];
-
         for (let index = 0; index < this.maxConducteur; index++) {
           this.checkConducteurs(null,this.conducteurs[index]);
           this.conducteurs[index].checked=true;
@@ -63,6 +47,11 @@ export class AnalyseConducteurComponent implements OnInit {
   }
 
   checkConducteurs(e: any, vehicule: any) {
+   //01
+    this.viewChartPrincipale=null;
+    $('.tchart').removeClass('active'); 
+    $('.col-chart').removeClass('border-bottom');
+    //02
     if(e!=null){
       if (this.conducteursSelected.length == this.maxConducteur) {
         if (e.currentTarget.checked) {
@@ -82,17 +71,18 @@ export class AnalyseConducteurComponent implements OnInit {
         if (e.currentTarget.checked){
           vehicule.color = (Math.round(Math.random()*255))+','+ (Math.round(Math.random()*255)) +','+ (Math.round(Math.random()*255));
           this.conducteursSelected.push(vehicule);
+
+          this.chartSelected.forEach((chart: any) => {
+            this.getInformationsConducteur(vehicule, (vehicule.id + '' + chart.index), chart.index);
+          });
         }
         else if(!e.currentTarget.checked){
           this.conducteursSelected = this.conducteursSelected.filter(v => v.id != vehicule.id);
-          for (let index = 0; index < this.chartSelected.length; index++) {
-            this.chartSelected[index].data = this.chartSelected[index].data.filter((c:any) => c.matricule != vehicule.matricule);
-          }
+
+          this.chartSelected.forEach((chart: any) => {
+            chart.data=chart.data.filter((c:any) => c.matricule != vehicule.matricule);
+          });
         }
-  
-        this.chartSelected.forEach((chart: any) => {
-          this.getHistoriqueVehicule(vehicule, (vehicule.id + '' + chart.index), chart.index);
-        });
       }
     }
     else{
@@ -100,43 +90,55 @@ export class AnalyseConducteurComponent implements OnInit {
       this.conducteursSelected.push(vehicule);
       //
       this.chartSelected.forEach((chart: any) => {
-        this.getHistoriqueVehicule(vehicule, (vehicule.id + '' + chart.index), chart.index);
+        this.getInformationsConducteur(vehicule, (vehicule.id + '' + chart.index), chart.index);
       });
     }
-    
   }
 
-  private getHistoriqueVehicule(vehicule: any, index:any, indexChart:any): any {
-    this.ecoconduiteService.historiqueVehicule(vehicule.id, this.search).subscribe(res => {
+  getInformationsConducteur(conducteur: any, index:any, indexChart:any): any {
+    this.ecoconduiteService.historiqueVehicule(conducteur.id, null).subscribe(res => {
       //01
       var _data:any=[];
-      for (let index = 0; index < 20; index++) {
-        var item= {"x":"val "+index, "y": this.entierAleatoire(1,20) }
-        _data.push(item);
+      if(this.typeFilter=="jour"){
+        for (let index = 0; index < 24; index++) {
+          var item= {"x":"heur "+(index+1), "y": this.entierAleatoire(1,20) }
+          _data.push(item);
+        }
+      }
+      else if(this.typeFilter=="semaine"){
+        for (let index = 0; index < 7; index++) {
+          var item= {"x":"jour "+(index+1), "y": this.entierAleatoire(1,20) }
+          _data.push(item);
+        }
+      }
+      else{
+        for (let index = 0; index < 30; index++) {
+          var item= {"x":"date "+(index+1), "y": this.entierAleatoire(1,20) }
+          _data.push(item);
+        }
       }
       //02
-      this.chartSelected[indexChart-1].data.push({ values:_data , matricule:vehicule.matricule, color:vehicule.color });  
-      this.createChart(index, _data, vehicule, Math.max(..._data.map((d:any)=> d.y)));
+      this.chartSelected[indexChart-1].data.push({ values:_data, nom_complet:conducteur.nom+' '+conducteur.prenom, color:conducteur.color });
+      this.createChart(index, _data, conducteur, Math.max(..._data.map((d:any)=> d.y)));
     });
   }
 
-  createChart(index: any, data: any, vehicule: any, maxValue:any) {
-    var chart: any = $('#chart_conducteur_'+index); let myChart: any = null;
-    myChart = new Chart(chart, {
+  mChart: any=[];
+  createChart(index: any, data: any, conducteur: any, maxValue:any) {
+    var chart: any = $('#chart_conducteur_'+index); 
+    if(this.mChart[index])  this.mChart[index].destroy();
+    this.mChart[index] = new Chart(chart, {
       type: 'line',
       data: {
         datasets: [{
           data: data,
-          label: vehicule.matricule,
-          borderColor: 'rgb(' + vehicule.color + ')',
+          borderColor: 'rgb(' + conducteur.color + ')',
           fill: {
             target: 'origin',
-            above: 'rgba(' + vehicule.color + ',0.2)',
+            above: 'rgba(' + conducteur.color + ',0.2)',
           },
           pointBackgroundColor: 'rgba(76, 132, 255,0)',
           pointHoverBackgroundColor: 'rgb(44, 122, 228)',
-          //pointHoverRadius: 3,
-          //pointHitRadius: 30,
           pointBorderWidth: 0,
           pointStyle: 'rectRounded',
           borderWidth:1.5
@@ -156,8 +158,7 @@ export class AnalyseConducteurComponent implements OnInit {
     $('#max_'+index).text(maxValue);
   }
 
-  selectChart(index: any) {
-    console.log(this.chartSelected[index - 1].data,this.chartSelected[index - 1].data.length,this.maxConducteur);
+  remplissageChartPrincipale(index: any) {
     if(this.chartSelected[index - 1].data.length>=this.maxConducteur){
       this.viewChartPrincipale=true;
       $('.tchart').removeClass('active'); $('.chart-' + index).addClass('active');
@@ -184,17 +185,57 @@ export class AnalyseConducteurComponent implements OnInit {
     }
     //02
     infosChart.data.forEach((chart:any) => {
-      var item={ data: chart.values, label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
+      var item={ data: chart.values, label: chart.nom_complet, borderColor: 'rgba(' + chart.color + ',1)' };
       _infosChart.data.datasets.push(item);
     })
     //03
     this.myChart = new Chart(chart, _infosChart);
-    //new Chart(chart, _infosChart);
   }
 
+  changeData(type:any){
+    //01
+    this.typeFilter=type; this.viewChartPrincipale=null;
+    $('.tchart').removeClass('active'); $('.col-chart').removeClass('border-bottom');
+    //02
+    this.chartSelected.forEach((chart: any) => {
+      delete chart.data; chart.data=[];
+    });
+    //03
+    this.conducteursSelected.forEach(vehicule => {
+      this.chartSelected.forEach((chart: any) => {
+        this.getInformationsConducteur(vehicule, (vehicule.id + '' + chart.index), chart.index);
+      });
+    });
+  }
+
+
+  checkChart(e: any, index:number){
+    //01
+    this.viewChartPrincipale=null;
+    $('.tchart').removeClass('active'); 
+    $('.col-chart').removeClass('border-bottom');
+    //02
+    let checkedChart= this.chartSelected.filter((c:any)=> c.checked==true);
+    this.chartSelected[(checkedChart[checkedChart.length-1].index)-1].last=false;
+    //03
+    if(e.currentTarget.checked){
+      if(this.maxChart > checkedChart.length) this.chartSelected[index-1].checked=true;
+      else{
+        e.currentTarget.checked=false;
+        $('.mc-error').removeClass('d-none');
+      }
+    }
+    else{
+      if(checkedChart.length==1) e.currentTarget.checked=true;
+      else this.chartSelected[index-1].checked=null;
+    }
+    //04
+    checkedChart= this.chartSelected.filter((c:any)=> c.checked==true);
+    this.chartSelected[(checkedChart[checkedChart.length-1].index)-1].last=true;
+  }
+  
   entierAleatoire(min: number, max: number){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-
 
 }

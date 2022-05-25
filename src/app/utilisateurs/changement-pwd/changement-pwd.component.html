@@ -32,9 +32,6 @@
                                 <strong class="text-danger" *ngIf="!password.oldpassword">*</strong>
                             </label>
                             <input type="password" class="form-control" id="pwd-actuel" placeholder="Mot de passe actuel" [(ngModel)]="password.oldpassword" name="oldpassword" required>
-                            <!-- <small class="form-text text-danger" *ngIf="!password.oldpassword">
-                                Ce champ est obligatoire.
-                            </small> -->
                         </div>
                         <div class="form-group">
                             <label for="nouveau-pwd">
@@ -42,9 +39,6 @@
                                 <strong class="text-danger" *ngIf="!password.newpassword">*</strong>
                             </label>
                             <input type="password" class="form-control" id="nouveau-pwd" placeholder="Nouveau mot de passe" [(ngModel)]="password.newpassword" name="newpassword" (keyup)="validationPWD($event)" required>
-                            <!-- <small class="form-text text-danger" *ngIf="!password.newpassword">
-                                Ce champ est obligatoire.
-                            </small> -->
                         </div>
                         <div class="form-group">
                             <label for="confirmation-pwd">
@@ -52,12 +46,9 @@
                                 <strong class="text-danger" *ngIf="!password.confirmpassword">*</strong>
                             </label>
                             <input type="password" class="form-control" id="confirmation-pwd" placeholder="Confirmation de nouveau mot de passe" [(ngModel)]="password.confirmpassword" name="confirmpassword" required>
-                            <!-- <small class="form-text text-danger" *ngIf="!password.confirmpassword">
-                                Ce champ est obligatoire.
-                            </small> -->
                         </div>
                         <div class="col-md-12">
-                            <small class="text-danger">*: Ce champ est obligatoire.</small>
+                            <small class="text-danger">*: Ces champs sont obligatoires.</small>
                             <button type="submit" class="btn btn-success mb-2 float-right btn-up-pwd" [disabled]="!passwordForm.valid">Enregister</button>
                         </div>
                         <div id="pswd_info" class="d-none">

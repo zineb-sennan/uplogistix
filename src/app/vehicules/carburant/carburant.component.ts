@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../_services/auth.service';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Chart, registerables } from 'chart.js';
 import { VehiculeCarburantService } from '../../_services/vehicule-carburant.service';
 import { VehiculeService } from '../../_services/vehicule.service';
-import { Chart, registerables } from 'chart.js';
-
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 import * as $ from 'jquery';
-import { ActivatedRoute } from '@angular/router';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-carburant',
@@ -16,9 +16,10 @@ import { DatePipe } from '@angular/common';
 export class CarburantComponent implements OnInit {
 
   constructor(
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
     private vehiculeCarburantService: VehiculeCarburantService,
     private vehiculeService: VehiculeService,
-    private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     public datepipe: DatePipe
   ) { }
@@ -43,15 +44,6 @@ export class CarburantComponent implements OnInit {
         this.searchCarburant(this.search);
       }
     });
-
-    let date=new Date();
-    
-  }
-
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
   }
 
   clear() {
@@ -59,19 +51,12 @@ export class CarburantComponent implements OnInit {
     this.singleCarburant = { id: null, vehicule_id: this.search.vehicule_id, qtn: null, prix: null }
   }
   
-  logout() {
-    this.authService.logout();
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
 
   getAllVehicule() {
     this.vehiculeService.getAll().subscribe(
       result => this.vehicules = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllVehicule();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllVehicule();
       }
     );
   }
@@ -84,7 +69,7 @@ export class CarburantComponent implements OnInit {
     this.vehiculeCarburantService.getCarburant(carburant.id).subscribe(
       res=> this.singleCarburant = res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllVehicule();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllVehicule();
       }
     )
   }
@@ -95,20 +80,20 @@ export class CarburantComponent implements OnInit {
         res => {
           this.searchCarburant(this.search);
           this.message = "Le carburant est ajouté avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.vehiculeCarburantService.update(form).subscribe(
         res => {
           this.searchCarburant(this.search);
           this.message = "Le carburant est modifié avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -118,10 +103,10 @@ export class CarburantComponent implements OnInit {
       res => {
         this.searchCarburant(this.search);
         this.message = "Le carburant est supprimé avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.delete(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
       })
   }
 
@@ -129,7 +114,7 @@ export class CarburantComponent implements OnInit {
     this.vehiculeCarburantService.search(record, this.page).subscribe(
       res => this.carburants = res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.searchCarburant(record);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.searchCarburant(record);
       }
     );
   }
@@ -142,7 +127,7 @@ export class CarburantComponent implements OnInit {
         this.chartEvolutionCarburant(data, lebels);
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.searchCarburant(record);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.searchCarburant(record);
       }
     );
   }

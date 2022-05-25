@@ -142,7 +142,7 @@
 
                         </div>
                         <hr class="mt-4 mb-4">
-                        <small class="text-danger">*: Ce champ est obligatoire.</small>
+                        <small class="text-danger">*: Ces champs sont obligatoires.</small>
                         <!-- Buttons -->
                         <button type="submit" class="btn w-10 btn-float" [ngClass]="{'btn-primary': fiscaux.length == 0, 'btn-danger': fiscaux.length > 0}" [disabled]="!clientForm.valid">
                             {{ singleClient.id ? 'Enregistrer' : 'Créer'}}
@@ -323,7 +323,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <small class="text-danger">*: Ce champ est obligatoire.</small>
+                                                <small class="text-danger">*: Ces champs sont obligatoires.</small>
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
                                                 <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!contactForm.valid">Enregister</button>
                                             </div>

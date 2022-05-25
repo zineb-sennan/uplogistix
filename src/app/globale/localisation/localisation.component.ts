@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PaysService } from '../../_services/pays.service';
 import { RegionsService } from '../../_services/regions.service';
 import { VillesService } from '../../_services/villes.service';
-
 import { AuthService } from '../../_services/auth.service';
-
-import * as $ from 'jquery';
+import { SecuriteClass } from '../../_globale/securite';
+import { GlobalFunctions } from '../../_globale/global-functions';
 
 @Component({
   selector: 'app-localisation',
@@ -30,6 +29,8 @@ export class LocalisationComponent implements OnInit {
   region_id: any = null;
 
   constructor(
+    private securiteClass: SecuriteClass,
+    public globalFunctions:GlobalFunctions,
     private paysService: PaysService,
     private regionsService: RegionsService,
     private villesService: VillesService,
@@ -40,25 +41,12 @@ export class LocalisationComponent implements OnInit {
     this.getAllPays();
   }
 
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
 
   getAllPays() {
     this.paysService.getAll().subscribe(
       result => this.pays = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this. getAllPays();
+        if(error.status==401 && this.securiteClass.refreshToken()) this. getAllPays();
       }
     );
   }
@@ -68,7 +56,7 @@ export class LocalisationComponent implements OnInit {
     this.regionsService.regionsByPays(id).subscribe(
       result => this.regions = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getRegionsByPays(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getRegionsByPays(id);
     });
     this.region_id = null;
     this.pays_id = id;
@@ -79,7 +67,7 @@ export class LocalisationComponent implements OnInit {
     this.villesService.villesByRegion(id).subscribe(
       result => this.villes = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getVillesByRegion(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getVillesByRegion(id);
       });
     this.region_id = id;
   }
@@ -116,7 +104,7 @@ export class LocalisationComponent implements OnInit {
     this.paysService.getPays(id).subscribe(
       res=> this.singlePays=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getPays(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getPays(id);
       }
     )
   }
@@ -125,7 +113,7 @@ export class LocalisationComponent implements OnInit {
     this.regionsService.getRegion(id).subscribe(
       res=> this.singleRegion=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getRegion(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getRegion(id);
       }
     )
   }
@@ -134,7 +122,7 @@ export class LocalisationComponent implements OnInit {
     this.villesService.getVille(id).subscribe(
       res=> this.singleVille=res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getVille(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getVille(id);
       }
     )
   }
@@ -145,20 +133,20 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getAllPays();
           this.message = "Le pays est ajouté avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.updatePays(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.updatePays(form);
       })
     } else {
       this.paysService.update(form).subscribe(
         res => {
           this.getAllPays();
           this.message = "Le pays est modifié avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.updatePays(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.updatePays(form);
       })
     }
   }
@@ -169,10 +157,10 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getRegionsByPays(form.pays_id);
           this.message = "La région est ajoutée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.updateRegion(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.updateRegion(form);
       })
     }
     else {
@@ -180,10 +168,10 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getRegionsByPays(form.pays_id);
           this.message = "La région est modifiée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.updateRegion(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.updateRegion(form);
         })
     }
   }
@@ -194,10 +182,10 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getVillesByRegion(form.region_id);
           this.message = "La ville est ajoutée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.updateVille(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.updateVille(form);
         })
     }
     else {
@@ -205,10 +193,10 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getVillesByRegion(form.region_id);
           this.message = "La ville est modifiée avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
         },
         error => {
-          if(error.status==401 && this.refreshToken()) this.updateVille(form);
+          if(error.status==401 && this.securiteClass.refreshToken()) this.updateVille(form);
         })
     }
   }
@@ -224,10 +212,10 @@ export class LocalisationComponent implements OnInit {
       res => {
         this.getAllPays();
         this.message = "Le pays est supprimé avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.deletePays(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.deletePays(id);
       })
   }
 
@@ -236,9 +224,9 @@ export class LocalisationComponent implements OnInit {
       res => {
         this.getRegionsByPays(this.singleRegion.pays_id);
         this.message = "La region est supprimée avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },error => {
-        if(error.status==401 && this.refreshToken()) this.deleteRegion(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.deleteRegion(id);
       })
   }
 
@@ -247,10 +235,10 @@ export class LocalisationComponent implements OnInit {
       res => {
         this.getVillesByRegion(this.singleVille.region_id);
         this.message = "La ville est supprimée avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
     },
     error => {
-      if(error.status==401 && this.refreshToken()) this.deleteVille(id);
+      if(error.status==401 && this.securiteClass.refreshToken()) this.deleteVille(id);
     })
   }
 

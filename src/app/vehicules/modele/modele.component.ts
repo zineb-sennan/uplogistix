@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../_services/auth.service';
 import { VehiculeCategorieService } from '../../_services/vehicule-categorie.service';
 import { VehiculeMarqueService } from '../../_services/vehicule-marque.service';
 import { VehiculeModeleService } from '../../_services/vehicule-modele.service';
-
-import * as $ from 'jquery';
+import { GlobalFunctions } from '../../_globale/global-functions';
+import { SecuriteClass } from '../../_globale/securite';
 
 @Component({
   selector: 'app-modele',
@@ -19,10 +18,11 @@ export class ModeleComponent implements OnInit {
   singleModele: any = { id:null ,marque_id:null, categorie_id:null, nom: null };
 
   constructor(
+    private securiteClass: SecuriteClass,
+    private globalFunctions:GlobalFunctions,
     private vehiculeModeleService: VehiculeModeleService,
     private vehiculeMarqueService: VehiculeMarqueService,
     private vehiculeCategorieService: VehiculeCategorieService,
-    private authService: AuthService,
     private activatedRoute: ActivatedRoute
   ) { }
 
@@ -35,26 +35,12 @@ export class ModeleComponent implements OnInit {
     this.getAllMarques();
     this.getAllCategorie();
   }
-  
-  closeModal() {
-    $('.modal').hide();
-    $('.modal-backdrop').remove();
-    $('body').removeAttr("style");
-  }
-
-  async refreshToken() {
-    return await this.authService.refresh() ? true : this.logout();
-  }
-
-  logout() {
-    this.authService.logout();
-  }
 
   getAllModeles(id:number) {
     this.vehiculeModeleService.getModelesByMarqueId(id).subscribe( 
       result => this.modeles = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllModeles(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllModeles(id);
       }
     );
   }
@@ -63,7 +49,7 @@ export class ModeleComponent implements OnInit {
     this.vehiculeMarqueService.getAll().subscribe(
       result => this.marques = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllMarques();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllMarques();
       });
   }
 
@@ -71,7 +57,7 @@ export class ModeleComponent implements OnInit {
     this.vehiculeCategorieService.getAll().subscribe(
       result => this.categories = result,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getAllCategorie();
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllCategorie();
       });
   }
 
@@ -80,7 +66,7 @@ export class ModeleComponent implements OnInit {
     this.vehiculeModeleService.getModele(id).subscribe(
       res=>this.singleModele = res,
       error => {
-        if(error.status==401 && this.refreshToken()) this.getModele(id);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getModele(id);
     })
   }
 
@@ -90,19 +76,19 @@ export class ModeleComponent implements OnInit {
         res => {
           this.getAllModeles(this.singleModele.marque_id);
           this.message = "Le modele est ajouté avec succès !";
-          this.closeModal();
+          this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.vehiculeModeleService.update(form).subscribe(res => {
         this.getAllModeles(this.singleModele.marque_id);
         this.message = "Le modele est modifié avec succès !";
-        this.closeModal();
+        this.globalFunctions.closeModal();
       },
       error => {
-        if(error.status==401 && this.refreshToken()) this.update(form);
+        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -111,10 +97,10 @@ export class ModeleComponent implements OnInit {
     this.vehiculeModeleService.delete(id).subscribe(res => {
       this.getAllModeles(this.singleModele.marque_id);
       this.message = "Le modele est supprimé avec succès !";
-      this.closeModal();
+      this.globalFunctions.closeModal();
     },
     error => {
-      if(error.status==401 && this.refreshToken()) this.delete(id);
+      if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
     })
   }
 
@@ -122,10 +108,5 @@ export class ModeleComponent implements OnInit {
     this.message=null;
     this.singleModele = { id:null, nom: null, description: null, marque_id: this.singleModele.marque_id, categorie_id:null }
   }
-
-  // hoverViewBtn(){
-  //   if(!this.isViewBtn) this.isViewBtn=true;
-  //   else this.isViewBtn=false;
-  // }
 
 }

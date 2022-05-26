@@ -3,11 +3,11 @@ import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-informations-vehicule',
-  templateUrl: './informations-vehicule.component.html',
-  styleUrls: ['./informations-vehicule.component.css']
+  selector: 'app-analyse-par-vehicule',
+  templateUrl: './analyse-par-vehicule.component.html',
+  styleUrls: ['./analyse-par-vehicule.component.css']
 })
-export class InformationsVehiculeComponent implements OnInit {
+export class AnalyseParVehiculeComponent implements OnInit {
 
   constructor() { }
 
@@ -357,8 +357,8 @@ export class InformationsVehiculeComponent implements OnInit {
               (Math.floor(Math.random() * (100 - 0 + 1)) + 0)
             ],
             label:"chart",
-            backgroundColor: 'rgba(44, 123, 228)',
-            borderColor: 'rgba(44, 123, 228)'
+            backgroundColor: 'rgb(44, 123, 228)',
+            borderColor: 'rgb(44, 123, 228)'
           }
         ],
         labels:["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
@@ -395,8 +395,12 @@ export class InformationsVehiculeComponent implements OnInit {
               (Math.floor(Math.random() * (100 - 0 + 1)) + 0)
             ],
             label:"chart",
-            backgroundColor: 'rgba(44, 123, 228)',
-            borderColor: 'rgba(44, 123, 228)'
+            // backgroundColor: 'rgb(44, 123, 228)',
+            // borderColor: 'rgb(44, 123, 228)',
+            pointBackgroundColor: 'rgb(44, 123, 228)',
+            pointHoverBackgroundColor: 'rgb(44, 123, 228)',
+            pointBorderWidth: 10,
+            borderWidth: 3
           }
         ],
         labels:["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
@@ -417,5 +421,4 @@ export class InformationsVehiculeComponent implements OnInit {
       },
     })
   }
-
 }

@@ -39,3 +39,36 @@ canvas#chart_score{
     min-width: 0;
     word-wrap: break-word;
 }
+
+#chart_vitesse_maximale,
+#chart_vitesse_moyenne,
+#chart_consommation_carburants,
+#chart_distance_parcourue,
+#chart_emition_co2,
+#chart_temps_conduite,
+#chart_fuel_consomme,
+#chart_fuel_gaspille,
+#chart_bilan_carbone{
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+    margin-top: -37px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.card-header{
+    height: 35px;
+    border-bottom: none;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    
+}
+
+.bg{
+    background-color: #fafbfd;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+.card-header-title{ font-weight: 500; }
+
+.txt-card{ color: #515151 !important; }

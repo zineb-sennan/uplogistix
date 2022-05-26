@@ -22,7 +22,6 @@ export class ComparaisonVehiculeComponent implements OnInit {
     { index: 7, libelle: 'Consommation l/100km', slug:'Consommation-l-100km', data: []},
     { index: 8, libelle: 'Fuel consomme', slug:'fuel-consomme', data: [] },
     { index: 9, libelle: 'Fuel gaspillé', slug:'Fuel-gaspille', data: [], }
-    
   ];
 
   constructor(

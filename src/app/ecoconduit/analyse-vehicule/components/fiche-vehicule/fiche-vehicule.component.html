@@ -1,5 +1,5 @@
 
-<div class="row">
+<div class="row" style="padding: 0 10px;">
     <div class="col-md-9"></div>
     <form class="gx-0 mb-3 frm-search-vehicule col-md-3 float-right" #searchForm="ngForm">
         <div class="form-group">
@@ -14,7 +14,7 @@
         </div>
     </form><!-- ./form -->
 </div>
-<div class="row">
+<div class="row" style="padding: 0 10px;">
     <div class="main-card mb-3 card">
         <div class="no-gutters row">
             <div class="col-md-6 col-xl-3">
@@ -73,7 +73,7 @@
     </div>
 </div> <!-- ./ -->
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header">
                 <h4 class="card-header-title">
@@ -95,13 +95,13 @@
                         <div class="ecg"></div>
                     </div>
                     <div class="col-md-6">
-                        <div class="ecg" style="margin-top: 163px; margin-left: 33px;"></div>
+                        <div class="ec-res float-right"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -112,10 +112,10 @@
                 <div class="card-body">
                     <div>
                         <circle-progress 
-                            [percent]="50" [space]="-10" [radius]="43" [animation]="true" [animationDuration]="1000">
+                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000">
                         </circle-progress>
                         <circle-progress 
-                            [percent]="50" [space]="-10" [radius]="43" [animation]="true" [animationDuration]="1000">
+                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000">
                         </circle-progress>
                     </div>
                 </div>
@@ -130,17 +130,61 @@
                 </div>
                 <div class="card-body">
                     <div>
-                        <circle-progress [percent]="50" [space]="-10" [radius]="40" [outerStrokeWidth]="10"
-                            [innerStrokeWidth]="7" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'"
+                        <circle-progress [percent]="50" [space]="-10" [radius]="52"
+                            [innerStrokeWidth]="7" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'rgba(72, 130, 194, 0.3)'"
                             [animation]="true" [animationDuration]="1000">
                         </circle-progress>
-                        <circle-progress [percent]="70" [space]="-10" [radius]="40" [outerStrokeWidth]="10"
-                            [innerStrokeWidth]="5" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'"
+                        <circle-progress [percent]="70" [space]="-10" [radius]="50"
+                            [innerStrokeWidth]="5" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'rgba(72, 130, 194, 0.3)'"
                             [animation]="true" [animationDuration]="1000">
                         </circle-progress>
                     </div>
                 </div>
             </div>
         </div><!-- ./col-md-12 -->
-    </div>
+    </div> <!-- ./col-md-3 -->
+    <div class="col-md-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Lorem ipsum
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <circle-progress 
+                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000"
+                            [outerStrokeColor]="'#dd0417'" [innerStrokeColor]="'rgba(221, 4, 23, 0.3)'">
+                        </circle-progress>
+                        <circle-progress 
+                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000"
+                            [outerStrokeColor]="'#dd0417'" [innerStrokeColor]="'rgba(221, 4, 23, 0.3)'">
+                        </circle-progress>
+                    </div>
+                </div>
+            </div>
+        </div><!-- ./col-md-12 -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-header-title">
+                        Lorem ipsum
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <circle-progress 
+                           [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000"
+                           [outerStrokeColor]="'#ec6708'" [innerStrokeColor]="'rgba(236, 103, 8, 0.3)'">
+                        </circle-progress>
+                        <circle-progress [percent]="70" [space]="-10" [radius]="50"
+                            [innerStrokeWidth]="5" [outerStrokeColor]="'#ec6708'" [innerStrokeColor]="'rgba(236, 103, 8, 0.3)'"
+                            [animation]="true" [animationDuration]="1000">
+                        </circle-progress>
+                    </div>
+                </div>
+            </div>
+        </div><!-- ./col-md-12 -->
+    </div> <!-- ./col-md-3 -->
 </div><!-- ./ -->

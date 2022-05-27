@@ -10,6 +10,8 @@ import * as $ from 'jquery';
   styleUrls: ['./comparaison-vehicule.component.css']
 })
 export class ComparaisonVehiculeComponent implements OnInit {
+
+  colors=['20, 156, 56', '246, 231, 8', '221, 4, 23'];
   viewChartPrincipale:any=null; typeFilter='jour'; maxVehicule = 3;  maxChart=5;
   vehicules: any[] = []; vehiculesSelected: any[] = [];
   chartSelected: any = [
@@ -70,7 +72,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
       }
       else if (this.vehiculesSelected.length < this.maxVehicule) {
         if (e.currentTarget.checked){
-          vehicule.color = (Math.round(Math.random()*255))+','+ (Math.round(Math.random()*255)) +','+ (Math.round(Math.random()*255));
+          vehicule.color=this.colors.filter(v => !this.vehiculesSelected.map((vs:any) => vs.color ).includes(v))[0];
           this.vehiculesSelected.push(vehicule);
 
           this.chartSelected.forEach((chart: any) => {
@@ -87,7 +89,8 @@ export class ComparaisonVehiculeComponent implements OnInit {
       }
     }
     else{
-      vehicule.color = (Math.round(Math.random()*255))+','+ (Math.round(Math.random()*255)) +','+ (Math.round(Math.random()*255));
+      vehicule.color = this.colors[this.vehiculesSelected.length];
+      //vehicule.color = (Math.round(Math.random()*255))+','+ (Math.round(Math.random()*255)) +','+ (Math.round(Math.random()*255));
       this.vehiculesSelected.push(vehicule);
       //
       this.chartSelected.forEach((chart: any) => {

@@ -1,23 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GlobaleComponent } from './globale/globale.component';
 import { AnalyseParConducteurComponent } from './components/analyse-par-conducteur/analyse-par-conducteur.component';
 import { ComparaisonConducteursComponent } from './components/comparaison-conducteurs/comparaison-conducteurs.component';
 import { ClassementConducteursComponent } from './components/classement-conducteurs/classement-conducteurs.component';
 import { FicheConducteurComponent } from './components/fiche-conducteur/fiche-conducteur.component';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { GlobaleConducteurComponent } from './globale-conducteur/globale-conducteur.component';
 
 
 
 @NgModule({
   declarations: [
-    GlobaleComponent,
     AnalyseParConducteurComponent,
     ComparaisonConducteursComponent,
     ClassementConducteursComponent,
-    FicheConducteurComponent
+    FicheConducteurComponent,
+    GlobaleConducteurComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    NgCircleProgressModule.forRoot()
   ]
 })
 export class ConducteursModule { }

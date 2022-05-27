@@ -1,1 +1,125 @@
-<p>analyse-par-conducteur works!</p>
+<div>
+    <div class="row">
+        <div class="col-md-9"></div>
+        <form class="gx-0 mb-3 frm-search-vehicule col-md-3 float-right" #searchForm="ngForm">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Véhicules</label>
+                <select class="form-select" id="exampleFormControlSelect1">
+                    <option>Veuillez choisir ...</option>
+                    <option>Conducteur 1</option>
+                    <option>Conducteur 2</option>
+                    <option>Conducteur 3</option>
+                    <option>Conducteur 4</option>
+                </select>
+            </div>
+        </form><!-- ./form -->
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title pt-3">
+                            Évolution de Score
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart_score"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div><!-- ./row fiche vehicule -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card bg">
+                    <div class="card-header">
+                        <canvas id="chart_acceleration_brusque"></canvas>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-header-title txt-card">
+                            Acceleration brusque
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg">
+                    <div class="card-header">
+                        <canvas id="chart_freinage_brusque"></canvas>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-header-title txt-card">
+                            Freinage brusque
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg">
+                    <div class="card-header">
+                        <canvas id="chart_comportement_excessif"></canvas>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-header-title txt-card">
+                            Comportement excessif
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            
+        </div><!-- ./row-->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card bg">
+                    <div class="card-header">
+                        <canvas id="chart_temps_conduite"></canvas>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-header-title txt-card">
+                            Temps de conduite
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg">
+                    <div class="card-header">
+                        <canvas id="chart_conduite_dangereuse"></canvas>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-header-title txt-card">
+                            Conduite dangereuse/100km
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg">
+                    <div class="card-header">
+                        <canvas id="chart_nbre_exces_vitesse"></canvas>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-header-title txt-card">
+                            Nbre des excès de vitesse
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            
+        </div><!-- ./row-->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card bg">
+                    <div class="card-header">
+                        <canvas id="chart_emission_co2"></canvas>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-header-title txt-card">
+                            Emission CO2
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div><!-- ./row-->
+    </div>
+</div>

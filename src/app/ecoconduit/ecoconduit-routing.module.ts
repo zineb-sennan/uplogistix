@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardUser } from '../_helpers/auth-guard-user';
 import { GlobaleComponent } from './analyse-vehicule/globale/globale.component';
+import { GlobaleConducteurComponent } from './conducteurs/globale-conducteur/globale-conducteur.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
@@ -21,17 +22,17 @@ const routes: Routes = [
         component: GlobaleComponent,
         canActivate: [AuthGuardUser],
         data: {
-          title: 'analyse des vehicules'
+          title: 'analyse des véhicules'
         },
       },
-      // {
-      //   path: 'analyse-conducteur',
-      //   component: AnalyseConducteurComponent,
-      //   canActivate: [AuthGuardUser],
-      //   data: {
-      //     title: 'analyse des conducteurs'
-      //   },
-      // }
+      {
+        path: 'analyse-conducteur',
+        component: GlobaleConducteurComponent,
+        canActivate: [AuthGuardUser],
+        data: {
+          title: 'analyse des conducteurs'
+        },
+      }
     ]
   }
 ];

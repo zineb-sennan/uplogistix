@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { EcoconduitRoutingModule } from './ecoconduit-routing.module';
 import { FormsModule } from '@angular/forms';
 import { AnalyseVehiculeModule } from './analyse-vehicule/analyse-vehicule.module';
+import { ConducteursModule } from './conducteurs/conducteurs.module';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { AnalyseVehiculeModule } from './analyse-vehicule/analyse-vehicule.modul
   ],
   imports: [
     AnalyseVehiculeModule,
+    ConducteursModule,
     CommonModule,
     EcoconduitRoutingModule,
     FormsModule

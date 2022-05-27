@@ -1,0 +1,64 @@
+<section>
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Éco conduite
+            </h6>
+            <h2 class="header-title">
+                Analyse des conducteurs
+            </h2>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- tab -->
+                <div class="row align-items-center">
+                    <div class="col">
+                        <ul class="nav nav-tabs nav-overflow header-tabs">
+                            <li class="nav-item">
+                                <button class="nav-link active" (click)="type='analyse-conducteurs'" [ngClass]="{'active':type=='analyse-conducteurs'}">
+                                    Analye conducteurs
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='analyse-par-conducteur'" [ngClass]="{'active':type=='analyse-par-conducteur'}">
+                                    Analye par conducteur
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='fiche-conducteur'" [ngClass]="{'active':type=='fiche-conducteur'}">
+                                    Fiche conducteur
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='classement-conducteurs'" [ngClass]="{'active':type=='classement-conducteurs'}">
+                                    Classements des conducteurs
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!-- ./ tab -->
+                <div class="continents">
+                    <!-- 01- -->
+                    <app-comparaison-conducteurs 
+                        *ngIf="type=='analyse-conducteurs'">
+                    </app-comparaison-conducteurs>
+                    <!-- 02- -->
+                    <app-analyse-par-conducteur
+                        *ngIf="type=='analyse-par-conducteur'">
+                    </app-analyse-par-conducteur>
+                    <!-- 03- -->
+                    <app-fiche-conducteur 
+                        *ngIf="type=='fiche-conducteur'">
+                    </app-fiche-conducteur>
+                    <!-- 04- -->
+                    <app-classement-conducteurs 
+                        *ngIf="type=='classement-conducteurs'">
+                    </app-classement-conducteurs>
+                </div><!-- ./ contenu -->
+            </div>
+        </div>
+    </div>  
+    
+</section>

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GlobaleComponent } from './globale.component';
+import { GlobaleConducteurComponent } from './globale-conducteur.component';
 
-describe('GlobaleComponent', () => {
-  let component: GlobaleComponent;
-  let fixture: ComponentFixture<GlobaleComponent>;
+describe('GlobaleConducteurComponent', () => {
+  let component: GlobaleConducteurComponent;
+  let fixture: ComponentFixture<GlobaleConducteurComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GlobaleComponent ]
+      declarations: [ GlobaleConducteurComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GlobaleComponent);
+    fixture = TestBed.createComponent(GlobaleConducteurComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

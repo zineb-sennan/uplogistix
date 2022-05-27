@@ -186,7 +186,7 @@ export class AnalyseParVehiculeComponent implements OnInit {
 
   //05- *** Emission CO2 kg ***
   chartEmissionCo2(){
-    let chart:any=$('#chart_emition_co2');
+    let chart:any=$('#chart_emission_co2');
     new Chart(chart,{
       type:'line',
       data:{

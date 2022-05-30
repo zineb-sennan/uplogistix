@@ -1,149 +1,169 @@
 <div>
     <div class="row">
-        <div class="col-md-9"></div>
-        <form class="gx-0 mb-3 frm-search-vehicule col-md-3 float-right" #searchForm="ngForm">
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">Véhicules</label>
-                <select class="form-select" id="exampleFormControlSelect1">
-                    <option>Veuillez choisir ...</option>
-                    <option>Vehicule 1</option>
-                    <option>Vehicule 2</option>
-                    <option>Vehicule 3</option>
-                    <option>Vehicule 4</option>
-                </select>
-            </div>
-        </form><!-- ./form -->
+        <div class="col-md-12">
+            <div class="col-auto">
+                <!-- Dropdown -->
+                <div class="dropdown float-right">
+                    <!-- Toggle -->
+                    <button class="btn btn-primary shadow" type="button" data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-arrow-down-wide-short"></i> Analyser par ...
+                    </button>
+                    <!-- Menu -->
+                    <form class="dropdown-menu dropdown-menu-end dropdown-menu-card">
+                        <div class="card-body">
+                            <!-- List group -->
+                            <div class="list-group list-group-flush mt-n4 mb-4">
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="vehicule_id">Véhicules</label>
+                                                <select class="form-select form-select-sm" id="vehicule_id">
+                                                    <option>Veuillez choisir ...</option>
+                                                    <option>Véhicule 1</option>
+                                                    <option>Véhicule 2</option>
+                                                    <option>Véhicule 3</option>
+                                                    <option>Véhicule 4</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div> <!-- / .row -->
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
+                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0">
+                                                            <a class="nav-link active" data-bs-toggle="tab" (click)="typeFilter='jour'">
+                                                                Jour
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2">
+                                                            <a class="nav-link" data-bs-toggle="tab" (click)="typeFilter='semaine'">
+                                                                Semaine
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="1">
+                                                            <a class="nav-link" data-bs-toggle="tab" (click)="typeFilter='mois'">
+                                                                Mois
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <input type="date" class="form-control form-control-sm" *ngIf="typeFilter=='jour'">
+                                                    <input type="week" class="form-control form-control-sm" *ngIf="typeFilter=='semaine'">
+                                                    <input type="month" class="form-control form-control-sm" *ngIf="typeFilter=='mois'">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- / .row -->
+                                </div>
+                            </div>
+                            <!-- Button -->
+                            <button class="btn w-100 btn-outline-primary" type="submit">
+                                Appliquer le filtre
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div> <!-- ./col-auto -->
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card bg">
+                        <div class="card-header">
+                            <canvas id="chart_score"></canvas>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-header-title txt-card">
+                                Évolution de Score
+                            </h4>
+                        </div>
+                    </div><!-- ./card autres charts-->
+                </div> <!-- ./col-md-8 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-header-title">
+                                Informations score
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- List group -->
+                            <div class="list-group list-group-flush list-group-activity my-n3">
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="avatar avatar-sm">
+                                                <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
+                                                    <i class="fa-solid fa-car"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col ms-n2">
+                                            <h5 class="mb-1">
+                                                Score maximale
+                                            </h5>
+                                            <small class="text-muted">100</small>
+                                        </div>
+                                    </div> <!-- / .row -->
+                                </div>
+                            </div><!-- ./list-group -->
+                            <div class="list-group list-group-flush list-group-activity my-n3">
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="avatar avatar-sm">
+                                                <div class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
+                                                    <i class="fa-solid fa-car"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col ms-n2">
+                                            <h5 class="mb-1">
+                                                Score minimal
+                                            </h5>
+                                            <small class="text-muted">10</small>
+                                        </div>
+                                    </div> <!-- / .row -->
+                                </div>
+                            </div><!-- ./list-group -->
+                        </div>
+                    </div>
+                </div><!-- ./col-md-8 -->
+            </div><!-- ./row fiche vehicule -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" style="width: 300px; float:right; margin-bottom: 50px;">
+                        <label for="vehicule_id">Type de graphe</label>
+                        <select class="form-select" id="type_chart" (change)="changeTypeChart($event)">
+                            <option value="" disabled>Veuillez choisir ...</option>
+                            <option value="vitesse-maximale" selected>Vitesse maximale</option>
+                            <option value="vitesse-moyenne">Vitesse moyenne</option>
+                            <option value="consommation-carburant">Consommation carburant</option>
+                            <option value="distance-parcourue">Distance parcourue</option>
+                            <option value="emission-co2">Emission CO2</option>
+                            <option value="temps-de-conduite">Temps de conduite</option>
+                            <option value="fuel-consomme">Fuel consomme</option>
+                            <option value="fuel-gaspille">Fuel gaspille</option>
+                            <option value="bilan-carbone">Bilan carbone</option>
+                        </select>
+                    </div><!-- ./select -->
+                    <div class="card bg">
+                        <div class="card-header">
+                            <canvas id="chart_vehicule"></canvas>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-header-title txt-card">
+                                Chart selectionner <span class="badge badge-warning bg-primary">Max: 400</span>
+                            </h4>
+
+                        </div>
+                    </div><!-- ./card autres charts-->
+                </div>
+            </div> <!-- ./row -->
+        </div>
     </div>
-    <div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-header-title pt-3">
-                            Évolution de Score
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="chart_score"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div><!-- ./row fiche vehicule -->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card bg">
-                    <div class="card-header">
-                        <canvas id="chart_vitesse_maximale"></canvas>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-header-title txt-card">
-                            Vitesse maximale
-                        </h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg">
-                    <div class="card-header">
-                        <canvas id="chart_vitesse_moyenne"></canvas>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-header-title txt-card">
-                            Vitesse moyenne Km
-                        </h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg">
-                    <div class="card-header">
-                        <canvas id="chart_consommation_carburants"></canvas>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-header-title txt-card">
-                            Consommation carburants
-                        </h4>
-                    </div>
-                </div>
-            </div>
-            
-        </div><!-- ./row-->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card bg">
-                    <div class="card-header">
-                        <canvas id="chart_distance_parcourue"></canvas>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-header-title txt-card">
-                            Distance parcourue Km
-                        </h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg">
-                    <div class="card-header">
-                        <canvas id="chart_emission_co2"></canvas>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-header-title txt-card">
-                            Emission CO2 kg
-                        </h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg">
-                    <div class="card-header">
-                        <canvas id="chart_temps_conduite"></canvas>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-header-title txt-card">
-                            Temps de conduite
-                        </h4>
-                    </div>
-                </div>
-            </div>
-            
-        </div><!-- ./row-->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card bg">
-                    <div class="card-header">
-                        <canvas id="chart_fuel_consomme"></canvas>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-header-title txt-card">
-                            Fuel consomme
-                        </h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg">
-                    <div class="card-header">
-                        <canvas id="chart_fuel_gaspille"></canvas>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-header-title txt-card">
-                            Fuel gaspillé
-                        </h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg">
-                    <div class="card-header">
-                        <canvas id="chart_bilan_carbone"></canvas>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-header-title txt-card">
-                            Bilan carbone
-                        </h4>
-                    </div>
-                </div>
-            </div>
-        </div><!-- ./row-->
-    </div>
-</div>

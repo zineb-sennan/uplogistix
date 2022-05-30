@@ -7,7 +7,7 @@ import * as $ from 'jquery';
   styleUrls: ['./fiche-vehicule.component.css']
 })
 export class FicheVehiculeComponent implements OnInit {
-
+  typeFilter='jour';
 
   constructor() { }
 

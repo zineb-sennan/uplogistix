@@ -11,8 +11,8 @@ import * as $ from 'jquery';
 })
 export class ComparaisonVehiculeComponent implements OnInit {
 
-  colors=['20, 156, 56', '246, 231, 8', '221, 4, 23'];
-  viewChartPrincipale:any=null; typeFilter='jour'; maxVehicule = 3;  maxChart=5;
+  colors=['56, 95, 158','247, 189, 1', '20, 156, 56', '94, 202, 223'];
+  viewChartPrincipale:any=null; typeFilter='jour'; maxVehicule = 4;  maxChart=5;
   vehicules: any[] = []; vehiculesSelected: any[] = [];
   chartSelected: any = [
     { index: 1, checked:true, libelle: 'Vitesse maximale Km', slug:'vitesse-moyenne', data: [] },
@@ -23,7 +23,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
     { index: 6, libelle: 'Temps de conduite', slug:'temps-conduite', data: [] },
     { index: 7, libelle: 'Consommation l/100km', slug:'Consommation-l-100km', data: []},
     { index: 8, libelle: 'Fuel consomme', slug:'fuel-consomme', data: [] },
-    { index: 9, libelle: 'Fuel gaspillé', slug:'Fuel-gaspille', data: [], }
+    { index: 9, libelle: 'Fuel gaspillé', slug:'Fuel-gaspille', data: [] }
   ];
 
   constructor(
@@ -90,7 +90,6 @@ export class ComparaisonVehiculeComponent implements OnInit {
     }
     else{
       vehicule.color = this.colors[this.vehiculesSelected.length];
-      //vehicule.color = (Math.round(Math.random()*255))+','+ (Math.round(Math.random()*255)) +','+ (Math.round(Math.random()*255));
       this.vehiculesSelected.push(vehicule);
       //
       this.chartSelected.forEach((chart: any) => {
@@ -186,7 +185,15 @@ export class ComparaisonVehiculeComponent implements OnInit {
         datasets: []
       },
       options:{
-        maintainAspectRatio:false
+        maintainAspectRatio:false,
+        scales:{
+          x:{
+            grid:{ drawOnChartArea:false }
+          },
+          y:{
+              grid:{ drawOnChartArea:false }
+          }
+        }
       }
     }
     //02

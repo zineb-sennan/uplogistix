@@ -309,3 +309,28 @@
 canvas{
     height: 364px !important;
 }
+
+/*** *** *** ***/
+ul li{ padding: 0; }
+
+.dropdown-menu.show{ display: block !important; }
+
+.dropdown .form-group{ margin-bottom: 0.2rem; }
+
+.dropdown .card-header-tabs .nav-link{
+    padding-top: 10px !important;
+    padding-bottom: 6px !important;
+}
+
+.dropdown button{
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+.dropdown-menu{
+    display: none !important;
+}
+
+.dropdown .btn-primary{
+    margin-bottom: 15px;
+}

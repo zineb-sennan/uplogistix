@@ -10,8 +10,9 @@ import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
   styleUrls: ['./comparaison-conducteurs.component.css']
 })
 export class ComparaisonConducteursComponent implements OnInit {
-
-  viewChartPrincipale:any=null; typeFilter='jour'; maxConducteur = 2; maxChart=4;
+  //
+  colors=['56, 95, 158','247, 189, 1', '20, 156, 56', '94, 202, 223'];
+  viewChartPrincipale:any=null; typeFilter='jour'; maxConducteur = 4; maxChart=4;
   conducteurs: any[] = []; conducteursSelected: any[] = []; 
   chartSelected: any = [
     { index: 1, checked:true, libelle: 'Acceleration brusque', slug:'acceleration-brusque', data: [] },
@@ -46,7 +47,7 @@ export class ComparaisonConducteursComponent implements OnInit {
     )
   }
 
-  checkConducteurs(e: any, vehicule: any) {
+  checkConducteurs(e: any, conducteur: any) {
    //01
     this.viewChartPrincipale=null;
     $('.tchart').removeClass('active'); 
@@ -60,37 +61,37 @@ export class ComparaisonConducteursComponent implements OnInit {
         }
         else {
           this.chartSelected.forEach((chart: any) => {
-            chart.data=chart.data.filter((c:any) => c.matricule != vehicule.matricule);
+            chart.data=chart.data.filter((c:any) => c.matricule != conducteur.matricule);
           });
   
-          this.conducteursSelected = this.conducteursSelected.filter(v => v.id != vehicule.id);
+          this.conducteursSelected = this.conducteursSelected.filter(v => v.id != conducteur.id);
           $('.mv-error').addClass("d-none");
         }
       }
       else if (this.conducteursSelected.length < this.maxConducteur) {
         if (e.currentTarget.checked){
-          vehicule.color = (Math.round(Math.random()*255))+','+ (Math.round(Math.random()*255)) +','+ (Math.round(Math.random()*255));
-          this.conducteursSelected.push(vehicule);
+          conducteur.color=this.colors.filter(v => !this.conducteursSelected.map((vs:any) => vs.color ).includes(v))[0];
+          this.conducteursSelected.push(conducteur);
 
           this.chartSelected.forEach((chart: any) => {
-            this.getInformationsConducteur(vehicule, (vehicule.id + '' + chart.index), chart.index);
+            this.getInformationsConducteur(conducteur, (conducteur.id + '' + chart.index), chart.index);
           });
         }
         else if(!e.currentTarget.checked){
-          this.conducteursSelected = this.conducteursSelected.filter(v => v.id != vehicule.id);
+          this.conducteursSelected = this.conducteursSelected.filter(v => v.id != conducteur.id);
 
           this.chartSelected.forEach((chart: any) => {
-            chart.data=chart.data.filter((c:any) => c.matricule != vehicule.matricule);
+            chart.data=chart.data.filter((c:any) => c.matricule != conducteur.matricule);
           });
         }
       }
     }
     else{
-      vehicule.color = (Math.round(Math.random()*255))+','+ (Math.round(Math.random()*255)) +','+ (Math.round(Math.random()*255));
-      this.conducteursSelected.push(vehicule);
+      conducteur.color = this.colors[this.conducteursSelected.length];
+      this.conducteursSelected.push(conducteur);
       //
       this.chartSelected.forEach((chart: any) => {
-        this.getInformationsConducteur(vehicule, (vehicule.id + '' + chart.index), chart.index);
+        this.getInformationsConducteur(conducteur, (conducteur.id + '' + chart.index), chart.index);
       });
     }
   }
@@ -180,7 +181,15 @@ export class ComparaisonConducteursComponent implements OnInit {
         datasets: []
       },
       options:{
-        maintainAspectRatio:false
+        maintainAspectRatio:false,
+        scales:{
+          x:{
+            grid:{ drawOnChartArea:false }
+          },
+          y:{
+              grid:{ drawOnChartArea:false }
+          }
+        }
       }
     }
     //02

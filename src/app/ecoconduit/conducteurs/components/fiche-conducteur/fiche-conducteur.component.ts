@@ -8,7 +8,9 @@ import * as $ from 'jquery';
   styleUrls: ['./fiche-conducteur.component.css']
 })
 export class FicheConducteurComponent implements OnInit {
-
+  //
+  typeFilter='jour';
+  
   constructor() { }
 
   ngOnInit(): void {

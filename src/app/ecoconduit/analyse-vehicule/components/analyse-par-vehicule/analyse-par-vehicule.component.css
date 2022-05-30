@@ -3,10 +3,6 @@
 }
 
 .card-header{
-    /* height: 35px;
-    border-bottom: none;
-    padding-top: 5px !important;
-    padding-bottom: 5px !important; */
     display: inline-table;
 }
 
@@ -40,20 +36,15 @@ canvas#chart_score{
     word-wrap: break-word;
 }
 
-#chart_vitesse_maximale,
-#chart_vitesse_moyenne,
-#chart_consommation_carburants,
-#chart_distance_parcourue,
-#chart_emission_co2,
-#chart_temps_conduite,
-#chart_fuel_consomme,
-#chart_fuel_gaspille,
-#chart_bilan_carbone{
+#chart_vehicule,
+#chart_score{
     box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
     margin-top: -37px;
     background-color: #fff;
     border-radius: 10px;
     padding: 5px;
+    width: 100%;
+    height: 300px;
 }
 
 .card-header{
@@ -72,3 +63,24 @@ canvas#chart_score{
 .card-header-title{ font-weight: 500; }
 
 .txt-card{ color: #515151 !important; }
+
+
+ul li{ padding: 0; }
+
+.dropdown-menu.show{ display: block !important; }
+
+.dropdown .form-group{ margin-bottom: 0.2rem; }
+
+.dropdown .card-header-tabs .nav-link{
+    padding-top: 10px !important;
+    padding-bottom: 6px !important;
+}
+
+.dropdown button{
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+.dropdown-menu{
+    display: none !important;
+}

@@ -1,19 +1,76 @@
 
-<div class="row" style="padding: 0 10px;">
-    <div class="col-md-9"></div>
-    <form class="gx-0 mb-3 frm-search-vehicule col-md-3 float-right" #searchForm="ngForm">
-        <div class="form-group">
-            <label for="exampleFormControlSelect1">Véhicules</label>
-            <select class="form-select" id="exampleFormControlSelect1">
-                <option>Veuillez choisir ...</option>
-                <option>Vehicule 1</option>
-                <option>Vehicule 2</option>
-                <option>Vehicule 3</option>
-                <option>Vehicule 4</option>
-            </select>
-        </div>
-    </form><!-- ./form -->
-</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-auto">
+            <!-- Dropdown -->
+            <div class="dropdown float-right">
+                <!-- Toggle -->
+                <button class="btn btn-primary shadow" type="button" data-bs-toggle="dropdown"
+                    data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i> Fiche de ...
+                </button>
+                <!-- Menu -->
+                <form class="dropdown-menu dropdown-menu-end dropdown-menu-card">
+                    <div class="card-body">
+                        <!-- List group -->
+                        <div class="list-group list-group-flush mt-n4 mb-4">
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="vehicule_id">Véhicules</label>
+                                            <select class="form-select form-select-sm" id="vehicule_id">
+                                                <option>Veuillez choisir ...</option>
+                                                <option>Véhicule 1</option>
+                                                <option>Véhicule 2</option>
+                                                <option>Véhicule 3</option>
+                                                <option>Véhicule 4</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div> <!-- / .row -->
+                            </div>
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
+                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0">
+                                                        <a class="nav-link active" data-bs-toggle="tab" (click)="typeFilter='jour'">
+                                                            Jour
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2">
+                                                        <a class="nav-link" data-bs-toggle="tab" (click)="typeFilter='semaine'">
+                                                            Semaine
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="1">
+                                                        <a class="nav-link" data-bs-toggle="tab" (click)="typeFilter='mois'">
+                                                            Mois
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                                <input type="date" class="form-control form-control-sm" *ngIf="typeFilter=='jour'">
+                                                <input type="week" class="form-control form-control-sm" *ngIf="typeFilter=='semaine'">
+                                                <input type="month" class="form-control form-control-sm" *ngIf="typeFilter=='mois'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- / .row -->
+                            </div>
+                        </div>
+                        <!-- Button -->
+                        <button class="btn w-100 btn-outline-primary" type="submit">
+                            Appliquer le filtre
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- ./col-auto -->
+    </div>
+</div> <!-- ./row -->
 <div class="row" style="padding: 0 10px;">
     <div class="main-card mb-3 card">
         <div class="no-gutters row">
@@ -96,10 +153,10 @@
                 <div class="card-body">
                     <div>
                         <circle-progress 
-                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000">
+                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
                         </circle-progress>
                         <circle-progress 
-                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000">
+                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
                         </circle-progress>
                     </div>
                 </div>
@@ -116,11 +173,11 @@
                     <div>
                         <circle-progress [percent]="50" [space]="-10" [radius]="52"
                             [innerStrokeWidth]="7" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'rgba(72, 130, 194, 0.3)'"
-                            [animation]="true" [animationDuration]="1000">
+                            [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
                         </circle-progress>
                         <circle-progress [percent]="70" [space]="-10" [radius]="50"
                             [innerStrokeWidth]="5" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'rgba(72, 130, 194, 0.3)'"
-                            [animation]="true" [animationDuration]="1000">
+                            [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
                         </circle-progress>
                     </div>
                 </div>
@@ -139,11 +196,11 @@
                     <div>
                         <circle-progress 
                             [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000"
-                            [outerStrokeColor]="'#dd0417'" [innerStrokeColor]="'rgba(221, 4, 23, 0.3)'">
+                            [outerStrokeColor]="'#dd0417'" [innerStrokeColor]="'rgba(221, 4, 23, 0.3)'" [showSubtitle]="false">
                         </circle-progress>
                         <circle-progress 
                             [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000"
-                            [outerStrokeColor]="'#dd0417'" [innerStrokeColor]="'rgba(221, 4, 23, 0.3)'">
+                            [outerStrokeColor]="'#dd0417'" [innerStrokeColor]="'rgba(221, 4, 23, 0.3)'" [showSubtitle]="false">
                         </circle-progress>
                     </div>
                 </div>
@@ -160,11 +217,11 @@
                     <div>
                         <circle-progress 
                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000"
-                           [outerStrokeColor]="'#ec6708'" [innerStrokeColor]="'rgba(236, 103, 8, 0.3)'">
+                           [outerStrokeColor]="'#ec6708'" [innerStrokeColor]="'rgba(236, 103, 8, 0.3)'" [showSubtitle]="false">
                         </circle-progress>
                         <circle-progress [percent]="70" [space]="-10" [radius]="50"
                             [innerStrokeWidth]="5" [outerStrokeColor]="'#ec6708'" [innerStrokeColor]="'rgba(236, 103, 8, 0.3)'"
-                            [animation]="true" [animationDuration]="1000">
+                            [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
                         </circle-progress>
                     </div>
                 </div>

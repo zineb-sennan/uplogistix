@@ -370,10 +370,3 @@ button.nav-link.active{ background-color: transparent !important; }
         padding-left: 10px !important;
     }
 }
-
-/*nav {
-    background: url('../img/covers/navbar-cover.png') repeat-y;
-    width:200px; 
-    position:fixed; 
-    height:100%;  
-}*/

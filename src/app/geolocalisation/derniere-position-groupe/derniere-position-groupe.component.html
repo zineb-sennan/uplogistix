@@ -10,7 +10,7 @@
 </div>
 <div class="container-fluid">
     <div class="row form-search row ng-untouched ng-pristine ng-valid pb-3">
-        <div class="col-3">
+        <div class="col-md-3 col-xs-12">
             <div class="form-inline">
                 <label for="groupes">Groupe :</label>
                 <select class="form-select form-select-sm" name="groupes" id="groupes" (change)="changeGroupe($event)">
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="col-3"></div>
-        <div class="col-6">
+        <div class="col-md-6 col-xs-12">
             <h6 class="float-end" style="margin-top: 30px;">Dernière position connus ({{currDate | date: "dd/MM/yyyy HH:mm:ss"}})</h6>
         </div>
     </div>

@@ -4,7 +4,7 @@ import { AuthService } from '../../_services/auth.service';
 import { VehiculeMarqueService } from '../../_services/vehicule-marque.service';
 import { environment } from '../../../environments/environment';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 
 @Component({
   selector: 'app-marque',
@@ -19,7 +19,7 @@ export class MarqueComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    private globalFunctions:GlobalFunctions,
+    private globale:Globale,
     private vehiculeMarqueService: VehiculeMarqueService,
     private authService: AuthService,
     private activatedRoute:ActivatedRoute
@@ -71,7 +71,7 @@ export class MarqueComponent implements OnInit {
           if (this.logo) this.uploadFile(form);
           else this.searchMarque();
           this.message = "La marque est ajoutée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -82,7 +82,7 @@ export class MarqueComponent implements OnInit {
           if (this.logo) this.uploadFile(form);
           else this.searchMarque();
           this.message = "La marque est modifiée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -94,7 +94,7 @@ export class MarqueComponent implements OnInit {
     this.vehiculeMarqueService.delete(id).subscribe(res => {
       this.searchMarque();
       this.message = "La marque est supprimée avec succès !";
-      this.globalFunctions.closeModal();
+      this.globale.closeModal();
     },
     error => {
       if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);

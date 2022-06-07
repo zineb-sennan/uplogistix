@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GeoLocalisationService } from '../../_services/geolocalisation.service';
 import { Location } from '@angular/common';
+import { SecuriteClass } from 'src/app/_globale/securite';
 
 @Component({
   selector: 'app-geozones',
@@ -14,7 +15,8 @@ export class GeozonesComponent implements OnInit {
 
   constructor(
     private _location: Location,
-    private geoService: GeoLocalisationService
+    private geoService: GeoLocalisationService,
+    private securiteClass:SecuriteClass
   ) { }
 
   ngOnInit(): void {
@@ -22,7 +24,11 @@ export class GeozonesComponent implements OnInit {
   }
 
   getZones() {
-    this.geoService.getAllZones().subscribe(result => this.zones = result);
+    this.geoService.getAllZones().subscribe(
+      result => this.zones = result,
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getZones();
+      });
   }
 
   currZone(id: number) {
@@ -30,7 +36,11 @@ export class GeozonesComponent implements OnInit {
   }
 
   deleteZone() {
-    this.geoService.deleteZoneById(this.currId).subscribe(result => this.getZones());
+    this.geoService.deleteZoneById(this.currId).subscribe(
+      result => this.getZones(),
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.deleteZone();
+      });
   }
 
   fermer() {

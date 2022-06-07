@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EcoconduitRoutingModule } from './ecoconduit-routing.module';
 import { FormsModule } from '@angular/forms';
-import { AnalyseVehiculeModule } from './analyse-vehicule/analyse-vehicule.module';
 import { ConducteursModule } from './conducteurs/conducteurs.module';
+import { VehiculesModule } from './vehicules/vehicules.module';
 
 
 @NgModule({
@@ -12,7 +12,7 @@ import { ConducteursModule } from './conducteurs/conducteurs.module';
     DashboardComponent
   ],
   imports: [
-    AnalyseVehiculeModule,
+    VehiculesModule,
     ConducteursModule,
     CommonModule,
     EcoconduitRoutingModule,

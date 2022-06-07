@@ -8,7 +8,7 @@ import { VehiculeDocumentService } from '../../../_services/vehicule-document.se
 import { VehiculeMarqueService } from '../../../_services/vehicule-marque.service';
 import { AuthService } from '../../../_services/auth.service';
 import { VehiculeCategorieService } from '../../../_services/vehicule-categorie.service';
-import { GlobalFunctions } from '../../../_globale/global-functions';
+import { Globale } from '../../../_globale/globale';
 import { SecuriteClass } from '../../../_globale/securite';
 
 @Component({
@@ -39,7 +39,7 @@ export class EditComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    private globalFunctions:GlobalFunctions,
+    private globale:Globale,
     private vehiculeGroupeService: VehiculeGroupeService,
     private vehiculeModeleService: VehiculeModeleService,
     private vehiculeService: VehiculeService,
@@ -47,8 +47,7 @@ export class EditComponent implements OnInit {
     private vehiculeMarqueService:VehiculeMarqueService,
     private vehiculeCategorieService:VehiculeCategorieService,
     private location: Location,
-    private activatedRoute: ActivatedRoute,
-    private authService: AuthService
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {

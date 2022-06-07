@@ -1,8 +1,8 @@
-nav {
+/* nav {
     background-color: #fff;
     border-color: #e6ebee;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
+} */
 
 nav ul li a {
     color: #12263f;
@@ -24,11 +24,34 @@ img.navbar-brand-img.mx-auto {
 
 .sidepanel-footers{
     width: 100%;
-    background-color: #fff;
     bottom:0;
     left:0;
 }
 
 .ml-19{
     padding-left: 10px !important;
+}
+
+nav{
+    background-image: url(https://html.design/demo/pluto/images/layout_img/pattern_h.png);
+   box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+
+nav::after{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    background: linear-gradient(135deg, #fff 0%, #fff 100%);
+    opacity: .4;
+    z-index: -1;
+}
+
+a.navbar-brand{
+    border-radius: 5px;
+    padding: 10px 5px !important;
+    margin-bottom: 23px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }

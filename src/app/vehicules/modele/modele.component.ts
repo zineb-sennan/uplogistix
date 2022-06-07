@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { VehiculeCategorieService } from '../../_services/vehicule-categorie.service';
 import { VehiculeMarqueService } from '../../_services/vehicule-marque.service';
 import { VehiculeModeleService } from '../../_services/vehicule-modele.service';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 import { SecuriteClass } from '../../_globale/securite';
 
 @Component({
@@ -19,7 +19,7 @@ export class ModeleComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    private globalFunctions:GlobalFunctions,
+    private globale:Globale,
     private vehiculeModeleService: VehiculeModeleService,
     private vehiculeMarqueService: VehiculeMarqueService,
     private vehiculeCategorieService: VehiculeCategorieService,
@@ -76,7 +76,7 @@ export class ModeleComponent implements OnInit {
         res => {
           this.getAllModeles(this.singleModele.marque_id);
           this.message = "Le modele est ajouté avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -85,7 +85,7 @@ export class ModeleComponent implements OnInit {
       this.vehiculeModeleService.update(form).subscribe(res => {
         this.getAllModeles(this.singleModele.marque_id);
         this.message = "Le modele est modifié avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -97,7 +97,7 @@ export class ModeleComponent implements OnInit {
     this.vehiculeModeleService.delete(id).subscribe(res => {
       this.getAllModeles(this.singleModele.marque_id);
       this.message = "Le modele est supprimé avec succès !";
-      this.globalFunctions.closeModal();
+      this.globale.closeModal();
     },
     error => {
       if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);

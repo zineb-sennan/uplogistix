@@ -7,7 +7,7 @@ import { PaysService } from '../../../_services/pays.service';
 import { RegionsService } from '../../../_services/regions.service';
 import { VillesService } from '../../../_services/villes.service';
 import { SecuriteClass } from '../../../_globale/securite';
-import { GlobalFunctions } from '../../../_globale/global-functions';
+import { Globale } from '../../../_globale/globale';
 import * as $ from 'jquery';
 
 
@@ -33,7 +33,7 @@ export class EditComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private paysService: PaysService,
     private regionsService: RegionsService,
     private villesService: VillesService,
@@ -75,8 +75,7 @@ export class EditComponent implements OnInit {
     },
     error => {
       if(error.status==401 && this.securiteClass.refreshToken()) this.getInfosClientById(id);
-    }
-    );
+    });
   }
 
   getAllPays() {
@@ -153,7 +152,7 @@ export class EditComponent implements OnInit {
               if(error.error.tel_double)  $('#error_tel_mobile').text("Ce téléphone mobile est déjà existé."); 
               else $('#error_tel_mobile').text('');
               //email
-              if(error.error.email_doubles) $('#error_email').text("Cette adresse email est déjà existée.");
+              if(error.error.email_doubles) $('#error_email').text("Cette adresse e-mail est déjà existée.");
               else $('#error_email').text('');
             }
           }
@@ -192,7 +191,7 @@ export class EditComponent implements OnInit {
       this.clientService.createContact(form).subscribe(res=>{
         this.getContcatsByClientId(this.singleClient.id);
         this.message="Le contact est ajouté avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error=>{
         if(error.status==401 && this.securiteClass.refreshToken()) this.updateContact(form);
@@ -203,7 +202,7 @@ export class EditComponent implements OnInit {
         res=>{
           this.getContcatsByClientId(this.singleClient.id);
           this.message="Le contact est modifié avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error=>{
           if(error.status==401 && this.securiteClass.refreshToken()) this.updateContact(form);
@@ -216,11 +215,11 @@ export class EditComponent implements OnInit {
       res=>{
         this.getContcatsByClientId(this.singleClient.id);
         this.message="Le contact est supprimé avec succès !";
-        this.globalFunctions.closeModal();
-    },
-    error=>{
-      if(error.status==401 && this.securiteClass.refreshToken()) this.deleteContact(id);
-    })
+        this.globale.closeModal();
+      },
+      error=>{
+        if(error.status==401 && this.securiteClass.refreshToken()) this.deleteContact(id);
+      })
   }
 
   setContact(data: any){

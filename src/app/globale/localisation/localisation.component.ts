@@ -4,7 +4,7 @@ import { RegionsService } from '../../_services/regions.service';
 import { VillesService } from '../../_services/villes.service';
 import { AuthService } from '../../_services/auth.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 
 @Component({
   selector: 'app-localisation',
@@ -30,11 +30,10 @@ export class LocalisationComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private paysService: PaysService,
     private regionsService: RegionsService,
-    private villesService: VillesService,
-    private authService: AuthService
+    private villesService: VillesService
   ) { }
 
   ngOnInit(): void {
@@ -133,7 +132,7 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getAllPays();
           this.message = "Le pays est ajouté avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.updatePays(form);
@@ -143,7 +142,7 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getAllPays();
           this.message = "Le pays est modifié avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.updatePays(form);
@@ -157,7 +156,7 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getRegionsByPays(form.pays_id);
           this.message = "La région est ajoutée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.updateRegion(form);
@@ -168,7 +167,7 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getRegionsByPays(form.pays_id);
           this.message = "La région est modifiée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.updateRegion(form);
@@ -182,7 +181,7 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getVillesByRegion(form.region_id);
           this.message = "La ville est ajoutée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.updateVille(form);
@@ -193,7 +192,7 @@ export class LocalisationComponent implements OnInit {
         res => {
           this.getVillesByRegion(form.region_id);
           this.message = "La ville est modifiée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.updateVille(form);
@@ -212,7 +211,7 @@ export class LocalisationComponent implements OnInit {
       res => {
         this.getAllPays();
         this.message = "Le pays est supprimé avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.deletePays(id);
@@ -224,7 +223,7 @@ export class LocalisationComponent implements OnInit {
       res => {
         this.getRegionsByPays(this.singleRegion.pays_id);
         this.message = "La region est supprimée avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.deleteRegion(id);
       })
@@ -235,7 +234,7 @@ export class LocalisationComponent implements OnInit {
       res => {
         this.getVillesByRegion(this.singleVille.region_id);
         this.message = "La ville est supprimée avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
     },
     error => {
       if(error.status==401 && this.securiteClass.refreshToken()) this.deleteVille(id);

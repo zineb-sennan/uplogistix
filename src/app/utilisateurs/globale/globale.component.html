@@ -6,7 +6,7 @@
                 Administration
             </h6>
             <h2 class="header-title">
-                List des utilisateurs
+                Gestion des utilisateurs
             </h2>
         </div>
     </div>
@@ -120,7 +120,7 @@
                                         <div class="form-group">
                                             <label for="nom" class="form-label">
                                                 Nom
-                                                <strong class="text-danger" **ngIf="!singleUtilisateur.nom">*</strong>
+                                                <strong class="text-danger" *ngIf="!singleUtilisateur.nom">*</strong>
                                             </label>
                                             <input type="text" class="form-control form-control-sm" placeholder="Nom"
                                                 [(ngModel)]="singleUtilisateur.nom" name="nom">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GeoLocalisationService } from '../../_services/geolocalisation.service';
 import 'leaflet';
 import 'leaflet-routing-machine';
+import { SecuriteClass } from 'src/app/_globale/securite';
 
 declare var L: any;
 
@@ -23,7 +24,8 @@ export class HistoriqueComponent implements OnInit {
   vehicule: any = {};
 
   constructor(
-    private geoLocalisationService: GeoLocalisationService
+    private geoLocalisationService: GeoLocalisationService,
+    private securiteClass:SecuriteClass
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,9 @@ export class HistoriqueComponent implements OnInit {
       result => {
         this.positions = result['records'];
         this.initMap(33.9727213, -6.8867775, 10);
+      },
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getTrajetDetails(id);
       });
   }
 
@@ -51,12 +56,20 @@ export class HistoriqueComponent implements OnInit {
       result => {
         const vehiculesWithGPS = result.filter(v => v.balise === 1);
         this.vehicules = vehiculesWithGPS;
+      },
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
       });
   }
 
   recherche(form: any) {
     this.vehicule = this.vehicules.find((v: any) => v.id == form.vehicule);
-    this.geoLocalisationService.getHistorique(form.vehicule, form.date_debut, form.date_fin).subscribe(result => this.historique = result);
+    this.geoLocalisationService.getHistorique(form.vehicule, form.date_debut, form.date_fin).subscribe(
+      result => this.historique = result,
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.recherche(form);
+      }
+    );
   }
 
   private async initMap(lat: number, lon: number, zoom: number) {

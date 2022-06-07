@@ -5,7 +5,7 @@ import { VehiculeHistoriqueCompteurService } from '../../_services/vehicule-hist
 import { VehiculeService } from '../../_services/vehicule.service';
 import { EcoconduiteService } from '../../_services/ecoconduite.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 import * as $ from 'jquery';
 
 @Component({
@@ -17,7 +17,7 @@ export class HistoriqueCompteurComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    private globalFunctions:GlobalFunctions,
+    private globale:Globale,
     private activatedRoute: ActivatedRoute,
     private vehiculeHistoriqueCompteurService:VehiculeHistoriqueCompteurService,
     private vehiculeService: VehiculeService,
@@ -90,7 +90,7 @@ export class HistoriqueCompteurComponent implements OnInit {
         res => {
           this.searchCompteurs(null);
           this.message = "Le carburant est ajouté avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -100,7 +100,7 @@ export class HistoriqueCompteurComponent implements OnInit {
         res => {
           this.searchCompteurs(null);
           this.message = "Le carburant est modifié avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -113,7 +113,7 @@ export class HistoriqueCompteurComponent implements OnInit {
       res => {
         this.searchCompteurs(null);
         this.message = "Le carburant est supprimé avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);

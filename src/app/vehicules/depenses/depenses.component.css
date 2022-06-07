@@ -9,3 +9,9 @@ canvas{ height: 234px!important; }
 
 .form-search{ border: 1px solid #e3ebf6; }
 
+@media (max-width: 767px) { 
+    .graphe-depenses{
+        margin-top: 10px;
+        padding: 0;
+    }
+}

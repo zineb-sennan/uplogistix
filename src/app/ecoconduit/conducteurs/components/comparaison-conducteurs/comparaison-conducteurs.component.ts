@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
+import { SecuriteClass } from 'src/app/_globale/securite';
 import { ConducteurService } from 'src/app/_services/conducteur.service';
 import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
 
@@ -12,21 +13,22 @@ import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
 export class ComparaisonConducteursComponent implements OnInit {
   //
   colors=['56, 95, 158','247, 189, 1', '20, 156, 56', '94, 202, 223'];
-  viewChartPrincipale:any=null; typeFilter='jour'; maxConducteur = 4; maxChart=4;
+  viewChartPrincipale:any=null; typeFilter='jour'; maxConducteur = 4; maxChart=5;
   conducteurs: any[] = []; conducteursSelected: any[] = []; 
   chartSelected: any = [
     { index: 1, checked:true, libelle: 'Acceleration brusque', slug:'acceleration-brusque', data: [] },
     { index: 2, checked:true, libelle: 'Freinage brusque', slug:'freinage-brusque', data: [] },
     { index: 3, checked:true, libelle: 'Comportement excessif', slug:'comportement-excessif', data: [] },
-    { index: 4, checked:true, libelle: 'Temps de conduite', slug:'temps-de-conduite', data: [], last:true },
-    { index: 5, libelle: 'Conduite dangereuse/100km', slug:'conduite-dangereuse', data: [] },
+    { index: 4, checked:true, libelle: 'Temps de conduite', slug:'temps-de-conduite', data: [] },
+    { index: 5, checked:true, libelle: 'Conduite dangereuse/100km', slug:'conduite-dangereuse', data: [], last:true },
     { index: 6, libelle: 'Nbre des excès de vitesse', slug:'Nbre-exces-vitesse', data: [] },
     { index: 7, libelle: 'Emission CO2', slug:'emission-co2', data: [] }
   ];
 
   constructor(
     private conducteurService: ConducteurService,
-    private ecoconduiteService: EcoconduiteService
+    private ecoconduiteService: EcoconduiteService,
+    private securiteClass: SecuriteClass
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,9 @@ export class ComparaisonConducteursComponent implements OnInit {
           this.checkConducteurs(null,this.conducteurs[index]);
           this.conducteurs[index].checked=true;
         }
+      },
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getConducteurs();
       }
     )
   }
@@ -121,6 +126,9 @@ export class ComparaisonConducteursComponent implements OnInit {
       //02
       this.chartSelected[indexChart-1].data.push({ values:_data, nom_complet:conducteur.nom+' '+conducteur.prenom, color:conducteur.color });
       this.createChart(index, _data, conducteur, Math.max(..._data.map((d:any)=> d.y)));
+    },
+    error => {
+      if(error.status==401 && this.securiteClass.refreshToken()) this.getInformationsConducteur(conducteur, index, indexChart);
     });
   }
 

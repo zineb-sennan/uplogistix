@@ -7,3 +7,25 @@ strong.text-muted{
     font-weight: 100;
     margin-right: 30px;
 }
+
+@media (max-width: 1200px) { 
+    .btn-ajouter{
+        font-size: 12px;
+    }
+}
+
+/* *** *** phone *** *** */
+@media (max-width: 760px) { 
+    strong.info-vehicule{
+        width: 100%;
+        display: block;
+    }
+
+    label{
+        font-size: 13px;
+    }
+    
+    .form-search .col-md-4{
+        height: 70px;
+    }
+}

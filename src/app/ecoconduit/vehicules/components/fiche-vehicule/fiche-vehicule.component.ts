@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-fiche-vehicule',
@@ -7,12 +6,12 @@ import * as $ from 'jquery';
   styleUrls: ['./fiche-vehicule.component.css']
 })
 export class FicheVehiculeComponent implements OnInit {
+  //
   typeFilter='jour';
 
   constructor() { }
 
   ngOnInit(): void {
-
   }
 
 }

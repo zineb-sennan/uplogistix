@@ -12,29 +12,32 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <!--strong class="text-muted">
-                    Max vehicules <span class="badge rounded-pill bg-secondary-soft">{{infosVehicule.total_vehicules}}</span>
-                </strong-->
-                <strong class="text-muted">
-                    Nombre total des véhicules <span
-                        class="badge rounded-pill bg-secondary-soft">{{vehicules.total_records}}</span>
-                </strong>
-                <strong class="text-muted">
-                    Équipés en GPS <span
-                        class="badge rounded-pill bg-secondary-soft">{{infosVehicule.nombre_GPS}}</span>
-                </strong>
-                <strong class="text-muted">
-                    Équipé en GPS et Eco-conduite <span
-                        class="badge rounded-pill bg-secondary-soft">{{infosVehicule.total_GPS_active}}</span>
-                </strong>
-                <strong class="text-muted">
-                    Non équipés en GPS <span
-                        class="badge rounded-pill bg-secondary-soft">{{infosVehicule.Total_GPS_inactive}}</span>
-                </strong>
-
-                <a [routerLink]="['/vehicules/edit']" class="btn btn-outline-primary btn-ajouter">
-                    <i class="fa-solid fa-plus"></i>
-                </a><br><br><br>
+                <div class="row mb-3">
+                    <div class="col-md-10">
+                        <strong class="text-muted info-vehicule">
+                            Nombre total des véhicules <span
+                                class="badge rounded-pill bg-secondary-soft">{{vehicules.total_records}}</span>
+                        </strong>
+                        <strong class="text-muted info-vehicule">
+                            Équipés en GPS <span
+                                class="badge rounded-pill bg-secondary-soft">{{infosVehicule.nombre_GPS}}</span>
+                        </strong>
+                        <strong class="text-muted info-vehicule">
+                            Équipé en GPS et Eco-conduite <span
+                                class="badge rounded-pill bg-secondary-soft">{{infosVehicule.total_GPS_active}}</span>
+                        </strong>
+                        <strong class="text-muted info-vehicule">
+                            Non équipés en GPS <span
+                                class="badge rounded-pill bg-secondary-soft">{{infosVehicule.Total_GPS_inactive}}</span>
+                        </strong>
+                    </div>
+                    <div class="col-md-2">
+                        <a [routerLink]="['/vehicules/edit']" class="btn btn-outline-primary btn-ajouter">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                
                 <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchVehicule(searchForm.value)">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -55,7 +58,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="">Marque</label>
+                            <label for="marque_id">Marque</label>
                             <div class="input-group">
                                 <select class="form-select" name="marque_id" [(ngModel)]="search.marque_id">
                                     <option value=''>Tous</option>
@@ -82,9 +85,6 @@
                                     <th>Catégorie</th>
                                     <th>Groupe</th>
                                     <th>Compteur actuel</th>
-                                    <!--th>Énergie</th>
-                                    <th>Boite à vitesse</th>
-                                    <th>Puissance CV</th-->
                                     <th>Mise en circulation</th>
                                     <th>Source</th>
                                     <th class="text-center">Options</th>
@@ -97,11 +97,7 @@
                                     <td class="categorie">{{vehicule.categorie}}</td>
                                     <td class="groupe"> {{vehicule.groupe}} </td>
                                     <td class="compteur-actuel">{{vehicule.compteur}}</td>
-                                    <!--td class="energie"> {{vehicule.energie}} </td>
-                                    <td class="boite_vitesse"> {{vehicule.boite_vitesse}} </td>
-                                    <td class="puissance_cv"> {{vehicule.puissance_cv}} </td-->
-                                    <td class="mise_en_circulation"> {{vehicule.mise_en_circulation |
-                                        date:"dd/MM/yyyy"}} </td>
+                                    <td class="mise_en_circulation"> {{vehicule.mise_en_circulation | date:"dd/MM/yyyy"}} </td>
                                     <td class="type_saisie" style="font-size: 16px;">
                                         <i class="fa-solid fa-satellite-dish text-primary"
                                             *ngIf="vehicule.balise"></i>&nbsp;

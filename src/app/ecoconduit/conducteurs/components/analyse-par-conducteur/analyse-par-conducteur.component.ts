@@ -57,8 +57,9 @@ export class AnalyseParConducteurComponent implements OnInit {
               (Math.floor(Math.random() * (100 - 0 + 1)) + 0)
             ],
             label:"Référencements",
-            backgroundColor: 'rgba(221, 4, 23, 1)',
-            borderColor: 'rgba(221, 4, 23, 0.3)'
+            backgroundColor: 'rgba(168, 175, 183, 1)',
+            borderColor: 'rgb(168, 175, 183)',
+            borderDash: [3, 5]
           }
         ],
         labels:["Jan", "Feb", "Mar", "Apr", "May", "Jun"]

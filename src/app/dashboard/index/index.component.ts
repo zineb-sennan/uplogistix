@@ -188,11 +188,11 @@ export class IndexComponent implements OnInit {
                 'rgb(165, 197, 246)',
                 'rgb(210, 222, 236)'
               ],
-              hoverOffset: 4
+              hoverOffset: 5
           }],
       },
       options:{
-        cutout: 60,
+        cutout: '85%',
         maintainAspectRatio:false,
         plugins: {
           legend: { position: 'left' }

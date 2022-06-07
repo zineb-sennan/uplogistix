@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardUser } from '../_helpers/auth-guard-user';
-import { GlobaleComponent } from './analyse-vehicule/globale/globale.component';
 import { GlobaleConducteurComponent } from './conducteurs/globale-conducteur/globale-conducteur.component';
+import { GlobaleVehiculeComponent } from './vehicules/globale-vehicule/globale-vehicule.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
@@ -19,7 +19,7 @@ const routes: Routes = [
       },
       {
         path: 'analyse-vehicule',
-        component: GlobaleComponent,
+        component: GlobaleVehiculeComponent,
         canActivate: [AuthGuardUser],
         data: {
           title: 'analyse des véhicules'

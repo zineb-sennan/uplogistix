@@ -6,7 +6,7 @@ import { RolePermissionsService } from '../../../_services/role-permissions.serv
 import { PermissionsService } from '../../../_services/permissions.service';
 import { AuthService } from '../../../_services/auth.service';
 import { SecuriteClass } from '../../../_globale/securite';
-import { GlobalFunctions } from '../../../_globale/global-functions';
+import { Globale } from '../../../_globale/globale';
 import * as $ from 'jquery';
 
 @Component({
@@ -22,7 +22,7 @@ export class RolePermissionsComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private rolesService: RolesService,
     private rolePermissionsService: RolePermissionsService,
     private activatedRoute: ActivatedRoute,
@@ -91,7 +91,7 @@ export class RolePermissionsComponent implements OnInit {
       res => {
         this.getAllRolePermissions(role_id);
         this.getAllPermissions();
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if (error.status == 401 && this.securiteClass.refreshToken()) this.deleteRolePermission(role_id, permission_id);
@@ -149,7 +149,7 @@ export class RolePermissionsComponent implements OnInit {
       } 
     });
 
-    this.globalFunctions.closeModal();
+    this.globale.closeModal();
   }
 
   filterPermissions() {

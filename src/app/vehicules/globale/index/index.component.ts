@@ -78,8 +78,10 @@ export class IndexComponent implements OnInit {
       res =>{
         this.vehicules = res;
         const vehicules = this.vehicules['records'];
-        vehicules.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : null);
+        vehicules.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : v.compteur_initial);
         this.vehicules['records'] = vehicules;
+        //
+        console.log(' *** ',this.vehicules);
       },
       error => {
         if (error.status == 401 && this.refreshToken()) this.searchVehicule(form);
@@ -109,7 +111,7 @@ export class IndexComponent implements OnInit {
     this.vehiculeService.getAllByPage(page).subscribe(res => {
       this.vehicules = res;
       const vehicules = this.vehicules['records'];
-      vehicules.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : null);
+      vehicules.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : v.compteur_initial);
       this.vehicules['records'] = vehicules;
     })
   }

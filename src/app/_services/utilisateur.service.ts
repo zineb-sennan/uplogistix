@@ -32,4 +32,8 @@ export class UtilisateurService {
   changePassword(record:any){
     return this.http.post(environment.apiURL + '/login/password', record)
   }
+
+  forgetPwd(record: any){
+    return this.http.post<any>(environment.apiURL + '/login/forget-password', record)
+  }
 }

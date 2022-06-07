@@ -5,7 +5,7 @@ import { Chart, registerables } from 'chart.js';
 import { VehiculeCarburantService } from '../../_services/vehicule-carburant.service';
 import { VehiculeService } from '../../_services/vehicule.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 import * as $ from 'jquery';
 
 @Component({
@@ -17,7 +17,7 @@ export class CarburantComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private vehiculeCarburantService: VehiculeCarburantService,
     private vehiculeService: VehiculeService,
     private activatedRoute: ActivatedRoute,
@@ -29,20 +29,22 @@ export class CarburantComponent implements OnInit {
   carburants: any = []; vehicules: any = [];
   singleCarburant: any = { id: null, vehicule_id: null, qte: 0, prix: 0 };
   search: any = {
-    vehicule_id: '',
+    vehicule_id: null,
     date_debut: this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-01',
     date_fin: this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.date.getDate() + 1)).slice(-2) 
   }
 
   ngOnInit(): void {
+    //01
     Chart.register(...registerables);
-
-    this.activatedRoute.params.subscribe(param => {
-      this.page = param['page'];
-      if (this.page) {
-        this.getAllVehicule();
-        this.searchCarburant(this.search);
-      }
+    //02
+    this.activatedRoute.params.subscribe(
+      param => {
+        this.page = param['page'];
+        if (this.page) {
+          this.getAllVehicule();
+          this.searchCarburant(this.search);
+        }
     });
   }
 
@@ -62,10 +64,11 @@ export class CarburantComponent implements OnInit {
   }
 
   setCarburant(carburant: any) {
+    //01
     this.message = null;
     this.singleCarburant = carburant;
     this.search.vehicule_id = carburant.vehicule_id;
-
+    //02
     this.vehiculeCarburantService.getCarburant(carburant.id).subscribe(
       res=> this.singleCarburant = res,
       error => {
@@ -80,7 +83,7 @@ export class CarburantComponent implements OnInit {
         res => {
           this.searchCarburant(this.search);
           this.message = "Le carburant est ajouté avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -90,7 +93,7 @@ export class CarburantComponent implements OnInit {
         res => {
           this.searchCarburant(this.search);
           this.message = "Le carburant est modifié avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -103,7 +106,7 @@ export class CarburantComponent implements OnInit {
       res => {
         this.searchCarburant(this.search);
         this.message = "Le carburant est supprimé avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
@@ -134,9 +137,10 @@ export class CarburantComponent implements OnInit {
  
   myChart:any=null;
   chartEvolutionCarburant(data:any, labels:any){
+    //01
     let chart:any=$('#chart-carburants');
     if(this.myChart) this.myChart.destroy();
-
+    //02
     this.myChart = new Chart(chart,{
       type:'line',
       data:{

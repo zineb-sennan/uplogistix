@@ -13,7 +13,6 @@
     <div class="container-fluid">
         <!-- *** Ligne 1 *** -->
         <div class="row">
-            <!-- <h4 class="card-header-title"> Lorem Ipsum </h4> -->
             <!-- card 1 -->
             <div class="card card-l">
                 <div class="card-body">
@@ -62,7 +61,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Total de fuel gaspillé (L) </h6>
-                            <span class="h2 mb-0">{{infosGlobaleVehicule.total_fuel_gaspille}}</span>
+                            <span class="h2 mb-0">{{infosGlobaleVehicule.total_fuel_gaspille.toFixed(2)}}</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -84,9 +83,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        <!-- </div> -->
         <!-- *** Ligne 2 *** -->
-        <div class="row">
+        <!-- <div class="row"> -->
             <!-- <h4 class="card-header-title"> Lorem Ipsum </h4> -->
             <!-- card 1 -->
             <div class="card card-l">
@@ -158,79 +157,70 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row vehicules">
-            <!--vehicules-->
-            <div class="col-md-6 shadow-lg bg-white rounded" style="margin-right: 2%;">
-                <div class="header-body ">
-                    <div class="row align-items-end">
-                        <div class="col">
-                            <!-- <h6 class="header-pretitle text-secondary">
-                                Ecoconduit
-                            </h6> -->
-                            <h3 class="header-title">
-                                Analyse véhicules
-                            </h3>
-                        </div>
-                        <div class="col-auto">
-                            <div class="dropdown">
-                                <!-- Toggle -->
-                                <button class="btn btn-sm btn-white" type="button" (click)="show_dropdown_v()">
-                                    More <i class="fa-solid fa-angle-down text-muted mt-2 mb-0"></i>
-                                </button>
-                                <!-- Menu -->
-                                <form class="dropdown-menu dropdown-menu-end dropdown-menu-card dropdown-card-vehicule" [ngClass]="show_dropdown_vehicule ? 'd-block' : 'd-none'">
-                                    <div class="card-header">
-                                        <h4 class="card-header-title">
-                                            Analyse véhicules par :
-                                        </h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <!-- List group -->
-                                        <div class="list-group list-group-flush">
-                                            <div class="list-group-item">
-                                                <ul>
-                                                    <li class="col" (click)="getResumeOfAllehicule('chartVehicule','fuel_consomme')">Total de fuel consommé</li>
-                                                    <li class="col" (click)="getResumeOfAllehicule('chartVehicule','fuel_gaspille')">Total de fuel gaspillé</li>
-                                                    <li class="col" (click)="getResumeOfAllehicule('chartVehicule','distance_conduite')">Distance conduite</li>
-                                                    <li class="col" (click)="getResumeOfAllehicule('chartVehicule','temps_total_conduite')">Temps total de conduite</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </form>
-
+        </div><!-- ./row -->
+        <div class="row">
+            <!-- *** *** vehicules *** *** -->
+            <div class="col-md-6 col-sm-12 rounded">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            <div class="col">
+                                <h3 class="header-title">
+                                    Analyse véhicules
+                                </h3>
                             </div>
-                        </div>
+                            <div class="col-auto">
+                                <div class="dropdown">
+                                    <!-- Toggle -->
+                                    <button class="btn btn-sm btn-white" type="button" (click)="show_dropdown_v()">
+                                        More <i class="fa-solid fa-angle-down text-muted mt-2 mb-0"></i>
+                                    </button>
+                                    <!-- Menu -->
+                                    <form class="dropdown-menu dropdown-menu-end dropdown-menu-card dropdown-card-vehicule" [ngClass]="show_dropdown_vehicule ? 'd-block' : 'd-none'">
+                                        <div class="card-header">
+                                            <h4 class="card-header-title">
+                                                Analyse véhicules par :
+                                            </h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <!-- List group -->
+                                            <div class="list-group list-group-flush">
+                                                <div class="list-group-item">
+                                                    <ul>
+                                                        <li class="col" (click)="getResumeOfAllehicule('chartVehicule','fuel_consomme')">Total de fuel consommé</li>
+                                                        <li class="col" (click)="getResumeOfAllehicule('chartVehicule','fuel_gaspille')">Total de fuel gaspillé</li>
+                                                        <li class="col" (click)="getResumeOfAllehicule('chartVehicule','distance_conduite')">Distance conduite</li>
+                                                        <li class="col" (click)="getResumeOfAllehicule('chartVehicule','temps_total_conduite')">Temps total de conduite</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+    
+                                        </div>
+                                    </form>
+    
+                                </div>
+                            </div>
+                        </h4>
                     </div>
-                    <div class="content">
+                    <div class="card-body">
                         <canvas id="chartVehicule"></canvas>
                     </div>
                 </div>
             </div>
-            <!--conducteurs-->
-            <div class="col-md-6 shadow-lg mr-3 bg-white rounded">
-                <div class="header-body">
-                    <div class="row align-items-end">
+            <!-- *** *** conducteurs *** *** -->
+            <div class="col-md-6 col-sm-12 rounded">
+                <div class="card">
+                    <div class="card-header">
                         <div class="col">
-                            <!-- <h6 class="header-pretitle text-secondary">
-                                Ecoconduit
-                            </h6> -->
                             <h3 class="header-title">
                                 Analyse des conducteurs
                             </h3>
                         </div>
                     </div>
-                    <div class="content">
-                        <br>
-                        <!-- <canvas id="chartConducteur"></canvas> -->
+                    <div class="card-body">
                         <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
                         <div class="text-center">
                             <h1>Pas de donnée</h1>
-                            <!-- <p class="text-muted">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            </p> -->
                         </div>
                     </div>
                 </div>

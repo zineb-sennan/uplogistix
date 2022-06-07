@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
 import { ConducteurService } from '../../_services/conducteur.service';
 import { VehiculeService } from '../../_services/vehicule.service';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 import { SecuriteClass } from '../../_globale/securite';
 
 
@@ -19,7 +19,7 @@ export class GlobaleComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private authService: AuthService,
     private conducteurService: ConducteurService,
     private activatedRoute: ActivatedRoute,
@@ -96,7 +96,7 @@ export class GlobaleComponent implements OnInit {
         res => {
           this.getAllConducteurs();
           this.message = "Le conducteur est ajouté avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if (error.status == 401 && this.securiteClass.refreshToken()) this.update(form);
@@ -105,7 +105,7 @@ export class GlobaleComponent implements OnInit {
       this.conducteurService.update(form).subscribe(res => {
         this.getAllConducteurs();
         this.message = "Le conducteur est modifié avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
         error => {
           if (error.status == 401 && this.securiteClass.refreshToken()) this.update(form);
@@ -118,7 +118,7 @@ export class GlobaleComponent implements OnInit {
       res=>{
         this.getAllConducteurs();
         this.message = "Le conducteur est supprimé avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },error => {
           if (error.status == 401 && this.securiteClass.refreshToken()) this.delete();
       })

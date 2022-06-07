@@ -11,7 +11,7 @@
 <div class="container-fluid">
     <form #dataForm="ngForm" (submit)="recherche(dataForm.value)">
         <div class="row form-search row ng-untouched ng-pristine ng-valid pb-3 mb-2">
-            <div class="col-xs-12 col-sm-6 col-md-2">
+            <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="form-inline">
                     <label for="vehicule">Véhicule :</label>
                     <select class="form-select form-select-sm" ngModel name="vehicule" id="vehicule" required>
@@ -21,7 +21,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-2">
+            <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="form-inline">
                     <label for="date_from">Periode du :</label>
                     <input type="datetime-local" class="form-select form-select-sm"
@@ -29,19 +29,27 @@
                         step="1">
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-2">
-                <div class="form-inline">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="form-group">
                     <label for="date_to">Au :</label>
-                    <input type="datetime-local" class="form-select form-select-sm"
-                        [ngModel]="date_fin | date: 'yyyy-MM-ddTHH:mm:ss.SSS'" name="date_fin" id="date_to">
-                </div>
+                    <div class="input-group  mb-3 input-group-sm">
+                        <input type="datetime-local" class="form-select form-select-sm"
+                            [ngModel]="date_fin | date: 'yyyy-MM-ddTHH:mm:ss.SSS'" name="date_fin" id="date_to">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-primary"
+                                [disabled]="dataForm.value.vehicule < 1" style="margin-left: 12px; padding: 0px 8px;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div> <!-- form-group -->
             </div>
-            <div class="col-md-4"></div>
-            <div class="col-xs-12 col-sm-6 col-md-2">
+
+            <!--div class="col-xs-12 col-sm-6 col-md-2">
                 <br>
                 <input type="submit" class="btn btn-sm btn-outline-primary" value="Recherche" style="width: 100%"
                     [disabled]="dataForm.value.vehicule < 1">
-            </div>
+            </div-->
         </div>
     </form>
 
@@ -51,7 +59,8 @@
             <div [ngClass]="item.genre == 'trip' ? 'title2' : 'title'">
                 <h3>{{ item.genre == 'trip' ? 'Début de trajet' : 'Arrêt'}}</h3>
                 <p>{{item.depart_heure | date: 'dd/MM/yyyy HH:mm:ss'}}</p>
-                <a href="#" *ngIf="item.genre == 'trip'" data-bs-toggle="modal" data-bs-target="#showMap" (click)="getTrajetDetails(item.arrive_id)">
+                <a href="#" *ngIf="item.genre == 'trip'" data-bs-toggle="modal" data-bs-target="#showMap"
+                    (click)="getTrajetDetails(item.arrive_id)">
                     <img src="assets/img/trip_map.png" height="40">
                 </a>
             </div>

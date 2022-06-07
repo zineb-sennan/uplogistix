@@ -1,28 +1,46 @@
-<div class="container-fluid">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-5 col-lg-6 col-xl-4 px-lg-6 my-5 align-self-center">
-      <h1 class="display-4 text-center mb-3">Réinitialisation du mot de passe</h1>
-      <p class="text-muted text-center mb-5">
-        Entrez votre e-mail pour obtenir un lien de réinitialisation du mot de passe.
-      </p>
-      <form>
-        <div class="form-group">
-          <label class="form-label"> Email Address </label>
-          <input type="email" class="form-control" placeholder="name@address.com">
-        </div>
-        <button class="btn btn-lg w-100 btn-primary mb-3">
-          Réinitialiser le mot de passe
-        </button>
-        <div class="text-center">
-          <small class="text-muted text-center">
-            N'oubliez pas votre mot de passe? <a [routerLink]="['/login']">Connexion</a>.
-          </small>
-        </div>
-      </form>
-    </div>
-    <div class="col-12 col-md-7 col-lg-6 col-xl-8 d-none d-lg-block">
-      <div class="bg-cover h-100 min-vh-100 mt-n1 me-n3"
-        style="background-image: url(assets/img/covers/auth-side-cover.jpg)"></div>
-    </div>
-  </div> <!-- / .row -->
-</div>
+<section>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-5 col-lg-6 col-xl-4 px-lg-6 my-5 align-self-center">
+        <h1 class="display-4 text-center mb-3">Réinitialisation du mot de passe</h1>
+        <p class="text-muted text-center mb-5">
+          Entrez votre e-mail pour obtenir un lien de réinitialisation du mot de passe.
+        </p>
+
+
+        <form #forgetPwdForm="ngForm" (ngSubmit)="forgetPwd(forgetPwdForm.value)">
+
+          {{res.expiration | date: "dd/MM/yyyy HH:mm:ss"}}
+
+          <div class="form-group" [ngClass]="{'d-none': res.expiration}">
+            <label class="form-label">E-mail / téléphone</label>
+            <input type="text" class="form-control" [(ngModel)]="infosPwd.user" name="user">
+            <small class="form-text text-danger" *ngIf="message">{{message}}</small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Code de verification</label>
+            <input type="text" class="form-control" [(ngModel)]="infosPwd.verification" name="verification">
+            <small class="form-text text-danger" *ngIf="message">{{message}}</small>
+          </div>
+
+
+          <button type="submit" class="btn btn-lg w-100 btn-primary mb-3">
+            Réinitialiser le mot de passe
+          </button>
+          <div class="text-center">
+            <small class="text-muted text-center">
+              N'oubliez pas votre mot de passe? <a [routerLink]="['/login']">Connexion</a>.
+            </small>
+          </div>
+        </form>
+
+
+      </div>
+      <div class="col-12 col-md-7 col-lg-6 col-xl-8 d-none d-lg-block">
+        <div class="bg-cover h-100 min-vh-100 mt-n1 me-n3"
+          style="background-image: url(assets/img/covers/auth-side-cover.jpg)"></div>
+      </div>
+    </div> <!-- / .row -->
+  </div>
+</section>

@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 
 import * as L from 'leaflet';
 import 'leaflet-draw';
+import { SecuriteClass } from 'src/app/_globale/securite';
 
 @Component({
   selector: 'app-geozone-edit',
@@ -33,7 +34,8 @@ export class GeozoneEditComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private _location: Location,
-    private geoService: GeoLocalisationService
+    private geoService: GeoLocalisationService,
+    private securiteClass:SecuriteClass
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +54,9 @@ export class GeozoneEditComponent implements OnInit {
         this.zone = result;
         this.zone.coords = this.zone.coords ? JSON.parse(this.zone.coords) : null;
         this.initMap(33.9727213, -6.8867775, 6);
+      },
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getZoneById(id);
       });
   }
 

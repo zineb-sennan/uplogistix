@@ -13,3 +13,10 @@ form {
 .border_red{
     border: 1px solid red;
 }
+
+
+/* @media (max-width: 510px){
+    form button, form button {
+        width: 100%;
+    }
+} */

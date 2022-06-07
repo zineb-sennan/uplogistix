@@ -5,7 +5,7 @@ import { EcoconduiteService } from '../../_services/ecoconduite.service';
 import { VehiculeService } from '../../_services/vehicule.service';
 import { GeoLocalisationService } from '../../_services/geolocalisation.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 import * as $ from 'jquery';
 import * as L from 'leaflet';
 
@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    private globalFunctions:GlobalFunctions,
+    private globale:Globale,
     private vehiculeService:VehiculeService,
     private activatedRoute: ActivatedRoute,
     private ecoconduiteService:EcoconduiteService,

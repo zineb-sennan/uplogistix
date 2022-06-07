@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 import { SecuriteClass } from '../../_globale/securite';
-import { AuthService } from '../../_services/auth.service';
 import { BaliseService } from '../../_services/balise.service';
 
 @Component({
@@ -15,9 +14,8 @@ export class InformationsComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
-    private baliseService:BaliseService,
-    private authService:AuthService
+    public globale:Globale,
+    private baliseService:BaliseService
   ) { }
 
 

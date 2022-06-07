@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilisateurService } from '../../../_services/utilisateur.service';
 import { TokenService } from '../../../_services/token.service';
+import { Globale } from '../../../_globale/globale';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,7 +12,8 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private tokenService: TokenService,
-    private utilisateurService:UtilisateurService
+    private utilisateurService:UtilisateurService,
+    private globale:Globale
   ) { }
 
   isAdmin:boolean=false; idUtilisateur=0; permissions:any=[];
@@ -22,6 +24,7 @@ export class SidebarComponent implements OnInit {
     //01
     const utilsateur$ = await this.utilisateurService.getUtilisateur(payload.id).toPromise();
     this.permissions=utilsateur$.permissions;
+
   }
 
   permissionExiste(slug: any){

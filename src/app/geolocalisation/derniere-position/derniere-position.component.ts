@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GeoLocalisationService } from '../../_services/geolocalisation.service';
 import * as L from 'leaflet';
+import { SecuriteClass } from 'src/app/_globale/securite';
 
 @Component({
   selector: 'app-derniere-position',
@@ -19,7 +20,8 @@ export class DernierePositionComponent implements OnInit {
   currDate: any = new Date();
 
   constructor(
-    private geoLocalisationService: GeoLocalisationService
+    private geoLocalisationService: GeoLocalisationService,
+    private securiteClass:SecuriteClass
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +34,9 @@ export class DernierePositionComponent implements OnInit {
       result => {
         this.positions = result;
         this.initMap(33.9727213, -6.8867775, 5);
+      },
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getPositions(vehicule_id, group_id);
       });
   }
 
@@ -45,6 +50,9 @@ export class DernierePositionComponent implements OnInit {
       result => {
         const vehiculesWithGPS = result.filter(v => v.balise === 1);
         this.vehicules = vehiculesWithGPS;
+      },
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
       });
   }
 

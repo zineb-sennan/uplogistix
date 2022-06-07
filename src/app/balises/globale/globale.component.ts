@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BaliseService } from '../../_services/balise.service';
 import { ClientService } from '../../_services/client.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 
 @Component({
   selector: 'app-globale',
@@ -19,7 +19,7 @@ export class GlobaleComponent implements OnInit {
     private baliseService:BaliseService,
     private clientService:ClientService,
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
   ) { }
 
   ngOnInit(): void {
@@ -65,7 +65,7 @@ export class GlobaleComponent implements OnInit {
       this.baliseService.create(form).subscribe(res => {
         this.getAllBalise();
         this.message = "La balise est ajoutée avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -74,7 +74,7 @@ export class GlobaleComponent implements OnInit {
       this.baliseService.update(form).subscribe(res => {
         this.getAllBalise();
         this.message = "La balise est modifiée avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -86,7 +86,7 @@ export class GlobaleComponent implements OnInit {
     this.baliseService.delete(id).subscribe(res => {
       this.getAllBalise();
       this.message = "La balise est supprimée avec succès !";
-      this.globalFunctions.closeModal();
+      this.globale.closeModal();
     },
     error => {
       if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);

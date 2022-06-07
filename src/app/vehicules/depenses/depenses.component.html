@@ -2,7 +2,7 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">Véhicules</h6>
-            <h2 class="header-title">Liste des dépenses</h2>
+            <h2 class="header-title">Gestion des dépenses</h2>
         </div>
     </div><!-- fin titre -->
     <div class="container-fluid mb-5">
@@ -38,50 +38,39 @@
                         <i class="fa-solid fa-plus"></i>
                     </button><br><br><br>
                     <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchDepenses(searchForm.value)">
-                        <!-- <div class="row">
-                            <div class="col-md-11">
-                                <div class="row"> -->
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="titre">Véhicules</label>
-                                            <select class="form-select" [(ngModel)]="search.vehicule_id"
-                                                name="vehicule_id">
-                                                <option value=''>Tous</option>
-                                                <option *ngFor="let vehicule of vehicules" value="{{vehicule.id}}">
-                                                    {{vehicule.matricule}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="date_debut">Date début</label>
-                                            <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
-                                                class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="date_fin">Date fin</label>
-                                            <div class="input-group">
-                                                <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
-                                                class="form-control">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-outline-primary" style="margin-left: 12px;">
-                                                        <i class="fas fa-search"></i>
-                                                    </button>
-                                                 </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                <!-- </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="titre">Véhicules</label>
+                                <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
+                                    <option value=''>Tous</option>
+                                    <option *ngFor="let vehicule of vehicules" value="{{vehicule.id}}">
+                                        {{vehicule.matricule}}</option>
+                                </select>
                             </div>
-                            <div class="col-md-1">
-                                <button type="submit" class="btn btn-primary btn-search">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div> 
-                        </div>-->
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="date_debut">Date début</label>
+                                <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="date_fin">Date fin</label>
+                                <div class="input-group">
+                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
+                                        class="form-control">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-outline-primary"
+                                            style="margin-left: 12px;">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </form>
                     <div class="table-responsive row">
                         <table class="table table-sm table-nowrap card-table">
@@ -187,7 +176,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-12 col-xl-8">
+                        <div class="col-md-8 graphe-depenses">
                             <div class="card" [ngClass]="{'d-none':!myChart}">
                                 <div class="card-body">
                                     <canvas id="chart-depenses"></canvas>
@@ -204,7 +193,7 @@
                             <div class="modal-card card" data-list=''>
                                 <div class="card-header">
                                     <h4 class="card-header-title" id="exampleModalCenterTitle">
-                                        Dépense de véhicule
+                                        Dépense
                                     </h4>
                                     <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
@@ -218,7 +207,8 @@
                                                 <div class="form-group">
                                                     <label for="titre" class="form-label">
                                                         Véhicule
-                                                        <strong class="text-danger" *ngIf="!singleDepense.vehicule_id">*</strong>
+                                                        <strong class="text-danger"
+                                                            *ngIf="!singleDepense.vehicule_id">*</strong>
                                                     </label>
                                                     <select class="form-select form-select-sm"
                                                         [(ngModel)]="singleDepense.vehicule_id" name="vehicule_id"
@@ -231,7 +221,8 @@
                                                 <div class="form-group">
                                                     <label for="qtn" class="form-label">
                                                         Designation
-                                                        <strong class="text-danger" *ngIf="!singleDepense.designation">*</strong>
+                                                        <strong class="text-danger"
+                                                            *ngIf="!singleDepense.designation">*</strong>
                                                     </label>
                                                     <input type="text" class="form-control form-control-sm"
                                                         placeholder="Designation"
@@ -255,19 +246,24 @@
                                                 <div class="form-group">
                                                     <label for="type_depense" class="form-label">
                                                         Type de depense
-                                                        <strong class="text-danger" *ngIf="!singleDepense.type_depense">*</strong>
+                                                        <strong class="text-danger"
+                                                            *ngIf="!singleDepense.type_depense">*</strong>
                                                     </label>
                                                     <select class="form-select form-select-sm"
-                                                        [(ngModel)]="singleDepense.type_depense" name="type_depense" required>
+                                                        [(ngModel)]="singleDepense.type_depense" name="type_depense"
+                                                        required>
                                                         <option value=null>Veuillez choisir ...</option>
-                                                        <option value="Services">Services</option>
+                                                        <option value="Maintenance">Maintenance</option>
+                                                        <option value="Administration">Administration</option>
+                                                        <option value="Contre-à-vention">Contre-à-vention</option>
                                                         <option value="Autre">Autres</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="montant" class="form-label">
                                                         Montant
-                                                        <strong class="text-danger" *ngIf="!singleDepense.montant">*</strong>
+                                                        <strong class="text-danger"
+                                                            *ngIf="!singleDepense.montant">*</strong>
                                                     </label>
                                                     <input type="number" class="form-control form-control-sm"
                                                         placeholder="Montant" [(ngModel)]="singleDepense.montant"

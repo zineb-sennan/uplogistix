@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IdFiscaleService } from '../../_services/id-fiscale.service';
 import { PaysService } from '../../_services/pays.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 
 @Component({
   selector: 'app-identifiants-fiscale',
@@ -19,7 +19,7 @@ export class IdentifiantsFiscaleComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private paysService: PaysService,
     private idFiscaleService:IdFiscaleService
   ) { }
@@ -57,7 +57,7 @@ export class IdentifiantsFiscaleComponent implements OnInit {
         res => {
           this.getIdFiscaleByPays(form.pays_id);
           this.message = "L'identifiant fiscal est ajouté avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -67,7 +67,7 @@ export class IdentifiantsFiscaleComponent implements OnInit {
         res => {
           this.getIdFiscaleByPays(form.pays_id);
           this.message = "L'identifiant fiscal est modifie avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -80,7 +80,7 @@ export class IdentifiantsFiscaleComponent implements OnInit {
         res => {
           this.getIdFiscaleByPays(this.singleFisc.pays_id);
           this.message = "L'identifiant fiscal est supprimé avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);

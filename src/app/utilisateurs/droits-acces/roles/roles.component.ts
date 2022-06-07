@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RolesService } from '../../../_services/roles.service';
 import { SecuriteClass } from '../../../_globale/securite';
-import { GlobalFunctions } from '../../../_globale/global-functions';
+import { Globale } from '../../../_globale/globale';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class RolesComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private rolesService:RolesService
   ) { }
 
@@ -27,7 +27,10 @@ export class RolesComponent implements OnInit {
 
   getAllRoles(){
     this.rolesService.getAll().subscribe(
-      res=> this.roles=res
+      res=> this.roles=res,
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllRoles();
+      }
     )
   }
 
@@ -36,7 +39,7 @@ export class RolesComponent implements OnInit {
       res=>{
         this.getAllRoles();
         this.message="Le rôle est ajouté avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error=>{
        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -49,7 +52,7 @@ export class RolesComponent implements OnInit {
       res=>{
         this.getAllRoles();
         this.message="Le rôle est supprimé avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error=>{
         if(error.status==401 && this.securiteClass.refreshToken()) this.delete();

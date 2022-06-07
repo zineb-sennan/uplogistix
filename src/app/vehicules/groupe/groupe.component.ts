@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VehiculeGroupeService } from '../../_services/vehicule-groupe.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 
 @Component({
   selector: 'app-groupe',
@@ -15,7 +15,7 @@ export class GroupeComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    private globalFunctions:GlobalFunctions,
+    private globale:Globale,
     private vehiculeGroupeService: VehiculeGroupeService
   ) {}
 
@@ -52,7 +52,7 @@ export class GroupeComponent implements OnInit {
         res => {
           this.getAllGroupe();
           this.message = "Le groupe est ajouté avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -62,7 +62,7 @@ export class GroupeComponent implements OnInit {
         res => {
           this.getAllGroupe();
           this.message = "Le groupe est modifié avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -75,7 +75,7 @@ export class GroupeComponent implements OnInit {
       res => {
         this.getAllGroupe();
         this.message = "Le groupe est supprimé avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
     },
     error => {
       if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);

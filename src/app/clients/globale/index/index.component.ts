@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalFunctions } from 'src/app/_globale/global-functions';
+import { Globale } from 'src/app/_globale/globale';
 import { SecuriteClass } from 'src/app/_globale/securite';
 import { AuthService } from '../../../_services/auth.service';
 import { ClientService } from '../../../_services/client.service';
@@ -22,7 +22,7 @@ export class IndexComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private clientService: ClientService,
     private activatedRoute: ActivatedRoute,
     private paysService: PaysService,

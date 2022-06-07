@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { VehiculeService } from '../../_services/vehicule.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 import { VehiculeDepensesService } from '../../_services/vehicule-depenses.service';
 import * as $ from 'jquery';
 
@@ -17,7 +17,7 @@ export class DepensesComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    private globalFunctions:GlobalFunctions,
+    private globale:Globale,
     private vehiculeService:VehiculeService,
     private vehiculeDepensesService:VehiculeDepensesService,
     private activatedRoute: ActivatedRoute
@@ -66,7 +66,7 @@ export class DepensesComponent implements OnInit {
         res => {
           this.searchDepenses(this.search);
           this.message = "La dépense est ajoutée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -76,7 +76,7 @@ export class DepensesComponent implements OnInit {
         res => {
           this.searchDepenses(this.search);
           this.message = "La dépense est modifiée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -89,7 +89,7 @@ export class DepensesComponent implements OnInit {
       res => {
         this.searchDepenses(this.search);
         this.message = "La dépense est supprimée avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
@@ -127,17 +127,16 @@ export class DepensesComponent implements OnInit {
           labels: ['Services', 'Autre'],
           datasets: [{
               label: '# Total consommation',
-              data:  [300, 50, 100],
+              data:  [300, 50],
               backgroundColor: [
                 'rgb(44, 123, 226)',
-                'rgb(165, 197, 246)',
-                //'rgb(210, 222, 236)'
+                'rgb(165, 197, 246)'
               ],
-              hoverOffset: 4
+              hoverOffset: 20
           }],
       },
       options:{
-        cutout: 100,
+        cutout: '85%',
         maintainAspectRatio:false,
         plugins: {
           legend: { position: 'left' }

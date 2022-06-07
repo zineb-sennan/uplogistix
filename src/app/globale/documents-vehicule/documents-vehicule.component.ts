@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PaysService } from '../../_services/pays.service';
 import { VehiculeDocumentService } from '../../_services/vehicule-document.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 
 @Component({
   selector: 'app-documents-vehicule',
@@ -13,7 +13,7 @@ export class DocumentsVehiculeComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private vehiculeDocumentService:VehiculeDocumentService,
     private paysService:PaysService
   ) { }
@@ -57,7 +57,7 @@ export class DocumentsVehiculeComponent implements OnInit {
         res => {
           this.getDocumentsByPaysId(form.pays_id);
           this.message = "Document vehicule bien ajouter !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -67,7 +67,7 @@ export class DocumentsVehiculeComponent implements OnInit {
         res => {
           this.getDocumentsByPaysId(form.pays_id);
           this.message = "Document vehicule bien modifie !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -81,7 +81,7 @@ export class DocumentsVehiculeComponent implements OnInit {
       res => {
         this.getDocumentsByPaysId(this.singleDocument.pays_id);
         this.message = "Document vehicule bien Supp !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);

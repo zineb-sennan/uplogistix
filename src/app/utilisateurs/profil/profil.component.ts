@@ -4,7 +4,7 @@ import { RegionsService } from '../../_services/regions.service';
 import { TokenService } from '../../_services/token.service';
 import { UtilisateurService } from '../../_services/utilisateur.service';
 import { VillesService } from '../../_services/villes.service';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 import { SecuriteClass } from '../../_globale/securite';
 
 @Component({
@@ -19,7 +19,7 @@ export class ProfilComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private paysService: PaysService,
     private regionsService: RegionsService,
     private villesService: VillesService,
@@ -48,7 +48,12 @@ export class ProfilComponent implements OnInit {
   }
 
   getAllPays() {
-    this.paysService.getAll().subscribe(result => this.pays = result);
+    this.paysService.getAll().subscribe(
+      result => this.pays = result,
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllPays();
+      }
+    );
   }
 
   getRegionsByPays(id: any) {

@@ -7,7 +7,7 @@ import { VillesService } from '../../_services/villes.service';
 import { RolesService } from '../../_services/roles.service';
 import { TokenService } from '../../_services/token.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 
 @Component({
   selector: 'app-globale',
@@ -18,7 +18,7 @@ export class GlobaleComponent implements OnInit {
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globalFunctions:GlobalFunctions,
+    public globale:Globale,
     private utilisateurService:UtilisateurService,
     private paysService: PaysService,
     private regionsService: RegionsService,
@@ -42,12 +42,20 @@ export class GlobaleComponent implements OnInit {
   }
 
   getAllPays() {
-    this.paysService.getAll().subscribe(result => this.pays = result);
+    this.paysService.getAll().subscribe(
+      result => this.pays = result,
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllPays();
+      }
+    );
   }
 
   getAllRoles(){
     this.rolesService.getAll().subscribe(
-      res=> this.roles=res
+      res=> this.roles=res,
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllRoles();
+      }
     )
   }
 
@@ -114,7 +122,7 @@ export class GlobaleComponent implements OnInit {
         res => {
           this.getAllUtilisateurs();
           this.message = "L'utilisateur est ajouté avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -124,7 +132,7 @@ export class GlobaleComponent implements OnInit {
         res => {
           this.getAllUtilisateurs();
           this.message = "L'utilisateur est modifié avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -140,7 +148,7 @@ export class GlobaleComponent implements OnInit {
         this.getAllUtilisateurs();
         this.message="L'utilisateur est bloqué avec succès !";
         if(this.singleUtilisateur.locked_by) this.message="L'utilisateur est débloqué avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
        if(error.status==401 && this.securiteClass.refreshToken()) this.lock();

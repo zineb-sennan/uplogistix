@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
-import { VehiculeService } from 'src/app/_services/vehicule.service';
+import { VehiculeService } from '../../../../_services/vehicule.service';
+import { SecuriteClass } from '../../../../_globale/securite';
 import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
 
@@ -10,7 +11,7 @@ import * as $ from 'jquery';
   styleUrls: ['./comparaison-vehicule.component.css']
 })
 export class ComparaisonVehiculeComponent implements OnInit {
-
+  //
   colors=['56, 95, 158','247, 189, 1', '20, 156, 56', '94, 202, 223'];
   viewChartPrincipale:any=null; typeFilter='jour'; maxVehicule = 4;  maxChart=5;
   vehicules: any[] = []; vehiculesSelected: any[] = [];
@@ -28,7 +29,8 @@ export class ComparaisonVehiculeComponent implements OnInit {
 
   constructor(
     private vehiculeService: VehiculeService,
-    private ecoconduiteService: EcoconduiteService
+    private ecoconduiteService: EcoconduiteService,
+    private securiteClass: SecuriteClass
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +47,9 @@ export class ComparaisonVehiculeComponent implements OnInit {
           this.checkVehicules(null,this.vehicules[index]);
           this.vehicules[index].checked=true;
         }
+      },
+      error => {
+        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehiculeWitheEco();
       }
     )
   }
@@ -124,6 +129,9 @@ export class ComparaisonVehiculeComponent implements OnInit {
       //02
       this.chartSelected[indexChart-1].data.push({ values:_data , matricule:vehicule.matricule, color:vehicule.color });
       this.createChart(index, _data, vehicule, Math.max(..._data.map((d:any)=> d.y)));
+    },
+    error => {
+      if(error.status==401 && this.securiteClass.refreshToken()) this.getInformationsVehicule(vehicule, index, indexChart);
     });
   }
 

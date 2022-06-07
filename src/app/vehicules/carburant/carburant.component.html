@@ -5,7 +5,7 @@
                 Véhicules
             </h6>
             <h2 class="header-title">
-                Liste des carburants
+                Historique carburants
             </h2>
         </div>
     </div><!-- fin titre -->
@@ -46,7 +46,7 @@
                             <div class="form-group">
                                 <label for="titre">Véhicules</label>
                                 <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
-                                    <option value=''>Tous</option>
+                                    <option value=null>Tous</option>
                                     <option *ngFor="let vehicule of vehicules" value="{{vehicule.id}}">
                                         {{vehicule.matricule}}</option>
                                 </select>
@@ -148,7 +148,7 @@
                             <div class="form-group form-group-sm">
                                 <label for="vehicule_id">Véhicules</label>
                                 <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
-                                    <option value='' disabled>Veuillez choisir ...</option>
+                                    <option value=null disabled>Veuillez choisir ...</option>
                                     <option *ngFor="let vehicule of vehicules" value="{{vehicule.id}}">
                                         {{vehicule.matricule}}</option>
                                 </select>
@@ -178,7 +178,7 @@
                         </div>
                     </form>
                     <div class="text-muted pt-3 pb-3 bg-white shadow-sm row" [ngClass]="{'d-none':myChart}">
-                        <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>   
+                        <p class="text-center">Pas des données disponibles ...</p>   
                     </div>
                     <div class="row bg-white pt-4 shadow" [ngClass]="{'d-none':!myChart}">
                         <canvas id="chart-carburants" [ngClass]="{'d-none':!myChart}"></canvas>

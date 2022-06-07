@@ -296,28 +296,8 @@ button.nav-link.active {
 
 .navbar-vertical.navbar-expand-md .navbar-nav .nav-link.active{
     color: #2c7be5 !important;
-    background: #edfdf6;
+    /*background: #edfdf6;*/
     font-weight: 500;
-}
-
-@media (max-width: 767px) { 
-    .form-search .btn-search{
-       width: 100%;
-       margin: 0 0 20px 0;
-    }
-    .main-content{
-        margin-left: 0 !important;
-    }
-
-    #sidebar{
-      display: block !important;
-    }
-}
-
-@media (max-width: 575px) { 
-    .container{
-        width: 95%;
-    }
 }
 
 .nav-tabs .nav-link{
@@ -365,8 +345,57 @@ ul.nav.nav-tabs.nav-overflow.header-tabs{
 
 button.nav-link.active{ background-color: transparent !important; }
 
+/*** *** *** ***  *** *** *** *** ***/
+@media (max-width: 767px) { 
+    .form-search .btn-search{
+       width: 100%;
+       margin: 0 0 20px 0;
+    }
+    .main-content{
+        margin-left: 0 !important;
+    }
+
+    #sidebar{
+      display: block !important;
+    }
+}
+
+@media (max-width: 575px) { 
+    .container{
+        width: 95%;
+    }
+}
+
+/*** *** *** tableau de bord *** *** ***/
+@media (max-width: 600px) { 
+    .card-header-title, .form-select-sm{
+        font-size: 12px;
+    }
+
+    .card-body .text-secondary{
+        font-size: 11px;
+    }
+} 
+
+@media (max-width: 300px) { 
+    .card-header-title, .form-select-sm{
+        font-size: 9px;
+        padding: 5px;
+    }
+
+    .card-body .text-secondary{
+        font-size: 8px;
+    }
+}
+
 @media (min-width: 768px){
     .navbar-vertical.navbar-expand-md .navbar-nav .nav .nav-link {
         padding-left: 10px !important;
+    }
+}
+
+@media (max-width: 510px){
+    form button, form button {
+        width: 100%;
     }
 }

@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
     const isAdmin = payload?.cid == null;
     this.geUtlisateurById(payload.id)
 
-    if($(window).width()! < 1426) this.isClose=true;
+    if($(window).width()! < 992) this.isClose=true;
     this.closeSidebar();
   }
 
@@ -53,12 +53,12 @@ export class NavbarComponent implements OnInit {
     if(this.isClose){
       $("#sidebar").css("display","none");
       $(".main-content").css("margin-left", "0");
-      if($(window).width()! < 1426) $(".btn-close-sidebar").css("margin-left", "0");
+      if($(window).width()! < 992) $(".btn-close-sidebar").css("margin-left", "0");
       this.isClose=false;
     }
     else{
       $("#sidebar").css("display","block");
-      if($(window).width()! < 1426){
+      if($(window).width()! < 992){
         $(".main-content").css("margin-left", "0");
         $(".btn-close-sidebar").css("margin-left", "245px");
       } 

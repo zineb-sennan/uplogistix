@@ -16,9 +16,9 @@
     letter-spacing: .04em !important;
 }
 
-.vehicules .col-md-6 {
+/* .vehicules .col-md-6 {
     width: 49% !important;
-}
+} */
 
 .dropdown-menu-card .card-body {
     max-height: 122px !important;
@@ -52,4 +52,17 @@ form.dropdown-menu {
 
 .fa-car{
     font-size: 20px;
+}
+
+
+@media (max-width: 1212px){
+    .card-l {
+        width: 49% !important;
+    }
+}
+
+@media (max-width: 560px){
+    .card-l {
+        width: 100% !important;
+    }
 }

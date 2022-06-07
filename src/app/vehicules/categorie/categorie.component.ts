@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VehiculeCategorieService } from '../../_services/vehicule-categorie.service';
 import { SecuriteClass } from '../../_globale/securite';
-import { GlobalFunctions } from '../../_globale/global-functions';
+import { Globale } from '../../_globale/globale';
 
 @Component({
   selector: 'app-categorie',
@@ -15,13 +15,13 @@ export class CategorieComponent implements OnInit {
   
   constructor(
     private securiteClass: SecuriteClass,
-    private globalFunctions:GlobalFunctions,
+    private globale:Globale,
     private vehiculeCategorieService: VehiculeCategorieService
   ) { }
 
   ngOnInit(): void {
     this.getAllCategorie();
-    this.globalFunctions.closeModal();
+    this.globale.closeModal();
   }
 
   getAllCategorie() {
@@ -50,7 +50,7 @@ export class CategorieComponent implements OnInit {
         res => {
           this.getAllCategorie();
           this.message = "La catégorie est ajoutée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -60,7 +60,7 @@ export class CategorieComponent implements OnInit {
         res => {
           this.getAllCategorie();
           this.message = "La catégorie est modifiée avec succès !";
-          this.globalFunctions.closeModal();
+          this.globale.closeModal();
         },
         error => {
           if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
@@ -73,7 +73,7 @@ export class CategorieComponent implements OnInit {
       res => {
         this.getAllCategorie();
         this.message = "La catégorie est supprimée avec succès !";
-        this.globalFunctions.closeModal();
+        this.globale.closeModal();
       },
       error => {
         if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);

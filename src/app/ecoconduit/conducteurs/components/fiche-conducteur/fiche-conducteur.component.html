@@ -91,10 +91,10 @@
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
-                            <div class="widget-numbers text-warning">50%</div>
+                            <div class="widget-numbers text-warning">50 Km</div>
                         </div>
                         <div class="widget-content-left">
-                            <div class="widget-heading">Score globale</div>
+                            <div class="widget-heading">Distance parcourue</div>
                             <div class="widget-subheading">Lorem ipsum dolor</div>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                             <div class="widget-numbers text-danger">10:14:00</div>
                         </div>
                         <div class="widget-content-left">
-                            <div class="widget-heading">Durée de conduite</div>
+                            <div class="widget-heading">Lorem ipsum</div>
                             <div class="widget-subheading">Lorem ipsum dolor</div>
                         </div>
                     </div>
@@ -117,10 +117,10 @@
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
-                            <div class="widget-numbers text-primary">450 Km</div>
+                            <div class="widget-numbers text-primary">10</div>
                         </div>
                         <div class="widget-content-left">
-                            <div class="widget-heading">Distance parcourue</div>
+                            <div class="widget-heading">Excède vitesse</div>
                             <div class="widget-subheading">Lorem ipsum dolor</div>
                         </div>
                     </div>
@@ -147,17 +147,25 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-header-title">
-                        Consommation moyenne
+                        Emission Co2
                     </h4>
                 </div>
                 <div class="card-body">
-                    <div>
-                        <circle-progress 
-                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
-                        </circle-progress>
-                        <circle-progress 
-                            [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
-                        </circle-progress>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <circle-progress style="display: block; margin:auto;"
+                               [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
+                            </circle-progress>
+                            <!-- <h3 class="text-center">Avans</h3> -->
+                        </div>
+                        <div class="col-md-6">
+                            <circle-progress class="text-center" 
+                              [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
+                            </circle-progress>
+                            <!-- <h3 class="text-center">Aprés</h3> -->
+                        </div>
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -166,7 +174,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-header-title">
-                        Emission Co2
+                        Lorem ipsum
                     </h4>
                 </div>
                 <div class="card-body">

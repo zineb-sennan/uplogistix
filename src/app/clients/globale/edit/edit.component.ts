@@ -25,7 +25,7 @@ export class EditComponent implements OnInit {
   fiscaux: any[] = [];
   contacts:any[] = [];
 
-  singleClient: any = { id: null, raison_sociale: null, adresse: null, nom: null, prenom: null, pays_id: null, region_id: null, ville_id: null, email: null, tel_mobile: null, tel_bureau: null, fax: null };
+  singleClient: any = { id: null, raison_sociale: null, adresse: null, nom: null, prenom: null, pays_id: null, region_id: null, ville_id: null, email: null, tel_mobile: null, tel_bureau: null, fax: null, nbre_balises:null };
   singleContact: any= { id: null, client_id:null, titre:null, fonction:null, prenom:null, nom:null, email:null, tel_mobile:null, tel_bureau:null, fax:null }
 
   message: any = null;
@@ -62,7 +62,7 @@ export class EditComponent implements OnInit {
   }
 
   clear() {
-    this.singleClient = { id: null, raison_sociale: null, adresse: null, pays_id: null, region_id: null, ville_id:null, nom: null, prenom: null, email: null, tel_mobile: null, tel_bureau: null, fax: null, password: null, nbre_vehicules:null };
+    this.singleClient = { id: null, raison_sociale: null, adresse: null, nom: null, prenom: null, pays_id: null, region_id: null, ville_id: null, email: null, tel_mobile: null, tel_bureau: null, fax: null, nbre_balises:null };
   }
 
   getInfosClientById(id: any) {

@@ -4,6 +4,7 @@ import { VehiculeService } from '../../../../_services/vehicule.service';
 import { SecuriteClass } from '../../../../_globale/securite';
 import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
+import { GeoLocalisationService } from 'src/app/_services/geolocalisation.service';
 
 @Component({
   selector: 'app-comparaison-vehicule',
@@ -30,13 +31,17 @@ export class ComparaisonVehiculeComponent implements OnInit {
   constructor(
     private vehiculeService: VehiculeService,
     private ecoconduiteService: EcoconduiteService,
-    private securiteClass: SecuriteClass
+    private securiteClass: SecuriteClass,
+    private geoLocalisationService: GeoLocalisationService
   ) { }
 
   ngOnInit(): void {
     Chart.register(...registerables);
 
     this.getVehiculeWitheEco();
+    var rec:any={ vehicule_id:9, date_debut: "2022-03-10", date_fin: "2022-03-10" };
+    console.log(rec);
+    this.speedAverage(rec);
   }
 
   getVehiculeWitheEco() {
@@ -104,35 +109,36 @@ export class ComparaisonVehiculeComponent implements OnInit {
   }
 
   getInformationsVehicule(vehicule: any, index:any, indexChart:any): any {
-    this.ecoconduiteService.historiqueVehicule(vehicule.id, null).subscribe(res => {
-      //01
-      var _data:any=[];
-      if(this.typeFilter=="jour"){
-        for (let index = 0; index < 24; index++) {
-          var item= {"x":"heur "+(index+1), "y": this.entierAleatoire(1,20) }
-          _data.push(item);
-        }
-      }
-      else if(this.typeFilter=="semaine"){
-        for (let index = 0; index < 7; index++) {
-          var item= {"x":"jour "+(index+1), "y": this.entierAleatoire(1,20) }
-          _data.push(item);
-        }
-      }
-      else{
-        for (let index = 0; index < 30; index++) {
-          var item= {"x":"date "+(index+1), "y": this.entierAleatoire(1,20) }
-          _data.push(item);
-        }
-      }
+    //this.getMaxSpeed(null);
+    // this.ecoconduiteService.historiqueVehicule(vehicule.id, null).subscribe(res => {
+    //   //01
+    //   var _data:any=[];
+    //   if(this.typeFilter=="jour"){
+    //     for (let index = 0; index < 24; index++) {
+    //       var item= {"x":"heur "+(index+1), "y": this.entierAleatoire(1,20) }
+    //       _data.push(item);
+    //     }
+    //   }
+    //   else if(this.typeFilter=="semaine"){
+    //     for (let index = 0; index < 7; index++) {
+    //       var item= {"x":"jour "+(index+1), "y": this.entierAleatoire(1,20) }
+    //       _data.push(item);
+    //     }
+    //   }
+    //   else{
+    //     for (let index = 0; index < 30; index++) {
+    //       var item= {"x":"date "+(index+1), "y": this.entierAleatoire(1,20) }
+    //       _data.push(item);
+    //     }
+    //   }
       
-      //02
-      this.chartSelected[indexChart-1].data.push({ values:_data , matricule:vehicule.matricule, color:vehicule.color });
-      this.createChart(index, _data, vehicule, Math.max(..._data.map((d:any)=> d.y)));
-    },
-    error => {
-      if(error.status==401 && this.securiteClass.refreshToken()) this.getInformationsVehicule(vehicule, index, indexChart);
-    });
+    //   //02
+    //   this.chartSelected[indexChart-1].data.push({ values:_data , matricule:vehicule.matricule, color:vehicule.color });
+    //   this.createChart(index, _data, vehicule, Math.max(..._data.map((d:any)=> d.y)));
+    // },
+    // error => {
+    //   if(error.status==401 && this.securiteClass.refreshToken()) this.getInformationsVehicule(vehicule, index, indexChart);
+    // });
   }
 
   mChart: any=[];
@@ -257,5 +263,14 @@ export class ComparaisonVehiculeComponent implements OnInit {
   entierAleatoire(min: number, max: number){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+
+
+  speedAverage(record: any){
+    console.log(record);
+    this.geoLocalisationService.getSpeedAverage(record).subscribe(
+      res=> console.log(res)
+    )
+  }
+
 
 }

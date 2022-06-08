@@ -49,4 +49,17 @@ export class GeoLocalisationService {
     deleteZoneById(id: number) {
         return this.http.delete(environment.apiURL + `/geolocalisation/zones/` + id);
     }
+
+    getSpeedAverage(record: any){
+        return this.http.post(environment.apiURL + `/geolocalisation/analyse/speed-average`, record );
+    }
+
+    getMaxSpeed(record: any){
+        return this.http.post(environment.apiURL + `/geolocalisation/analyse/max-speed`, record );
+    }
+
+    getDistance(record: any){
+        return this.http.post(environment.apiURL + `/geolocalisation/analyse/distance`, record );
+    }
+
 }

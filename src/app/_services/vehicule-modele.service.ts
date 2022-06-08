@@ -26,7 +26,7 @@ export class VehiculeModeleService {
   }
 
   getModelesByCategorieAndMarque(categorie_id:number,marque_id:number){
-    return this.http.get(environment.apiURL + '/vehicules/categorie/'+categorie_id+'/marques/'+marque_id)
+    return this.http.get(environment.apiURL + '/vehicules/categorie/'+categorie_id+'/marque/'+marque_id+'/modeles')
   }
 
   getModele(id: number) {

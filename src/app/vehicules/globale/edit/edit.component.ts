@@ -61,6 +61,13 @@ export class EditComponent implements OnInit {
     this.getAllCategorie();
   }
 
+  changeCategorie(e: any) {
+    //this.getMarquesByCategorieId(e.target.value);
+    // console.log()
+    //console.log('categorie_id: '+e.target.value, 'marque_id: '+this.singleVehicule.marque_id);
+    this.getModelesByCategorieAndMarque(e.target.value,this.singleVehicule.marque_id);
+  }
+
   getAllMarques(){
     this.vehiculeMarqueService.getAll().subscribe(
       res=>this.marques=res,
@@ -79,24 +86,23 @@ export class EditComponent implements OnInit {
     )
   }
 
-  getMarquesByCategorieId(id:number){
-    this.vehiculeMarqueService.getMarquesByCategorieId(id).subscribe(
-      res=>{
-        this.marques=res;
-        this.categorie_id=id;
-      },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getMarquesByCategorieId(id);
-      }
-    )
-  }
+  // getMarquesByCategorieId(id:number){
+  //   this.vehiculeMarqueService.getMarquesByCategorieId(id).subscribe(
+  //     res=>{
+  //       this.marques=res;
+  //       this.categorie_id=id;
+  //     },
+  //     error => {
+  //       if(error.status==401 && this.securiteClass.refreshToken()) this.getMarquesByCategorieId(id);
+  //     }
+  //   )
+  // }
 
   changeMarque(e: any) {
     this.getModelesByMarqueId(e.target.value);
   }
 
   getModelesByCategorieAndMarque(categorie_id:number,marque_id:number){
-    console.log('categorie_id',this.categorie_id);
     this.vehiculeModeleService.getModelesByCategorieAndMarque(categorie_id, marque_id).subscribe(
       res => this.modeles=res,
       error => {

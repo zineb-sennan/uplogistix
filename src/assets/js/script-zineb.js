@@ -39,4 +39,5 @@ $(window).resize(function(){
     equalheight('.eq-blocks');
 });// ./resize
 
+
 });// ./jquery

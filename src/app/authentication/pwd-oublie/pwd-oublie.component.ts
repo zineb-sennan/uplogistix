@@ -24,24 +24,18 @@ export class PwdOublieComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
   time: any = null;
   getElaspsedTime(date_expiration: any) {
-    let m = (new Date(date_expiration)).getMinutes() - (new Date()).getMinutes();
-    let s = (new Date(date_expiration)).getSeconds() - (new Date()).getSeconds() + 31;
-    this.time = m.toString().padStart(2, '0') + ":" + s.toString().padStart(2, '0');
-
-    // if (m == 0 && s == 0) return true;
-    // return false;
-    if( m== 0 && s==0 ){
-      this.intervalId.stop();
-    }
-    
+    var intervalId = setInterval(() => {
+      this.time =new Date((new Date(date_expiration)).getTime() - (new Date()).getTime()).toISOString().slice(11, 19);
+      if(this.time == '00:00:00') clearInterval(intervalId);
+    }, 1000);
   }
 
-  //intervalId:ReturnType<typeof setTimeout>;
+  //intervalId
   intervalId:any=null;
   forgetPwd(form: any) {
+    //01
     this.utilisateurService.forgetPwd(form).subscribe(
       res => {
         this.res = res;  this.intervalId ?? stop();
@@ -51,19 +45,8 @@ export class PwdOublieComponent implements OnInit {
           this.getElaspsedTime(res.expiration);
         }, 1000);
 
-
-        
-        // var intervalId = setInterval(() => {
-        //   this.getElaspsedTime(res.expiration) ? stop() : this.getElaspsedTime(res.expiration);
-        // }, 1000);
-
-        //console.log(typeof this.intervalId);
-
-        //function stop() {
-          //console.log("ssss");
-          //window.clearInterval(Number(this.intervalId));
-        //}
-        //intervalId ?? stop();
+        //res.expiration
+        this.getElaspsedTime(res.expiration);
 
         if (res.refreshToken) {
           this.tokenService.setToken(res.token);
@@ -76,18 +59,8 @@ export class PwdOublieComponent implements OnInit {
           this.message = "E-mail ou numéro de téléphone incorrecte !";
         }
         else if (error.status == 403) {
-          //
-          this.message = "Attendez 3 minutes !";
-          
-          // const intervalId = setInterval(() => {
-          //   this.getElaspsedTime(error.error.expiration) ? stop() : this.getElaspsedTime(error.error.expiration);
-          // }, 1000);
-          
-          // function stop() {
-          //   console.log("ssss");
-          //   clearInterval(intervalId);
-          // }
-          // intervalId ?? stop();
+          //error.error.expiration
+          this.getElaspsedTime(error.error.expiration);
 
         }
         else if (error.status == 406) {
@@ -95,6 +68,27 @@ export class PwdOublieComponent implements OnInit {
         }
       }
     )
+  }
+
+  validationPWD(e: any) {
+    var pswd = e.target.value;
+    $('#pswd_info').removeClass('d-none');
+
+    //validate the length  
+    if (pswd.length < 8) $('#length').removeClass('valid').addClass('invalid');
+    else $('#length').removeClass('invalid').addClass('valid');
+
+    //validate letter
+    if (pswd.match(/[A-z]/)) $('#letter').removeClass('invalid').addClass('valid');
+    else $('#letter').removeClass('valid').addClass('invalid');
+
+    //validate uppercase letter
+    if (pswd.match(/[A-Z]/)) $('#capital').removeClass('invalid').addClass('valid');
+    else $('#capital').removeClass('valid').addClass('invalid');
+    
+    //validate number
+    if (pswd.match(/\d/)) $('#number').removeClass('invalid').addClass('valid');
+    else $('#number').removeClass('valid').addClass('invalid');
   }
 
 }

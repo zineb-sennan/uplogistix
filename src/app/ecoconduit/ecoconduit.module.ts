@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EcoconduitRoutingModule } from './ecoconduit-routing.module';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +17,9 @@ import { VehiculesModule } from './vehicules/vehicules.module';
     CommonModule,
     EcoconduitRoutingModule,
     FormsModule
-  ]
+  ],
+  providers: [
+    DatePipe
+  ],
 })
 export class EcoconduitModule { }

@@ -50,6 +50,8 @@ export class GeoLocalisationService {
         return this.http.delete(environment.apiURL + `/geolocalisation/zones/` + id);
     }
 
+    /*** ***Eco-conduite *** *** */
+    
     getSpeedAverage(record: any){
         return this.http.post(environment.apiURL + `/geolocalisation/analyse/speed-average`, record );
     }
@@ -60,6 +62,22 @@ export class GeoLocalisationService {
 
     getDistance(record: any){
         return this.http.post(environment.apiURL + `/geolocalisation/analyse/distance`, record );
+    }
+
+    getDriveTime(record: any){
+        return this.http.post(environment.apiURL + `/geolocalisation/analyse/drive-time`, record );
+    }
+
+    getL100(record: any){
+        return this.http.post(environment.apiURL + `/geolocalisation/analyse/l100`, record );
+    }
+
+    getFuel(record: any){
+        return this.http.post(environment.apiURL + `/geolocalisation/analyse/fuel`, record );
+    }
+
+    getCarbone(record: any){
+        return this.http.post(environment.apiURL + `/geolocalisation/analyse/carbone`, record );
     }
 
 }

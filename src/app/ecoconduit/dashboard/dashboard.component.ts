@@ -44,12 +44,6 @@ export class DashboardComponent implements OnInit {
   }
 
   secondsToDhms(seconds:number) {
-    // var hours = Math.floor(seconds / 3600);
-    // seconds %= 3600;
-    // var minutes = Math.floor(seconds / 60);
-    // seconds = seconds % 60;
-    // return this.pad(hours,2) + ':' + this.pad(minutes,2) + ':' + this.pad(seconds,2);
-
     seconds = Number(seconds);
     var d = Math.floor(seconds / (3600*24));
     var h = Math.floor(seconds % (3600*24) / 3600);

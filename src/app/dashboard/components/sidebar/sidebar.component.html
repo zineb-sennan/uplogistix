@@ -25,7 +25,7 @@
                                 Tableau de bord
                             </a>
                         </li>
-                        <li class="nav-item" *ngIf="!isAdmin">
+                        <li class="nav-item" *ngIf="(permissionExiste('carburants') || permissionExiste('compteurs') || permissionExiste('depenses') || permissionExiste('groupe-vehicules')) && !isAdmin">
                             <a href="#sidebarVehicules" class="nav-link collapsed" data-bs-toggle="collapse"
                                 role="button" aria-expanded="false" aria-controls="sidebarInternational">
                                 <img src="assets/img/icones/icon-car.png" width="25"
@@ -52,13 +52,13 @@
                                             Historique compteurs
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item" *ngIf="permissionExiste('depenses')">
                                         <a [routerLink]="['/vehicules/depenses/page/1']" class="nav-link"
                                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Gestion des dépenses
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <li class="nav-item" *ngIf="permissionExiste('groupe-vehicules')">
                                         <a [routerLink]="['/vehicules/groupes']" class="nav-link"
                                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Groupes de véhicules

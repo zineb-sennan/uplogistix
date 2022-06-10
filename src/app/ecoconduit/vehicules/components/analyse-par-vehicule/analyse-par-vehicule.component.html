@@ -19,12 +19,9 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <label for="vehicule_id">Véhicules</label>
-                                                <select class="form-select form-select-sm" id="vehicule_id">
-                                                    <option>Veuillez choisir ...</option>
-                                                    <option>Véhicule 1</option>
-                                                    <option>Véhicule 2</option>
-                                                    <option>Véhicule 3</option>
-                                                    <option>Véhicule 4</option>
+                                                <select class="form-select form-select-sm" [(ngModel)]="filter.vehicule_id" name="vehicule_id">
+                                                    <option value=null>Veuillez choisir ...</option>
+                                                    <option value="{{vehicule.id}}" *ngFor="let vehicule of vehicules">{{vehicule.matricule}}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -35,26 +32,26 @@
                                         <div class="col">
                                             <div class="row align-items-center">
                                                 <div class="col">
-                                                    <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
-                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0">
-                                                            <a class="nav-link active" data-bs-toggle="tab" (click)="typeFilter='jour'">
+                                                    <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
+                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
+                                                            data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
+                                                            <a class="nav-link active" href="#" data-bs-toggle="tab">
                                                                 Jour
                                                             </a>
                                                         </li>
-                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2">
-                                                            <a class="nav-link" data-bs-toggle="tab" (click)="typeFilter='semaine'">
-                                                                Semaine
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="1">
-                                                            <a class="nav-link" data-bs-toggle="tab" (click)="typeFilter='mois'">
-                                                                Mois
+                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
+                                                            data-action="toggle" data-dataset="2" (click)="typeFilter = 'periode'">
+                                                            <a class="nav-link" href="#" data-bs-toggle="tab">
+                                                                Période
                                                             </a>
                                                         </li>
                                                     </ul>
-                                                    <input type="date" class="form-control form-control-sm" *ngIf="typeFilter=='jour'">
-                                                    <input type="week" class="form-control form-control-sm" *ngIf="typeFilter=='semaine'">
-                                                    <input type="month" class="form-control form-control-sm" *ngIf="typeFilter=='mois'">
+                                                    <div class="input-group mb-3">
+                                                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='jour'">
+                                                        <!-- *** *** -->
+                                                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='periode'">
+                                                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin" *ngIf="typeFilter=='periode'">
+                                                    </div> <!-- -->
                                                 </div>
                                             </div>
                                         </div>
@@ -62,7 +59,7 @@
                                 </div>
                             </div>
                             <!-- Button -->
-                            <button class="btn w-100 btn-outline-primary" type="submit">
+                            <button class="btn w-100 btn-outline-primary" type="button" (click)="filterData()">
                                 Appliquer le filtre
                             </button>
                         </div>
@@ -147,9 +144,9 @@
                             <option value="distance-parcourue">Distance parcourue</option>
                             <option value="emission-co2">Emission CO2</option>
                             <option value="temps-de-conduite">Temps de conduite</option>
-                            <option value="fuel-consomme">Fuel consomme</option>
-                            <option value="fuel-gaspille">Fuel gaspille</option>
-                            <option value="bilan-carbone">Bilan carbone</option>
+                            <option value="l_100">Consommation l/100km</option>
+                            <!-- <option value="fuel-gaspille">Fuel gaspille</option>
+                            <option value="bilan-carbone">Bilan carbone</option> -->
                         </select>
                     </div><!-- ./select -->
                     <div class="card bg">

@@ -21,4 +21,8 @@ export class EcoconduiteService {
     return this.http.get<any>(environment.apiURL + '/geolocalisation/trajet/' + id +'/details')
   }
 
+  scoreByVehicule(record:any ){
+    return this.http.post<any>(environment.apiURL + '/geolocalisation/eco-conduite', record)
+  }
+
 }

@@ -7,6 +7,8 @@ import { EcoconduiteService } from '../../_services/ecoconduite.service';
 import { SecuriteClass } from '../../_globale/securite';
 import { Globale } from '../../_globale/globale';
 import * as $ from 'jquery';
+import { GeoLocalisationService } from 'src/app/_services/geolocalisation.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-historique-compteur',
@@ -21,7 +23,9 @@ export class HistoriqueCompteurComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private vehiculeHistoriqueCompteurService:VehiculeHistoriqueCompteurService,
     private vehiculeService: VehiculeService,
-    private ecoconduiteService: EcoconduiteService
+    private ecoconduiteService: EcoconduiteService,
+    private geoLocalisationService:GeoLocalisationService,
+    private datePipe:DatePipe
   ) { }
 
   currentDate = new Date();
@@ -121,11 +125,16 @@ export class HistoriqueCompteurComponent implements OnInit {
   }
 
   generateChart(record: any){
-    this.chartEvolutionCarburant();
+    // this.chartEvolutionCarburant();
+    this.geoLocalisationService.getAnalyseVehicule(record).subscribe(
+      res=>{
+        this.chartEvolutionConpteur(res.distance.map((f: any) => ({ x: this.datePipe.transform(f.date_heure, 'dd-MM-yyyy') , y: f.distance })));
+      }
+    )
   }
 
   mychart:any=null;
-  chartEvolutionCarburant(){
+  chartEvolutionConpteur(_data:any){
     let chart:any=$('#chart-compteurs');
     if(this.mychart) this.mychart.destroy();
 
@@ -134,11 +143,7 @@ export class HistoriqueCompteurComponent implements OnInit {
       data:{
         datasets:[
           {
-            data:[
-              (Math.floor(Math.random() * (100 - 0 + 1)) + 0),
-              (Math.floor(Math.random() * (100 - 0 + 1)) + 0),
-              (Math.floor(Math.random() * (100 - 0 + 1)) + 0)
-            ],
+            data:_data,
             label:"chart",
             backgroundColor: 'rgba(44, 123, 228)',
             borderColor: 'rgba(44, 123, 228)'

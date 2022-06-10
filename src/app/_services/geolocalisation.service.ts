@@ -50,34 +50,42 @@ export class GeoLocalisationService {
         return this.http.delete(environment.apiURL + `/geolocalisation/zones/` + id);
     }
 
-    /*** ***Eco-conduite *** *** */
+    /*** *** Eco-conduite *** *** */
     
     getSpeedAverage(record: any){
-        return this.http.post(environment.apiURL + `/geolocalisation/analyse/speed-average`, record );
+        return this.http.post<any>(environment.apiURL + `/geolocalisation/analyse/speed-average`, record );
     }
 
     getMaxSpeed(record: any){
-        return this.http.post(environment.apiURL + `/geolocalisation/analyse/max-speed`, record );
+        return this.http.post<any>(environment.apiURL + `/geolocalisation/analyse/max-speed`, record );
     }
 
     getDistance(record: any){
-        return this.http.post(environment.apiURL + `/geolocalisation/analyse/distance`, record );
+        return this.http.post<any>(environment.apiURL + `/geolocalisation/analyse/distance`, record );
     }
 
     getDriveTime(record: any){
-        return this.http.post(environment.apiURL + `/geolocalisation/analyse/drive-time`, record );
+        return this.http.post<any>(environment.apiURL + `/geolocalisation/analyse/drive-time`, record );
     }
 
     getL100(record: any){
-        return this.http.post(environment.apiURL + `/geolocalisation/analyse/l100`, record );
+        return this.http.post<any>(environment.apiURL + `/geolocalisation/analyse/l100`, record );
     }
 
     getFuel(record: any){
-        return this.http.post(environment.apiURL + `/geolocalisation/analyse/fuel`, record );
+        return this.http.post<any>(environment.apiURL + `/geolocalisation/analyse/fuel`, record );
     }
 
     getCarbone(record: any){
-        return this.http.post(environment.apiURL + `/geolocalisation/analyse/carbone`, record );
+        return this.http.post<any>(environment.apiURL + `/geolocalisation/analyse/carbone`, record );
+    }
+
+    getInfosDashboard(){
+        return this.http.get<any>(environment.apiURL + `/geolocalisation/analyse/stats`);
+    }
+
+    getAnalyseVehicule(record:any){
+        return this.http.post<any>(environment.apiURL + `/geolocalisation/analyse-vehicule`, record);
     }
 
 }

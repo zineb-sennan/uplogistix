@@ -121,7 +121,6 @@ export class ComparaisonVehiculeComponent implements OnInit {
     if (indexChart == 1) {
       _data = (await this.geoLocalisationService.getMaxSpeed(this.filter).toPromise());
       _data = _data.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.average }));
-      console.log(_data);
       this.chartSelected[indexChart - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
     }
     //SpeedAverage| Vitesse moyenne Km
@@ -151,9 +150,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
     //DriveTime | Temps de conduite
     else if (indexChart == 6) {
       _data = (await this.geoLocalisationService.getDriveTime(this.filter).toPromise());
-      console.log(_data);
       _data = _data.map((v: any,index:any=2) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y:index , z: v.duree }));
-     
       this.chartSelected[indexChart - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
     }
     //L100 | Consommation l/100km

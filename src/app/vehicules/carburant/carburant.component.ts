@@ -7,6 +7,7 @@ import { VehiculeService } from '../../_services/vehicule.service';
 import { SecuriteClass } from '../../_globale/securite';
 import { Globale } from '../../_globale/globale';
 import * as $ from 'jquery';
+import { GeoLocalisationService } from 'src/app/_services/geolocalisation.service';
 
 @Component({
   selector: 'app-carburant',
@@ -21,7 +22,8 @@ export class CarburantComponent implements OnInit {
     private vehiculeCarburantService: VehiculeCarburantService,
     private vehiculeService: VehiculeService,
     private activatedRoute: ActivatedRoute,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    private geoLocalisationService:GeoLocalisationService
   ) { }
 
 
@@ -123,20 +125,15 @@ export class CarburantComponent implements OnInit {
   }
 
   generateChart(record: any){
-    this.vehiculeCarburantService.search(record, this.page).subscribe(
-      res => {
-        let data=res['records'].map((t: any) => t.total);
-        let lebels=res['records'].map((t: any) =>  this.datepipe.transform(t.created_at, 'dd/MM/yyyy HH:mm'));
-        this.chartEvolutionCarburant(data, lebels);
-      },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.searchCarburant(record);
+    this.geoLocalisationService.getAnalyseVehicule(record).subscribe(
+      res=>{
+        this.chartEvolutionCarburant(res.fuel.map((f: any) => ({ x: this.datepipe.transform(f.date_heure, 'dd-MM-yyyy') , y: f.montant_carburant })));
       }
-    );
+    )
   }
  
   myChart:any=null;
-  chartEvolutionCarburant(data:any, labels:any){
+  chartEvolutionCarburant(_data:any){
     //01
     let chart:any=$('#chart-carburants');
     if(this.myChart) this.myChart.destroy();
@@ -146,13 +143,12 @@ export class CarburantComponent implements OnInit {
       data:{
         datasets:[
           {
-            data:data,
+            data:_data,
             label:"chart",
             backgroundColor: 'rgba(44, 123, 228)',
             borderColor: 'rgba(44, 123, 228)'
           }
         ],
-        labels:labels
       },
       options:{
         maintainAspectRatio:false,

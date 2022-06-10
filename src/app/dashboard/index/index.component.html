@@ -15,11 +15,11 @@
                         <div class="card-body">
                             <div class="row align-items-center gx-0">
                                 <div class="col">
-                                    <h6 class="text-uppercase text-muted mb-2">Total Empreinte carbone Kg</h6>
+                                    <h6 class="text-uppercase text-muted mb-2">Bilan carbone</h6>
                                     <div class="ml">
-                                        <span class="h2 mb-0">24,50</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute">-3.5%</span><br>
-                                        <span class="text-secondary">22,47</span>
+                                        <span class="h2 mb-0">{{moisEncours.c?.toFixed(2)}}</span>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.c < moisEncours.c}">{{calc(moisEncours.c, moisPrecedent.c)}}%</span><br>
+                                        <span class="text-secondary">{{moisPrecedent.c?.toFixed(2)}}</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -36,9 +36,9 @@
                                 <div class="col">
                                     <h6 class="text-uppercase text-muted mb-2">Totale distance Km</h6>
                                     <div class="ml">
-                                        <span class="h2 mb-0">763.5</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute">-3.5%</span><br>
-                                        <span class="text-secondary">22,47</span>
+                                        <span class="h2 mb-0">{{moisEncours.distance?.toFixed(2)}}</span>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.distance > moisEncours.distance}">{{calc(moisEncours.distance, moisPrecedent.distance)}}%</span><br>
+                                        <span class="text-secondary">{{moisPrecedent.distance?.toFixed(2)}}</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -55,9 +55,9 @@
                                 <div class="col">
                                     <h6 class="text-uppercase text-muted mb-2">Total coût du carburant Dh</h6>
                                     <div class="ml">
-                                        <span class="h2 mb-0">763.5</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute">-3.5%</span><br>
-                                        <span class="text-secondary">22,47</span>
+                                        <span class="h2 mb-0">{{moisEncours.cout_carburant?.toFixed(2)}}</span>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.cout_carburant > moisEncours.cout_carburant}">{{calc(moisEncours.cout_carburant, moisPrecedent.cout_carburant)}}%</span><br>
+                                        <span class="text-secondary">{{moisPrecedent.cout_carburant?.toFixed(2)}}</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -74,9 +74,9 @@
                                 <div class="col">
                                     <h6 class="text-uppercase text-muted mb-2">Total émission CO2 Kg</h6>
                                     <div class="ml">
-                                        <span class="h2 mb-0">147</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute">-3.5%</span><br>
-                                        <span class="text-secondary">22,47</span>
+                                        <span class="h2 mb-0">{{moisEncours.co2?.toFixed(2)}}</span>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.co2 < moisEncours.co2}">{{calc(moisEncours.co2, moisPrecedent.co2)}}%</span><br>
+                                        <span class="text-secondary">{{moisPrecedent.co2?.toFixed(2)}}</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -95,9 +95,9 @@
                                 <div class="col">
                                     <h6 class="text-uppercase text-muted mb-2">Total Gain Dh</h6>
                                     <div class="ml">
-                                        <span class="h2 mb-0">24,5</span>
-                                        <span class="badge bg-danger-soft ml mt-3 position-absolute">-3.5%</span><br>
-                                        <span class="text-secondary">22,47</span>
+                                        <span class="h2 mb-0">_</span>
+                                        <span class="badge bg-danger-soft ml mt-3 position-absolute">_</span><br>
+                                        <span class="text-secondary">_</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -114,9 +114,9 @@
                                 <div class="col">
                                     <h6 class="text-uppercase text-muted mb-2">Total coût/1Km Dh</h6>
                                     <div class="ml">
-                                        <span class="h2 mb-0">763,5</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute">-3.5%</span><br>
-                                        <span class="text-secondary">22,47</span>
+                                        <span class="h2 mb-0">_</span>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute">_</span><br>
+                                        <span class="text-secondary">_</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -131,11 +131,11 @@
                         <div class="card-body">
                             <div class="row align-items-center gx-0">
                                 <div class="col">
-                                    <h6 class="text-uppercase text-muted mb-2">Total coût services Dh</h6>
+                                    <h6 class="text-uppercase text-muted mb-2">Total coût maintenance Dh</h6>
                                     <div class="ml">
-                                        <span class="h2 mb-0">583,5</span>
-                                        <span class="badge bg-danger-soft ml mt-3 position-absolute">-3.5%</span><br>
-                                        <span class="text-secondary">22,47</span>
+                                        <span class="h2 mb-0">{{moisEncours.cout_maintenance?.toFixed(2)}}</span>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.cout_maintenance>moisPrecedent.cout_maintenance}">{{calc(moisEncours.cout_maintenance, moisPrecedent.cout_maintenance)}}%</span><br>
+                                        <span class="text-secondary">{{moisPrecedent.cout_maintenance?.toFixed(2)}}</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -152,9 +152,9 @@
                                 <div class="col">
                                     <h6 class="text-uppercase text-muted mb-2">Total coût dépenses</h6>
                                     <div class="ml">
-                                        <span class="h2 mb-0">587,5</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute">-3.5%</span><br>
-                                        <span class="text-secondary">22,47</span>
+                                        <span class="h2 mb-0">{{moisEncours.cout_depenses?.toFixed(2)}}</span>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.cout_depenses > moisEncours.cout_depenses}">{{calc(moisEncours.cout_depenses, moisPrecedent.cout_depenses)}}%</span><br>
+                                        <span class="text-secondary">{{moisPrecedent.cout_depenses?.toFixed(2)}}</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -188,14 +188,6 @@
                             <h4 class="card-header-title">
                                 Coût total des dépenses Dh
                             </h4>
-                            <!-- List des véhicules -->
-                            <div class="form-group">
-                                <select class="form-select form-select-sm mt-4" id="exampleFormControlSelect1">
-                                  <option>Véhicule ...</option>
-                                  <option>véhicule 1</option>
-                                  <option>véhicule 2</option>
-                                </select>
-                            </div>
                         </div>
                         <div class="card-body">
                             <canvas id="chart-depenses"
@@ -244,13 +236,13 @@
                         </div>
                         <div class="card-body d-height">
                             <ul>
-                                <li class="text-secondary">Equipés en Eco-conduite  <span class="badge bg-success">150</span></li>
-                                <li class="text-secondary">Equipés<span class="badge bg-primary-soft">10</span></li> <!-- (Avec GPS) -->
-                                <li class="text-secondary">No équipés <span class="badge bg-secondary-soft">140</span></li>
-                                <li class="text-secondary">Maintenances <span class="badge bg-warning">45</span></li>
-                                <li class="text-secondary">Actifs <span class="badge bg-success-soft">48</span></li>
-                                <li class="text-secondary">Inactifs <span class="badge bg-secondary-soft">19</span></li>
-                                <li class="text-secondary">Occupés <span class="badge bg-danger">90</span></li>
+                                <li class="text-secondary">Equipés en Eco-conduite  <span class="badge bg-success">{{etatVehicule.eco_conduite}}</span></li>
+                                <li class="text-secondary">Avec GPS<span class="badge bg-primary-soft">{{etatVehicule.gps}}</span></li> <!-- (Avec GPS) -->
+                                <li class="text-secondary">Sans GPS <span class="badge bg-secondary-soft">{{etatVehicule.non_gps}}</span></li>
+                                <li class="text-secondary">En maintenances <span class="badge bg-warning">{{etatVehicule.maintenance}}</span></li>
+                                <li class="text-secondary">Actifs <span class="badge bg-success-soft">{{etatVehicule.actif}}</span></li>
+                                <li class="text-secondary">Inactifs <span class="badge bg-secondary-soft">{{etatVehicule.inactif}}</span></li>
+                                <li class="text-secondary">Occupés <span class="badge bg-danger">{{etatVehicule.occupe}}</span></li>
                             </ul>
                         </div>
                     </div> <!-- ./card (État des véhicules) -->
@@ -264,11 +256,11 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header-title">
-                                Coût total des services Dh
+                                Coût total des maintenance Dh
                             </h4>
                         </div>
                         <div class="card-body">
-                            <canvas id="chart-services"
+                            <canvas id="chart-maintenance"
                                     style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>
@@ -280,14 +272,6 @@
                             <h4 class="card-header-title">
                                 Évolution de compteur km
                             </h4>
-                            <!-- List des véhicules -->
-                            <div class="form-group">
-                                <select class="form-select form-select-sm mt-4" id="exampleFormControlSelect1">
-                                  <option>Véhicule ...</option>
-                                  <option>véhicule 1</option>
-                                  <option>véhicule 2</option>
-                                </select>
-                            </div>
                         </div>
                         <div class="card-body">
                             <canvas id="chart-evolution-compteur"
@@ -305,87 +289,15 @@
                         </div>
                         <div class="card-body d-height">
                             <ul>
-                                <!-- <li class="text-secondary">Les 6 première véhicule ...</li> -->
-                                <li class="text-secondary">11111-H-1 <span class="badge bg-success">95%</span></li>
-                                <li class="text-secondary">22222-H-1 <span class="badge bg-success">93%</span></li>
-                                <li class="text-secondary">33333-H-1 <span class="badge bg-success">92%</span></li>
-                                <li class="text-secondary">44444-H-1 <span class="badge bg-success">90%</span></li>
-                                <li class="text-secondary">55555-H-1 <span class="badge bg-primary">70%</span></li>
-                                <li class="text-secondary">66666-H-1 <span class="badge bg-danger">60%</span></li>
+                                <li class="text-secondary" *ngFor="let vs of vehiculesByScore">
+                                    {{vs.matricule}} <span class="badge bg-success" [ngClass]="{'bg-danger-soft': vs.score<70}">{{vs.score}}</span>
+                                </li>
                             </ul>
                         </div>
                     </div> <!-- ./card (classement des véhicules) -->
                 </div>
             </div>
-            <!-- *** *** *** *** *** *** *** *** **** ***-->
-            <div class="row">
-                <div class="col-12 col-xl-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <!-- Title -->
-                            <h4 class="card-header-title">
-                                Évolution de consommation l/100Km
-                            </h4>
-                            <!-- List des véhicules -->
-                            <div class="form-group">
-                                <select class="form-select form-select-sm mt-4" id="exampleFormControlSelect1">
-                                  <option>Véhicule ...</option>
-                                  <option>véhicule 1</option>
-                                  <option>véhicule 2</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="autre-chart-1"
-                                    style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
-                            </canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-xl-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <!-- Title -->
-                            <h4 class="card-header-title">
-                                Évolution des gains Dh
-                            </h4>
-                            <!-- List des véhicules -->
-                            <div class="form-group">
-                                <select class="form-select form-select-sm mt-4" id="exampleFormControlSelect1">
-                                  <option>Véhicule ...</option>
-                                  <option>véhicule 1</option>
-                                  <option>véhicule 2</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="autre-chart-2"
-                                    style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
-                            </canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-xl-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-header-title">
-                                Classement des conducteurs
-                            </h4>
-                        </div>
-                        <div class="card-body d-height">
-                            <ul>
-                                <li class="text-secondary">Conducteur 1 <!--span class="badge bg-success">95%</span--></li>
-                                <li class="text-secondary">Conducteur 2 <!--span class="badge bg-success">93%</span--></li>
-                                <li class="text-secondary">Conducteur 3 <!--span class="badge bg-success">92%</span--></li>
-                                <li class="text-secondary">Conducteur 4 <!--span class="badge bg-success">90%</span--></li>
-                                <li class="text-secondary">Conducteur 5 <!--span class="badge bg-primary">70%</span--></li>
-                                <li class="text-secondary">Conducteur 6 <!--span class="badge bg-danger">60%</span--></li>
-                            </ul>
-                        </div>
-                    </div> <!-- ./card (classement des conducteurs) -->
-                </div>
-            </div>
-            <!-- *** *** *** *** *** *** *** ***-->
+
             <div class="row">
                 <div class="col-12 col-xl-4">
                     <div class="card">
@@ -394,17 +306,9 @@
                             <h4 class="card-header-title">
                                 Évolution d'émission Co2 kg
                             </h4>
-                            <!-- List des véhicules -->
-                            <div class="form-group">
-                                <select class="form-select form-select-sm mt-4" id="exampleFormControlSelect1">
-                                  <option>Véhicule ...</option>
-                                  <option>véhicule 1</option>
-                                  <option>véhicule 2</option>
-                                </select>
-                            </div>
                         </div>
                         <div class="card-body">
-                            <canvas id="autre-chart-3"
+                            <canvas id="chart-co2"
                                     style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>
@@ -415,19 +319,11 @@
                         <div class="card-header">
                             <!-- Title -->
                             <h4 class="card-header-title">
-                                Évolution empreinte carbone Kg
+                                Évolution carbone Kg
                             </h4>
-                            <!-- List des véhicules -->
-                            <div class="form-group">
-                                <select class="form-select form-select-sm mt-4" id="exampleFormControlSelect1">
-                                  <option>Véhicule ...</option>
-                                  <option>véhicule 1</option>
-                                  <option>véhicule 2</option>
-                                </select>
-                            </div>
                         </div>
                         <div class="card-body">
-                            <canvas id="autre-chart-4"
+                            <canvas id="chart-carbone"
                                     style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>

@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { EcoconduiteService } from '../../_services/ecoconduite.service';
 import { VehiculeService } from '../../_services/vehicule.service';
 import * as $ from 'jquery';
+import { GeoLocalisationService } from 'src/app/_services/geolocalisation.service';
+import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -11,267 +13,110 @@ import * as $ from 'jquery';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
-
- typeFiche:string='vehicule';
-
+  //
+  vehicules: any = []; moisEncours: any = {}; moisPrecedent: any = {}; etatVehicule: any = {}; vehiculesByScore: any = [];
 
   constructor(
-    private vehiculeService:VehiculeService,
-    private ecoconduiteService:EcoconduiteService
+    private vehiculeService: VehiculeService,
+    private geoLocalisationService: GeoLocalisationService,
+    private ecoconduiteService: EcoconduiteService,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
     Chart.register(...registerables);
   }
 
-  ngAfterViewInit(){
-    this.chartTotalConsommation();
-    this.chartCoutKm();
-    this.chartConsommationCarburant();
-    this.chartServices();
-    this.chartDepenses();
-    this.evolutionCompteur();
-
-    for (let index = 1; index <= 4; index++) {
-      this.autreChart(index);
-    }
+  ngAfterViewInit() {
+    this.getInfos();
+    this.getEtatVehicule();
   }
- 
-  //01-
-  chartTotalConsommation(){
-    let chart:any=$('#chart-total-consommation');
-    new Chart(chart, {
-      type: 'bar',
+
+
+  getInfos() {
+    this.geoLocalisationService.getInfosDashboard().subscribe(
+      res => {
+        const mois = ["JAN", "FEV", "MAR", "AVR", "MAI", "JUN", "JUL", "AOU", "SEP", "OCT", "NOV", "DEC"];
+        //01
+        this.moisEncours = res.moisEncours;
+        this.moisPrecedent = res.moisPrecedent;
+        //02 Coût Total
+        this.chart('chart-total-consommation', 'bar', res.coutTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutTotal })));
+        //03 Total Coût/1 Km Dh
+        this.chart('chart-cout-km', 'bar', res.coutKM.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutKM })));
+        //04 Évolution de compteur km
+        this.chart('chart-evolution-compteur', 'bar', res.compteurTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.distance })));
+        //05 Évolution empreinte carbone Kg
+        this.chart('chart-carbone', 'bar', res.carboneTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.cKg })));
+        //06 Co2 kg
+        this.chart('chart-co2', 'bar', res.carboneTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.co2Kg })));
+        //07 Coût total du carburant
+        this.chart('chart-consommation-carburant', 'bar', res.coutFuel.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutFuel })));
+        //08-Coût maintenance
+        this.chart('chart-maintenance', 'bar', res.coutMaintenance.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutTotal })));
+      }
+    )
+  }
+
+  chart(idChart: any, typeChart: any, _data: any) {
+    new Chart(<any>$('#' + idChart), {
+      type: typeChart,
       data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-          datasets: [{
-              label: '# Total consommation',
-              data: [25, 20, 30, 22, 17, 32],
-              backgroundColor: 'rgba(44, 123, 228)',
-              borderWidth: 0.3,
-              borderRadius: 6,
-              borderSkipped: false,
-              barPercentage: 0.10,
-              categoryPercentage: 0.5
-          }]
+        datasets: [{
+          data: _data,
+          backgroundColor: 'rgba(44, 123, 228)',
+          borderWidth: 0.3,
+          borderRadius: 6,
+          borderSkipped: false,
+          barPercentage: 0.10,
+          categoryPercentage: 0.5
+        }]
       },
-      options:{
-        scales:{
-          x:{
-            grid:{ drawOnChartArea:false }
+      options: {
+        scales: {
+          x: {
+            grid: { drawOnChartArea: false },
+
           },
-          y:{
-              grid:{ drawOnChartArea:false }
-            }
+          y: { grid: { drawOnChartArea: false } }
         },
-        plugins: {
-          legend: { display: false }
-        }
+        plugins: { legend: { display: false } }
       }
     });
   }
 
-  //02-
-  chartCoutKm(){
-    let chart:any=$('#chart-cout-km');
-    new Chart(chart, {
-      type: 'bar',
-      data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-          datasets: [{
-              label: '# Total consommation',
-              data: [18, 26, 28, 26, 20, 32],
-              backgroundColor: 'rgba(44, 123, 228)',
-              borderWidth: 0.3,
-              borderRadius: 6,
-              borderSkipped: false,
-              barPercentage: 0.20,
-              categoryPercentage: 0.5
-          }]
-      },
-      options:{
-        scales:{
-          x:{
-            grid:{ drawOnChartArea:false }
-          },
-          y:{
-              grid:{ drawOnChartArea:false }
-            }
-        },
-        plugins: {
-          legend: { display: false }
-        }
-      }
-    });
+
+  calc(val1: number, val2: number): string {
+    return ((val1 / (val1 + val2)) * 100).toFixed(2);
   }
 
-  //03
-  chartConsommationCarburant(){
-    let chart:any=$('#chart-consommation-carburant');
-    new Chart(chart, {
-      type: 'bar',
-      data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-          datasets: [{
-              label: '# Total consommation',
-              data: [40, 100, 70, 268, 90, 300],
-              backgroundColor: 'rgba(44, 123, 228)',
-              borderWidth: 0.3,
-              borderRadius: 6,
-              borderSkipped: false,
-              barPercentage: 0.20,
-              categoryPercentage: 0.5
-          }]
-      },
-      options:{
-        scales:{
-          x:{
-            grid:{ drawOnChartArea:false }
-          },
-          y:{
-              grid:{ drawOnChartArea:false }
-            }
-        },
-        plugins: {
-          legend: { display: false }
-        }
+  getEtatVehicule() {
+    this.vehiculeService.getAll().subscribe(
+      res => {
+        this.etatVehicule.eco_conduite = [...res].filter(v => v.eco_conduite).length;
+        this.etatVehicule.gps = [...res].filter(v => v.balise).length;
+        this.etatVehicule.non_gps = [...res].filter(v => !v.balise).length;
+        this.etatVehicule.maintenance = [...res].filter(v => v.statut == "En maintenance").length;
+        this.etatVehicule.actif = [...res].filter(v => v.statut == "Actif").length;
+        this.etatVehicule.inactif = [...res].filter(v => v.statut == "Inactif").length;
+        this.etatVehicule.occupe = [...res].filter(v => v.statut == "Occupé").length;
+        //
+        this.vehiculesByScore = [];
+        [...res].filter(v => v.eco_conduite).forEach(v => this.getScoreByVehicule(v.id, v.matricule));
       }
-    });
+    )
   }
 
-  //04-
-  chartServices(){
-    let chart:any=$('#chart-services');
-    new Chart(chart, {
-      type: 'bar',
-      data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-          datasets: [{
-              label: '# Total consommation',
-              data: [40, 100, 70, 268, 90, 300],
-              backgroundColor: 'rgba(44, 123, 228)',
-              borderWidth: 0.3,
-              borderRadius: 6,
-              borderSkipped: false,
-              barPercentage: 0.20,
-              categoryPercentage: 0.5
-          }]
-      },
-      options:{
-        scales:{
-          x:{
-            grid:{ drawOnChartArea:false }
-          },
-          y:{
-              grid:{ drawOnChartArea:false }
-            }
-        },
-        plugins: {
-          legend: { display: false }
-        }
-      }
-    });
-  }
+  getScoreByVehicule(vehicule_id: number, matricule: string) {
+    const date = new Date();
 
-  //05-
-  chartDepenses(){
-    let chart:any=$('#chart-depenses');
-    new Chart(chart, {
-      type: 'doughnut',
-      data: {
-          labels: ['carburant', 'Services', 'Autre'],
-          datasets: [{
-              label: '# Total consommation',
-              data:  [300, 50, 100],
-              backgroundColor: [
-                'rgb(44, 123, 226)',
-                'rgb(165, 197, 246)',
-                'rgb(210, 222, 236)'
-              ],
-              hoverOffset: 5
-          }],
-      },
-      options:{
-        cutout: '85%',
-        maintainAspectRatio:false,
-        plugins: {
-          legend: { position: 'left' }
-        }
+    const record = { vehicule_id: vehicule_id, date_debut: this.datePipe.transform((new Date(date.getFullYear(), date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(date, 'yyyy-MM-dd') }
+    this.ecoconduiteService.scoreByVehicule(record).subscribe(
+      res => {
+        this.vehiculesByScore.push({ id: vehicule_id, matricule, score: res.new_score ?? '100.00' });
+        this.vehiculesByScore = [...this.vehiculesByScore].sort((a, b) => b.score - a.score);
       }
-    });
-  }
-
-  //06-
-  evolutionCompteur(){
-    let chart:any=$('#chart-evolution-compteur');
-    new Chart(chart, {
-      type: 'bar',
-      data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-          datasets: [{
-              label: '# Total consommation',
-              data: [40, 100, 70, 268, 90, 300],
-              backgroundColor: 'rgba(44, 123, 228)',
-              borderWidth: 0.3,
-              borderRadius: 6,
-              borderSkipped: false,
-              barPercentage: 0.20,
-              categoryPercentage: 0.5
-          }]
-      },
-      options:{
-        scales:{
-          x:{
-            grid:{ drawOnChartArea:false }
-          },
-          y:{
-              grid:{ drawOnChartArea:false }
-            }
-        },
-        plugins: {
-          legend: { display: false }
-        }
-      }
-    });
-  }
-
-  autreChart(index:number){
-    let chart:any=$('#autre-chart-'+index);
-    new Chart(chart,{
-      type:'line',
-      data:{
-        datasets:[
-          {
-            data:[
-              (Math.floor(Math.random() * (100 - 0 + 1)) + 0),
-              (Math.floor(Math.random() * (100 - 0 + 1)) + 0),
-              (Math.floor(Math.random() * (100 - 0 + 1)) + 0),
-              (Math.floor(Math.random() * (100 - 0 + 1)) + 0),
-              (Math.floor(Math.random() * (100 - 0 + 1)) + 0),
-              (Math.floor(Math.random() * (100 - 0 + 1)) + 0)
-            ],
-            label:"chart",
-            backgroundColor: 'rgba(44, 123, 228)',
-            borderColor: 'rgba(44, 123, 228)'
-          }
-        ],
-        labels:["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
-      },
-      options:{
-        scales:{
-          x:{
-            grid:{ drawOnChartArea:false }
-          },
-          y:{
-              grid:{ drawOnChartArea:false }
-            }
-        },
-        plugins: {
-          legend: { display: false }
-        }
-      },
-      
-    })
+    )
   }
 
 

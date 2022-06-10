@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CopyrightComponent } from './components/copyright/copyright.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -26,6 +26,9 @@ import { IndexComponent } from './index/index.component';
     NavbarComponent,
     SidebarComponent,
     LayoutComponent
-  ]
+  ],
+  providers: [
+    DatePipe
+  ],
 })
 export class DashboardModule { }

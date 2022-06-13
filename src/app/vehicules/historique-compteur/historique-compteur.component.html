@@ -8,22 +8,20 @@
                 Historiques de compteur
             </h2>
         </div>
-    </div> <!-- fin titre -->
+    </div>
+    <!-- fin titre -->
     <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <ul class="nav nav-tabs nav-overflow header-tabs">
                     <li class="nav-item">
-                        <button class="nav-link" [ngClass]="{'active': type=='saisi-manuel'}"
-                            (click)="type='saisi-manuel'">Saisi manuel</button>
+                        <button class="nav-link" [ngClass]="{'active': type=='saisi-manuel'}" (click)="type='saisi-manuel'">Saisi manuel</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" [ngClass]="{'active': type=='releve-automatique'}"
-                            (click)="type='releve-automatique'">Relevé automatique</button>
+                        <button class="nav-link" [ngClass]="{'active': type=='releve-automatique'}" (click)="type='releve-automatique'">Relevé automatique</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" [ngClass]="{'active': type=='graphe'}"
-                            (click)="type='graphe'">L’évolution</button>
+                        <button class="nav-link" [ngClass]="{'active': type=='graphe'}" (click)="type='graphe'">L’évolution</button>
                     </li>
                 </ul>
             </div>
@@ -34,12 +32,10 @@
                     <div class="row">
                         <div *ngIf="message" class="alert alert-success" role="alert">
                             {{message}}
-                            <button type="button" class="btn-close pb-0 mp-0 text-white" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close pb-0 mp-0 text-white" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal"
-                        data-bs-target="#modal-edit" style="float:right" (click)="clear()">
+                    <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" style="float:right" (click)="clear()">
                         <i class="fa-solid fa-plus"></i>
                     </button><br><br><br>
                     <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchCompteurs(searchForm.value)">
@@ -56,19 +52,16 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="date_debut">Date début</label>
-                                <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
-                                    class="form-control">
+                                <input type="date" [(ngModel)]="search.date_debut" name="date_debut" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="date_fin">Date fin</label>
                                 <div class="input-group">
-                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
-                                        class="form-control">
+                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin" class="form-control">
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-outline-primary"
-                                            style="margin-left: 12px;">
+                                        <button type="submit" class="btn btn-outline-primary" style="margin-left: 12px;">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
@@ -85,6 +78,7 @@
                                     <th>Ancien compteur Km</th>
                                     <th>Nouveau compteur Km</th>
                                     <th>Kilométrage parcouru</th>
+                                    <th>Date d'opération</th>
                                     <th width="100">Eco-conduite</th>
                                 </tr>
                             </thead>
@@ -92,23 +86,23 @@
                                 <tr *ngFor="let compteur of compteurs['records']">
                                     <td class="matricule">{{compteur.matricule}}</td>
                                     <td class="ancien-compteur">
-                                        <strong class="text-primary">_</strong><br>
-                                        <strong class="small">_</strong>
+                                        <strong class="text-primary">{{compteur.ancien_compteur}}</strong>
                                     </td>
                                     <td class="nouveau-compteur">
                                         <strong class="text-primary">{{compteur.compteur}}</strong><br>
-                                        <strong class="small">{{compteur.date_operation | date: 'dd/MM/yyyy HH:mm' }}</strong>
+                                        <!-- <strong class="small">{{compteur.date_operation | date: 'dd/MM/yyyy HH:mm' }}</strong> -->
                                     </td>
-                                    <td class="kilométrage-parcouru text-danger font-weight-bold"><strong>_</strong>
+                                    <td class="kilométrage-parcouru text-danger font-weight-bold">
+                                        <strong>{{compteur.cumule_distance}}</strong>
+                                    </td>
+                                    <td class="date-operation">
+                                        {{compteur.date_operation | date: 'dd/MM/yyyy HH:mm' }}
                                     </td>
                                     <td>
-                                        <button type="button" ng-show="" class="btn btn-operation"
-                                            data-bs-toggle="modal" data-bs-target="#modal-edit"
-                                            (click)="getCompteur(compteur.id)">
+                                        <button type="button" ng-show="" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getCompteur(compteur.id)">
                                             <i class="fa-solid fa-pen"></i>
                                         </button> &nbsp;
-                                        <button type="button" class="btn btn-operation" data-bs-toggle="modal"
-                                            data-bs-target="#modal-delete" (click)="singleCompteur.id=compteur.id">
+                                        <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="singleCompteur.id=compteur.id">
                                             <i _ngcontent-hhv-c59="" class="fa-solid fa-trash"></i>
                                         </button>
                                     </td>
@@ -117,33 +111,28 @@
                         </table>
                     </div>
                 </div>
-                <nav aria-label="Page navigation" class="pag-tab col-md-12 navigation"
-                    *ngIf="compteurs.total_records && compteurs.total_pages>1">
+                <nav aria-label="Page navigation" class="pag-tab col-md-12 navigation" *ngIf="compteurs.total_records && compteurs.total_pages>1">
                     <ul class="pagination">
                         <li class="page-item">
-                            <a class="page-link" href="#!"
-                                [routerLink]="['/vehicules/compteurs/find/page', compteurs.current_page-1]"
-                                [ngClass]="{'_disabled':compteurs.current_page==1}">
+                            <a class="page-link" href="#!" [routerLink]="['/vehicules/compteurs/find/page', compteurs.current_page-1]" [ngClass]="{'_disabled':compteurs.current_page==1}">
                                 Précédent
                             </a>
                         </li>
-                        <li class="page-item" *ngFor="let p of [].constructor(compteurs.total_pages); let i=index"
-                            [ngClass]="{'active':compteurs.current_page==i+1}">
+                        <li class="page-item" *ngFor="let p of [].constructor(compteurs.total_pages); let i=index" [ngClass]="{'active':compteurs.current_page==i+1}">
                             <a class="page-link" [routerLink]="['/vehicules/compteurs/find/page', i+1]">{{i+1}}</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link"
-                                [routerLink]="['/vehicules/compteurs/find/page', compteurs.current_page+1]"
-                                [ngClass]="{'_disabled':compteurs.current_page==compteurs.total_pages}">
+                            <a class="page-link" [routerLink]="['/vehicules/compteurs/find/page', compteurs.current_page+1]" [ngClass]="{'_disabled':compteurs.current_page==compteurs.total_pages}">
                                 Suivant
                             </a>
                         </li>
                     </ul>
                 </nav>
             </div>
-        </div><!-- *** fin man *** -->
+        </div>
+        <!-- *** fin man *** -->
         <div class="releve-automatique mb-5" *ngIf="type=='releve-automatique'">
-            <form class="row form-search" #searchForm="ngForm">
+            <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchCompteursAutomatique(searchForm.value)">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="titre">Véhicules</label>
@@ -157,19 +146,16 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="date_debut">Date début</label>
-                        <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
-                            class="form-control">
+                        <input type="date" [(ngModel)]="search.date_debut" name="date_debut" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="date_fin">Date fin</label>
                         <div class="input-group">
-                            <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
-                                class="form-control">
+                            <input type="date" [(ngModel)]="search.date_fin" name="date_fin" class="form-control">
                             <div class="input-group-append">
-                                <button type="submit" class="btn btn-outline-primary"
-                                    style="margin-left: 12px;">
+                                <button type="submit" class="btn btn-outline-primary" style="margin-left: 12px;">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
@@ -190,8 +176,8 @@
                         </tr>
                     </thead>
                     <tbody class="list">
-                        <tr *ngFor="let vehicule of vehicules_avec_balise">
-                            <td class="matricule">{{vehicule.matricule}}</td>
+                        <tr *ngFor="let c_gps of compteurs_gps['records']">
+                            <!-- <td class="matricule">{{vehicule.matricule}}</td>
                             <td class="ancien-compteur">
                                 <strong class="text-primary">_</strong><br>
                                 <strong class="small">_</strong>
@@ -202,14 +188,14 @@
                             </td>
                             <td class="kilométrage-parcouru text-danger"><strong>_</strong></td>
                             <td class="eco-conduite">
-                                <i class="fa-solid fa-leaf  icon_eco"
-                                    [ngClass]="(vehicule.eco_conduite) ? 'text-success' : 'text-secondary'"></i>
-                            </td>
+                                <i class="fa-solid fa-leaf  icon_eco" [ngClass]="(vehicule.eco_conduite) ? 'text-success' : 'text-secondary'"></i>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div><!-- *** fin aut *** -->
+        </div>
+        <!-- *** fin aut *** -->
         <div class="graphe mb-5" [ngClass]="{'d-none':type!='graphe'}">
             <form class="row form-search" #searchForm="ngForm" (ngSubmit)="generateChart(searchForm.value)">
                 <div class="col-md-4">
@@ -217,7 +203,7 @@
                         <label for="titre">Véhicules</label>
                         <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
                             <option value='' disabled>Veuillez choisir ...</option>
-                            <option *ngFor="let vehicule of vehicules_sans_balise" value="{{vehicule.id}}">
+                            <option *ngFor="let vehicule of vehicules" value="{{vehicule.id}}">
                                 {{vehicule.matricule}}</option>
                         </select>
                     </div>
@@ -243,7 +229,7 @@
                 </div>
             </form>
             <div class="text-muted pt-3 pb-3 bg-white shadow-sm row" [ngClass]="{'d-none':mychart}">
-                <p class="text-center">Pas des données disponibles ...</p>   
+                <p class="text-center">Pas des données disponibles ...</p>
             </div>
             <div class="row bg-white pt-4" [ngClass]="{'d-none':!mychart}">
                 <canvas id="chart-compteurs"></canvas>
@@ -257,21 +243,18 @@
                     <div class="modal-card card" data-list=''>
                         <div class="card-header">
                             <h4 class="card-header-title" id="exampleModalCenterTitle">Compteur de Véhicule</h4>
-                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="card-body">
                             <form #compteurForm="ngForm" (ngSubmit)="update(compteurForm.value)">
                                 <div class="frm-compteur">
-                                    <input type="hidden" [(ngModel)]="singleCompteur.id" name="id"
-                                        value="singleCompteur.id">
+                                    <input type="hidden" [(ngModel)]="singleCompteur.id" name="id" value="singleCompteur.id">
                                     <div class="form-group">
                                         <label for="titre" class="form-label">
                                             Véhicule
                                             <strong class="text-danger" *ngIf="!singleCompteur.vehicule_id">*</strong>
                                         </label>
-                                        <select class="form-select form-select-sm"
-                                            [(ngModel)]="singleCompteur.vehicule_id" name="vehicule_id" required>
+                                        <select class="form-select form-select-sm" [(ngModel)]="singleCompteur.vehicule_id" name="vehicule_id" required>
                                             <option value=null disabled>Veuillez choisir...</option>
                                             <option *ngFor="let vehicule of vehicules_sans_balise"
                                                 value="{{vehicule.id}}">{{vehicule.matricule}}</option>
@@ -283,26 +266,20 @@
                                             <strong class="text-danger"
                                                 *ngIf="!singleCompteur.date_operation">*</strong>
                                         </label>
-                                        <input type="datetime-local" class="form-control form-control-sm"
-                                            [ngModel]="singleCompteur.date_operation | date:'yyyy-MM-ddTHH:mm'"
-                                            name="date_operation"
-                                            (ngModelChange)="singleCompteur.date_operation = $event" required>
+                                        <input type="datetime-local" class="form-control form-control-sm" [ngModel]="singleCompteur.date_operation | date:'yyyy-MM-ddTHH:mm'" name="date_operation" (ngModelChange)="singleCompteur.date_operation = $event" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="nom" class="form-label">
                                             Compteur Km
                                             <strong class="text-danger" *ngIf="!singleCompteur.compteur">*</strong>
                                         </label>
-                                        <input type="number" class="form-control form-control-sm" placeholder="Compteur"
-                                            [(ngModel)]="singleCompteur.compteur" name="compteur" required>
+                                        <input type="number" class="form-control form-control-sm" placeholder="Compteur" [(ngModel)]="singleCompteur.compteur" name="compteur" required>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <small class="text-danger">*: Ces champs sont obligatoires.</small>
-                                    <button type="submit" class="btn btn-success mb-2 float-right"
-                                        [disabled]="!compteurForm.valid">Enregister</button>
-                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal"
-                                        style="margin-right: 5px;">Annuler</button>
+                                    <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!compteurForm.valid">Enregister</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
                                 </div>
                             </form>
                         </div>
@@ -321,8 +298,7 @@
                             </i>
                         </div>
                         <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.
@@ -330,15 +306,12 @@
                         <br>
                         <div *ngIf="message" class="alert alert-success" role="alert">
                             {{message}}
-                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal"
-                            aria-label="Close">Annuler</button>
-                        <button type="button" class="btn btn-danger"
-                            (click)="delete(singleCompteur.id)">Supprimer</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                        <button type="button" class="btn btn-danger" (click)="delete(singleCompteur.id)">Supprimer</button>
                     </div>
                 </div>
             </div>

@@ -29,10 +29,11 @@ export class HistoriqueCompteurComponent implements OnInit {
   ) { }
 
   currentDate = new Date();
-  compteurs : any = []; message:any; vehicules_avec_balise:any=[]; vehicules_sans_balise:any=[]; date = new Date(); page=1; type='saisi-manuel';
+  compteurs : any = []; message:any; compteurs_gps:any=[]; vehicules_sans_balise:any=[]; vehicules:any=[];
+  date = new Date(); page=1; type='saisi-manuel';
   singleCompteur={ id:null, vehicule_id:null, date_operation:null, compteur:null }
   search: any = {
-    vehicule_id: '',
+    vehicule_id: 9,
     date_debut: this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-01',
     date_fin: this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.date.getDate() + 1)).slice(-2) 
   }
@@ -43,10 +44,12 @@ export class HistoriqueCompteurComponent implements OnInit {
 
     this.searchCompteurs(null);
 
+    this.getGpsCompteurs();
+
     this.activatedRoute.params.subscribe(param => {
       this.page = param['page'];
       if(this.page) this.searchCompteurs(null);
-      this.getVehicules();
+      //this.getVehicules();
     });
   }
 
@@ -54,27 +57,41 @@ export class HistoriqueCompteurComponent implements OnInit {
     this.singleCompteur = { id:null, vehicule_id:null, date_operation:null, compteur:null };
   }
 
-  getVehicules(){
-    this.vehiculeService.getAll().subscribe(
-      res=> {
-        //01
-        this.vehicules_avec_balise=res.filter((v: any) => v.balise);
-        this.vehicules_avec_balise.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : null);
-        //02
-        this.vehicules_sans_balise=res.filter((v: any) => !v.balise);
-      },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
-      }
+  getGpsCompteurs(){
+    this.vehiculeHistoriqueCompteurService.getGpsCompteur(this.search).subscribe(
+      res =>console.log(res)
     )
   }
+
+  // getVehicules(){
+  //   this.vehiculeService.getAll().subscribe(
+  //     res=> {
+  //       //01
+  //       this.vehicules=res;
+  //       //01
+  //       this.vehicules_avec_balise=res.filter((v: any) => v.balise);
+  //       this.vehicules_avec_balise.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : null);
+  //       //02
+  //       this.vehicules_sans_balise=res.filter((v: any) => !v.balise);
+  //     },
+  //     // error => {
+  //     //   if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
+  //     // }
+  //   )
+  // }
 
   searchCompteurs(data:any){
     this.vehiculeHistoriqueCompteurService.search(this.page,data).subscribe(
       res=> this.compteurs=res,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.searchCompteurs(data);
-      }
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this.searchCompteurs(data);
+      // }
+    )
+  }
+
+  searchCompteursAutomatique(record:any){
+    this.vehiculeHistoriqueCompteurService.getGpsCompteur(this.search).subscribe(
+      res => this.compteurs_gps=res
     )
   }
 
@@ -82,9 +99,9 @@ export class HistoriqueCompteurComponent implements OnInit {
     this.message=null;
     this.vehiculeHistoriqueCompteurService.getCompteur(id).subscribe(
       res=> this.singleCompteur=res,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getCompteur(id);
-      }
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getCompteur(id);
+      // }
     )
   }
 
@@ -96,9 +113,10 @@ export class HistoriqueCompteurComponent implements OnInit {
           this.message = "Le carburant est ajouté avec succès !";
           this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
-      })
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+      // }
+      )
     } else {
       this.vehiculeHistoriqueCompteurService.update(form).subscribe(
         res => {
@@ -106,9 +124,10 @@ export class HistoriqueCompteurComponent implements OnInit {
           this.message = "Le carburant est modifié avec succès !";
           this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
-      })
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+      // }
+      )
     }
   }
 
@@ -119,9 +138,10 @@ export class HistoriqueCompteurComponent implements OnInit {
         this.message = "Le carburant est supprimé avec succès !";
         this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
-      })
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
+      // }
+      )
   }
 
   generateChart(record: any){

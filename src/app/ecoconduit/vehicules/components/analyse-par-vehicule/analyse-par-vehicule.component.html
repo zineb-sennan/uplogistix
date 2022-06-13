@@ -5,8 +5,7 @@
                 <!-- Dropdown -->
                 <div class="dropdown float-right">
                     <!-- Toggle -->
-                    <button class="btn btn-primary shadow" type="button" data-bs-toggle="dropdown"
-                        data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-primary shadow" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-arrow-down-wide-short"></i> Analyser par ...
                     </button>
                     <!-- Menu -->
@@ -25,7 +24,8 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div> <!-- / .row -->
+                                    </div>
+                                    <!-- / .row -->
                                 </div>
                                 <div class="list-group-item">
                                     <div class="row">
@@ -33,14 +33,12 @@
                                             <div class="row align-items-center">
                                                 <div class="col">
                                                     <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
-                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
-                                                            data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
+                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
                                                             <a class="nav-link active" href="#" data-bs-toggle="tab">
                                                                 Jour
                                                             </a>
                                                         </li>
-                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
-                                                            data-action="toggle" data-dataset="2" (click)="typeFilter = 'periode'">
+                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="typeFilter = 'periode'">
                                                             <a class="nav-link" href="#" data-bs-toggle="tab">
                                                                 Période
                                                             </a>
@@ -51,11 +49,13 @@
                                                         <!-- *** *** -->
                                                         <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='periode'">
                                                         <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin" *ngIf="typeFilter=='periode'">
-                                                    </div> <!-- -->
+                                                    </div>
+                                                    <!-- -->
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> <!-- / .row -->
+                                    </div>
+                                    <!-- / .row -->
                                 </div>
                             </div>
                             <!-- Button -->
@@ -65,7 +65,8 @@
                         </div>
                     </form>
                 </div>
-            </div> <!-- ./col-auto -->
+            </div>
+            <!-- ./col-auto -->
         </div>
         <div>
             <div class="row">
@@ -79,8 +80,10 @@
                                 Évolution de Score
                             </h4>
                         </div>
-                    </div><!-- ./card autres charts-->
-                </div> <!-- ./col-md-8 -->
+                    </div>
+                    <!-- ./card autres charts-->
+                </div>
+                <!-- ./col-md-8 -->
                 <div class="col-md-4">
                     <div class="card pt-2" style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;">
                         <div class="card-header">
@@ -104,11 +107,13 @@
                                             <h5 class="mb-1">
                                                 Score maximale
                                             </h5>
-                                            <small class="text-muted">100%</small>
+                                            <small class="text-muted">0%</small>
                                         </div>
-                                    </div> <!-- / .row -->
+                                    </div>
+                                    <!-- / .row -->
                                 </div>
-                            </div><!-- ./list-group -->
+                            </div>
+                            <!-- ./list-group -->
                             <div class="list-group list-group-flush list-group-activity my-n3">
                                 <div class="list-group-item">
                                     <div class="row">
@@ -123,15 +128,19 @@
                                             <h5 class="mb-1">
                                                 Score minimal
                                             </h5>
-                                            <small class="text-muted">10%</small>
+                                            <small class="text-muted">0%</small>
                                         </div>
-                                    </div> <!-- / .row -->
+                                    </div>
+                                    <!-- / .row -->
                                 </div>
-                            </div><!-- ./list-group -->
+                            </div>
+                            <!-- ./list-group -->
                         </div>
                     </div>
-                </div><!-- ./col-md-8 -->
-            </div><!-- ./row fiche vehicule -->
+                </div>
+                <!-- ./col-md-8 -->
+            </div>
+            <!-- ./row fiche vehicule -->
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group" style="width: 300px; float:right; margin-bottom: 50px;">
@@ -148,7 +157,8 @@
                             <!-- <option value="fuel-gaspille">Fuel gaspille</option>
                             <option value="bilan-carbone">Bilan carbone</option> -->
                         </select>
-                    </div><!-- ./select -->
+                    </div>
+                    <!-- ./select -->
                     <div class="card bg">
                         <div class="card-header">
                             <canvas id="chart_vehicule"></canvas>
@@ -159,8 +169,10 @@
                             </h4>
 
                         </div>
-                    </div><!-- ./card autres charts-->
+                    </div>
+                    <!-- ./card autres charts-->
                 </div>
-            </div> <!-- ./row -->
+            </div>
+            <!-- ./row -->
         </div>
     </div>

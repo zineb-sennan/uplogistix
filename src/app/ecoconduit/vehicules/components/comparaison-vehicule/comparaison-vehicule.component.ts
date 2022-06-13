@@ -59,9 +59,9 @@ export class ComparaisonVehiculeComponent implements OnInit {
           this.vehicules[index].checked = true;
         }
       },
-      error => {
-        if (error.status == 401 && this.securiteClass.refreshToken()) this.getVehiculeWitheEco();
-      }
+      // error => {
+      //   if (error.status == 401 && this.securiteClass.refreshToken()) this.getVehiculeWitheEco();
+      // }
     )
   }
 
@@ -90,10 +90,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
         if (e.currentTarget.checked) {
           vehicule.color = this.colors.filter(v => !this.vehiculesSelected.map((vs: any) => vs.color).includes(v))[0];
           this.vehiculesSelected.push(vehicule);
-
-          this.chartSelected.forEach((chart: any) => {
-            this.getInformationsVehicule(vehicule, (vehicule.id + '' + chart.index), chart.index);
-          });
+          this.getInformationsVehicule(vehicule);
         }
         else if (!e.currentTarget.checked) {
           this.vehiculesSelected = this.vehiculesSelected.filter(v => v.id != vehicule.id);
@@ -108,65 +105,41 @@ export class ComparaisonVehiculeComponent implements OnInit {
       vehicule.color = this.colors[this.vehiculesSelected.length];
       this.vehiculesSelected.push(vehicule);
       //
-      this.chartSelected.forEach((chart: any) => {
-        this.getInformationsVehicule(vehicule, (vehicule.id + '' + chart.index), chart.index);
-      });
+      this.getInformationsVehicule(vehicule);
     }
   }
 
-  async getInformationsVehicule(vehicule: any, index: any, indexChart: any) {
+  async getInformationsVehicule(vehicule: any) {
     var _data: any = null;
     this.filter.vehicule_id = vehicule.id;
-    //MaxSpeed | Vitesse maximale Km
-    if (indexChart == 1) {
-      _data = (await this.geoLocalisationService.getMaxSpeed(this.filter).toPromise());
-      _data = _data.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.average }));
-      this.chartSelected[indexChart - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
-    }
-    //SpeedAverage| Vitesse moyenne Km
-    else if (indexChart == 2) {
-      _data = (await this.geoLocalisationService.getSpeedAverage(this.filter).toPromise());
-      _data = _data.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.average }));
-      this.chartSelected[indexChart - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
-    }
-    //Fuel | Consommation carburant
-    else if (indexChart == 3) {
-      _data = (await this.geoLocalisationService.getFuel(this.filter).toPromise());
-      _data = _data.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.montant_carburant) }));
-      this.chartSelected[indexChart - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
-    }
-    //Distance | Distance parcourue Km
-    else if (indexChart == 4) {
-      _data = (await this.geoLocalisationService.getDistance(this.filter).toPromise());
-      _data = _data.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.distance }));
-      this.chartSelected[indexChart - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
-    }
-    //carbone | Emission CO2 kg
-    else if (indexChart == 5) {
-      _data = (await this.geoLocalisationService.getCarbone(this.filter).toPromise());
-      _data = _data.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.CO2g) }));
-      this.chartSelected[indexChart - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
-    }
-    //DriveTime | Temps de conduite
-    else if (indexChart == 6) {
-      _data = (await this.geoLocalisationService.getDriveTime(this.filter).toPromise());
-      _data = _data.map((v: any,index:any=2) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y:index , z: v.duree }));
-      this.chartSelected[indexChart - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
-    }
-    //L100 | Consommation l/100km
-    else if (indexChart == 1) {
-      _data = (await this.geoLocalisationService.getL100(this.filter).toPromise());
-      _data = _data.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.consommation) }));
-      console.log(vehicule.matricule, _data);
-      this.chartSelected[indexChart - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
-    }
 
-    //La creation d'une chart
-    this.createChart(index, _data, vehicule, 100, indexChart);
+    this.geoLocalisationService.getAnalyseVehicule(this.filter).subscribe(
+      res => {
+        this.chartSelected.forEach((chart: any) => {
+          //MaxSpeed | Vitesse maximale Km
+          if (chart.index == 1) _data = res.maxSpeed.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure?.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.average }));
+          //SpeedAverage| Vitesse moyenne Km
+          else if (chart.index == 2) _data = res.speedAverage.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.average }));
+          //Fuel | Consommation carburant
+          else if (chart.index == 3) _data = res.fuel.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.montant_carburant) }));
+          //Distance | Distance parcourue Km
+          else if (chart.index == 4) _data = res.distance.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.distance }));
+          //carbone | Emission CO2 kg
+          else if (chart.index == 5) _data = res.carbone.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.CO2g) }));
+          //DriveTime | Temps de conduite
+          else if (chart.index == 6) _data = res.driveTime.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.CO2g) }));
+          //L100 | Consommation l/100km
+          else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.consommation) }));
+          //
+          this.chartSelected[chart.index - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
+          this.createChart((vehicule.id + '' + chart.index), _data, vehicule, Math.max(..._data.map((d: any) => d.y)));
+        });//fin forEach
+      }
+    )//fin geoLocalisation
   }
 
   mChart: any = [];
-  createChart(index: any, data: any, vehicule: any, maxValue: any, indexChart:any) {
+  createChart(index: any, data: any, vehicule: any, maxValue: any) {
 
     var chart: any = $('#chart_' + index);
     if (this.mChart[index]) this.mChart[index].destroy();
@@ -199,13 +172,8 @@ export class ComparaisonVehiculeComponent implements OnInit {
         }
       }
     });
-    
-    //temps de conduite
-    if(indexChart == 6){
-      this.mChart[index].options.scales.y.ticks.callback='Bonjour !';
-    }
-
-    $('#max_' + index).text(maxValue);
+    //
+    if (maxValue != '-Infinity' && !isNaN(maxValue)) $('#max_' + index).text(maxValue.toFixed(2));
   }
 
   remplissageChartPrincipale(index: any) {
@@ -261,9 +229,9 @@ export class ComparaisonVehiculeComponent implements OnInit {
     });
     //03
     this.vehiculesSelected.forEach(vehicule => {
-      this.chartSelected.forEach((chart: any) => {
-        this.getInformationsVehicule(vehicule, (vehicule.id + '' + chart.index), chart.index);
-      });
+      // this.chartSelected.forEach((chart: any) => {
+        this.getInformationsVehicule(vehicule);
+      // });
     });
   }
 

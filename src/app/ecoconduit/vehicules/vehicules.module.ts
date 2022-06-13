@@ -9,15 +9,14 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
-
-
 @NgModule({
   declarations: [
     GlobaleVehiculeComponent,
     AnalyseParVehiculeComponent,
     ClassementVehiculeComponent,
     ComparaisonVehiculeComponent,
-    FicheVehiculeComponent
+    FicheVehiculeComponent,
+    
   ],
   imports: [
     CommonModule,

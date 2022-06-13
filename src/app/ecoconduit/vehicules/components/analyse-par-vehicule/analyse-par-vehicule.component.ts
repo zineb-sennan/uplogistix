@@ -99,7 +99,7 @@ export class AnalyseParVehiculeComponent implements OnInit {
       data:{
         datasets:[
           {
-            data:[ (Math.floor(Math.random() * (100 - 0 + 1)) + 0), (Math.floor(Math.random() * (100 - 0 + 1)) + 0), (Math.floor(Math.random() * (100 - 0 + 1)) + 0), (Math.floor(Math.random() * (100 - 0 + 1)) + 0), (Math.floor(Math.random() * (100 - 0 + 1)) + 0), (Math.floor(Math.random() * (100 - 0 + 1)) + 0) ],
+            data:[ 0, 0, 0, 0, 0, 0 ],
             label:"chart",
             pointBackgroundColor: 'rgb(44, 123, 228)',
             pointHoverBackgroundColor: 'rgb(44, 123, 228)',

@@ -65,9 +65,10 @@ export class DashboardComponent implements OnInit {
         if(this.singleVehicule.eco_conduite) this.getResumeForVehicule(id);
         this.getPositions(id);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehiculeById(id);
-      });
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getVehiculeById(id);
+      // }
+      );
   }
 
   getResumeForVehicule(id:number) {
@@ -75,9 +76,10 @@ export class DashboardComponent implements OnInit {
       resume=>{
         this.resume=resume
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getResumeForVehicule(id);
-      });
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getResumeForVehicule(id);
+      // }
+      );
   }
 
   getEtatCarburant(id:number){
@@ -88,9 +90,9 @@ export class DashboardComponent implements OnInit {
         this.createChart("chart1","Cout total carburants",data, labels); 
         this.createChart("chart2","Cout total",data, labels);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getEtatCarburant(id);
-      }
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getEtatCarburant(id);
+      // }
     )
   }
 
@@ -181,9 +183,10 @@ export class DashboardComponent implements OnInit {
         this.positions = result;
         this.initMap(33.9727213, -6.8867775, 5);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this. getPositions(vehicule_id);
-      });
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this. getPositions(vehicule_id);
+      // }
+      );
   }
 
   private createMarker(point: any) {

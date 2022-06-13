@@ -45,11 +45,11 @@ export class IndexComponent implements OnInit {
         //03 Total Coût/1 Km Dh
         this.chart('chart-cout-km', 'bar', res.coutKM.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutKM })));
         //04 Évolution de compteur km
-        this.chart('chart-evolution-compteur', 'bar', res.compteurTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.distance })));
+        this.chart('chart-evolution-compteur', 'line', res.compteurTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.distance })));
         //05 Évolution empreinte carbone Kg
-        this.chart('chart-carbone', 'bar', res.carboneTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.cKg })));
+        this.chart('chart-carbone', 'line', res.carboneTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.cKg })));
         //06 Co2 kg
-        this.chart('chart-co2', 'bar', res.carboneTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.co2Kg })));
+        this.chart('chart-co2', 'line', res.carboneTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.co2Kg })));
         //07 Coût total du carburant
         this.chart('chart-consommation-carburant', 'bar', res.coutFuel.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutFuel })));
         //08-Coût maintenance
@@ -59,30 +59,36 @@ export class IndexComponent implements OnInit {
   }
 
   chart(idChart: any, typeChart: any, _data: any) {
-    new Chart(<any>$('#' + idChart), {
+    const _myChar:any= {
       type: typeChart,
       data: {
         datasets: [{
           data: _data,
           backgroundColor: 'rgba(44, 123, 228)',
-          borderWidth: 0.3,
-          borderRadius: 6,
-          borderSkipped: false,
-          barPercentage: 0.10,
-          categoryPercentage: 0.5
         }]
       },
       options: {
         scales: {
           x: {
             grid: { drawOnChartArea: false },
-
           },
           y: { grid: { drawOnChartArea: false } }
         },
         plugins: { legend: { display: false } }
       }
-    });
+    };
+    
+    if(typeChart == 'bar'){
+      _myChar.data.datasets[0].borderWidth='0.5';
+      _myChar.data.datasets[0].borderRadius=6;
+      _myChar.data.datasets[0].borderSkipped=false;
+      
+      if(idChart == "chart-total-consommation") _myChar.data.datasets[0].categoryPercentage=0.13;
+      else _myChar.data.datasets[0].categoryPercentage=0.3;
+
+      //console.log(idChart,_myChar.data.datasets[0])
+    }
+    new Chart(<any>$('#' + idChart), _myChar);
   }
 
 
@@ -103,6 +109,7 @@ export class IndexComponent implements OnInit {
         //
         this.vehiculesByScore = [];
         [...res].filter(v => v.eco_conduite).forEach(v => this.getScoreByVehicule(v.id, v.matricule));
+        //
       }
     )
   }

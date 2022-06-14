@@ -2,8 +2,9 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
-import { GeoLocalisationService } from 'src/app/_services/geolocalisation.service';
-import { VehiculeService } from 'src/app/_services/vehicule.service';
+import { EcoconduiteService } from '../../../../_services/ecoconduite.service';
+import { GeoLocalisationService } from '../../../../_services/geolocalisation.service';
+import { VehiculeService } from '../../../../_services/vehicule.service';
 
 @Component({
   selector: 'app-analyse-par-vehicule',
@@ -12,13 +13,14 @@ import { VehiculeService } from 'src/app/_services/vehicule.service';
 })
 export class AnalyseParVehiculeComponent implements OnInit {
   //
-  typeFilter='jour';  filter: any = { vehicule_id: 9, date_debut: "2022-03-10", date_fin: "2022-03-10" };
-  vehicules:any=[];
+  typeFilter='periode';  filter: any = { vehicule_id: 9, date_debut: "2022-03-10", date_fin: "2022-6-10" };
+  vehicules:any=[]; score:any={maximale:'', minimal:''}
 
   constructor(
     private geoLocalisationService:GeoLocalisationService,
     private vehiculeService:VehiculeService,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private ecoconduiteService:EcoconduiteService
   ) { }
 
   ngOnInit(): void {
@@ -27,8 +29,10 @@ export class AnalyseParVehiculeComponent implements OnInit {
     //02-
     this.getVehiculeWitheEco();
     //03-
-    this.chartScore();
+    //this.chartScore();
     this.getMaxSpeed();
+    //04
+    this.getEvolutionScore();
     }
 
   changeTypeChart(e:any){
@@ -56,8 +60,8 @@ export class AnalyseParVehiculeComponent implements OnInit {
   genererGraphe(titre:any, _data:any){ 
     var data_ref=[]; let chart:any=$('#chart_vehicule');
     if (this.myChart) this.myChart.destroy();
-    if(this.typeFilter=="jour") data_ref=[{x:"0:00", y:100},{x:"1:00", y:200},{x:"2:00", y:300},{x:"3:00", y:100},{x:"4:00", y:110},{x:"5:00", y:80},{x:"6:00", y:50},{x:"7:00", y:300},{x:"8:00", y:300},{x:"9:00", y:700},{x:"10:00", y:80},{x:"11:00", y:90},{x:"12:00", y:50},{x:"13:00", y:78},{x:"14:00", y:100},{x:"15:00", y:100},{x:"16:00", y:87},{x:"17:00", y:95},{x:"18:00", y:100},{x:"19:00", y:87},{x:"20:00", y:40},{x:"21:00", y:100},{x:"22:00", y:40},{x:"23:00", y:80}];
-    else  data_ref=[{x:"01", y:80},{x:"02", y:100},{x:"03", y:90},{x:"04", y:50},{x:"05", y:30},{x:"06", y:70},{x:"07", y:50},{x:"08", y:70},{x:"09", y:100},{x:"10", y:100},{x:"11", y:100},{x:"12", y:100},{x:"13", y:100},{x:"14", y:100},{x:"15", y:80},{x:"16", y:60},{x:"17", y:100},{x:"17:00", y:100},{x:"18", y:80},{x:"19", y:100},{x:"20", y:100},{x:"21", y:80},{x:"22", y:100},{x:"23", y:74}];
+    //if(this.typeFilter=="jour") data_ref=[{x:"0:00", y:100},{x:"1:00", y:200},{x:"2:00", y:300},{x:"3:00", y:100},{x:"4:00", y:110},{x:"5:00", y:80},{x:"6:00", y:50},{x:"7:00", y:300},{x:"8:00", y:300},{x:"9:00", y:700},{x:"10:00", y:80},{x:"11:00", y:90},{x:"12:00", y:50},{x:"13:00", y:78},{x:"14:00", y:100},{x:"15:00", y:100},{x:"16:00", y:87},{x:"17:00", y:95},{x:"18:00", y:100},{x:"19:00", y:87},{x:"20:00", y:40},{x:"21:00", y:100},{x:"22:00", y:40},{x:"23:00", y:80}];
+    //else  data_ref=[{x:"01", y:80},{x:"02", y:100},{x:"03", y:90},{x:"04", y:50},{x:"05", y:30},{x:"06", y:70},{x:"07", y:50},{x:"08", y:70},{x:"09", y:100},{x:"10", y:100},{x:"11", y:100},{x:"12", y:100},{x:"13", y:100},{x:"14", y:100},{x:"15", y:80},{x:"16", y:60},{x:"17", y:100},{x:"17:00", y:100},{x:"18", y:80},{x:"19", y:100},{x:"20", y:100},{x:"21", y:80},{x:"22", y:100},{x:"23", y:74}];
 
     this.myChart = new Chart(chart,{
       type:'line',
@@ -69,13 +73,13 @@ export class AnalyseParVehiculeComponent implements OnInit {
             backgroundColor: 'rgb(44, 123, 228)',
             borderColor: 'rgb(44, 123, 228)'
           },
-          {
-            data:data_ref,
-            label:"Référencements",
-            backgroundColor: 'rgba(168, 175, 183, 1)',
-            borderColor: 'rgb(168, 175, 183)',
-            borderDash: [3, 5]
-          }
+          // {
+          //   data:data_ref,
+          //   label:"Référencements",
+          //   backgroundColor: 'rgba(168, 175, 183, 1)',
+          //   borderColor: 'rgb(168, 175, 183)',
+          //   borderDash: [3, 5]
+          // }
         ],
       },
       options:{
@@ -92,14 +96,14 @@ export class AnalyseParVehiculeComponent implements OnInit {
     })
   } // ./genererGraphe
 
-  chartScore(){
+  chartScore(_data:any){
     let chart:any=$('#chart_score');
     new Chart(chart,{
       type:'line',
       data:{
         datasets:[
           {
-            data:[ 0, 0, 0, 0, 0, 0 ],
+            data:_data,
             label:"chart",
             pointBackgroundColor: 'rgb(44, 123, 228)',
             pointHoverBackgroundColor: 'rgb(44, 123, 228)',
@@ -107,7 +111,6 @@ export class AnalyseParVehiculeComponent implements OnInit {
             borderWidth: 3
           }
         ],
-        labels:["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
       },
       options:{
         maintainAspectRatio:false,
@@ -196,8 +199,19 @@ export class AnalyseParVehiculeComponent implements OnInit {
     )
   }
 
+  getEvolutionScore(){
+    this.ecoconduiteService.evolutionScoreByVehicule(this.filter).subscribe(
+      res =>{
+        //console.log(res);
+        this.chartScore(res.map((v:any)=> ({ x:this.datepipe.transform(v.date_operation, 'dd-MM-yyyy'), y: Number(v.score) })));
+        this.score.maximale = Math.max(...res.map((d: any) => d.score));
+        this.score.minimal = Math.min(...res.map((d: any) => d.score));
+      } 
+    )
+  }
+
   filterData(){
-    this.chartScore();
+    //this.chartScore();
     this.getMaxSpeed();
   }
 

@@ -30,7 +30,7 @@ export class VehiculeService {
   }
 
   getVehiculeById(id:number){
-    return this.http.get(environment.apiURL + '/vehicules/' + id)
+    return this.http.get<any>(environment.apiURL + '/vehicules/' + id)
   }
 
   search(record: any){

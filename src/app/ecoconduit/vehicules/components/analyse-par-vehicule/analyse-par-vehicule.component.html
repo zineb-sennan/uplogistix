@@ -32,7 +32,7 @@
                                         <div class="col">
                                             <div class="row align-items-center">
                                                 <div class="col">
-                                                    <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
+                                                    <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
                                                         <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
                                                             <a class="nav-link active" href="#" data-bs-toggle="tab">
                                                                 Jour
@@ -107,7 +107,7 @@
                                             <h5 class="mb-1">
                                                 Score maximale
                                             </h5>
-                                            <small class="text-muted">0%</small>
+                                            <small class="text-muted">{{score.maximale}}%</small>
                                         </div>
                                     </div>
                                     <!-- / .row -->
@@ -128,7 +128,7 @@
                                             <h5 class="mb-1">
                                                 Score minimal
                                             </h5>
-                                            <small class="text-muted">0%</small>
+                                            <small class="text-muted">{{score.minimal}}%</small>
                                         </div>
                                     </div>
                                     <!-- / .row -->

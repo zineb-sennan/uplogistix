@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GeoLocalisationService } from 'src/app/_services/geolocalisation.service';
-import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
+import { GeoLocalisationService } from '../../../../_services/geolocalisation.service';
+import { EcoconduiteService } from '../../../../_services/ecoconduite.service';
 import { VehiculeService } from '../../../../_services/vehicule.service';
 import { SecuriteClass } from '../../../../_globale/securite';
 import { Chart, registerables } from 'chart.js';

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
-import { SecuriteClass } from 'src/app/_globale/securite';
-import { ConducteurService } from 'src/app/_services/conducteur.service';
-import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
+import { SecuriteClass } from '../../../../_globale/securite';
+import { ConducteurService } from '../../../../_services/conducteur.service';
+import { EcoconduiteService } from '../../../../_services/ecoconduite.service';
 
 @Component({
   selector: 'app-comparaison-conducteurs',
@@ -107,19 +107,19 @@ export class ComparaisonConducteursComponent implements OnInit {
       var _data:any=[];
       if(this.typeFilter=="jour"){
         for (let index = 0; index < 24; index++) {
-          var item= {"x":"heur "+(index+1), "y": this.entierAleatoire(1,20) }
+          var item= {"x":"heur "+(index+1), "y": 0 }
           _data.push(item);
         }
       }
       else if(this.typeFilter=="semaine"){
         for (let index = 0; index < 7; index++) {
-          var item= {"x":"jour "+(index+1), "y": this.entierAleatoire(1,20) }
+          var item= {"x":"jour "+(index+1), "y": 0 }
           _data.push(item);
         }
       }
       else{
         for (let index = 0; index < 30; index++) {
-          var item= {"x":"date "+(index+1), "y": this.entierAleatoire(1,20) }
+          var item= {"x":"date "+(index+1), "y": 0 }
           _data.push(item);
         }
       }

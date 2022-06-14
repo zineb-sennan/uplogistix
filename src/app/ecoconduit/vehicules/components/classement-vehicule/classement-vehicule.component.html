@@ -13,7 +13,7 @@
                             </div>
                             <div class="col ms-n2">
                                 <h4 class="mb-1">
-                                    <a>{{vehicule.maticule}}</a>
+                                    <a>{{vehicule.matricule}}</a>
                                 </h4>
                                 <p class="small mb-0">
                                     <span class="text-success" *ngIf="vehicule.marque">●</span>{{vehicule.marque}}
@@ -39,11 +39,6 @@
     <!-- / .row -->
     <div class="col-md-4">
         <div class="card">
-            <!-- <div class="card-header">
-                <h4 class="card-header-title">
-                    lorem ipsum
-                </h4>
-            </div> -->
             <div class="card-body">
                 <!-- List group -->
                 <div class="list-group list-group-flush list-group-activity my-n3">
@@ -61,10 +56,10 @@
                                     Véhicule le plus polluant
                                 </h5>
                                 <p class="small text-gray-700 mb-0">
-                                    Véhicule 4
+                                    {{vehicules[vehicules.length-1]?.matricule}}
                                 </p>
                                 <small class="text-muted">
-                                    Marque de véhicule
+                                    {{vehicules[vehicules.length-1]?.marque}}
                                 </small>
                             </div>
                         </div>
@@ -87,10 +82,10 @@
                                     Véhicule le moins polluant
                                 </h5>
                                 <p class="small text-gray-700 mb-0">
-                                    Véhicule 1
+                                    {{vehicules[0]?.matricule}}
                                 </p>
                                 <small class="text-muted">
-                                    Marque de véhicule
+                                    {{vehicules[0]?.marque}}
                                 </small>
                             </div>
                         </div>

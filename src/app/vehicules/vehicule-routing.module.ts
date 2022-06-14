@@ -74,7 +74,13 @@ const routes: Routes = [
       {
         path: 'compteurs/page/:page',
         component:HistoriqueCompteurComponent,
-        data: { title: 'Gestion des carburants' },
+        data: { title: 'Gestion des carburants (Saisi manuel)' },
+        canActivate: [AuthGuardUser]
+      },
+      {
+        path: 'gps-compteurs/find/page/:page',
+        component:HistoriqueCompteurComponent,
+        data: { title: 'Gestion des carburants (Relevé automatique)' },
         canActivate: [AuthGuardUser]
       },
       {

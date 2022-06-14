@@ -29,4 +29,8 @@ export class VehiculeDepensesService {
     return this.http.get(environment.apiURL + '/vehicules/depenses/'+id)
   }
 
+  getDepensesParType(record:any){
+    return this.http.post(environment.apiURL + '/vehicules/depenses/partype', record)
+  }
+
 }

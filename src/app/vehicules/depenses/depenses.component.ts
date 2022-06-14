@@ -114,23 +114,88 @@ export class DepensesComponent implements OnInit {
   }
 
   generateChart(record: any){
-    this.chartEvolutionDepenses();
+    //this.chartEvolutionDepenses();
+    this.depensesParType();
   }
 
   myChart:any=null;
-  chartEvolutionDepenses(){
+  // chartEvolutionDepenses(){
+  //   let chart:any=$('#chart-depenses');
+  //   if(this.myChart) this.myChart.destroy();
+  //   this.myChart = new Chart(chart, {
+  //     type: 'doughnut',
+  //     data: {
+  //         labels: ['Services', 'Autre'],
+  //         datasets: [{
+  //             label: '# Total consommation',
+  //             data:  [300, 50],
+  //             backgroundColor: [
+  //               'rgb(44, 123, 226)',
+  //               'rgb(165, 197, 246)'
+  //             ],
+  //             hoverOffset: 20
+  //         }],
+  //     },
+  //     options:{
+  //       cutout: '85%',
+  //       maintainAspectRatio:false,
+  //       plugins: {
+  //         legend: { position: 'left' }
+  //       }
+  //     }
+  //   });
+  // }
+
+  depensesParType(){
+    this.vehiculeDepensesService.getDepensesParType(this.search).subscribe(
+      res => {
+        console.log('rrr',res);
+        this.chartDepenses(res);
+      }
+    )
+  }
+
+  //myChart:any=null;
+  chartDepenses(_data:any){
+    // let chart:any=$('#chart-depenses');
+    // new Chart(chart, {
+    //   type: 'doughnut',
+    //   data: {
+    //       labels: [..._data].map(v=>v.type_depense),
+    //       datasets: [{
+    //           label: '# Total consommation',
+    //           data: [..._data].map(v=>v.cout),
+    //           backgroundColor: [
+    //             'rgb(44, 123, 226)',
+    //             'rgb(165, 197, 246)',
+    //             'rgb(210, 222, 236)'
+    //           ],
+    //           hoverOffset: 4
+    //       }],
+    //   },
+    //   options:{
+    //     cutout: 60,
+    //     maintainAspectRatio:false,
+    //     plugins: {
+    //       legend: { position: 'left' }
+    //     }
+    //   }
+    // });
+    //
     let chart:any=$('#chart-depenses');
     if(this.myChart) this.myChart.destroy();
     this.myChart = new Chart(chart, {
       type: 'doughnut',
       data: {
-          labels: ['Services', 'Autre'],
+          labels: [..._data].map(v=>v.type_depense),
           datasets: [{
               label: '# Total consommation',
-              data:  [300, 50],
+              data:  [..._data].map(v=>v.cout),
               backgroundColor: [
-                'rgb(44, 123, 226)',
-                'rgb(165, 197, 246)'
+                'rgb(3, 32, 76)',
+                'rgb(3, 92, 150)',
+                'rgb(100, 151, 178)',
+                'rgb(179, 206, 225)'
               ],
               hoverOffset: 20
           }],

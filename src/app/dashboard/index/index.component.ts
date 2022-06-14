@@ -5,6 +5,7 @@ import * as $ from 'jquery';
 import { GeoLocalisationService } from 'src/app/_services/geolocalisation.service';
 import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
 import { DatePipe } from '@angular/common';
+import { VehiculeDepensesService } from 'src/app/_services/vehicule-depenses.service';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class IndexComponent implements OnInit {
     private vehiculeService: VehiculeService,
     private geoLocalisationService: GeoLocalisationService,
     private ecoconduiteService: EcoconduiteService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private vehiculeDepensesService:VehiculeDepensesService
   ) { }
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class IndexComponent implements OnInit {
   ngAfterViewInit() {
     this.getInfos();
     this.getEtatVehicule();
+    this.depensesParType();
   }
 
 
@@ -86,7 +89,6 @@ export class IndexComponent implements OnInit {
       if(idChart == "chart-total-consommation") _myChar.data.datasets[0].categoryPercentage=0.13;
       else _myChar.data.datasets[0].categoryPercentage=0.3;
 
-      //console.log(idChart,_myChar.data.datasets[0])
     }
     new Chart(<any>$('#' + idChart), _myChar);
   }
@@ -126,5 +128,39 @@ export class IndexComponent implements OnInit {
     )
   }
 
+  depensesParType(){
+    this.vehiculeDepensesService.getDepensesParType({date_debut:null, date_fin:null}).subscribe(
+      res => {
+        this.chartDepenses(res);
+      }
+    )
+  }
+
+  chartDepenses(_data:any){
+    let chart:any=$('#chart-depenses');
+    new Chart(chart, {
+      type: 'doughnut',
+      data: {
+          labels: [..._data].map(v=>v.type_depense),
+          datasets: [{
+              label: '# Total consommation',
+              data: [..._data].map(v=>v.cout),
+              backgroundColor: [
+                'rgb(44, 123, 226)',
+                'rgb(165, 197, 246)',
+                'rgb(210, 222, 236)'
+              ],
+              hoverOffset: 4
+          }],
+      },
+      options:{
+        cutout: 60,
+        maintainAspectRatio:false,
+        plugins: {
+          legend: { position: 'left' }
+        }
+      }
+    });
+  }
 
 }

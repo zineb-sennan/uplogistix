@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { VehiculeHistoriqueCompteurService } from '../../_services/vehicule-historique-compteur.service';
 import { VehiculeService } from '../../_services/vehicule.service';
@@ -25,15 +25,16 @@ export class HistoriqueCompteurComponent implements OnInit {
     private vehiculeService: VehiculeService,
     private ecoconduiteService: EcoconduiteService,
     private geoLocalisationService:GeoLocalisationService,
-    private datePipe:DatePipe
+    private datePipe:DatePipe,
+    private router:Router
   ) { }
 
   currentDate = new Date();
-  compteurs : any = []; message:any; compteurs_gps:any=[]; vehicules_sans_balise:any=[]; vehicules:any=[];
-  date = new Date(); page=1; type='saisi-manuel';
+  compteurs : any = []; compteurs_gps:any=[]; vehicules_sans_balise:any=[]; vehicules_avec_balise:any=[]; vehicules:any=[];
+  date = new Date(); page=1; type='saisi-manuel'; message:any;
   singleCompteur={ id:null, vehicule_id:null, date_operation:null, compteur:null }
   search: any = {
-    vehicule_id: 9,
+    vehicule_id:null,
     date_debut: this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-01',
     date_fin: this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + (this.date.getDate() + 1)).slice(-2) 
   }
@@ -41,15 +42,14 @@ export class HistoriqueCompteurComponent implements OnInit {
 
   ngOnInit(): void {
     Chart.register(...registerables);
-
-    this.searchCompteurs(null);
-
-    this.getGpsCompteurs();
+    this.getVehicules();
 
     this.activatedRoute.params.subscribe(param => {
       this.page = param['page'];
-      if(this.page) this.searchCompteurs(null);
-      //this.getVehicules();
+      if(this.page){
+        if(this.router.url.search('/vehicules/gps-compteurs/find/page/') != -1){this.searchCompteursAutomatique(this.search); this.type='releve-automatique' } 
+        else { this.searchCompteurs(this.search); this.type='saisi-manuel' }
+      } 
     });
   }
 
@@ -57,28 +57,19 @@ export class HistoriqueCompteurComponent implements OnInit {
     this.singleCompteur = { id:null, vehicule_id:null, date_operation:null, compteur:null };
   }
 
-  getGpsCompteurs(){
-    this.vehiculeHistoriqueCompteurService.getGpsCompteur(this.search).subscribe(
-      res =>console.log(res)
+
+  getVehicules(){
+    this.vehiculeService.getAll().subscribe(
+      res=> {
+        this.vehicules=res;
+        this.vehicules_avec_balise=res.filter((v: any) => v.balise);
+        this.vehicules_sans_balise=res.filter((v: any) => !v.balise);
+      },
+      // error => {
+      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
+      // }
     )
   }
-
-  // getVehicules(){
-  //   this.vehiculeService.getAll().subscribe(
-  //     res=> {
-  //       //01
-  //       this.vehicules=res;
-  //       //01
-  //       this.vehicules_avec_balise=res.filter((v: any) => v.balise);
-  //       this.vehicules_avec_balise.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : null);
-  //       //02
-  //       this.vehicules_sans_balise=res.filter((v: any) => !v.balise);
-  //     },
-  //     // error => {
-  //     //   if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
-  //     // }
-  //   )
-  // }
 
   searchCompteurs(data:any){
     this.vehiculeHistoriqueCompteurService.search(this.page,data).subscribe(
@@ -90,8 +81,8 @@ export class HistoriqueCompteurComponent implements OnInit {
   }
 
   searchCompteursAutomatique(record:any){
-    this.vehiculeHistoriqueCompteurService.getGpsCompteur(this.search).subscribe(
-      res => this.compteurs_gps=res
+    this.vehiculeHistoriqueCompteurService.getGpsCompteur(this.page,this.search).subscribe(
+      res => this.compteurs_gps=res, 
     )
   }
 

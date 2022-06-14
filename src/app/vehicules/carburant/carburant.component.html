@@ -8,7 +8,8 @@
                 Historique carburants
             </h2>
         </div>
-    </div><!-- fin titre -->
+    </div>
+    <!-- fin titre -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -17,8 +18,7 @@
                     <div class="col">
                         <ul class="nav nav-tabs nav-overflow header-tabs">
                             <li class="nav-item">
-                                <button class="nav-link" (click)="type='details'"
-                                    [ngClass]="{'active':type=='details'}">
+                                <button class="nav-link" (click)="type='details'" [ngClass]="{'active':type=='details'}">
                                     Détails
                                 </button>
                             </li>
@@ -34,11 +34,9 @@
                 <div class="details" *ngIf="type=='details'">
                     <div *ngIf="message" class="alert alert-success" role="alert">
                         {{message}}
-                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#modal-edit" style="float:right" (click)="clear()">
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-edit" style="float:right" (click)="clear()">
                         <i class="fa-solid fa-plus"></i>
                     </button><br><br><br>
                     <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchCarburant(searchForm.value)">
@@ -55,19 +53,16 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="date_debut">Date début</label>
-                                <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
-                                    class="form-control">
+                                <input type="date" [(ngModel)]="search.date_debut" name="date_debut" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="date_fin">Date fin</label>
                                 <div class="input-group">
-                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
-                                        class="form-control">
+                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin" class="form-control">
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-outline-primary"
-                                            style="margin-left: 12px;">
+                                        <button type="submit" class="btn btn-outline-primary" style="margin-left: 12px;">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
@@ -93,15 +88,12 @@
                                     <td class="qte">{{carburant.qte}}</td>
                                     <td class="prix">{{carburant.prix}}</td>
                                     <td class="total">{{carburant.total.toFixed(2)}}</td>
-                                    <td class="date-operation text-primary">{{carburant.created_at | date:"dd/MM/yyyy
-                                        HH:mm" }}</td>
+                                    <td class="date-operation text-primary">{{carburant.created_at | date:"dd/MM/yyyy HH:mm" }}</td>
                                     <td (click)="setCarburant(carburant)">
-                                        <button type="button" ng-show="" class="btn btn-operation"
-                                            data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                        <button type="button" ng-show="" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit">
                                             <i class="fa-solid fa-pen"></i>
                                         </button> &nbsp;
-                                        <button type="button" class="btn btn-operation" data-bs-toggle="modal"
-                                            data-bs-target="#modal-delete">
+                                        <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete">
                                             <i _ngcontent-hhv-c59="" class="fa-solid fa-trash"></i>
                                         </button>
                                     </td>
@@ -111,31 +103,25 @@
                                 <tr>
                                     <td colspan="6">
                                         <h3 class="float-right text-danger font-weight-normal">
-                                            Coût total: <span>__,__</span>
+                                            Coût total: <span>{{carburants.total_carburant?.toFixed(2)}}</span>
                                         </h3>
                                     </td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
-                    <nav aria-label="Page navigation" class="pag-tab col-md-12 navigation"
-                        *ngIf="carburants.total_records && carburants.total_pages>1">
+                    <nav aria-label="Page navigation" class="pag-tab col-md-12 navigation" *ngIf="carburants.total_records && carburants.total_pages>1">
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" href="#!"
-                                    [routerLink]="['/vehicules/carburants/page', carburants.current_page-1]"
-                                    [ngClass]="{'_disabled':carburants.current_page==1}">
+                                <a class="page-link" href="#!" [routerLink]="['/vehicules/carburants/page', carburants.current_page-1]" [ngClass]="{'_disabled':carburants.current_page==1}">
                                     Précédent
                                 </a>
                             </li>
-                            <li class="page-item" *ngFor="let p of [].constructor(carburants.total_pages); let i=index"
-                                [ngClass]="{'active':carburants.current_page==i+1}">
+                            <li class="page-item" *ngFor="let p of [].constructor(carburants.total_pages); let i=index" [ngClass]="{'active':carburants.current_page==i+1}">
                                 <a class="page-link" [routerLink]="['/vehicules/carburants/page', i+1]">{{i+1}}</a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link"
-                                    [routerLink]="['/vehicules/carburants/page', carburants.current_page+1]"
-                                    [ngClass]="{'_disabled':carburants.current_page==carburants.total_pages}">
+                                <a class="page-link" [routerLink]="['/vehicules/carburants/page', carburants.current_page+1]" [ngClass]="{'_disabled':carburants.current_page==carburants.total_pages}">
                                     Suivant
                                 </a>
                             </li>
@@ -157,19 +143,16 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="date_debut">Date début</label>
-                                <input type="date" [(ngModel)]="search.date_debut" name="date_debut"
-                                    class="form-control">
+                                <input type="date" [(ngModel)]="search.date_debut" name="date_debut" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="date_fin">Date fin</label>
                                 <div class="input-group">
-                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin"
-                                        class="form-control">
+                                    <input type="date" [(ngModel)]="search.date_fin" name="date_fin" class="form-control">
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-outline-primary"
-                                            style="margin-left: 12px;">
+                                        <button type="submit" class="btn btn-outline-primary" style="margin-left: 12px;">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
@@ -178,7 +161,7 @@
                         </div>
                     </form>
                     <div class="text-muted pt-3 pb-3 bg-white shadow-sm row" [ngClass]="{'d-none':myChart}">
-                        <p class="text-center">Pas des données disponibles ...</p>   
+                        <p class="text-center">Pas des données disponibles ...</p>
                     </div>
                     <div class="row bg-white pt-4 shadow" [ngClass]="{'d-none':!myChart}">
                         <canvas id="chart-carburants" [ngClass]="{'d-none':!myChart}"></canvas>
@@ -197,21 +180,18 @@
                             <h4 class="card-header-title" id="exampleModalCenterTitle">
                                 Carburant de Véhicule
                             </h4>
-                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="card-body">
                             <form #carburantForm="ngForm" (ngSubmit)="update(carburantForm.value)">
                                 <div class="frm-region">
-                                    <input type="hidden" [(ngModel)]="singleCarburant.id" name="id"
-                                        value="singleCarburant.id">
+                                    <input type="hidden" [(ngModel)]="singleCarburant.id" name="id" value="singleCarburant.id">
                                     <div class="form-group">
                                         <label for="titre" class="form-label">
                                             Véhicule
                                             <strong class="text-danger" *ngIf="!singleCarburant.vehicule_id">*</strong>
                                         </label>
-                                        <select class="form-select form-select-sm"
-                                            [(ngModel)]="singleCarburant.vehicule_id" name="vehicule_id" required>
+                                        <select class="form-select form-select-sm" [(ngModel)]="singleCarburant.vehicule_id" name="vehicule_id" required>
                                             <option value=null disabled>Veuillez choisir...</option>
                                             <option *ngFor="let vehicule of vehicules" value="{{vehicule.id}}">
                                                 {{vehicule.matricule}}</option>
@@ -222,24 +202,20 @@
                                             Quantité en (L)
                                             <strong class="text-danger" *ngIf="!singleCarburant.qte">*</strong>
                                         </label>
-                                        <input type="number" class="form-control form-control-sm" placeholder="Qte"
-                                            [(ngModel)]="singleCarburant.qte" name="qte" required>
+                                        <input type="number" class="form-control form-control-sm" placeholder="Qte" [(ngModel)]="singleCarburant.qte" name="qte" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="nom" class="form-label">
                                             Prix unitaire en (MAD)
                                             <strong class="text-danger" *ngIf="!singleCarburant.prix">*</strong>
                                         </label>
-                                        <input type="number" class="form-control form-control-sm" placeholder="Prix"
-                                            [(ngModel)]="singleCarburant.prix" name="prix" required>
+                                        <input type="number" class="form-control form-control-sm" placeholder="Prix" [(ngModel)]="singleCarburant.prix" name="prix" required>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <small class="text-danger">*: Ces champs sont obligatoires.</small>
-                                    <button type="submit" class="btn btn-success mb-2 float-right"
-                                        [disabled]="!carburantForm.valid">Enregister</button>
-                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal"
-                                        style="margin-right: 5px;">Annuler</button>
+                                    <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!carburantForm.valid">Enregister</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
                                 </div>
                             </form>
                         </div>
@@ -258,18 +234,15 @@
                             </i>
                         </div>
                         <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.
                         </p>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal"
-                            aria-label="Close">Annuler</button>
-                        <button type="button" class="btn btn-danger"
-                            (click)="delete(singleCarburant.id)">Supprimer</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                        <button type="button" class="btn btn-danger" (click)="delete(singleCarburant.id)">Supprimer</button>
                     </div>
                 </div>
             </div>

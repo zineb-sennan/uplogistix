@@ -4,20 +4,17 @@
             <div class="col-md-12">
                 <form class="row gx-0 mb-3 frm-search-jms" #searchForm="ngForm">
                     <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
-                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
-                            data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
+                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
                             <a class="nav-link active" href="#" data-bs-toggle="tab">
                                 Jour
                             </a>
                         </li>
-                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
-                            data-action="toggle" data-dataset="2" (click)="typeFilter = 'semaine'">
+                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="typeFilter = 'semaine'">
                             <a class="nav-link" href="#" data-bs-toggle="tab">
                                 Semaine
                             </a>
                         </li>
-                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click"
-                            data-action="toggle" data-dataset="1" (click)="typeFilter = 'mois'">
+                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="1" (click)="typeFilter = 'mois'">
                             <a class="nav-link" href="#" data-bs-toggle="tab">
                                 Mois
                             </a>
@@ -29,20 +26,21 @@
                         <input type="week" class="form-control form-control-sm" *ngIf="typeFilter=='semaine'">
                         <input type="month" class="form-control form-control-sm" *ngIf="typeFilter=='mois'">
                         <div class="input-group-append">
-                          <button class="btn btn-sm btn-outline-primary" type="button" (click)="changeData(typeFilter)">
+                            <button class="btn btn-sm btn-outline-primary" type="button" (click)="changeData(typeFilter)">
                             <i class="fas fa-search"></i>
                           </button>
                         </div>
-                    </div> <!-- -->
+                    </div>
+                    <!-- -->
                 </form>
             </div>
-        </div><!-- ./row -->
+        </div>
+        <!-- ./row -->
 
         <div class="row">
             <div class="col-md-12">
                 <p class="text-muted text-center mt-5" *ngIf="viewChartPrincipale == false">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ad expedita laudantium veritatis nulla
-                    iste, tempore est blanditiis excepturi.
+                    Pas des données disponibles ...
                 </p>
                 <div class="principal-chart" [ngClass]="{'d-none':!viewChartPrincipale}">
                     <canvas id="chart-principal"></canvas>
@@ -76,8 +74,7 @@
                                         </ul>
                                     </small>
                                 </th>
-                                <th *ngFor="let chart of chartSelected"
-                                    class="text-muted text-center col-chart col-chart-{{chart.index}}" [ngClass]="{'d-none' : !chart.checked}">
+                                <th *ngFor="let chart of chartSelected" class="text-muted text-center col-chart col-chart-{{chart.index}}" [ngClass]="{'d-none' : !chart.checked}">
                                     <label (click)="remplissageChartPrincipale(chart.index)" class="cursor">
                                         {{chart.libelle}}
                                     </label>
@@ -111,8 +108,7 @@
                                     <small class="text-muted">{{conducteur.matricule}}</small>
                                 </td>
                                 <td class="col-chart tchart chart-{{chart.index}}" *ngFor="let chart of chartSelected" [ngClass]="{'d-none' : !chart.checked}">
-                                    <strong class="text-dark small"
-                                        id="max_{{conducteur.id}}{{chart.index}}">0</strong>
+                                    <strong class="text-dark small" id="max_{{conducteur.id}}{{chart.index}}">0</strong>
                                     <canvas id="chart_conducteur_{{conducteur.id}}{{chart.index}}" class="chat-conducteur"></canvas>
                                 </td>
                             </tr>
@@ -121,8 +117,7 @@
                             <tr>
                                 <td colspan="5">
                                     <p class="text-center text-muted">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure cumque enim nobis
-                                        molestiae.
+                                        Pas des données disponibles ...
                                     </p>
                                 </td>
                             </tr>

@@ -13,7 +13,9 @@ import { VehiculeService } from '../../../../_services/vehicule.service';
 })
 export class AnalyseParVehiculeComponent implements OnInit {
   //
-  typeFilter='periode';  filter: any = { vehicule_id: 9, date_debut: "2022-03-10", date_fin: "2022-6-10" };
+  date=new Date()
+  typeFilter='jour';  
+  filter: any = { vehicule_id: null, matricule:null, date_debut: this.datepipe.transform(this.date, 'yyyy-MM-dd'), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd'), typeFilter:'maxSpeed' }
   vehicules:any=[]; score:any={maximale:'', minimal:''}
 
   constructor(
@@ -23,196 +25,125 @@ export class AnalyseParVehiculeComponent implements OnInit {
     private ecoconduiteService:EcoconduiteService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     //01-
     Chart.register(...registerables);
-    //02-
-    this.getVehiculeWitheEco();
-    //03-
-    //this.chartScore();
-    this.getMaxSpeed();
-    //04
+    //02-liste des vehicules avec eco-conduite
+    this.vehicules = (await this.vehiculeService.getAll().toPromise()).filter((v: any) => v.eco_conduite);
+    if(this.vehicules.length > 0) { this.filter.vehicule_id=this.vehicules[0].id;  this.filter.matricule=this.vehicules[0].matricule;};
+    //03- remplissage des données
+    this.filterData();
     this.getEvolutionScore();
-    }
-
-  changeTypeChart(e:any){
-    if(e.target.value=='vitesse-maximale') this.getMaxSpeed();
-    else if(e.target.value=='vitesse-moyenne') this.getSpeedAverage();
-    else if(e.target.value=='consommation-carburant') this.getFuel();
-    else if(e.target.value=='distance-parcourue') this.getDistance();
-    else if(e.target.value=='emission-co2') this.getCarbone();
-    else if(e.target.value=='temps-de-conduite') this.getDriveTime();
-    else if(e.target.value=='l_100') this.getL100();
   }
 
-  getVehiculeWitheEco() {
-    this.vehiculeService.getAll().subscribe(
+  
+
+  changeVehicule(e:any){
+    this.filter.vehicule_id = e.target.value;
+    this.filter.matricule = [...this.vehicules].filter(v=> v.id == e.target.value)[0].matricule;
+    this.getEvolutionScore();
+    this.filterData();
+  }
+
+  filterData(){
+    this.geoLocalisationService.getAnalyseVehicule(this.filter).subscribe(
       res => {
-        this.vehicules = res.filter((v: any) => v.eco_conduite);
-      },
-      // error => {
-      //   if (error.status == 401 && this.securiteClass.refreshToken()) this.getVehiculeWitheEco();
-      // }
-    )
-  }
+        var _data=null;
+        if(this.filter.typeFilter=='maxSpeed' || this.filter.typeFilter=='speedAverage') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average }));
+        else if(this.filter.typeFilter=='fuel') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.montant_carburant) }));
+        else if(this.filter.typeFilter=='distance') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date_heure) , y: v.distance }));
+        else if(this.filter.typeFilter=='carbone') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g) }));
+        else if(this.filter.typeFilter=='driveTime') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date_heure), y: this.toSeconds(v.duree) , z: v.duree }));
+        else if(this.filter.typeFilter=='l100') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.consommation) }));
+        //
+        this.genererGraphe('chart_vehicule', _data,1)
+        $('#maxVal').text( (Math.max(..._data.map((d: any) => d.y))).toFixed(2) )
 
-  myChart:any;
-  genererGraphe(titre:any, _data:any){ 
-    var data_ref=[]; let chart:any=$('#chart_vehicule');
-    if (this.myChart) this.myChart.destroy();
-    //if(this.typeFilter=="jour") data_ref=[{x:"0:00", y:100},{x:"1:00", y:200},{x:"2:00", y:300},{x:"3:00", y:100},{x:"4:00", y:110},{x:"5:00", y:80},{x:"6:00", y:50},{x:"7:00", y:300},{x:"8:00", y:300},{x:"9:00", y:700},{x:"10:00", y:80},{x:"11:00", y:90},{x:"12:00", y:50},{x:"13:00", y:78},{x:"14:00", y:100},{x:"15:00", y:100},{x:"16:00", y:87},{x:"17:00", y:95},{x:"18:00", y:100},{x:"19:00", y:87},{x:"20:00", y:40},{x:"21:00", y:100},{x:"22:00", y:40},{x:"23:00", y:80}];
-    //else  data_ref=[{x:"01", y:80},{x:"02", y:100},{x:"03", y:90},{x:"04", y:50},{x:"05", y:30},{x:"06", y:70},{x:"07", y:50},{x:"08", y:70},{x:"09", y:100},{x:"10", y:100},{x:"11", y:100},{x:"12", y:100},{x:"13", y:100},{x:"14", y:100},{x:"15", y:80},{x:"16", y:60},{x:"17", y:100},{x:"17:00", y:100},{x:"18", y:80},{x:"19", y:100},{x:"20", y:100},{x:"21", y:80},{x:"22", y:100},{x:"23", y:74}];
-
-    this.myChart = new Chart(chart,{
-      type:'line',
-      data:{
-        datasets:[
-          {
-            data: _data,
-            label: titre,
-            backgroundColor: 'rgb(44, 123, 228)',
-            borderColor: 'rgb(44, 123, 228)'
-          },
-          // {
-          //   data:data_ref,
-          //   label:"Référencements",
-          //   backgroundColor: 'rgba(168, 175, 183, 1)',
-          //   borderColor: 'rgb(168, 175, 183)',
-          //   borderDash: [3, 5]
-          // }
-        ],
-      },
-      options:{
-        maintainAspectRatio:false,
-        scales:{
-          x:{
-            grid:{ drawOnChartArea:false }
-          },
-          y:{
-              grid:{ drawOnChartArea:false }
-          }
-        }
-      }
-    })
-  } // ./genererGraphe
-
-  chartScore(_data:any){
-    let chart:any=$('#chart_score');
-    new Chart(chart,{
-      type:'line',
-      data:{
-        datasets:[
-          {
-            data:_data,
-            label:"chart",
-            pointBackgroundColor: 'rgb(44, 123, 228)',
-            pointHoverBackgroundColor: 'rgb(44, 123, 228)',
-            pointBorderWidth: 10,
-            borderWidth: 3
-          }
-        ],
-      },
-      options:{
-        maintainAspectRatio:false,
-        scales:{
-          x:{
-            grid:{ drawOnChartArea:false }
-          },
-          y:{
-              grid:{ drawOnChartArea:false }
-          }
-        },
-        plugins: {
-          legend: { display: false }
-        }
-      },
-    })
-  }// ./ fun chartScore
-
-  //MaxSpeed | Vitesse maximale Km
-  getMaxSpeed(){
-    this.geoLocalisationService.getMaxSpeed(this.filter).subscribe(
-      res=>{
-        var _data = res.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.average }));
-        this.genererGraphe("Vitesse maximale Km", _data);
-      } 
-    )
-  }
-
-  //SpeedAverage| Vitesse moyenne Km
-  getSpeedAverage(){
-    this.geoLocalisationService.getSpeedAverage(this.filter).subscribe(
-      res=> {
-        var _data = res.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.average }));
-        this.genererGraphe("Vitesse moyenne Km", _data)
+        console.log('ff',_data);
       }
     )
   }
 
-  //Fuel | Consommation carburant
-  getFuel(){
-    this.geoLocalisationService.getFuel(this.filter).subscribe(
-      res=> {
-        var _data=res.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.montant_carburant) }));
-        this.genererGraphe("Consommation carburant", _data)
-      }
-    )
+  toSeconds(str: string) {
+    var res = str.split(':');
+    return (+res[0]) * 3600 + (+res[1]) * 60 + (+res[2]);
   }
 
-  //Distance | Distance parcourue Km
-  getDistance(){
-    this.geoLocalisationService.getDistance(this.filter).subscribe(
-      res=> {
-        var _data=res.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.distance }));;
-        this.genererGraphe("Distance parcourue Km", _data)
-      }
-    )
-  }
-
-  //carbone | Emission CO2 kg
-  getCarbone(){
-    this.geoLocalisationService.getCarbone(this.filter).subscribe(
-      res=> {
-        var _data=res.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.CO2g) }));;
-        this.genererGraphe("Emission CO2 kg", _data)
-      }
-    )
+  formateDate(data:number){
+    if(this.typeFilter=='jour') return data.toString().padStart(2, '0')+':00'
+    return this.datepipe.transform(data,'dd-MM-yyyy')
   }
   
-  //DriveTime | Temps de conduite
-  getDriveTime(){
-    this.geoLocalisationService.getDriveTime(this.filter).subscribe(
-      res=> {
-        var _data=res.map((v: any,index:any=2) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y:index , z: v.duree }));;
-        this.genererGraphe("Temps de conduite", _data)
-      }
-    )
-  }
-
-  //L100 | Consommation l/100km
-  getL100(){
-    this.geoLocalisationService.getL100(this.filter).subscribe(
-      res=>{
-        var _data=res.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.consommation) }));;
-        this.genererGraphe("Consommation l/100km", _data)
-      }
-    )
-  }
-
   getEvolutionScore(){
-    this.ecoconduiteService.evolutionScoreByVehicule(this.filter).subscribe(
+    const record = { vehicule_id: this.filter.vehicule_id, date_debut: this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') }
+    this.ecoconduiteService.evolutionScoreByVehicule(record).subscribe(
       res =>{
-        //console.log(res);
-        this.chartScore(res.map((v:any)=> ({ x:this.datepipe.transform(v.date_operation, 'dd-MM-yyyy'), y: Number(v.score) })));
+        this.genererGraphe('chart_score',res.map((v:any)=> ({ x:this.datepipe.transform(v.date_operation, 'dd-MM-yyyy'), y: Number(v.score) })),0);
         this.score.maximale = Math.max(...res.map((d: any) => d.score));
         this.score.minimal = Math.min(...res.map((d: any) => d.score));
       } 
     )
   }
 
-  filterData(){
-    //this.chartScore();
-    this.getMaxSpeed();
+  myChart:any = [];
+  genererGraphe(idChart:any,  _data:any, indexChart:number){ 
+    if (this.myChart[indexChart]) this.myChart[indexChart].destroy();
+     
+    const _myChar:any = {
+      type:'line',
+      data:{
+        datasets:[
+          {
+            data: _data,
+            backgroundColor: 'rgb(44, 123, 228)',
+            borderColor: 'rgb(44, 123, 228)'
+          }
+        ],
+      },
+      options:{
+        maintainAspectRatio:false,
+        scales:{
+          x:{ grid:{ drawOnChartArea:false } },
+          y:{ grid:{ drawOnChartArea:false } }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    };
+
+    if(this.filter.typeFilter=='driveTime') {
+      _myChar.options.scales = {
+        y: {
+          ticks: {
+            callback: function (_seconds: any){
+              var hours = Math.floor(_seconds / 3600),
+              minutes = Math.floor((_seconds % 3600) / 60),
+              seconds = Math.floor(_seconds % 60);
+
+              return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+            }//;
+          }
+        }
+      };
+    }
+
+    this.myChart[indexChart] = new Chart(<any>$('#' + idChart), _myChar);
+
+  } // ./genererGraphe
+
+  secondsToDhms(seconds:number) {
+    seconds = Number(seconds);
+    var d = Math.floor(seconds / (3600*24));
+    var h = Math.floor(seconds % (3600*24) / 3600);
+    var m = Math.floor(seconds % 3600 / 60);
+    var s = Math.floor(seconds % 60);
+    
+    var dDisplay = d > 0 ? d + (d == 1 ? " jour " : " jours ") : "";
+    var hDisplay = h > 0 ? h + (h == 1 ? ":" : ":") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? ":" : ":") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? "" : "") : "";
+    return dDisplay + hDisplay + mDisplay + sDisplay;
   }
 
 }

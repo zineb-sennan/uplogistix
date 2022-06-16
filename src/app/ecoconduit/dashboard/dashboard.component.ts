@@ -6,6 +6,8 @@ import { ConducteurService } from '../../_services/conducteur.service';
 import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as $ from 'jquery';
+import { GeoLocalisationService } from 'src/app/_services/geolocalisation.service';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -15,11 +17,13 @@ import * as $ from 'jquery';
 })
 export class DashboardComponent implements OnInit {
 
-  chart$: any; myChart: any; chartConducteur:any;
+  chart$: any; myChart: any; chartConducteur: any;
 
   //vehicule
-  infosGlobaleVehicule:any={ total_fuel_consomme : 0, total_fuel_gaspille:0, total_distance_conduite:0, total_temps_total_conduite:'', nb_conducteurs:0 }
+  date = new Date();
+  infosGlobaleVehicule: any = { carbone: 0, total_fuel_consomme: 0, total_fuel_gaspille: 0, total_distance_conduite: 0, total_temps_total_conduite: '', nb_conducteurs: 0 }
   list_resume_vehicule: any = []; show_dropdown_vehicule = false;
+  filter: any = { vehicule_id: null, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') }; vehicules: any = [];
 
   //conducteur
   //temps_total_inactivité = 0; freinage_extreme = 0; acceleration_brutale = 0; conduite_dangereuse = 0;
@@ -29,7 +33,9 @@ export class DashboardComponent implements OnInit {
   constructor(
     private vehiculeService: VehiculeService,
     private readonly ecoconduiteService: EcoconduiteService,
-    private conducteurService:ConducteurService
+    private conducteurService: ConducteurService,
+    private geoLocalisationService: GeoLocalisationService,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
@@ -38,18 +44,18 @@ export class DashboardComponent implements OnInit {
     this.getResumeOfAllehicule('chartVehicule', 'fuel_consomme');
   }
 
-  toSeconds(str:string) {
+  toSeconds(str: string) {
     var res = str.split(':');
-    return (+res[0])* 3600 + (+res[1])* 60 + (+res[2]);  
+    return (+res[0]) * 3600 + (+res[1]) * 60 + (+res[2]);
   }
 
-  secondsToDhms(seconds:number) {
+  secondsToDhms(seconds: number) {
     seconds = Number(seconds);
-    var d = Math.floor(seconds / (3600*24));
-    var h = Math.floor(seconds % (3600*24) / 3600);
+    var d = Math.floor(seconds / (3600 * 24));
+    var h = Math.floor(seconds % (3600 * 24) / 3600);
     var m = Math.floor(seconds % 3600 / 60);
     var s = Math.floor(seconds % 60);
-    
+
     var dDisplay = d > 0 ? d + (d == 1 ? " jour " : " jours ") : "";
     var hDisplay = h > 0 ? h + (h == 1 ? "h " : "h ") : "";
     var mDisplay = m > 0 ? m + (m == 1 ? "min " : "min ") : "";
@@ -57,31 +63,33 @@ export class DashboardComponent implements OnInit {
     return dDisplay + hDisplay + mDisplay + sDisplay;
   }
 
-  pad(num:any, size:any) {
-    var s = num+"";
+  pad(num: any, size: any) {
+    var s = num + "";
     while (s.length < size) s = "0" + s;
     return s;
   }
 
-  getNombreConducteurs(){
+  getNombreConducteurs() {
     this.conducteurService.getAll(1).subscribe(
-      res=>{
-        this.infosGlobaleVehicule.nb_conducteurs=res['total_records'];
+      res => {
+        this.infosGlobaleVehicule.nb_conducteurs = res['total_records'];
       }
     )
   }
 
-  totalInfoVehicule(){
-    var temps_total_conduite_seconds=0;
-    this.infosGlobaleVehicule={ total_fuel_consomme : 0, total_fuel_gaspille:0, total_distance_conduite:0, total_temps_total_conduite:0, nb_conducteurs:0 }
-    this.list_resume_vehicule.forEach((val:any) => {
-      this.infosGlobaleVehicule.total_fuel_consomme+=val.fuel_consomme;
-      this.infosGlobaleVehicule.total_fuel_gaspille+=val.fuel_gaspille;
-      this.infosGlobaleVehicule.total_distance_conduite+=val.distance_conduite;
-      temps_total_conduite_seconds+=this.toSeconds(val.temps_total_conduite);
+  totalInfoVehicule() {
+    this.infosGlobaleVehicule = { total_fuel_consomme: 0, total_fuel_gaspille: 0, total_distance_conduite: 0, total_temps_total_conduite: 0, nb_conducteurs: 0 }
+    this.list_resume_vehicule.forEach((val: any) => {
+      this.filter.vehicule_id = val.vehicule_id;
+      this.geoLocalisationService.getAnalyseVehicule(this.filter).subscribe(
+        async res => {
+          this.infosGlobaleVehicule.total_distance_conduite = res.distance.reduce((prev: any, next: any) => prev + next.distance, 0);
+          this.infosGlobaleVehicule.total_fuel_consomme = res.fuel.reduce((prev: any, next: any) => prev + next.montant_carburant, 0);
+          this.infosGlobaleVehicule.total_temps_total_conduite = this.secondsToDhms(res.driveTime.reduce((prev: any, next: any) => prev + this.toSeconds(next.duree), 0));
+          this.infosGlobaleVehicule.carbone = res.carbone.reduce((prev: any, next: any) => prev + next.Cg, 0);
+        }
+      )
     });
-    
-    this.infosGlobaleVehicule.total_temps_total_conduite=this.secondsToDhms(temps_total_conduite_seconds);
     this.getNombreConducteurs();
   }
 
@@ -92,94 +100,85 @@ export class DashboardComponent implements OnInit {
       map(vehicule => vehicule.filter((v: any) => v.eco_conduite)),
       switchMap(data => forkJoin(data.map(this.getInfosForVehicule.bind(this))))
     );
+
     //02
     this.list_resume_vehicule = await vehicules$.toPromise();
-    const maticules = this.list_resume_vehicule.map((t: any) => t.matricule);
     //03
-    if (ChartBy == "fuel_consomme") { data = this.list_resume_vehicule.map((t: any) => t.fuel_consomme); titre = "Fuel consommé"; }
-    else if (ChartBy == "fuel_gaspille") { data = this.list_resume_vehicule.map((t: any) => t.fuel_gaspille); titre = "Fuel gaspillé"; }
-    else if (ChartBy == "distance_conduite") { data = this.list_resume_vehicule.map((t: any) => t.distance_conduite); titre = "Distance conduite"; }
-    else if (ChartBy == "temps_total_conduite") { data = this.list_resume_vehicule.map((t: any,index:any=2) => ({ x: t.matricule, y: index, matricule: t.temps_total_conduite})); titre = "Temps conduite"; }
+    if (ChartBy == "fuel_consomme") { data = this.list_resume_vehicule.map((t: any) => ({ x: t.matricule, y: t.fuel_consomme })); titre = "Fuel consommé"; }
+    else if (ChartBy == "fuel_gaspille") { data = this.list_resume_vehicule.map((t: any) => ({ x:t.matricule, y:t.fuel_gaspille })); titre = "Fuel gaspillé"; }
+    else if (ChartBy == "distance_conduite") { data = [...this.list_resume_vehicule].map(t => ({ x:t.distance_conduite, y: t.matricule })); titre = "Distance conduite"; }
+    else if (ChartBy == "temps_total_conduite") { data = this.list_resume_vehicule.map((t: any, index: any = 2) => ({ x: t.matricule, y: index, matricule: t.temps_total_conduite })); data.push({x:0, y:0, t:'0:00'}); titre = "Temps conduite"; }
     //04
-    this.createChart(idChart, titre, maticules, data);
+    this.createChart(idChart, titre,  data);
     this.show_dropdown_vehicule = false;
     this.totalInfoVehicule();
   }
 
   private getInfosForVehicule(vehicule: any): any {
-    return this.ecoconduiteService.resumeOfVehicule(vehicule.id).pipe(
+    this.filter.vehicule_id = vehicule.id;
+    return this.geoLocalisationService.getAnalyseVehicule(this.filter).pipe(
       map(resume => (
         {
-          fuel_consomme: resume.litres,
-          fuel_gaspille: resume.litres * .007,
-          distance_conduite: resume.distance,
-          temps_total_conduite: resume.duree,
+          fuel_consomme: [...resume.fuel].reduce((prev: any, next: any) => prev + next.montant_carburant, 0),
+          distance_conduite: [...resume.distance].reduce((prev: any, next: any) => prev + next.distance, 0),
+          temps_total_conduite: this.secondsToDhms([...resume.driveTime].reduce((prev: any, next: any) => prev + this.toSeconds(next.duree), 0)),
+          fuel_gaspille: 0,
           matricule: vehicule.matricule,
           vehicule_id: vehicule.id
-        }))
+        }
+      ))
     );
   }
 
-  createChart(id: any, titre: any, labels: any, data: any) {
+  createChart(id: any, titre: any, _data: any) {
     if (this.myChart) this.myChart.destroy();
     this.chart$ = $('#' + id);
+    const _myChar: any = {
+      type: 'bar',
+      data: {
+        datasets: [{
+          label: titre,
+          data: _data,
+          backgroundColor: 'rgba(54, 162, 235)',
+          borderWidth: 1,
+          borderRadius: 10,
+          borderSkipped: false,
+          barPercentage: 0.20
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    };
+
     if (titre == "Temps conduite") {
-      this.myChart = new Chart(this.chart$, {
-        type: 'bar',
-        data: {
-          datasets: [{
-            data: data,
-            backgroundColor: 'rgba(54, 162, 235)',
-            label: titre,
-            borderWidth: 1,
-            borderRadius: 6,
-            borderSkipped: false,
-            barPercentage: 0.40,
-            categoryPercentage: 0.2
-          }],
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                stepSize:1,
-                callback: function (value, index) {
-                  return data[value].matricule
-                }//
-              }
-            }
+      _myChar.options.scales = {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            callback: function (value: any) {
+              return _data[value].matricule
+            }//;
           }
         }
-      });
-    }//
-    else {
-      this.myChart = new Chart(this.chart$, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: titre,
-            data: data,
-            backgroundColor:'rgba(54, 162, 235)',
-            borderWidth: 1,
-            borderRadius: 10,
-            borderSkipped: false,
-            barPercentage: 0.40,
-            categoryPercentage: 0.5
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-        }
-      });
-     }//fin else
+      };
+      _myChar.data.datasets[0].categoryPercentage = 0.2;
+    }
+    else{
+      _myChar.options.indexAxis='y';
+      _myChar.data.datasets[0].categoryPercentage = 0.4;
+    }
+
+    this.myChart=new Chart(<any>$('#' + id), _myChar);
   }
 
   show_dropdown_v() {
     if (this.show_dropdown_vehicule) this.show_dropdown_vehicule = false;
     else this.show_dropdown_vehicule = true;
   }
-
 
 }

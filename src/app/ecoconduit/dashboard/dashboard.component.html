@@ -46,7 +46,7 @@
                 <div class="card-body">
                     <div class="row align-items-center gx-0">
                         <div class="col">
-                            <h6 class="text-uppercase text-muted mb-2"> Total de fuel consommé (L) </h6>
+                            <h6 class="text-uppercase text-muted mb-2"> Total de fuel consommé (Dh) </h6>
                             <span class="h2 mb-0">{{infosGlobaleVehicule.total_fuel_consomme}}</span>
                         </div>
                         <div class="col-auto">
@@ -61,7 +61,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Total de fuel gaspillé (L) </h6>
-                            <span class="h2 mb-0">{{infosGlobaleVehicule.total_fuel_gaspille.toFixed(2)}}</span>
+                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -93,7 +93,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Total de distance conduite (km) </h6>
-                            <span class="h2 mb-0">{{infosGlobaleVehicule.total_distance_conduite.toFixed(2)}}</span>
+                            <span class="h2 mb-0">{{infosGlobaleVehicule.total_distance_conduite.toFixed(0)}}</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -160,6 +160,48 @@
         </div>
         <!-- ./row -->
         <div class="row">
+            <div class="card card-l">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2"> Bilans carbone </h6>
+                            <span class="h3 mb-0">{{infosGlobaleVehicule.carbone}}</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-l">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2"> Empreinte carbone </h6>
+                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-l">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2"> Qualité de l'aire </h6>
+                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
             <!-- *** *** vehicules *** *** -->
             <div class="col-md-6 col-sm-12 rounded">
                 <div class="card">
@@ -218,7 +260,7 @@
                             </h3>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="height: 314px;">
                         <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
                         <div class="text-center">
                             <h1>Pas de donnée</h1>

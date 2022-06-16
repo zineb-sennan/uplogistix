@@ -16,6 +16,7 @@ import { VehiculeDepensesService } from 'src/app/_services/vehicule-depenses.ser
 export class IndexComponent implements OnInit {
   //
   vehicules: any = []; moisEncours: any = {}; moisPrecedent: any = {}; etatVehicule: any = {}; vehiculesByScore: any = [];
+  date = new Date();
 
   constructor(
     private vehiculeService: VehiculeService,
@@ -43,6 +44,8 @@ export class IndexComponent implements OnInit {
         //01
         this.moisEncours = res.moisEncours;
         this.moisPrecedent = res.moisPrecedent;
+        this.moisEncours.cout_1km=[...res.coutKM].filter(c=>c.mois == (this.date.getMonth()+1))[0].coutKM;
+        this.moisPrecedent.cout_1km=[...res.coutKM].filter(c=>c.mois == (this.date.getMonth()))[0].coutKM;
         //02 Coût Total
         this.chart('chart-total-consommation', 'bar', res.coutTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutTotal })));
         //03 Total Coût/1 Km Dh
@@ -86,8 +89,8 @@ export class IndexComponent implements OnInit {
       _myChar.data.datasets[0].borderRadius=6;
       _myChar.data.datasets[0].borderSkipped=false;
       
-      if(idChart == "chart-total-consommation") _myChar.data.datasets[0].categoryPercentage=0.13;
-      else _myChar.data.datasets[0].categoryPercentage=0.3;
+      if(idChart == "chart-total-consommation") _myChar.data.datasets[0].categoryPercentage=0.09;
+      else _myChar.data.datasets[0].categoryPercentage=0.2;
 
     }
     new Chart(<any>$('#' + idChart), _myChar);
@@ -117,9 +120,7 @@ export class IndexComponent implements OnInit {
   }
 
   getScoreByVehicule(vehicule_id: number, matricule: string) {
-    const date = new Date();
-
-    const record = { vehicule_id: vehicule_id, date_debut: this.datePipe.transform((new Date(date.getFullYear(), date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(date, 'yyyy-MM-dd') }
+    const record = { vehicule_id: vehicule_id, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') }
     this.ecoconduiteService.scoreByVehicule(record).subscribe(
       res => {
         this.vehiculesByScore.push({ id: vehicule_id, matricule, score: res.new_score ?? '100.00' });
@@ -146,9 +147,10 @@ export class IndexComponent implements OnInit {
               label: '# Total consommation',
               data: [..._data].map(v=>v.cout),
               backgroundColor: [
-                'rgb(44, 123, 226)',
-                'rgb(165, 197, 246)',
-                'rgb(210, 222, 236)'
+                'rgba(44, 123, 228)',
+                'rgb(3, 32, 76)',
+                'rgb(100, 151, 178)',
+                'rgb(179, 206, 225)'
               ],
               hoverOffset: 4
           }],

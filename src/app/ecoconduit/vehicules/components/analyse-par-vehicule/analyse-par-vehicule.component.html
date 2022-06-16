@@ -1,69 +1,16 @@
 <div>
     <div class="row">
         <div class="col-md-12">
+
             <div class="col-auto">
-                <!-- Dropdown -->
-                <div class="dropdown float-right">
-                    <!-- Toggle -->
-                    <button class="btn btn-primary shadow" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa-solid fa-arrow-down-wide-short"></i> Analyser par ...
-                    </button>
-                    <!-- Menu -->
-                    <form class="dropdown-menu dropdown-menu-end dropdown-menu-card">
-                        <div class="card-body">
-                            <!-- List group -->
-                            <div class="list-group list-group-flush mt-n4 mb-4">
-                                <div class="list-group-item">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label for="vehicule_id">Véhicules</label>
-                                                <select class="form-select form-select-sm" [(ngModel)]="filter.vehicule_id" name="vehicule_id">
-                                                    <option value=null>Veuillez choisir ...</option>
-                                                    <option value="{{vehicule.id}}" *ngFor="let vehicule of vehicules">{{vehicule.matricule}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- / .row -->
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
-                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
-                                                            <a class="nav-link active" href="#" data-bs-toggle="tab">
-                                                                Jour
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="typeFilter = 'periode'">
-                                                            <a class="nav-link" href="#" data-bs-toggle="tab">
-                                                                Période
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="input-group mb-3">
-                                                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='jour'">
-                                                        <!-- *** *** -->
-                                                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='periode'">
-                                                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin" *ngIf="typeFilter=='periode'">
-                                                    </div>
-                                                    <!-- -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- / .row -->
-                                </div>
-                            </div>
-                            <!-- Button -->
-                            <button class="btn w-100 btn-outline-primary" type="button" (click)="filterData()">
-                                Appliquer le filtre
-                            </button>
-                        </div>
-                    </form>
+                <small class="text-muted h5"> Évolution de score de ce mois </small>
+                <div class="form-group" style="width: 300px; float: right;">
+                    <label for="vehicule_id">Véhicules</label>
+                    <select class="form-select form-select-sm" [(ngModel)]="filter.vehicule_id" name="vehicule_id" (change)="changeVehicule($event)">
+                        <option value=null>Veuillez choisir ...</option>
+                        <option value="{{vehicule.id}}" *ngFor="let vehicule of vehicules">{{vehicule.matricule}}
+                        </option>
+                    </select>
                 </div>
             </div>
             <!-- ./col-auto -->
@@ -143,29 +90,89 @@
             <!-- ./row fiche vehicule -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group" style="width: 300px; float:right; margin-bottom: 50px;">
-                        <label for="vehicule_id">Type de graphe</label>
-                        <select class="form-select" id="type_chart" (change)="changeTypeChart($event)">
-                            <option value="" disabled>Veuillez choisir ...</option>
-                            <option value="vitesse-maximale" selected>Vitesse maximale</option>
-                            <option value="vitesse-moyenne">Vitesse moyenne</option>
-                            <option value="consommation-carburant">Consommation carburant</option>
-                            <option value="distance-parcourue">Distance parcourue</option>
-                            <option value="emission-co2">Emission CO2</option>
-                            <option value="temps-de-conduite">Temps de conduite</option>
-                            <option value="l_100">Consommation l/100km</option>
-                            <!-- <option value="fuel-gaspille">Fuel gaspille</option>
-                            <option value="bilan-carbone">Bilan carbone</option> -->
-                        </select>
+                    <!-- Dropdown -->
+                    <div class="col-auto">
+                        <small class="text-muted mb-6 h5">
+                            {{filter.matricule}} du:{{filter.date_debut | date:'dd/MM/yyyy'}} au:{{filter.date_fin | date:'dd/MM/yyyy'}}
+                        </small>
+                        <div class="dropdown float-right row mb-6">
+                            <!-- Toggle -->
+                            <button class="btn btn-primary shadow" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa-solid fa-arrow-down-wide-short"></i> Analyser par ...
+                            </button>
+                            <!-- Menu -->
+                            <form class="dropdown-menu dropdown-menu-end dropdown-menu-card">
+                                <div class="card-body">
+                                    <!-- List group -->
+                                    <div class="list-group list-group-flush mt-n4 mb-4">
+                                        <div class="list-group-item">
+                                            <div class="row">
+                                                <div class="">
+                                                    <div class="form-group">
+                                                        <label for="vehicule_id">Type de graphe</label>
+                                                        <select class="form-select form-select-sm" id="type_chart" [(ngModel)]="filter.typeFilter" name="typeFilter">
+                                                            <option value="" disabled>Veuillez choisir ...</option>
+                                                            <option value="maxSpeed" selected>Vitesse maximale</option>
+                                                            <option value="speedAverage">Vitesse moyenne</option>
+                                                            <option value="fuel">Consommation carburant</option>
+                                                            <option value="distance">Distance parcourue</option>
+                                                            <option value="carbone">Emission CO2</option>
+                                                            <option value="driveTime">Temps de conduite</option>
+                                                            <option value="l100">Consommation l/100km</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- ./select -->
+                                                </div>
+                                            </div>
+                                            <!-- / .row -->
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row align-items-center">
+                                                        <div class="col">
+                                                            <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
+                                                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
+                                                                    <a class="nav-link active" href="#" data-bs-toggle="tab">
+                                                                        Jour
+                                                                    </a>
+                                                                </li>
+                                                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="typeFilter = 'periode'">
+                                                                    <a class="nav-link" href="#" data-bs-toggle="tab">
+                                                                        Période
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="input-group mb-3">
+                                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='jour'">
+                                                                <!-- *** *** -->
+                                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='periode'">
+                                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin" *ngIf="typeFilter=='periode'">
+                                                            </div>
+                                                            <!-- -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- / .row -->
+                                        </div>
+                                    </div>
+                                    <!-- Button -->
+                                    <button class="btn w-100 btn-outline-primary" type="button" (click)="filterData()">
+                                        Appliquer le filtre
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <!-- ./select -->
+
                     <div class="card bg">
                         <div class="card-header">
                             <canvas id="chart_vehicule"></canvas>
                         </div>
                         <div class="card-body">
                             <h4 class="card-header-title txt-card">
-                                Chart selectionner <span class="badge badge-warning bg-primary">Max: 400</span>
+                                Chart selectionner <span class="badge badge-warning bg-primary">Max: <span id="maxVal">_</span> </span>
                             </h4>
 
                         </div>

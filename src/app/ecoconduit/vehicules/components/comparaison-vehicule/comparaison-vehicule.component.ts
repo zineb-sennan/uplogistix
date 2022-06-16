@@ -15,10 +15,10 @@ import { DatePipe } from "@angular/common";
 })
 export class ComparaisonVehiculeComponent implements OnInit {
   //
-  date: any = null;
-  typeFilter = 'jour'; filter: any = { vehicule_id: 9, date_debut: "2022-03-10", date_fin: "2022-03-10" };
+  date: any = new Date();
+  typeFilter = 'jour'; filter: any = { vehicule_id: null, date_debut: this.datepipe.transform(this.date, 'yyyy-MM-dd'), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') };
   colors = ['56, 95, 158', '247, 189, 1', '20, 156, 56', '94, 202, 223'];
-  viewChartPrincipale: any = null; maxVehicule = 4; maxChart = 5;
+  viewChartPrincipale: any = null; maxVehicule = 2; maxChart = 5;
   vehicules: any[] = []; vehiculesSelected: any[] = [];
   chartSelected: any = [
     { index: 1, checked: true, libelle: 'Vitesse maximale Km', slug: 'vitesse-moyenne', data: [] },
@@ -44,10 +44,6 @@ export class ComparaisonVehiculeComponent implements OnInit {
     Chart.register(...registerables);
 
     this.getVehiculeWitheEco();
-    //
-    // this.date=new Date();
-    // let latest_date =this.datepipe.transform(this.date, 'yyyy-MM-dd');
-    // console.log(latest_date);
   }
 
   getVehiculeWitheEco() {
@@ -117,25 +113,30 @@ export class ComparaisonVehiculeComponent implements OnInit {
       res => {
         this.chartSelected.forEach((chart: any) => {
           //MaxSpeed | Vitesse maximale Km
-          if (chart.index == 1) _data = res.maxSpeed.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure?.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.average }));
+          if (chart.index == 1) _data = res.maxSpeed.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average }));
           //SpeedAverage| Vitesse moyenne Km
-          else if (chart.index == 2) _data = res.speedAverage.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.average }));
+          else if (chart.index == 2) _data = res.speedAverage.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average }));
           //Fuel | Consommation carburant
-          else if (chart.index == 3) _data = res.fuel.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.montant_carburant) }));
+          else if (chart.index == 3) _data = res.fuel.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.montant_carburant) }));
           //Distance | Distance parcourue Km
-          else if (chart.index == 4) _data = res.distance.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: v.distance }));
+          else if (chart.index == 4) _data = res.distance.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.distance }));
           //carbone | Emission CO2 kg
-          else if (chart.index == 5) _data = res.carbone.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.CO2g) }));
+          else if (chart.index == 5) _data = res.carbone.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g) }));
           //DriveTime | Temps de conduite
-          else if (chart.index == 6) _data = res.driveTime.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.CO2g) }));
+          else if (chart.index == 6) _data = res.driveTime.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g) }));
           //L100 | Consommation l/100km
-          else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: this.typeFilter == 'jour' ? v.date_heure.toString() + ':00' : this.datepipe.transform(v.date_heure, 'dd-MM-yyyy'), y: Number(v.consommation) }));
+          else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.consommation) }));
           //
           this.chartSelected[chart.index - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
           this.createChart((vehicule.id + '' + chart.index), _data, vehicule, Math.max(..._data.map((d: any) => d.y)));
         });//fin forEach
       }
     )//fin geoLocalisation
+  }
+
+  formateDate(date:number){
+    if(this.typeFilter=='jour') return date.toString().padStart(2, '0')+':00'
+    return this.datepipe.transform(date,'dd-MM-yyyy')
   }
 
   mChart: any = [];
@@ -229,9 +230,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
     });
     //03
     this.vehiculesSelected.forEach(vehicule => {
-      // this.chartSelected.forEach((chart: any) => {
         this.getInformationsVehicule(vehicule);
-      // });
     });
   }
 

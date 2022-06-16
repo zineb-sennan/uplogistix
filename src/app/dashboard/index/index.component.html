@@ -120,9 +120,9 @@
                                 <div class="col">
                                     <h6 class="text-uppercase text-muted mb-2">Total coût/1Km Dh</h6>
                                     <div class="ml">
-                                        <span class="h2 mb-0">_</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute">_</span><br>
-                                        <span class="text-secondary">_</span>
+                                        <span class="h2 mb-0">{{moisEncours.cout_1km?.toFixed(2)}}</span>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute">{{calc(moisEncours.cout_1km, moisPrecedent.cout_1km)}}%</span><br>
+                                        <span class="text-secondary">{{moisPrecedent.cout_1km?.toFixed(2)}}</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">

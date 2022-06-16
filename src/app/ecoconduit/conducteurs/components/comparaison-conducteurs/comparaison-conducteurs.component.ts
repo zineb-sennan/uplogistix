@@ -13,7 +13,7 @@ import { EcoconduiteService } from '../../../../_services/ecoconduite.service';
 export class ComparaisonConducteursComponent implements OnInit {
   //
   colors=['56, 95, 158','247, 189, 1', '20, 156, 56', '94, 202, 223'];
-  viewChartPrincipale:any=null; typeFilter='jour'; maxConducteur = 4; maxChart=5;
+  viewChartPrincipale:any=null; typeFilter='jour'; maxConducteur = 2; maxChart=5;
   conducteurs: any[] = []; conducteursSelected: any[] = []; 
   chartSelected: any = [
     { index: 1, checked:true, libelle: 'Acceleration brusque', slug:'acceleration-brusque', data: [] },

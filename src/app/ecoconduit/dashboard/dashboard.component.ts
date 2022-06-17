@@ -77,22 +77,6 @@ export class DashboardComponent implements OnInit {
     )
   }
 
-  totalInfoVehicule() {
-    this.infosGlobaleVehicule = { total_fuel_consomme: 0, total_fuel_gaspille: 0, total_distance_conduite: 0, total_temps_total_conduite: 0, nb_conducteurs: 0 }
-    this.list_resume_vehicule.forEach((val: any) => {
-      this.filter.vehicule_id = val.vehicule_id;
-      this.geoLocalisationService.getAnalyseVehicule(this.filter).subscribe(
-        async res => {
-          this.infosGlobaleVehicule.total_distance_conduite = res.distance.reduce((prev: any, next: any) => prev + next.distance, 0);
-          this.infosGlobaleVehicule.total_fuel_consomme = res.fuel.reduce((prev: any, next: any) => prev + next.montant_carburant, 0);
-          this.infosGlobaleVehicule.total_temps_total_conduite = this.secondsToDhms(res.driveTime.reduce((prev: any, next: any) => prev + this.toSeconds(next.duree), 0));
-          this.infosGlobaleVehicule.carbone = res.carbone.reduce((prev: any, next: any) => prev + next.Cg, 0);
-        }
-      )
-    });
-    this.getNombreConducteurs();
-  }
-
   async getResumeOfAllehicule(idChart: any, ChartBy: any) {
     var titre = null; var data = null;
     //01
@@ -111,17 +95,25 @@ export class DashboardComponent implements OnInit {
     //04
     this.createChart(idChart, titre,  data);
     this.show_dropdown_vehicule = false;
-    this.totalInfoVehicule();
+
+    //05 L'affichage des infos globale
+    this.infosGlobaleVehicule.total_distance_conduite = this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.distance_conduite, 0);
+    this.infosGlobaleVehicule.total_fuel_consomme = this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.fuel_consomme, 0);
+    this.infosGlobaleVehicule.total_temps_total_conduite = this.secondsToDhms(this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.temps_conduite_seconds, 0));
+    this.infosGlobaleVehicule.carbone = this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.carbone, 0);
+    this.getNombreConducteurs();
   }
 
   private getInfosForVehicule(vehicule: any): any {
     this.filter.vehicule_id = vehicule.id;
-    return this.geoLocalisationService.getAnalyseVehicule(this.filter).pipe(
+    return this.geoLocalisationService.getAnalyseVehicule({vehicule_id: vehicule.id, date_debut: this.filter.date_debut, date_fin:this.filter.date_fin}).pipe(
       map(resume => (
         {
           fuel_consomme: [...resume.fuel].reduce((prev: any, next: any) => prev + next.montant_carburant, 0),
           distance_conduite: [...resume.distance].reduce((prev: any, next: any) => prev + next.distance, 0),
           temps_total_conduite: this.secondsToDhms([...resume.driveTime].reduce((prev: any, next: any) => prev + this.toSeconds(next.duree), 0)),
+          temps_conduite_seconds: [...resume.driveTime].reduce((prev: any, next: any) => prev + this.toSeconds(next.duree), 0),
+          carbone: [...resume.carbone].reduce((prev: any, next: any) => prev + next.Cg, 0),
           fuel_gaspille: 0,
           matricule: vehicule.matricule,
           vehicule_id: vehicule.id

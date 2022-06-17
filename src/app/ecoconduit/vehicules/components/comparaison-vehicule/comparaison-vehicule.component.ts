@@ -127,7 +127,8 @@ export class ComparaisonVehiculeComponent implements OnInit {
           //L100 | Consommation l/100km
           else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.consommation) }));
           //
-          this.chartSelected[chart.index - 1].data.push({ values: _data, matricule: vehicule.matricule, color: vehicule.color });
+          // console.log( _data[0]?.x?? 'null');
+          this.chartSelected[chart.index - 1].data.push({ values: _data, dateDebut: (_data[0]?.x)?? 0 , matricule: vehicule.matricule, color: vehicule.color });
           this.createChart((vehicule.id + '' + chart.index), _data, vehicule, Math.max(..._data.map((d: any) => d.y)));
         });//fin forEach
       }
@@ -211,10 +212,35 @@ export class ComparaisonVehiculeComponent implements OnInit {
       }
     }
     //02
+    console.log('avant', infosChart.data);
+    //var dataC = infosChart.data;
+    infosChart.data = [...infosChart.data].sort((a,b) => ((new Date(a.dateDebut).getTime()) > (new Date(b.dateDebut).getTime())) ? -1 : (((new Date(b.dateDebut).getTime()) > (new Date(a.dateDebut).getTime())) ? 1 : 0));
+    // infosChart.data= [...infosChart.data].sort((a, b) => 
+    //                       {
+    //                         if ( new Date(a.dateDebut).getTime() < new Date(b.dateDebut).getTime() ){
+    //                           return 1;
+    //                         }
+    //                         if ( new Date(a.dateDebut).getTime() > new Date(b.dateDebut).getTime() ){
+    //                           return -1;
+    //                         }
+    //                         return 0;
+    //                       }
+    //                   )
+    //infosChart.data="Bonjour";
+
+    // infosChart.data = infosChart.data.sort((a:any, b:any) 
+    //   => 
+    // );
+    //console.log('apres', infosChart.data );
+
+
+
     infosChart.data.forEach((chart: any) => {
+      console.log('***',chart.dateDebut);
       var item = { data: chart.values, label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
       _infosChart.data.datasets.push(item);
     })
+    
     //03
     this.myChart = new Chart(chart, _infosChart);
   }

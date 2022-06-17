@@ -43,7 +43,7 @@ export class ClassementVehiculeComponent implements OnInit {
         {
           matricule: vehicule.matricule,
           vehicule_id: vehicule.id,
-          score: resume.new_score
+          score: resume.new_score == null? 100.00: resume.new_score
         }
       ))
     );

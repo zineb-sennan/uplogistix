@@ -23,7 +23,7 @@
                                 <div class="row align-items-center g-0">
                                     <div class="col-auto">
                                         <div class="progress" style="width: 150px; height: 11px;">
-                                            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" ngClass="{{vehicule.score < 70 ? 'bg-danger' : ''}}" role="progressbar" style="width: {{vehicule.score}}%;" aria-valuemin="20" aria-valuemax="100">{{vehicule.score}}%</div>
+                                            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" ngClass="{{vehicule.score < 70 ? 'bg-danger' : ''}}" role="progressbar" [ngStyle]="{ 'width': vehicule.score <= 20 ? '30%' : vehicule.score+'%' }">{{vehicule.score}}%</div>
                                         </div>
                                     </div>
                                 </div>

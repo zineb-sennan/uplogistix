@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
   getNombreConducteurs() {
     this.conducteurService.getAll(1).subscribe(
       res => {
-        this.infosGlobaleVehicule.nb_conducteurs = res['total_records'];
+        this.infosGlobaleVehicule.nb_conducteurs = [...res.records].filter(c=> c.vehicule_id!=null).length +'/'+ res.records.length;
       }
     )
   }

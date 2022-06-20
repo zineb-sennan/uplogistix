@@ -151,7 +151,9 @@
             <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchCompteursAutomatique(searchForm.value)">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="titre">Véhicules</label>
+                        <label for="titre">
+                            Véhicules <strong class="text-danger" *ngIf="!search.vehicule_id">*</strong>
+                        </label>
                         <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
                             <option value=null disabled>Veuillez choisir ...</option>
                             <option *ngFor="let vehicule of vehicules_avec_balise" value="{{vehicule.id}}">
@@ -241,7 +243,10 @@
             <form class="row form-search" #searchForm="ngForm" (ngSubmit)="generateChart(searchForm.value)">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="titre">Véhicules</label>
+                        <label for="titre">
+                            Véhicules
+                            <strong class="text-danger" *ngIf="!search.vehicule_id">*</strong>
+                        </label>
                         <select class="form-select" [(ngModel)]="search.vehicule_id" name="vehicule_id">
                             <option value=null disabled>Veuillez choisir ...</option>
                             <option *ngFor="let vehicule of vehicules" value="{{vehicule.id}}">
@@ -345,10 +350,6 @@
                         <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.
                         </p>
                         <br>
-                        <div *ngIf="message" class="alert alert-success" role="alert">
-                            {{message}}
-                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>

@@ -55,9 +55,9 @@ export class ComparaisonVehiculeComponent implements OnInit {
           this.vehicules[index].checked = true;
         }
       },
-      // error => {
-      //   if (error.status == 401 && this.securiteClass.refreshToken()) this.getVehiculeWitheEco();
-      // }
+      async error => {
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getVehiculeWitheEco();
+      }
     )
   }
 
@@ -113,43 +113,42 @@ export class ComparaisonVehiculeComponent implements OnInit {
       res => {
         this.chartSelected.forEach((chart: any) => {
           //MaxSpeed | Vitesse maximale Km
-          if (chart.index == 1) _data = res.maxSpeed.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average, z:v.date_heure }));
+          if (chart.index == 1) _data = res.maxSpeed.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average, z: v.date_heure }));
           //SpeedAverage| Vitesse moyenne Km
-          else if (chart.index == 2) _data = res.speedAverage.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average, z:v.date_heure }));
+          else if (chart.index == 2) _data = res.speedAverage.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average, z: v.date_heure }));
           //Fuel | Consommation carburant
-          else if (chart.index == 3) _data = res.fuel.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.montant_carburant), z:v.date_heure }));
+          else if (chart.index == 3) _data = res.fuel.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.montant_carburant), z: v.date_heure }));
           //Distance | Distance parcourue Km
-          else if (chart.index == 4) _data = res.distance.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.distance, z:v.date_heure }));
+          else if (chart.index == 4) _data = res.distance.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.distance, z: v.date_heure }));
           //carbone | Emission CO2 kg
-          else if (chart.index == 5) _data = res.carbone.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g), z:v.date_heure }));
+          else if (chart.index == 5) _data = res.carbone.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g), z: v.date_heure }));
           //DriveTime | Temps de conduite
-          else if (chart.index == 6) _data = res.driveTime.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g), z:v.date_heure }));
+          else if (chart.index == 6) _data = res.driveTime.map((v: any) => ({ x: this.formateDate(v.date_heure), y: this.toSeconds(v.duree), z: v.date_heure }));
           //L100 | Consommation l/100km
-          else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.consommation), z:v.date_heure }));
+          else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.consommation), z: v.date_heure }));
           //
-          // console.log( _data[0]?.x?? 'null');
-          this.chartSelected[chart.index - 1].data.push({ values: _data, dateDebut: (_data[0]?.z)?? 0 , matricule: vehicule.matricule, color: vehicule.color });
-          this.createChart((vehicule.id + '' + chart.index), _data, vehicule, Math.max(..._data.map((d: any) => d.y)));
+          this.chartSelected[chart.index - 1].data.push({ values: _data, dateDebut: (_data[0]?.z) ?? 0, matricule: vehicule.matricule, color: vehicule.color });
+          this.createChart((vehicule.id + '' + chart.index), _data, vehicule, Math.max(..._data.map((d: any) => d.y)), chart.index);
         });//fin forEach
       }
     )//fin geoLocalisation
   }
 
-  formateDate(date:number){
-    if(this.typeFilter=='jour') return date.toString().padStart(2, '0')+':00'
-    return this.datepipe.transform(date,'dd-MM-yyyy')
+  formateDate(date: number) {
+    if (this.typeFilter == 'jour') return date.toString().padStart(2, '0') + ':00'
+    return this.datepipe.transform(date, 'dd-MM-yyyy')
   }
 
-  mChart: any = [];
-  createChart(index: any, data: any, vehicule: any, maxValue: any) {
+  myChart: any = [];
+  createChart(index: any, _data: any, vehicule: any, maxValue: any, indexChart: Number) {
+    if (this.myChart[index]) this.myChart[index].destroy();
 
-    var chart: any = $('#chart_' + index);
-    if (this.mChart[index]) this.mChart[index].destroy();
-    this.mChart[index] = new Chart(chart, {
+    //
+    const _myChart: any = {
       type: 'line',
       data: {
         datasets: [{
-          data: data,
+          data: _data,
           label: vehicule.matricule,
           borderColor: 'rgb(' + vehicule.color + ')',
           fill: {
@@ -173,9 +172,52 @@ export class ComparaisonVehiculeComponent implements OnInit {
           legend: { display: false }
         }
       }
-    });
-    //
-    if (maxValue != '-Infinity' && !isNaN(maxValue)) $('#max_' + index).text(maxValue.toFixed(2));
+    };
+
+    //temps de conduite par date 
+    if (indexChart == 6) {
+      _myChart.options = {
+        maintainAspectRatio: false,
+        scales: {
+          x: { display: false },
+          y: {
+            display: false,
+            grid: { drawOnChartArea: false },
+            ticks: {
+              callback: function (_seconds: any) {
+                var hours = Math.floor(_seconds / 3600),
+                  minutes = Math.floor((_seconds % 3600) / 60),
+                  seconds = Math.floor(_seconds % 60);
+
+                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+              }//;
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context: any): any {
+                var hours = Math.floor(context.parsed.y / 3600),
+                  minutes = Math.floor((context.parsed.y % 3600) / 60),
+                  seconds = Math.floor(context.parsed.y % 60);
+                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+              }
+            }
+          }
+        }
+      }
+      //
+      $('#max_' + index).text(this.secondsToDhms(maxValue));
+    }// fin if
+    else{
+      if (maxValue != '-Infinity' && !isNaN(maxValue)) $('#max_' + index).text(maxValue.toFixed(2));
+    }
+
+    this.myChart[index] = new Chart(<any>$('#chart_' + index), _myChart);
+    
+
   }
 
   remplissageChartPrincipale(index: any) {
@@ -189,11 +231,11 @@ export class ComparaisonVehiculeComponent implements OnInit {
       this.viewChartPrincipale = false;
   }
 
-  myChart: any = null;
+  //myChart:any = [];
   createChartPrincipale(infosChart: any) {
     //01
     var chart: any = $('#chart-principal');
-    if (this.myChart) this.myChart.destroy();
+    if (this.myChart[-1]) this.myChart[-1].destroy();
     var _infosChart: any = {
       type: 'line',
       data: {
@@ -212,19 +254,50 @@ export class ComparaisonVehiculeComponent implements OnInit {
       }
     }
     //02
-    console.log('avant', infosChart.data);
-    //infosChart.data = [...infosChart.data].sort((a,b) => ((new Date(a.dateDebut).getTime()) - (new Date(b.dateDebut).getTime())));
-    infosChart.data = [...infosChart.data].sort((a,b) => (new Date(a.dateDebut).getTime())/1000 - (new Date(b.dateDebut).getTime())/1000);
-    console.log('aprés', infosChart.data);
+    infosChart.data = [...infosChart.data].sort((a, b) => (new Date(a.dateDebut).getTime()) / 1000 - (new Date(b.dateDebut).getTime()) / 1000);
 
     infosChart.data.forEach((chart: any) => {
-      console.log('***',chart.dateDebut);
       var item = { data: chart.values, label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
       _infosChart.data.datasets.push(item);
     })
-    
-    //03
-    this.myChart = new Chart(chart, _infosChart);
+
+    //03 Temps de conduite 
+    if (infosChart.index == 6) {
+      _infosChart.options={
+        maintainAspectRatio:false,
+        scales:{
+          x:{ grid:{ drawOnChartArea:false } },
+          y: {
+            grid:{ drawOnChartArea:false },
+            ticks: {
+              callback: function (_seconds: any){
+                var hours = Math.floor(_seconds / 3600),
+                minutes = Math.floor((_seconds % 3600) / 60),
+                seconds = Math.floor(_seconds % 60);
+  
+                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+              }//;
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context:any):any {
+                var hours = Math.floor(context.parsed.y / 3600),
+                minutes = Math.floor((context.parsed.y % 3600) / 60),
+                seconds = Math.floor(context.parsed.y % 60);
+                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+              }
+            }
+          }
+      }
+    }
+    }
+
+    //04
+    this.myChart[-1] = new Chart(chart, _infosChart);
   }
 
   changeData(type: any) {
@@ -238,7 +311,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
     });
     //03
     this.vehiculesSelected.forEach(vehicule => {
-        this.getInformationsVehicule(vehicule);
+      this.getInformationsVehicule(vehicule);
     });
   }
 
@@ -271,5 +344,17 @@ export class ComparaisonVehiculeComponent implements OnInit {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  toSeconds(str: string) {
+    var res = str.split(':');
+    return (+res[0]) * 3600 + (+res[1]) * 60 + (+res[2]);
+  }
+
+  secondsToDhms(_seconds:number) {
+    var hours = Math.floor(_seconds / 3600),
+    minutes = Math.floor((_seconds % 3600) / 60),
+    seconds = Math.floor(_seconds % 60);
+
+    return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+  }
 
 }

@@ -49,13 +49,13 @@ export class IndexComponent implements OnInit {
   getInfosVehiculeById(id:number){
     this.utilisateurService.getUtilisateur(id).subscribe(
       result =>{
-        this.infosVehicule.total_vehicules = result.nbre_vehicules;
-        this.infosVehicule.nombre_GPS = result.nbre_balises;
+        //this.infosVehicule.nombre_GPS =result.balises_active +'/'+ result.nbre_balises;
+        this.infosVehicule.nombre_GPS =result.balises_active;
         this.infosVehicule.total_GPS_active = result.balises_active;
-        this.infosVehicule.Total_GPS_inactive=(result.nbre_balises-result.balises_active);
+        this.infosVehicule.Total_GPS_inactive = this.vehicules.total_records - result.balises_active;
       },
-      error => {
-        if(error.status==401 && this.refreshToken()) this.getInfosVehiculeById(id);
+      async error => {
+        if(error.status==401 && await this.refreshToken()) this.getInfosVehiculeById(id);
     });
   }
 
@@ -81,10 +81,10 @@ export class IndexComponent implements OnInit {
         vehicules.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : v.compteur_initial);
         this.vehicules['records'] = vehicules;
         //
-        console.log(' *** ',this.vehicules);
+        //console.log(' *** ',this.vehicules);
       },
-      error => {
-        if (error.status == 401 && this.refreshToken()) this.searchVehicule(form);
+      async error => {
+        if (error.status == 401 && await this.refreshToken()) this.searchVehicule(form);
       }
     );
   }
@@ -92,8 +92,8 @@ export class IndexComponent implements OnInit {
   getAllGroupes() {
     this.vehiculeGroupeService.getAll().subscribe(
       res => this.groupes = res,
-      error => {
-        if (error.status == 401 && this.refreshToken()) this.getAllGroupes();
+      async error => {
+        if (error.status == 401 && await this.refreshToken()) this.getAllGroupes();
       }
     );
   }
@@ -101,8 +101,8 @@ export class IndexComponent implements OnInit {
   getAllMarques() {
     this.vehiculeMarqueService.getAll().subscribe(
       res => this.marques = res,
-      error => {
-        if (error.status == 401 && this.refreshToken()) this.getAllMarques();
+      async error => {
+        if (error.status == 401 && await this.refreshToken()) this.getAllMarques();
       }
     )
   }
@@ -126,8 +126,8 @@ export class IndexComponent implements OnInit {
       this.message = "Le vehicule est supprimé avec succès !";
       this.closeModal();
     },
-      error => {
-        if (error.status == 401 && this.refreshToken()) this.delete(id);
+    async error => {
+        if (error.status == 401 && await this.refreshToken()) this.delete(id);
       })
   }
   

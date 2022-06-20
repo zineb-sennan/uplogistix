@@ -13,8 +13,7 @@
     <!-- *** *** Content *** ***  -->
     <div class="container-fluid">
         <div class="row">
-            <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #roleForm="ngForm"
-                (ngSubmit)="updateRole(roleForm.value)">
+            <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #roleForm="ngForm" (ngSubmit)="updateRole(roleForm.value)">
                 <!-- *** *** *** Forms *** *** *** -->
                 <div class="row">
                     <input type="hidden" [(ngModel)]="singleRole.id" name="id" value="singleRole.id">
@@ -23,13 +22,11 @@
                             Libelle
                             <strong class="text-danger" *ngIf="!singleRole.libelle">*</strong>
                         </label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Libelle"
-                            [(ngModel)]="singleRole.libelle" name="libelle" required>
+                        <input type="text" class="form-control form-control-sm" placeholder="Libelle" [(ngModel)]="singleRole.libelle" name="libelle" required>
                     </div>
                     <div class="form-group">
                         <label for="logo" class="form-label">Description</label>
-                        <textarea class="form-control" placeholder="Description" [(ngModel)]="singleRole.description"
-                            name="description"></textarea>
+                        <textarea class="form-control" placeholder="Description" [(ngModel)]="singleRole.description" name="description"></textarea>
                     </div>
                 </div>
                 <hr class="mt-4 mb-4">
@@ -44,12 +41,11 @@
 
         <div class="row">
             <div class="col-md-12 shadow p-3 mb-5 bg-white rounded">
-                
+
                 <div class="header md-5">
                     <div class="header-body">
                         <h1 class="header-title">Permissions</h1>
                         <p class="header-subtitle">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
                             <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
@@ -74,7 +70,7 @@
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
-                        
+
                     </li>
                 </ul>
 
@@ -93,29 +89,29 @@
                         <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <span class="text-primary">Permissions</span>
-                                    <div class="float-right align-middle d-flex">
-                                        <small class="text-primary" style="margin-right:12px;">Consulter</small>
-                                        <small class="text-primary" style="margin-right:12px;">Modifie</small>
-                                        <small class="text-primary">Supprimer</small>
-                                    </div>
-                                </li>
-                                <li class="list-group-item infos-permission" *ngFor="let permission of permissions; let index = index;" id="{{permission.id}}">
-                                    <span>{{permission.libelle}}</span>
-                                    <div class="float-right align-middle d-flex">
-                                        <input class="form-check-input can_consulter_{{index}} mr" type="checkbox">
-                                        <input class="form-check-input can_edit_{{index}} ml" type="checkbox" (click)="checkConsulter($event,index)">
-                                        <input class="form-check-input can_delete_{{index}} ml" type="checkbox" (click)="checkConsulter($event,index)">
-                                    </div>
-                                </li>
-                            </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="text-primary">Permissions</span>
+                                <div class="float-right align-middle d-flex">
+                                    <small class="text-primary" style="margin-right:12px;">Consulter</small>
+                                    <small class="text-primary" style="margin-right:12px;">Modifie</small>
+                                    <small class="text-primary">Supprimer</small>
+                                </div>
+                            </li>
+                            <li class="list-group-item infos-permission" *ngFor="let permission of permissions; let index = index;" id="{{permission.id}}">
+                                <span>{{permission.libelle}}</span>
+                                <div class="float-right align-middle d-flex">
+                                    <input class="form-check-input can_consulter_{{index}} mr" type="checkbox">
+                                    <input class="form-check-input can_edit_{{index}} ml" type="checkbox" (click)="checkConsulter($event,index)">
+                                    <input class="form-check-input can_delete_{{index}} ml" type="checkbox" (click)="checkConsulter($event,index)">
+                                </div>
+                            </li>
+                        </ul>
 
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-primary mb-2 mt-4 float-right" (click)="addRolePermossion()">Enregister</button>
-                                <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
-                            </div>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary mb-2 mt-4 float-right" (click)="addRolePermossion()">Enregister</button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Chart, registerables } from 'chart.js';
+import { Chart, registerables, Scale } from 'chart.js';
 import * as $ from 'jquery';
 import { EcoconduiteService } from '../../../../_services/ecoconduite.service';
 import { GeoLocalisationService } from '../../../../_services/geolocalisation.service';
@@ -37,43 +37,59 @@ export class AnalyseParVehiculeComponent implements OnInit {
     this.getEvolutionScore();
 
     //
-    let chart = new Chart(<any>$('#chart_score'), {
-      type: 'line',
-      data: {
-          datasets: [{
-              data: [
-                {t: '2021-12-06', y: '12:13:00' },
-                {t: '2021-11-06', y: '13:13:00' },
-                {t: '2021-10-06', y: '14:13:00' },
-                {t: '2021-01-06', y: '15:13:00' }
-              ]
-          }],
-      },
-      options: {
-        maintainAspectRatio:false,
-        scales: {
-          // y:{
-          //   //type: 'time',
-          //   // time: {
-          //   //   displayFormats: {
-          //   //     quarter: '"MMM DD YYYY"'
-          //   //   }
-          //   // }
-          // },
-         // x: {
-            //   type: 'time', 
-            //  // min: '00:00:00',
-            //   time: {
-            //   displayFormats: {
-            //     quarter: '"MMM DD YYYY"'
-            //   }
-            //}
-         // }
-      }
-      }
-  });
-  }
+  //   let chart = new Chart(<any>$('#chart_score'), {
+  //     type: 'line',
+  //     data: {
+  //         datasets: [{
+  //             data: [
+  //               { x: '2021-12-06', y: 1000 },
+  //               { x: '2021-11-06', y: 2000 },
+  //               { x: '2021-10-06', y: 1540 },
+  //               { x: '2021-01-06', y: 600 }
+  //             ]
+  //         }],
+  //     },
+  //     options: {
+  //       maintainAspectRatio:false,
+  //       scales:{
+  //         y: {
+  //           beginAtZero: true,
+  //           ticks: {
+  //             stepSize: 1,
+  //             callback: function (_seconds: any):any{
+  //               // var hours = Math.floor(_seconds / 3600),
+  //               // minutes = Math.floor((_seconds % 3600) / 60),
+  //               // seconds = Math.floor(_seconds % 60);
+  
+  //               // return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+  //               return this.bonjour();
 
+  //             }.bind(this)
+  //           }
+  //         }
+  //       },
+  //       plugins: {
+  //         tooltip: {
+  //             callbacks: {
+  //                 //label: function(context) {
+  //                   // var hours = Math.floor(context.parsed.y / 3600),
+  //                   // minutes = Math.floor((context.parsed.y % 3600) / 60),
+  //                   // seconds = Math.floor(context.parsed.y % 60);
+  
+  //                   // return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+  //                     //return ''+ context.parsed.y;
+  //                     //return this.bonjour();
+  //                     //let test= this.bonjour();
+  //                     //return bonjour(this)
+  //                   //}
+  //             }
+  //         }
+  //     }
+  //       // *** *** ***
+  //     }
+  // });
+
+  }
   
 
   changeVehicule(e:any){
@@ -95,7 +111,8 @@ export class AnalyseParVehiculeComponent implements OnInit {
         else if(this.filter.typeFilter=='l100') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.consommation) }));
         //
         this.genererGraphe('chart_vehicule', _data,1)
-        $('#maxVal').text( (Math.max(..._data.map((d: any) => d.y))).toFixed(2) )
+        if(this.filter.typeFilter=='driveTime') $('#maxVal').text( this.secondsToDhms(Math.max(..._data.map((d: any) => d.y))) )
+        else $('#maxVal').text( (Math.max(..._data.map((d: any) => d.y))).toFixed(2) )
 
         //console.log('ff',_data);
       }
@@ -125,63 +142,74 @@ export class AnalyseParVehiculeComponent implements OnInit {
 
   myChart:any = [];
   genererGraphe(idChart:any,  _data:any, indexChart:number){ 
-    // if (this.myChart[indexChart]) this.myChart[indexChart].destroy();
+    if (this.myChart[indexChart]) this.myChart[indexChart].destroy();
      
-    // const _myChar:any = {
-    //   type:'line',
-    //   data:{
-    //     datasets:[
-    //       {
-    //         data: _data,
-    //         backgroundColor: 'rgb(44, 123, 228)',
-    //         borderColor: 'rgb(44, 123, 228)'
-    //       }
-    //     ],
-    //   },
-    //   options:{
-    //     maintainAspectRatio:false,
-    //     scales:{
-    //       x:{ grid:{ drawOnChartArea:false } },
-    //       y:{ grid:{ drawOnChartArea:false } }
-    //     },
-    //     plugins: {
-    //       legend: { display: false }
-    //     }
-    //   }
-    // };
+    const _myChar:any = {
+      type:'line',
+      data:{
+        datasets:[
+          {
+            data: _data,
+            backgroundColor: 'rgb(44, 123, 228)',
+            borderColor: 'rgb(44, 123, 228)'
+          }
+        ],
+      },
+      options:{
+        maintainAspectRatio:false,
+        scales:{
+          x:{ grid:{ drawOnChartArea:false } },
+          y:{ grid:{ drawOnChartArea:false } }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    };
 
-    // if(this.filter.typeFilter=='driveTime') {
-    //   _myChar.options.scales = {
-    //     y: {
-    //       ticks: {
-    //         callback: function (_seconds: any){
-    //           var hours = Math.floor(_seconds / 3600),
-    //           minutes = Math.floor((_seconds % 3600) / 60),
-    //           seconds = Math.floor(_seconds % 60);
-
-    //           return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
-    //         }//;
-    //       }
-    //     }
-    //   };
-    // }
-
-    // this.myChart[indexChart] = new Chart(<any>$('#' + idChart), _myChar);
-
+    if(this.filter.typeFilter=='driveTime') {
+      _myChar.options={
+        maintainAspectRatio:false,
+        scales:{
+          x:{ grid:{ drawOnChartArea:false } },
+          y: {
+            grid:{ drawOnChartArea:false },
+            ticks: {
+              callback: function (_seconds: any){
+                var hours = Math.floor(_seconds / 3600),
+                minutes = Math.floor((_seconds % 3600) / 60),
+                seconds = Math.floor(_seconds % 60);
+  
+                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+              }//;
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context:any):any {
+                var hours = Math.floor(context.parsed.y / 3600),
+                minutes = Math.floor((context.parsed.y % 3600) / 60),
+                seconds = Math.floor(context.parsed.y % 60);
+                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+              }
+            }
+          }
+      }
+    }
+    }// fin if
+    
+    this.myChart[indexChart] = new Chart(<any>$('#' + idChart), _myChar);
   } // ./genererGraphe
 
-  secondsToDhms(seconds:number) {
-    seconds = Number(seconds);
-    var d = Math.floor(seconds / (3600*24));
-    var h = Math.floor(seconds % (3600*24) / 3600);
-    var m = Math.floor(seconds % 3600 / 60);
-    var s = Math.floor(seconds % 60);
-    
-    var dDisplay = d > 0 ? d + (d == 1 ? " jour " : " jours ") : "";
-    var hDisplay = h > 0 ? h + (h == 1 ? ":" : ":") : "";
-    var mDisplay = m > 0 ? m + (m == 1 ? ":" : ":") : "";
-    var sDisplay = s > 0 ? s + (s == 1 ? "" : "") : "";
-    return dDisplay + hDisplay + mDisplay + sDisplay;
+  secondsToDhms(_seconds:number) {
+    var hours = Math.floor(_seconds / 3600),
+    minutes = Math.floor((_seconds % 3600) / 60),
+    seconds = Math.floor(_seconds % 60);
+
+    return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
   }
 
 }

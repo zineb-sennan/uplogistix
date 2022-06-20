@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
     private geoLocalisationService: GeoLocalisationService
   ) { }
 
-  type='details'; myChart:any;
+  type='details'; myChart:any; date = new Date();
   private map: any; markers: any = []; positions: any = [];
   singleVehicule: any = {
     //Générale
@@ -43,7 +43,10 @@ export class DashboardComponent implements OnInit {
     capacite_huile:null,volume_reservoir:null
   };
 
-  resume={ compteur_km:0, cout_km:0, distance:0, duree:0, kilometres_litre:0, km_aujourdhui:0, litres:0, litres_100km:0, montant_carburant:0 }
+  // resume={ compteur_km:0, cout_km:0, distance:0, duree:0, kilometres_litre:0, km_aujourdhui:0, litres:0, litres_100km:0, montant_carburant:0, 
+  //          cout_total:0, cout_maintenance:0, autre_cout:0 }
+
+  resume={ cout_km:0, montant_carburant:0, cout_total:0, cout_maintenance:0, autre_cout:0, km_aujourdhui:0 };
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(
@@ -53,7 +56,10 @@ export class DashboardComponent implements OnInit {
           this.getVehiculeById(id);
           //
           Chart.register(...registerables);
-          this.getEtatCarburant(id);
+          //this.getEtatCarburant(id);
+
+          /** *** *** */
+          this._test();
         }
       });
   } 
@@ -62,44 +68,43 @@ export class DashboardComponent implements OnInit {
     this.vehiculeService.getVehiculeById(id).subscribe(
       res=>{
         this.singleVehicule=res;
-        if(this.singleVehicule.eco_conduite) this.getResumeForVehicule(id);
+        //if(this.singleVehicule.eco_conduite) this.getResumeForVehicule(id);
         this.getPositions(id);
       },
-      // error => {
-      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getVehiculeById(id);
-      // }
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getVehiculeById(id);
+      }
       );
   }
 
-  getResumeForVehicule(id:number) {
-    this.ecoconduiteService.resumeOfVehicule(id).subscribe(
-      resume=>{
-        this.resume=resume
-      },
-      // error => {
-      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getResumeForVehicule(id);
-      // }
-      );
-  }
+  // getResumeForVehicule(id:number) {
+  //   this.ecoconduiteService.resumeOfVehicule(id).subscribe(
+  //     resume=>{
+  //       this.resume=resume
+  //     },
+  //     // error => {
+  //     //   if(error.status==401 && this.securiteClass.refreshToken()) this.getResumeForVehicule(id);
+  //     // }
+  //     );
+  // }
 
-  getEtatCarburant(id:number){
-    this.vehiculeService.getEtatCarburant(id).subscribe(
-      res=>{
-        const labels=res.slice().reverse().map((t: any) => t.mois);
-        const data=res.slice().reverse().map((t: any) => t.total);
-        this.createChart("chart1","Cout total carburants",data, labels); 
-        this.createChart("chart2","Cout total",data, labels);
-      },
-      // error => {
-      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getEtatCarburant(id);
-      // }
-    )
-  }
+  // getEtatCarburant(id:number){
+  //   this.vehiculeService.getEtatCarburant(id).subscribe(
+  //     res=>{
+  //       const labels=res.slice().reverse().map((t: any) => t.mois);
+  //       const data=res.slice().reverse().map((t: any) => t.total);
+  //       this.createChart("chartCoutTotalCarburant","Cout total carburants",data, labels); 
+  //       this.createChart("chartCoutTotal","Cout total",data, labels);
+  //     },
+  //     // error => {
+  //     //   if(error.status==401 && this.securiteClass.refreshToken()) this.getEtatCarburant(id);
+  //     // }
+  //   )
+  // }
 
 
-  createChart(id:any, titre:any, data:any, labels:any){
+  createChart(id:any, titre:any, _data:any){
     const months=["janv.", "févr.", "mars", "avr.", "mai", "juin", "juill.", "août", "sept.", "oct.", "nov.", "déc."];
-    labels=labels.map((d:any)=> months[d-1]);
 
     this.myChart = $('#'+id);
     new Chart(this.myChart,{
@@ -107,12 +112,11 @@ export class DashboardComponent implements OnInit {
       data:{
         datasets:[
           {
-            data:data,
+            data:_data,
             label:titre,
             backgroundColor: 'rgba(54, 162, 235)'
           }
         ],
-        labels:labels,
       }
     })
   }
@@ -214,6 +218,26 @@ export class DashboardComponent implements OnInit {
     marker.openPopup();
 
     marker.addTo(this.map);
+  }
+
+  /*** *** *** **** **** */
+  _test(){
+    const mois = ["JAN", "FEV", "MAR", "AVR", "MAI", "JUN", "JUL", "AOU", "SEP", "OCT", "NOV", "DEC"];
+
+    this.geoLocalisationService.getInfosDashboard().subscribe(
+      res => {
+        console.log('',res);
+        this.resume.cout_km = [...res.coutKM].filter(c=>c.mois == (this.date.getMonth()+1))[0].coutKM;
+        this.resume.montant_carburant= res.moisEncours.cout_carburant;
+        this.resume.cout_total=[...res.coutTotal].filter(c=>c.mois == (this.date.getMonth()+1))[0].coutTotal;
+        this.resume.cout_maintenance=res.moisEncours.cout_maintenance;
+        this.resume.autre_cout= this.resume.cout_total - (this.resume.montant_carburant + this.resume.cout_maintenance);
+        this.resume.km_aujourdhui= [...res.compteurTotal].reduce((prev: any, next: any) => prev + next.distance, 0);
+        //
+        this.createChart("chartCoutTotalCarburant","Cout total carburants",res.coutFuel.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutFuel }))); 
+        this.createChart("chartCoutTotal","Cout total",res.coutTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutTotal })));
+      }
+    )
   }
 
 }

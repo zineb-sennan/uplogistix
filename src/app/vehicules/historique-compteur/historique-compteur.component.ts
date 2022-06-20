@@ -65,24 +65,27 @@ export class HistoriqueCompteurComponent implements OnInit {
         this.vehicules_avec_balise=res.filter((v: any) => v.balise);
         this.vehicules_sans_balise=res.filter((v: any) => !v.balise);
       },
-      // error => {
-      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
-      // }
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getVehicules();
+      }
     )
   }
 
   searchCompteurs(data:any){
     this.vehiculeHistoriqueCompteurService.search(this.page,data).subscribe(
       res=> this.compteurs=res,
-      // error => {
-      //   if(error.status==401 && this.securiteClass.refreshToken()) this.searchCompteurs(data);
-      // }
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.searchCompteurs(data);
+      }
     )
   }
 
   searchCompteursAutomatique(record:any){
     this.vehiculeHistoriqueCompteurService.getGpsCompteur(this.page,this.search).subscribe(
       res => this.compteurs_gps=res, 
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.searchCompteursAutomatique(record);
+      }
     )
   }
 
@@ -90,9 +93,9 @@ export class HistoriqueCompteurComponent implements OnInit {
     this.message=null;
     this.vehiculeHistoriqueCompteurService.getCompteur(id).subscribe(
       res=> this.singleCompteur=res,
-      // error => {
-      //   if(error.status==401 && this.securiteClass.refreshToken()) this.getCompteur(id);
-      // }
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getCompteur(id);
+      }
     )
   }
 
@@ -104,9 +107,9 @@ export class HistoriqueCompteurComponent implements OnInit {
           this.message = "Le carburant est ajouté avec succès !";
           this.globale.closeModal();
       },
-      // error => {
-      //   if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
-      // }
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
+      }
       )
     } else {
       this.vehiculeHistoriqueCompteurService.update(form).subscribe(
@@ -115,9 +118,9 @@ export class HistoriqueCompteurComponent implements OnInit {
           this.message = "Le carburant est modifié avec succès !";
           this.globale.closeModal();
       },
-      // error => {
-      //   if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
-      // }
+        async error => {
+          if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
+        }
       )
     }
   }
@@ -129,19 +132,25 @@ export class HistoriqueCompteurComponent implements OnInit {
         this.message = "Le carburant est supprimé avec succès !";
         this.globale.closeModal();
       },
-      // error => {
-      //   if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
-      // }
-      )
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.delete(id);
+      }
+    )
   }
 
   generateChart(record: any){
-    // this.chartEvolutionCarburant();
-    this.geoLocalisationService.getAnalyseVehicule(record).subscribe(
-      res=>{
-        this.chartEvolutionConpteur(res.distance.map((f: any) => ({ x: this.datePipe.transform(f.date_heure, 'dd-MM-yyyy') , y: f.distance })));
-      }
-    )
+    if([...this.vehicules_avec_balise.filter((v: any) =>v.id == record.vehicule_id)].length>0){
+      this.vehiculeHistoriqueCompteurService.getGpsCompteur(this.page,this.search).subscribe(
+        res => this.chartEvolutionConpteur(res.records.map((f: any) => ({ x: this.datePipe.transform(f.date_heure, 'dd-MM-yyyy') , y: f.distance }))),
+        async error => {
+          if(error.status==401 && await this.securiteClass.refreshToken()) this.generateChart(record);
+        }
+      )
+    }
+    else{
+      //console.log("** sans balise **");
+      // *** pas de data ***
+    }
   }
 
   mychart:any=null;

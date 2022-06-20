@@ -5,6 +5,7 @@ import * as $ from 'jquery';
 import { EcoconduiteService } from '../../../../_services/ecoconduite.service';
 import { GeoLocalisationService } from '../../../../_services/geolocalisation.service';
 import { VehiculeService } from '../../../../_services/vehicule.service';
+import 'chartjs-adapter-date-fns';
 
 @Component({
   selector: 'app-analyse-par-vehicule',
@@ -34,6 +35,43 @@ export class AnalyseParVehiculeComponent implements OnInit {
     //03- remplissage des données
     this.filterData();
     this.getEvolutionScore();
+
+    //
+    let chart = new Chart(<any>$('#chart_score'), {
+      type: 'line',
+      data: {
+          datasets: [{
+              data: [
+                {t: '2021-12-06', y: '12:13:00' },
+                {t: '2021-11-06', y: '13:13:00' },
+                {t: '2021-10-06', y: '14:13:00' },
+                {t: '2021-01-06', y: '15:13:00' }
+              ]
+          }],
+      },
+      options: {
+        maintainAspectRatio:false,
+        scales: {
+          // y:{
+          //   //type: 'time',
+          //   // time: {
+          //   //   displayFormats: {
+          //   //     quarter: '"MMM DD YYYY"'
+          //   //   }
+          //   // }
+          // },
+         // x: {
+            //   type: 'time', 
+            //  // min: '00:00:00',
+            //   time: {
+            //   displayFormats: {
+            //     quarter: '"MMM DD YYYY"'
+            //   }
+            //}
+         // }
+      }
+      }
+  });
   }
 
   
@@ -59,7 +97,7 @@ export class AnalyseParVehiculeComponent implements OnInit {
         this.genererGraphe('chart_vehicule', _data,1)
         $('#maxVal').text( (Math.max(..._data.map((d: any) => d.y))).toFixed(2) )
 
-        console.log('ff',_data);
+        //console.log('ff',_data);
       }
     )
   }
@@ -87,48 +125,48 @@ export class AnalyseParVehiculeComponent implements OnInit {
 
   myChart:any = [];
   genererGraphe(idChart:any,  _data:any, indexChart:number){ 
-    if (this.myChart[indexChart]) this.myChart[indexChart].destroy();
+    // if (this.myChart[indexChart]) this.myChart[indexChart].destroy();
      
-    const _myChar:any = {
-      type:'line',
-      data:{
-        datasets:[
-          {
-            data: _data,
-            backgroundColor: 'rgb(44, 123, 228)',
-            borderColor: 'rgb(44, 123, 228)'
-          }
-        ],
-      },
-      options:{
-        maintainAspectRatio:false,
-        scales:{
-          x:{ grid:{ drawOnChartArea:false } },
-          y:{ grid:{ drawOnChartArea:false } }
-        },
-        plugins: {
-          legend: { display: false }
-        }
-      }
-    };
+    // const _myChar:any = {
+    //   type:'line',
+    //   data:{
+    //     datasets:[
+    //       {
+    //         data: _data,
+    //         backgroundColor: 'rgb(44, 123, 228)',
+    //         borderColor: 'rgb(44, 123, 228)'
+    //       }
+    //     ],
+    //   },
+    //   options:{
+    //     maintainAspectRatio:false,
+    //     scales:{
+    //       x:{ grid:{ drawOnChartArea:false } },
+    //       y:{ grid:{ drawOnChartArea:false } }
+    //     },
+    //     plugins: {
+    //       legend: { display: false }
+    //     }
+    //   }
+    // };
 
-    if(this.filter.typeFilter=='driveTime') {
-      _myChar.options.scales = {
-        y: {
-          ticks: {
-            callback: function (_seconds: any){
-              var hours = Math.floor(_seconds / 3600),
-              minutes = Math.floor((_seconds % 3600) / 60),
-              seconds = Math.floor(_seconds % 60);
+    // if(this.filter.typeFilter=='driveTime') {
+    //   _myChar.options.scales = {
+    //     y: {
+    //       ticks: {
+    //         callback: function (_seconds: any){
+    //           var hours = Math.floor(_seconds / 3600),
+    //           minutes = Math.floor((_seconds % 3600) / 60),
+    //           seconds = Math.floor(_seconds % 60);
 
-              return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
-            }//;
-          }
-        }
-      };
-    }
+    //           return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+    //         }//;
+    //       }
+    //     }
+    //   };
+    // }
 
-    this.myChart[indexChart] = new Chart(<any>$('#' + idChart), _myChar);
+    // this.myChart[indexChart] = new Chart(<any>$('#' + idChart), _myChar);
 
   } // ./genererGraphe
 

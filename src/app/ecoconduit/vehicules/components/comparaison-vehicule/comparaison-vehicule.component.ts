@@ -113,22 +113,22 @@ export class ComparaisonVehiculeComponent implements OnInit {
       res => {
         this.chartSelected.forEach((chart: any) => {
           //MaxSpeed | Vitesse maximale Km
-          if (chart.index == 1) _data = res.maxSpeed.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average }));
+          if (chart.index == 1) _data = res.maxSpeed.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average, z:v.date_heure }));
           //SpeedAverage| Vitesse moyenne Km
-          else if (chart.index == 2) _data = res.speedAverage.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average }));
+          else if (chart.index == 2) _data = res.speedAverage.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average, z:v.date_heure }));
           //Fuel | Consommation carburant
-          else if (chart.index == 3) _data = res.fuel.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.montant_carburant) }));
+          else if (chart.index == 3) _data = res.fuel.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.montant_carburant), z:v.date_heure }));
           //Distance | Distance parcourue Km
-          else if (chart.index == 4) _data = res.distance.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.distance }));
+          else if (chart.index == 4) _data = res.distance.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.distance, z:v.date_heure }));
           //carbone | Emission CO2 kg
-          else if (chart.index == 5) _data = res.carbone.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g) }));
+          else if (chart.index == 5) _data = res.carbone.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g), z:v.date_heure }));
           //DriveTime | Temps de conduite
-          else if (chart.index == 6) _data = res.driveTime.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g) }));
+          else if (chart.index == 6) _data = res.driveTime.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g), z:v.date_heure }));
           //L100 | Consommation l/100km
-          else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.consommation) }));
+          else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.consommation), z:v.date_heure }));
           //
           // console.log( _data[0]?.x?? 'null');
-          this.chartSelected[chart.index - 1].data.push({ values: _data, dateDebut: (_data[0]?.x)?? 0 , matricule: vehicule.matricule, color: vehicule.color });
+          this.chartSelected[chart.index - 1].data.push({ values: _data, dateDebut: (_data[0]?.z)?? 0 , matricule: vehicule.matricule, color: vehicule.color });
           this.createChart((vehicule.id + '' + chart.index), _data, vehicule, Math.max(..._data.map((d: any) => d.y)));
         });//fin forEach
       }
@@ -213,27 +213,9 @@ export class ComparaisonVehiculeComponent implements OnInit {
     }
     //02
     console.log('avant', infosChart.data);
-    //var dataC = infosChart.data;
-    infosChart.data = [...infosChart.data].sort((a,b) => ((new Date(a.dateDebut).getTime()) > (new Date(b.dateDebut).getTime())) ? -1 : (((new Date(b.dateDebut).getTime()) > (new Date(a.dateDebut).getTime())) ? 1 : 0));
-    // infosChart.data= [...infosChart.data].sort((a, b) => 
-    //                       {
-    //                         if ( new Date(a.dateDebut).getTime() < new Date(b.dateDebut).getTime() ){
-    //                           return 1;
-    //                         }
-    //                         if ( new Date(a.dateDebut).getTime() > new Date(b.dateDebut).getTime() ){
-    //                           return -1;
-    //                         }
-    //                         return 0;
-    //                       }
-    //                   )
-    //infosChart.data="Bonjour";
-
-    // infosChart.data = infosChart.data.sort((a:any, b:any) 
-    //   => 
-    // );
-    //console.log('apres', infosChart.data );
-
-
+    //infosChart.data = [...infosChart.data].sort((a,b) => ((new Date(a.dateDebut).getTime()) - (new Date(b.dateDebut).getTime())));
+    infosChart.data = [...infosChart.data].sort((a,b) => (new Date(a.dateDebut).getTime())/1000 - (new Date(b.dateDebut).getTime())/1000);
+    console.log('aprés', infosChart.data);
 
     infosChart.data.forEach((chart: any) => {
       console.log('***',chart.dateDebut);

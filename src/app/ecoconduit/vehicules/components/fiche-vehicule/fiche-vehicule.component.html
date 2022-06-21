@@ -37,12 +37,12 @@
                                         <div class="row align-items-center">
                                             <div class="col">
                                                 <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
-                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
+                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="changeType('jour')">
                                                         <a class="nav-link active" href="#" data-bs-toggle="tab">
                                                             Jour
                                                         </a>
                                                     </li>
-                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="typeFilter = 'periode'">
+                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="changeType('periode')">
                                                         <a class="nav-link" href="#" data-bs-toggle="tab">
                                                             Période
                                                         </a>

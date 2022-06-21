@@ -70,3 +70,15 @@ form.dropdown-menu {
 #chartVehicule {
     height: 300px !important;
 }
+
+.icone-car {
+    font-size: 23px;
+    background-color: #de2568;
+    padding: 17px;
+    position: absolute;
+    color: #fff !important;
+    margin-left: -47px;
+    margin-top: -41px;
+    border-radius: 10px;
+    box-shadow: rgb(50 50 93 / 25%) 0px 6px 12px -2px, rgb(0 0 0 / 30%) 0px 3px 7px -3px;
+}

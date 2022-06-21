@@ -77,4 +77,13 @@ export class FicheVehiculeComponent implements OnInit {
     );
   }
 
+  changeType(type:any){
+    this.typeFilter = type;
+    if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datePipe.transform(this.date, 'yyyy-MM-dd');
+    else {
+        this.filter.date_debut = this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
+        this.filter.date_fin = this.datePipe.transform(this.date, 'yyyy-MM-dd');
+      }
+  }
+
 }

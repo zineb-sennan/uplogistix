@@ -36,59 +36,6 @@ export class AnalyseParVehiculeComponent implements OnInit {
     this.filterData();
     this.getEvolutionScore();
 
-    //
-  //   let chart = new Chart(<any>$('#chart_score'), {
-  //     type: 'line',
-  //     data: {
-  //         datasets: [{
-  //             data: [
-  //               { x: '2021-12-06', y: 1000 },
-  //               { x: '2021-11-06', y: 2000 },
-  //               { x: '2021-10-06', y: 1540 },
-  //               { x: '2021-01-06', y: 600 }
-  //             ]
-  //         }],
-  //     },
-  //     options: {
-  //       maintainAspectRatio:false,
-  //       scales:{
-  //         y: {
-  //           beginAtZero: true,
-  //           ticks: {
-  //             stepSize: 1,
-  //             callback: function (_seconds: any):any{
-  //               // var hours = Math.floor(_seconds / 3600),
-  //               // minutes = Math.floor((_seconds % 3600) / 60),
-  //               // seconds = Math.floor(_seconds % 60);
-  
-  //               // return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
-  //               return this.bonjour();
-
-  //             }.bind(this)
-  //           }
-  //         }
-  //       },
-  //       plugins: {
-  //         tooltip: {
-  //             callbacks: {
-  //                 //label: function(context) {
-  //                   // var hours = Math.floor(context.parsed.y / 3600),
-  //                   // minutes = Math.floor((context.parsed.y % 3600) / 60),
-  //                   // seconds = Math.floor(context.parsed.y % 60);
-  
-  //                   // return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
-  //                     //return ''+ context.parsed.y;
-  //                     //return this.bonjour();
-  //                     //let test= this.bonjour();
-  //                     //return bonjour(this)
-  //                   //}
-  //             }
-  //         }
-  //     }
-  //       // *** *** ***
-  //     }
-  // });
-
   }
   
 
@@ -119,11 +66,6 @@ export class AnalyseParVehiculeComponent implements OnInit {
     )
   }
 
-  toSeconds(str: string) {
-    var res = str.split(':');
-    return (+res[0]) * 3600 + (+res[1]) * 60 + (+res[2]);
-  }
-
   formateDate(data:number){
     if(this.typeFilter=='jour') return data.toString().padStart(2, '0')+':00'
     return this.datepipe.transform(data,'dd-MM-yyyy')
@@ -151,7 +93,7 @@ export class AnalyseParVehiculeComponent implements OnInit {
           {
             data: _data,
             backgroundColor: 'rgb(44, 123, 228)',
-            borderColor: 'rgb(44, 123, 228)'
+            //borderColor: 'rgb(44, 123, 228)'
           }
         ],
       },
@@ -210,6 +152,20 @@ export class AnalyseParVehiculeComponent implements OnInit {
     seconds = Math.floor(_seconds % 60);
 
     return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
+  }
+
+  toSeconds(str: string) {
+    var res = str.split(':');
+    return (+res[0]) * 3600 + (+res[1]) * 60 + (+res[2]);
+  }
+
+  changeType(type:any){
+    this.typeFilter = type;
+    if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datepipe.transform(this.date, 'yyyy-MM-dd');
+    else {
+        this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
+        this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
+      }
   }
 
 }

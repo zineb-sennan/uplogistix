@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
@@ -9,9 +10,12 @@ import * as $ from 'jquery';
 })
 export class FicheConducteurComponent implements OnInit {
   //
-  typeFilter='jour';
+  date=new Date();
+  typeFilter='jour'; filter: any = { vehicule_id: null, date_debut: this.datepipe.transform(this.date, 'yyyy-MM-dd'), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') };
   
-  constructor() { }
+  constructor(
+    private datepipe:DatePipe
+  ) { }
 
   ngOnInit(): void {
     this.charTest();
@@ -47,6 +51,15 @@ export class FicheConducteurComponent implements OnInit {
         }
       },
     })
+  }
+
+  changeType(type:any){
+    this.typeFilter = type;
+    if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datepipe.transform(this.date, 'yyyy-MM-dd');
+    else {
+        this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
+        this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
+      }
   }
 
 }

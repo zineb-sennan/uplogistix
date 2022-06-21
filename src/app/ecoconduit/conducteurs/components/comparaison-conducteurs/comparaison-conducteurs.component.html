@@ -2,37 +2,38 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form class="row gx-0 mb-3 frm-search-jms" #searchForm="ngForm">
-                    <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
-                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="typeFilter = 'jour'">
-                            <a class="nav-link active" href="#" data-bs-toggle="tab">
-                                Jour
-                            </a>
-                        </li>
-                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="typeFilter = 'semaine'">
-                            <a class="nav-link" href="#" data-bs-toggle="tab">
-                                Semaine
-                            </a>
-                        </li>
-                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="1" (click)="typeFilter = 'mois'">
-                            <a class="nav-link" href="#" data-bs-toggle="tab">
-                                Mois
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- *** *** -->
-                    <div class="input-group mb-3">
-                        <input type="date" class="form-control form-control-sm" *ngIf="typeFilter=='jour'">
-                        <input type="week" class="form-control form-control-sm" *ngIf="typeFilter=='semaine'">
-                        <input type="month" class="form-control form-control-sm" *ngIf="typeFilter=='mois'">
-                        <div class="input-group-append">
-                            <button class="btn btn-sm btn-outline-primary" type="button" (click)="changeData(typeFilter)">
-                            <i class="fas fa-search"></i>
-                          </button>
-                        </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="row gx-0 mb-3 frm-search-jms" #searchForm="ngForm">
+                            <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
+                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="changeType('jour')">
+                                    <a class="nav-link active" href="#" data-bs-toggle="tab">
+                                        Jour
+                                    </a>
+                                </li>
+                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="changeType('periode')">
+                                    <a class="nav-link" href="#" data-bs-toggle="tab">
+                                        Période
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- *** *** -->
+                            <div class="input-group mb-3">
+                                <!-- jour -->
+                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='jour'">
+                                <!-- periode -->
+                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='periode'">
+                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin" *ngIf="typeFilter=='periode'">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-outline-primary" type="button" (click)="changeData(typeFilter)">
+                                    <i class="fas fa-search"></i>
+                                  </button>
+                                </div>
+                            </div>
+                            <!-- -->
+                        </form>
                     </div>
-                    <!-- -->
-                </form>
+                </div>
             </div>
         </div>
         <!-- ./row -->

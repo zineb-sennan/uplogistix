@@ -31,31 +31,30 @@
                             </div>
                             <div class="list-group-item">
                                 <div class="row">
-                                    <div class="col">
-                                        <div class="row align-items-center">
-                                            <div class="col">
-                                                <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
-                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0">
-                                                        <a class="nav-link active" data-bs-toggle="tab" (click)="typeFilter='jour'">
-                                                            Jour
-                                                        </a>
-                                                    </li>
-                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2">
-                                                        <a class="nav-link" data-bs-toggle="tab" (click)="typeFilter='semaine'">
-                                                            Semaine
-                                                        </a>
-                                                    </li>
-                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="1">
-                                                        <a class="nav-link" data-bs-toggle="tab" (click)="typeFilter='mois'">
-                                                            Mois
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <input type="date" class="form-control form-control-sm" *ngIf="typeFilter=='jour'">
-                                                <input type="week" class="form-control form-control-sm" *ngIf="typeFilter=='semaine'">
-                                                <input type="month" class="form-control form-control-sm" *ngIf="typeFilter=='mois'">
+                                    <div class="col-md-12">
+                                        <form class="row gx-0 mb-3 frm-search-jms" #searchForm="ngForm">
+                                            <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
+                                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="changeType('jour')">
+                                                    <a class="nav-link active" href="#" data-bs-toggle="tab">
+                                                        Jour
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="changeType('periode')">
+                                                    <a class="nav-link" href="#" data-bs-toggle="tab">
+                                                        Période
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <!-- *** *** -->
+                                            <div class="input-group">
+                                                <!-- jour -->
+                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='jour'">
+                                                <!-- periode -->
+                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='periode'">
+                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin" *ngIf="typeFilter=='periode'">
                                             </div>
-                                        </div>
+                                            <!-- -->
+                                        </form>
                                     </div>
                                 </div>
                                 <!-- / .row -->

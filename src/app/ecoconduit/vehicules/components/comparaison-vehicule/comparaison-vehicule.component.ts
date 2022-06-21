@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { GeoLocalisationService } from '../../../../_services/geolocalisation.service';
-import { EcoconduiteService } from '../../../../_services/ecoconduite.service';
 import { VehiculeService } from '../../../../_services/vehicule.service';
 import { SecuriteClass } from '../../../../_globale/securite';
 import { Chart, registerables } from 'chart.js';
@@ -34,7 +33,6 @@ export class ComparaisonVehiculeComponent implements OnInit {
 
   constructor(
     private vehiculeService: VehiculeService,
-    private ecoconduiteService: EcoconduiteService,
     private securiteClass: SecuriteClass,
     private geoLocalisationService: GeoLocalisationService,
     private datepipe: DatePipe
@@ -105,7 +103,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
     }
   }
 
-  async getInformationsVehicule(vehicule: any) {
+  getInformationsVehicule(vehicule: any) {
     var _data: any = null;
     this.filter.vehicule_id = vehicule.id;
 
@@ -216,8 +214,6 @@ export class ComparaisonVehiculeComponent implements OnInit {
     }
 
     this.myChart[index] = new Chart(<any>$('#chart_' + index), _myChart);
-    
-
   }
 
   remplissageChartPrincipale(index: any) {
@@ -301,7 +297,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
   }
 
   changeData(type: any) {
-    if (type == "jour") this.filter.date_fin = this.filter.date_debut;
+    //if (type == "jour") this.filter.date_fin = this.filter.date_debut;
     //01
     this.typeFilter = type; this.viewChartPrincipale = null;
     $('.tchart').removeClass('active'); $('.col-chart').removeClass('border-bottom');
@@ -356,5 +352,15 @@ export class ComparaisonVehiculeComponent implements OnInit {
 
     return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0'); 
   }
+
+  changeType(type:any){
+    this.typeFilter = type;
+    if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datepipe.transform(this.date, 'yyyy-MM-dd');
+    else {
+        this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
+        this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
+      }
+  }
+  
 
 }

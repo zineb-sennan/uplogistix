@@ -1,8 +1,8 @@
-.card{
+.card {
     box-shadow: 0 0.46875rem 2.1875rem rgb(4 9 20 / 3%), 0 0.9375rem 1.40625rem rgb(4 9 20 / 3%), 0 0.25rem 0.53125rem rgb(4 9 20 / 5%), 0 0.125rem 0.1875rem rgb(4 9 20 / 3%) !important;
 }
 
-.card-header{
+.card-header {
     display: inline-table;
 }
 
@@ -14,9 +14,10 @@ ul li {
     position: relative;
 }
 
-canvas#chart_score{
+canvas#chart_score {
     height: 220px !important;
 }
+
 
 /*** *** *** ***/
 
@@ -28,7 +29,6 @@ canvas#chart_score{
     color: #333;
     background: #fff;
     width: 100%;
-
     position: relative;
     display: flex;
     flex-direction: column;
@@ -37,7 +37,7 @@ canvas#chart_score{
 }
 
 #chart_vehicule,
-#chart_score{
+#chart_score {
     box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
     margin-top: -37px;
     background-color: #fff;
@@ -47,40 +47,57 @@ canvas#chart_score{
     height: 300px;
 }
 
-.card-header{
+.card-header {
     height: 35px;
     border-bottom: none;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
-    
 }
 
-.bg{
+.bg {
     background-color: #fafbfd;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
-.card-header-title{ font-weight: 500; }
+.card-header-title {
+    font-weight: 500;
+}
 
-.txt-card{ color: #515151 !important; }
+.txt-card {
+    color: #515151 !important;
+}
 
+ul li {
+    padding: 0;
+}
 
-ul li{ padding: 0; }
+.dropdown-menu.show {
+    display: block !important;
+}
 
-.dropdown-menu.show{ display: block !important; }
+.dropdown .form-group {
+    margin-bottom: 0.2rem;
+}
 
-.dropdown .form-group{ margin-bottom: 0.2rem; }
-
-.dropdown .card-header-tabs .nav-link{
+.dropdown .card-header-tabs .nav-link {
     padding-top: 10px !important;
     padding-bottom: 6px !important;
 }
 
-.dropdown button{
+.dropdown button {
     padding: 5px 20px;
     border-radius: 3px;
 }
 
-.dropdown-menu{
+.dropdown-menu {
     display: none !important;
+}
+
+.dropdown .form-group {
+    margin-bottom: 0.2rem;
+}
+
+.dropdown .card-header-tabs .nav-link {
+    padding-top: 10px !important;
+    padding-bottom: 6px !important;
 }

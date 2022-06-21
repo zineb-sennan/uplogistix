@@ -11,8 +11,75 @@
         </div>
     </div>
     <div class="container-fluid">
-        <!-- *** Ligne 1 *** -->
         <div class="row">
+            <div class="card card-l">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2"> émission CO2 Kg </h6>
+                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-leaf mb-0 icone-car"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ./ -->
+            <div class="card card-l">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2"> Bilans carbone </h6>
+                            <span class="h3 mb-0">{{infosGlobaleVehicule.carbone}}</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-leaf mb-0 icone-car"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-l">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2"> Total Gain Dh </h6>
+                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-leaf mb-0 icone-car"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ./ -->
+            <div class="card card-l">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2"> Empreinte carbone </h6>
+                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-leaf mb-0 icone-car"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-l">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2"> Qualité de l'aire </h6>
+                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-leaf mb-0 icone-car"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- *** Ligne 1 *** -->
             <!-- card 1 -->
             <div class="card card-l">
                 <div class="card-body">
@@ -41,12 +108,13 @@
                     </div>
                 </div>
             </div>
+
             <!-- card 3 -->
             <div class="card card-l">
                 <div class="card-body">
                     <div class="row align-items-center gx-0">
                         <div class="col">
-                            <h6 class="text-uppercase text-muted mb-2"> Total de fuel consommé (Dh) </h6>
+                            <h6 class="text-uppercase text-muted mb-2 opacity-50"> Total de fuel consommé (Dh) </h6>
                             <span class="h2 mb-0">{{infosGlobaleVehicule.total_fuel_consomme}}</span>
                         </div>
                         <div class="col-auto">
@@ -61,7 +129,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Total de fuel gaspillé (L) </h6>
-                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
+                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -75,7 +143,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Conduite dangereuse </h6>
-                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
+                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -83,11 +151,6 @@
                     </div>
                 </div>
             </div>
-            <!-- </div> -->
-            <!-- *** Ligne 2 *** -->
-            <!-- <div class="row"> -->
-            <!-- <h4 class="card-header-title"> Lorem Ipsum </h4> -->
-            <!-- card 1 -->
             <div class="card card-l">
                 <div class="card-body">
                     <div class="row align-items-center gx-0">
@@ -115,13 +178,12 @@
                     </div>
                 </div>
             </div>
-            <!-- card 3 -->
             <div class="card card-l">
                 <div class="card-body">
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Temps total d'inactivité </h6>
-                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
+                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -135,7 +197,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Freinage extrême </h6>
-                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
+                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -149,49 +211,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Accélération brutale </h6>
-                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ./row -->
-        <div class="row">
-            <div class="card card-l">
-                <div class="card-body">
-                    <div class="row align-items-center gx-0">
-                        <div class="col">
-                            <h6 class="text-uppercase text-muted mb-2"> Bilans carbone </h6>
-                            <span class="h3 mb-0">{{infosGlobaleVehicule.carbone}}</span>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card card-l">
-                <div class="card-body">
-                    <div class="row align-items-center gx-0">
-                        <div class="col">
-                            <h6 class="text-uppercase text-muted mb-2"> Empreinte carbone </h6>
-                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card card-l">
-                <div class="card-body">
-                    <div class="row align-items-center gx-0">
-                        <div class="col">
-                            <h6 class="text-uppercase text-muted mb-2"> Qualité de l'aire </h6>
-                            <span class="h3 mb-0 text-danger">Pas de donnée</span>
+                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -201,6 +221,7 @@
             </div>
 
         </div>
+        <!-- ./ row -->
         <div class="row">
             <!-- *** *** vehicules *** *** -->
             <div class="col-md-6 col-sm-12 rounded">

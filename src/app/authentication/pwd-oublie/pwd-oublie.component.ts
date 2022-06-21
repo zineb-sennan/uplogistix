@@ -22,36 +22,45 @@ export class PwdOublieComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    
+
+    //
+    // let i=90;
+    // let todayDate = setInterval( () => {
+    //   i--; this.time= i; 
+    //   //
+    //   if(i == 0) clearInterval(todayDate);
+    // }, 1000)
+
   }
 
-  time: any = null;
+  time: any = null; intervalId:any=null;
   getElaspsedTime(date_expiration: any) {
-    var intervalId = setInterval(() => {
-      this.time =new Date((new Date(date_expiration)).getTime() - (new Date()).getTime()).toISOString().slice(11, 19);
-      if(this.time == '00:00:00') clearInterval(intervalId);
-    }, 1000);
+    this.time = new Date((new Date(date_expiration)).getTime() - (new Date()).getTime()).toISOString().slice(11, 19);
   }
 
-  //intervalId
-  intervalId:any=null;
   forgetPwd(form: any) {
     //01
     this.utilisateurService.forgetPwd(form).subscribe(
       res => {
-        this.res = res;  this.intervalId ?? stop();
-        this.intervalId=null;
+        this.res = res;
+        console.log('** length **',[...res].length, res)
 
-        this.intervalId = setInterval(() => {
-          this.getElaspsedTime(res.expiration);
+        let todayDate = setInterval( () => {
+          this.time = new Date((new Date(res.expiration)).getTime() - (new Date()).getTime()).toISOString().slice(11, 19);
+
+          if(this.time == '00:00:00'){
+            clearInterval(todayDate);
+            //this.time=null;
+          } 
         }, 1000);
 
-        //res.expiration
-        this.getElaspsedTime(res.expiration);
-
-        if (res.refreshToken) {
+         if (res.refreshToken) {
           this.tokenService.setToken(res.token);
           this.tokenService.setRefershToken(res.refreshToken);
           this.router.navigate(['dashboard']);
+          //
+          this.time=null;
         }
       },
       error => {
@@ -60,7 +69,7 @@ export class PwdOublieComponent implements OnInit {
         }
         else if (error.status == 403) {
           //error.error.expiration
-          this.getElaspsedTime(error.error.expiration);
+          //this.getElaspsedTime(error.error.expiration);
 
         }
         else if (error.status == 406) {

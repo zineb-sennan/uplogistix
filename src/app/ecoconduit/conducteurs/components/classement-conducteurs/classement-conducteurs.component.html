@@ -6,53 +6,26 @@
             <div class="card-body">
                 <!-- List group -->
                 <div class="list-group list-group-flush my-n3">
-                    <div class="list-group-item">
+                    <div class="list-group-item" *ngFor="let conducteur of conducteurs, let index=index">
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <a class="avatar">
-                                    <img src="assets/img/cup-icon.png" alt="..." class="avatar-img rounded-circle">
+                                    <img src="{{(index==0 && conducteur.moy_score >= 70) || conducteur.moy_score == 100 ? 'assets/img/cup-icon.png' : 'assets/img/driver.jpg'}}" alt="..." class="avatar-img rounded-circle">
                                 </a>
                             </div>
                             <div class="col ms-n2">
                                 <h4 class="mb-1">
-                                    <a>ALI Ahmed</a>
+                                    <a>{{conducteur.nom_complet}}</a>
                                 </h4>
                                 <p class="small mb-0">
-                                    <span class="text-success">●</span>Marque
+                                    <span class="text-success">●</span>{{conducteur.matricule}}
                                 </p>
                             </div>
                             <div class="col-auto">
                                 <div class="row align-items-center g-0">
                                     <div class="col-auto">
                                         <div class="progress" style="width: 150px; height: 11px;">
-                                            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">90%</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- / .row -->
-                    </div>
-                    <div class="list-group-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <a class="avatar">
-                                    <img src="assets/img/driver.jpg" alt="..." class="avatar-img rounded-circle">
-                                </a>
-                            </div>
-                            <div class="col ms-n2">
-                                <h4 class="mb-1">
-                                    <a>Dchieche mohamed</a>
-                                </h4>
-                                <p class="small mb-0">
-                                    <span class="text-primary">●</span>Marque
-                                </p>
-                            </div>
-                            <div class="col-auto">
-                                <div class="row align-items-center g-0">
-                                    <div class="col-auto">
-                                        <div class="progress" style="width: 150px; height: 11px;">
-                                            <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
+                                            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" ngClass="{{conducteur.moy_score < 70 ? 'bg-danger' : ''}}" role="progressbar" [ngStyle]="{ 'width': conducteur.moy_score <= 20 ? '30%' : conducteur.moy_score+'%' }">{{conducteur.moy_score.toFixed(2)}}%</div>
                                         </div>
                                     </div>
                                 </div>
@@ -68,15 +41,10 @@
     </div>
     <!-- / .row -->
     <div class="col-md-4">
-        <div class="card">
-            <!-- <div class="card-header">
-                <h4 class="card-header-title">
-                    lorem ipsum
-                </h4>
-            </div> -->
+        <div class="card" *ngIf="classement.min.length > 0 || classement.max.length > 0">
             <div class="card-body">
                 <!-- List group -->
-                <div class="list-group list-group-flush list-group-activity my-n3">
+                <div class="list-group list-group-flush list-group-activity my-n3" *ngIf="classement.max.length > 0">
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-auto">
@@ -90,19 +58,17 @@
                                 <h5 class="mb-1">
                                     Conducteur le plus dangereux
                                 </h5>
-                                <p class="small text-gray-700 mb-0">
-                                    Dchieche mohamed
+                                <p class="small text-gray-700 mb-0" *ngFor="let classement_max of classement.max">
+                                    {{classement_max.matricule}} &nbsp;
+                                    <small class="text-muted"> {{classement_max.marque}} </small>
                                 </p>
-                                <!-- <small class="text-muted">
-                                    Dchieche mohamed
-                                </small> -->
                             </div>
                         </div>
                         <!-- / .row -->
                     </div>
                 </div>
                 <!-- ./list-group -->
-                <div class="list-group list-group-flush list-group-activity my-n3">
+                <div class="list-group list-group-flush list-group-activity my-n3" *ngIf="classement.min.length > 0">
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-auto">
@@ -116,12 +82,9 @@
                                 <h5 class="mb-1">
                                     Conducteur le moins dangereux
                                 </h5>
-                                <p class="small text-gray-700 mb-0">
-                                    ALI Ahmed
+                                <p class="small text-gray-700 mb-0" *ngFor="let classement_min of classement.min">
+                                    {{classement_min.nom_complet}}
                                 </p>
-                                <!-- <small class="text-muted">
-                                    véhicule 2
-                                </small> -->
                             </div>
                         </div>
                         <!-- / .row -->

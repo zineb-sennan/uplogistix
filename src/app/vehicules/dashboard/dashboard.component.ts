@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit {
           //this.getEtatCarburant(id);
 
           /** *** *** */
-          this._test();
+          this._test(id);
         }
       });
   } 
@@ -221,12 +221,11 @@ export class DashboardComponent implements OnInit {
   }
 
   /*** *** *** **** **** */
-  _test(){
+  _test(vehicule_id:number){
     const mois = ["JAN", "FEV", "MAR", "AVR", "MAI", "JUN", "JUL", "AOU", "SEP", "OCT", "NOV", "DEC"];
 
-    this.geoLocalisationService.getInfosDashboard().subscribe(
+    this.geoLocalisationService.analyseParVehicule(vehicule_id).subscribe(
       res => {
-        console.log('',res);
         this.resume.cout_km = [...res.coutKM].filter(c=>c.mois == (this.date.getMonth()+1))[0].coutKM;
         this.resume.montant_carburant= res.moisEncours.cout_carburant;
         this.resume.cout_total=[...res.coutTotal].filter(c=>c.mois == (this.date.getMonth()+1))[0].coutTotal;

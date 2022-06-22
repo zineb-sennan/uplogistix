@@ -17,7 +17,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> émission CO2 Kg </h6>
-                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
+                            <span class="h3 mb-0">{{infosGlobaleVehicule.co2?.toFixed(2)}}</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-leaf mb-0 icone-car"></i>
@@ -30,8 +30,8 @@
                 <div class="card-body">
                     <div class="row align-items-center gx-0">
                         <div class="col">
-                            <h6 class="text-uppercase text-muted mb-2"> Bilans carbone </h6>
-                            <span class="h3 mb-0">{{infosGlobaleVehicule.carbone}}</span>
+                            <h6 class="text-uppercase text-muted mb-2"> Bilans carbone Kg </h6>
+                            <span class="h3 mb-0">{{infosGlobaleVehicule.carbone?.toFixed(2)}}</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-leaf mb-0 icone-car"></i>

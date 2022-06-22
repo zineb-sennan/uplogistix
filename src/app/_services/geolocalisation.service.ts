@@ -92,4 +92,8 @@ export class GeoLocalisationService {
         return this.http.post<any>(environment.apiURL + `/geolocalisation/analyse-comportement`, record);
     }
 
+    analyseParVehicule(id:number){
+        return this.http.get<any>(environment.apiURL + '/geolocalisation/vehicules/'+id+'/stats');
+    }
+
 }

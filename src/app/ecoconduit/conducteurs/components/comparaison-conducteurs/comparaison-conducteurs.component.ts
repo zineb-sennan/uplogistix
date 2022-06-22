@@ -13,7 +13,8 @@ import { ConducteurService } from '../../../../_services/conducteur.service';
 })
 export class ComparaisonConducteursComponent implements OnInit {
   date = new Date();
-  typeFilter='jour'; filter: any = { vehicule_id: null, date_debut: this.datepipe.transform(this.date, 'yyyy-MM-dd'), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') };
+  //typeFilter='periode';
+  filter: any = { vehicule_id: null, date_debut: this.datepipe.transform(this.date, 'yyyy-MM-dd'), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') };
   //
   colors=['56, 95, 158','247, 189, 1', '20, 156, 56', '94, 202, 223'];
   viewChartPrincipale:any=null;  maxConducteur = 2; maxChart=5;
@@ -40,6 +41,10 @@ export class ComparaisonConducteursComponent implements OnInit {
     Chart.register(...registerables);
 
     this.getConducteurs();
+
+    //
+    this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
+    this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
   }
 
   getConducteurs() {
@@ -58,53 +63,6 @@ export class ComparaisonConducteursComponent implements OnInit {
   }
 
   checkConducteurs(e: any, conducteur: any) {
-  //  //01
-  //   this.viewChartPrincipale=null;
-  //   $('.tchart').removeClass('active'); 
-  //   $('.col-chart').removeClass('border-bottom');
-  //   //02
-  //   if(e!=null){
-  //     if (this.conducteursSelected.length == this.maxConducteur) {
-  //       if (e.currentTarget.checked) {
-  //         e.currentTarget.checked = false;
-  //         $('.mv-error').removeClass("d-none");
-  //       }
-  //       else {
-  //         this.chartSelected.forEach((chart: any) => {
-  //           chart.data=chart.data.filter((c:any) => c.matricule != conducteur.matricule);
-  //         });
-  
-  //         this.conducteursSelected = this.conducteursSelected.filter(v => v.id != conducteur.id);
-  //         $('.mv-error').addClass("d-none");
-  //       }
-  //     }
-  //     else if (this.conducteursSelected.length < this.maxConducteur) {
-  //       if (e.currentTarget.checked){
-  //         conducteur.color=this.colors.filter(v => !this.conducteursSelected.map((vs:any) => vs.color ).includes(v))[0];
-  //         this.conducteursSelected.push(conducteur);
-
-  //         this.chartSelected.forEach((chart: any) => {
-  //           this.getInformationsConducteur(conducteur, (conducteur.id + '' + chart.index), chart.index);
-  //         });
-  //       }
-  //       else if(!e.currentTarget.checked){
-  //         this.conducteursSelected = this.conducteursSelected.filter(v => v.id != conducteur.id);
-
-  //         this.chartSelected.forEach((chart: any) => {
-  //           chart.data=chart.data.filter((c:any) => c.matricule != conducteur.matricule);
-  //         });
-  //       }
-  //     }
-  //   }
-  //   else{
-  //     conducteur.color = this.colors[this.conducteursSelected.length];
-  //     this.conducteursSelected.push(conducteur);
-  //     //
-  //     this.chartSelected.forEach((chart: any) => {
-  //       this.getInformationsConducteur(conducteur, (conducteur.id + '' + chart.index), chart.index);
-  //     });
-  //   }
-
   //01
   this.viewChartPrincipale = null;
   $('.tchart').removeClass('active');
@@ -162,9 +120,11 @@ export class ComparaisonConducteursComponent implements OnInit {
           //Comportement excessif
           else if (chart.index == 3) _data = [...res.virrage_serre].map((v: any) => ({ x: this.formateDate(v.date), y: v.score, z: v.date }));
           //Temps de conduite
-         // else if (chart.index == 4) _data = res.driveTime.map((v: any) => ({ x: this.formateDate(v.date), y: this.toSeconds(v.duree), z: v.date }));
-
+          else if (chart.index == 4) _data = res.driveTime.map((v: any) => ({ x: this.formateDate(v.date), y: this.toSeconds(v.time), z: v.date }));
           //
+          else if (chart.index == 5) _data = res.speedScore.map((v: any) => ({ x: this.formateDate(v.date), y: v.score, z: v.date }));
+          //
+          else  _data = [];
           this.chartSelected[chart.index - 1].data.push({ values: _data, dateDebut: (_data[0]?.z) ?? 0, matricule: conducteur.nom, color: conducteur.color });
           this.createChart((conducteur.id + '' + chart.index), _data, conducteur, Math.max(..._data.map((d: any) => d.y)), chart.index);
         });//fin forEach
@@ -173,7 +133,7 @@ export class ComparaisonConducteursComponent implements OnInit {
   }
 
   formateDate(date: number) {
-    if (this.typeFilter == 'jour') return date.toString().padStart(2, '0') + ':00'
+    //if (this.typeFilter == 'jour') return date.toString().padStart(2, '0') + ':00'
     return this.datepipe.transform(date, 'dd-MM-yyyy')
   }
 
@@ -181,7 +141,6 @@ export class ComparaisonConducteursComponent implements OnInit {
   createChart(index: any, _data: any, vehicule: any, maxValue: any, indexChart: Number) {
     if (this.myChart[index]) this.myChart[index].destroy();
 
-    //
     const _myChart: any = {
       type: 'line',
       data: {
@@ -336,9 +295,9 @@ export class ComparaisonConducteursComponent implements OnInit {
     this.myChart[-1] = new Chart(chart, _infosChart);
   }
 
-  changeData(type:any){
+  changeData(){
     //01
-    this.typeFilter=type; this.viewChartPrincipale=null;
+    //this.typeFilter=type; this.viewChartPrincipale=null;
     $('.tchart').removeClass('active'); $('.col-chart').removeClass('border-bottom');
     //02
     this.chartSelected.forEach((chart: any) => {
@@ -381,14 +340,14 @@ export class ComparaisonConducteursComponent implements OnInit {
   }
 
   /***  */
-  changeType(type:any){
-    this.typeFilter = type;
-    if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datepipe.transform(this.date, 'yyyy-MM-dd');
-    else {
-        this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
-        this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
-      }
-  }
+  // changeType(type:any){
+  //   this.typeFilter = type;
+  //   if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datepipe.transform(this.date, 'yyyy-MM-dd');
+  //   else {
+  //       this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
+  //       this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
+  //     }
+  // }
 
   secondsToDhms(_seconds:number) {
     var hours = Math.floor(_seconds / 3600),

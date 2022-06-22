@@ -148,8 +148,7 @@ export class HistoriqueCompteurComponent implements OnInit {
       )
     }
     else{
-      //console.log("** sans balise **");
-      // *** pas de data ***
+      // *** sans balise  pas de data ***
     }
   }
 

@@ -145,7 +145,6 @@ export class RolePermissionsComponent implements OnInit {
       }
       if (rolePermissions.can_edit || rolePermissions.can_delete || $(".can_consulter_" + index).is(":checked")){
         self.createRolePermissions(rolePermissions);
-        console.log(index, rolePermissions);
       } 
     });
 

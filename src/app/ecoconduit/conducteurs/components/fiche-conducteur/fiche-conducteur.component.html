@@ -17,12 +17,9 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="vehicule_id">Véhicules</label>
-                                            <select class="form-select form-select-sm" id="vehicule_id">
+                                            <select class="form-select form-select-sm" [(ngModel)]="filter.vehicule_id" name="vehicule_id">
                                                 <option>Veuillez choisir ...</option>
-                                                <option>conducteur 1</option>
-                                                <option>conducteur 2</option>
-                                                <option>conducteur 3</option>
-                                                <option>conducteur 4</option>
+                                                <option value="{{conducteur.vehicule_id}}" *ngFor="let conducteur of conducteurs">{{conducteur.prenom}} {{conducteur.nom}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -79,7 +76,7 @@
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
-                            <div class="widget-numbers text-success">5</div>
+                            <div class="widget-numbers text-success">{{infosGlobale.nbTrajets}}</div>
                         </div>
                         <div class="widget-content-left">
                             <div class="widget-heading">Trajets</div>
@@ -92,7 +89,7 @@
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
-                            <div class="widget-numbers text-warning">50 Km</div>
+                            <div class="widget-numbers text-warning">{{infosGlobale.distanceParcourue}} Km</div>
                         </div>
                         <div class="widget-content-left">
                             <div class="widget-heading">Distance parcourue</div>
@@ -105,7 +102,7 @@
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
-                            <div class="widget-numbers text-danger">10:14:00</div>
+                            <div class="widget-numbers text-danger">{{infosGlobale.dureeConduite}}</div>
                         </div>
                         <div class="widget-content-left">
                             <div class="widget-heading">Durée de conduite</div>
@@ -118,7 +115,7 @@
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
-                            <div class="widget-numbers text-primary">10</div>
+                            <div class="widget-numbers text-primary">...</div>
                         </div>
                         <div class="widget-content-left">
                             <div class="widget-heading">Excède vitesse</div>
@@ -148,7 +145,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-header-title">
-                        Emission Co2
+                        ...
                     </h4>
                 </div>
                 <div class="card-body">

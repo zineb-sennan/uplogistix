@@ -149,7 +149,6 @@ export class DepensesComponent implements OnInit {
   depensesParType(){
     this.vehiculeDepensesService.getDepensesParType(this.search).subscribe(
       res => {
-        console.log('rrr',res);
         this.chartDepenses(res);
       }
     )

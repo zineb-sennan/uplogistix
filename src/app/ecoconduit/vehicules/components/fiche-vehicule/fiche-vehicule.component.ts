@@ -23,14 +23,13 @@ export class FicheVehiculeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getInfo();
+    this. getResumeVehicule();
     this.getVehicleWithBalise();
   }
 
-   getInfo(){
+  getResumeVehicule(){
     this.geoLocalisationService.getAnalyseVehicule(this.filter).subscribe(
       async res=>{
-        console.log('***',res);
         this.infosGlobale.distanceParcourue= res.distance.reduce((prev:any,next:any)=>prev+next.distance,0);
         this.infosGlobale.fuelConsomme= res.fuel.reduce((prev:any,next:any)=>prev+next.montant_carburant,0);
         this.infosGlobale.dureeConduite=this.secondsToDhms(res.driveTime.reduce((prev:any,next:any)=>prev+this.toSeconds(next.duree),0));
@@ -68,7 +67,7 @@ export class FicheVehiculeComponent implements OnInit {
   }
 
   filterFun(){
-    this.getInfo();
+    this. getResumeVehicule();
   }
 
   getVehiculeById(id:number){

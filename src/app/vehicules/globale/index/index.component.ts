@@ -80,8 +80,6 @@ export class IndexComponent implements OnInit {
         const vehicules = this.vehicules['records'];
         vehicules.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : v.compteur_initial);
         this.vehicules['records'] = vehicules;
-        //
-        //console.log(' *** ',this.vehicules);
       },
       async error => {
         if (error.status == 401 && await this.refreshToken()) this.searchVehicule(form);

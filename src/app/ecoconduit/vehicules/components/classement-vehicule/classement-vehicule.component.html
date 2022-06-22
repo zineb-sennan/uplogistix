@@ -8,7 +8,7 @@
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <a class="avatar">
-                                    <img src="{{index==0 ? 'assets/img/cup-icon.png' : 'assets/img/car.jpg'}}" alt="..." class="avatar-img rounded-circle">
+                                    <img src="{{(index==0 && vehicule.score >= 70)|| vehicule.score==100 ? 'assets/img/cup-icon.png' : 'assets/img/car.jpg'}}" alt="..." class="avatar-img rounded-circle">
                                 </a>
                             </div>
                             <div class="col ms-n2">
@@ -38,10 +38,10 @@
     </div>
     <!-- / .row -->
     <div class="col-md-4">
-        <div class="card">
+        <div class="card" *ngIf="classement.min.length > 0 || classement.max.length > 0">
             <div class="card-body">
                 <!-- List group -->
-                <div class="list-group list-group-flush list-group-activity my-n3">
+                <div class="list-group list-group-flush list-group-activity my-n3" *ngIf="classement.min.length > 0">
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-auto">
@@ -55,19 +55,20 @@
                                 <h5 class="mb-1">
                                     Véhicule le plus polluant
                                 </h5>
-                                <p class="small text-gray-700 mb-0">
-                                    {{vehicules[vehicules.length-1]?.matricule}}
-                                </p>
-                                <small class="text-muted">
-                                    {{vehicules[vehicules.length-1]?.marque}}
-                                </small>
+                                <div *ngFor="let classement_min of classement.min">
+                                    <p class="small text-gray-700 mb-0">
+                                        {{classement_min.matricule}} &nbsp;
+                                        <small class="text-muted"> {{classement_min.marque}} </small>
+                                    </p>
+                                </div>
+
                             </div>
                         </div>
                         <!-- / .row -->
                     </div>
                 </div>
                 <!-- ./list-group -->
-                <div class="list-group list-group-flush list-group-activity my-n3">
+                <div class="list-group list-group-flush list-group-activity my-n3" *ngIf="classement.max.length > 0">
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-auto">
@@ -81,12 +82,13 @@
                                 <h5 class="mb-1">
                                     Véhicule le moins polluant
                                 </h5>
-                                <p class="small text-gray-700 mb-0">
-                                    {{vehicules[0]?.matricule}}
-                                </p>
-                                <small class="text-muted">
-                                    {{vehicules[0]?.marque}}
-                                </small>
+                                <div *ngFor="let classement_max of classement.max">
+                                    <p class="small text-gray-700 mb-0">
+                                        {{classement_max.matricule}}
+                                        <small class="text-muted"> {{classement_max.marque}} </small>
+                                    </p>
+
+                                </div>
                             </div>
                         </div>
                         <!-- / .row -->

@@ -63,8 +63,6 @@ export class EditComponent implements OnInit {
 
   changeCategorie(e: any) {
     //this.getMarquesByCategorieId(e.target.value);
-    // console.log()
-    //console.log('categorie_id: '+e.target.value, 'marque_id: '+this.singleVehicule.marque_id);
     this.getModelesByCategorieAndMarque(e.target.value,this.singleVehicule.marque_id);
   }
 

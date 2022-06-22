@@ -20,7 +20,6 @@ export class Globale {
     async init() {
         //01-infos d'utilisateur
         this.utilisateur = await this.utilisateurService.getUtilisateur(this.payload.id).toPromise();
-        console.log('*** test ***', this.utilisateur);
         //
     }
     

@@ -60,8 +60,6 @@ export class AnalyseParVehiculeComponent implements OnInit {
         this.genererGraphe('chart_vehicule', _data,1)
         if(this.filter.typeFilter=='driveTime') $('#maxVal').text( this.secondsToDhms(Math.max(..._data.map((d: any) => d.y))) )
         else $('#maxVal').text( (Math.max(..._data.map((d: any) => d.y))).toFixed(2) )
-
-        //console.log('ff',_data);
       }
     )
   }

@@ -16,7 +16,7 @@ import { GeoLocalisationService } from 'src/app/_services/geolocalisation.servic
   styleUrls: ['./classement-vehicule.component.css']
 })
 export class ClassementVehiculeComponent implements OnInit {
-  date:any=new Date(); vehicules: any = [];
+  date:any=new Date(); vehicules: any = []; classement:any={ max: '', min:'', maxValeur:0, minValeur:0 };
 
   constructor(
     private ecoconduiteService: EcoconduiteService,
@@ -33,7 +33,14 @@ export class ClassementVehiculeComponent implements OnInit {
     ).toPromise();
     
     this.vehicules = [...vehicules$].sort((a:any, b:any) => b.score - a.score);
-  
+
+    this.classement.maxValeur = Math.max(...this.vehicules.map((d: any) => d.score));
+    this.classement.minValeur = Math.min(...this.vehicules.map((d: any) => d.score));
+
+    if(this.classement.maxValeur > 70) this.classement.max = [...this.vehicules].filter(v=> v.score == this.classement.maxValeur);
+    if(this.classement.minValeur < 30) this.classement.min = [...this.vehicules].filter(v=> v.score == this.classement.maxValeur);
+    
+    //console.log(test);
   }
 
   private scoreByVehicule(vehicule: any): any {

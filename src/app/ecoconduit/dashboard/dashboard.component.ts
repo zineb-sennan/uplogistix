@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
 
   //vehicule
   date = new Date();
-  infosGlobaleVehicule: any = { carbone: 0, total_fuel_consomme: 0, total_fuel_gaspille: 0, total_distance_conduite: 0, total_temps_total_conduite: '', nb_conducteurs: 0 }
+  infosGlobaleVehicule: any = { carbone: 0, co2 :0, total_fuel_consomme: 0, total_fuel_gaspille: 0, total_distance_conduite: 0, total_temps_total_conduite: '', nb_conducteurs: 0 }
   list_resume_vehicule: any = []; show_dropdown_vehicule = false;
   filter: any = { vehicule_id: null, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') }; vehicules: any = [];
 
@@ -100,7 +100,8 @@ export class DashboardComponent implements OnInit {
     this.infosGlobaleVehicule.total_distance_conduite = this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.distance_conduite, 0);
     this.infosGlobaleVehicule.total_fuel_consomme = this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.fuel_consomme, 0);
     this.infosGlobaleVehicule.total_temps_total_conduite = this.secondsToDhms(this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.temps_conduite_seconds, 0));
-    this.infosGlobaleVehicule.carbone = this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.carbone, 0);
+    this.infosGlobaleVehicule.carbone = this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.carbone, 0)/1000;
+    this.infosGlobaleVehicule.co2 = this.list_resume_vehicule.reduce((prev: any, next: any) => prev + next.co2, 0)/1000;
     this.getNombreConducteurs();
   }
 
@@ -114,6 +115,7 @@ export class DashboardComponent implements OnInit {
           temps_total_conduite: this.secondsToDhms([...resume.driveTime].reduce((prev: any, next: any) => prev + this.toSeconds(next.duree), 0)),
           temps_conduite_seconds: [...resume.driveTime].reduce((prev: any, next: any) => prev + this.toSeconds(next.duree), 0),
           carbone: [...resume.carbone].reduce((prev: any, next: any) => prev + next.Cg, 0),
+          co2: [...resume.carbone].reduce((prev: any, next: any) => prev + next.CO2g, 0),
           fuel_gaspille: 0,
           matricule: vehicule.matricule,
           vehicule_id: vehicule.id

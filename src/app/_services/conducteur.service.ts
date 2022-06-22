@@ -29,5 +29,8 @@ export class ConducteurService {
     return this.http.get<any>(environment.apiURL + '/conducteurs/' + id)
   }
 
+  getConducteurs(){
+    return this.http.get<any>(environment.apiURL + '/conducteurs/all')
+  }
 
 }

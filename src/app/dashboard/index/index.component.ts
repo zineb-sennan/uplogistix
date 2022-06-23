@@ -6,6 +6,9 @@ import { GeoLocalisationService } from 'src/app/_services/geolocalisation.servic
 import { EcoconduiteService } from 'src/app/_services/ecoconduite.service';
 import { DatePipe } from '@angular/common';
 import { VehiculeDepensesService } from 'src/app/_services/vehicule-depenses.service';
+import { ConducteurService } from 'src/app/_services/conducteur.service';
+import { forkJoin, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 
 @Component({
@@ -16,14 +19,15 @@ import { VehiculeDepensesService } from 'src/app/_services/vehicule-depenses.ser
 export class IndexComponent implements OnInit {
   //
   vehicules: any = []; moisEncours: any = {}; moisPrecedent: any = {}; etatVehicule: any = {}; vehiculesByScore: any = [];
-  date = new Date();
+  date = new Date(); conducteurs:any=[]; classement:any={ min_v: '', min:'', minValeur_v:0, minValeur:0 };
 
   constructor(
     private vehiculeService: VehiculeService,
     private geoLocalisationService: GeoLocalisationService,
     private ecoconduiteService: EcoconduiteService,
     private datePipe: DatePipe,
-    private vehiculeDepensesService:VehiculeDepensesService
+    private vehiculeDepensesService:VehiculeDepensesService,
+    private conducteurService:ConducteurService
   ) { }
 
   ngOnInit(): void {
@@ -34,8 +38,71 @@ export class IndexComponent implements OnInit {
     this.getInfos();
     this.getEtatVehicule();
     this.depensesParType();
+    this.conducteurByScore();
+    this.vehiculeByScore();
   }
 
+  /*** *** ** *** *** */
+  async vehiculeByScore(){
+    const vehicules$:any =await this.vehiculeService.getAll().pipe(
+      map(vehicule => vehicule.filter((v: any) => v.eco_conduite)),
+      switchMap(data => forkJoin(data.map(this.scoreByVehicule.bind(this))))
+    ).toPromise();
+    
+    this.vehicules = [...vehicules$].sort((a:any, b:any) => b.score - a.score);
+    this.classement.minValeur_v = Math.min(...this.vehicules.map((d: any) => d.score));
+    if(this.classement.maxValeur_v > 70) this.classement.max_v = [...this.vehicules].filter(v=> v.score == this.classement.maxValeur);
+  } 
+
+  private scoreByVehicule(vehicule: any): any {
+    const record = { vehicule_id: vehicule.id, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') };
+    return this.ecoconduiteService.scoreByVehicule(record).pipe(
+      map(resume => (
+        {
+          matricule: vehicule.matricule,
+          vehicule_id: vehicule.id,
+          score: resume.new_score == null? 100.00: resume.new_score
+        }
+      ))
+    );
+  }
+
+  /*** *** **** **** */
+
+  async conducteurByScore(){
+     //01
+     const conducteur$:any = this.conducteurService.getConducteurs().pipe(
+      map(conducteur => conducteur.filter((c: any) => c.vehicule_id)),
+      switchMap(data => forkJoin(data.map(this.getScoreByConducteur.bind(this))))
+    );
+    this.conducteurs = (await conducteur$.toPromise()).sort((a:any, b:any) => b.moy_score - a.moy_score);
+    //02
+    //this.classement.maxValeur = Math.max(...this.conducteurs.map((d: any) => d.moy_score));
+    this.classement.minValeur = Math.min(...this.conducteurs.map((d: any) => d.moy_score));
+
+    //if(this.classement.maxValeur > 70) this.classement.max = [...this.conducteurs].filter(v=> v.moy_score == this.classement.maxValeur);
+    if(this.classement.minValeur < 30) this.classement.min = [...this.conducteurs].filter(v=> v.moy_score == this.classement.minValeur);
+
+    //console.log(this.classement);
+  }
+
+  private getScoreByConducteur(conducteur: any): any {
+
+    const record = { vehicule_id: conducteur.vehicule_id, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') };
+
+    return this.geoLocalisationService.analyseConducteur(record).pipe(
+      map(resume => (
+        {
+          matricule: conducteur.matricule,
+          nom_complet: conducteur.prenom +' '+ conducteur.nom,
+          moy_score : ([...resume.score].filter(s => s.score > 0)).reduce((prev: any, next: any) => prev + next.score, 0) / ([...resume.score].filter(s => s.score > 0)).length
+        }
+      ))
+    );
+
+  }
+
+  //*** *** ** **  */
 
   getInfos() {
     this.geoLocalisationService.getInfosDashboard().subscribe(
@@ -75,9 +142,7 @@ export class IndexComponent implements OnInit {
       },
       options: {
         scales: {
-          x: {
-            grid: { drawOnChartArea: false },
-          },
+          x: { grid: { drawOnChartArea: false } },
           y: { grid: { drawOnChartArea: false } }
         },
         plugins: { legend: { display: false } }
@@ -112,22 +177,22 @@ export class IndexComponent implements OnInit {
         this.etatVehicule.inactif = [...res].filter(v => v.statut == "Inactif").length;
         this.etatVehicule.occupe = [...res].filter(v => v.statut == "Occupé").length;
         //
-        this.vehiculesByScore = [];
-        [...res].filter(v => v.eco_conduite).forEach(v => this.getScoreByVehicule(v.id, v.matricule));
+        // this.vehiculesByScore = [];
+        // [...res].filter(v => v.eco_conduite).forEach(v => this.getScoreByVehicule(v.id, v.matricule));
         //
       }
     )
   }
 
-  getScoreByVehicule(vehicule_id: number, matricule: string) {
-    const record = { vehicule_id: vehicule_id, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') }
-    this.ecoconduiteService.scoreByVehicule(record).subscribe(
-      res => {
-        this.vehiculesByScore.push({ id: vehicule_id, matricule, score: res.new_score ?? '100.00' });
-        this.vehiculesByScore = [...this.vehiculesByScore].sort((a, b) => b.score - a.score);
-      }
-    )
-  }
+  // getScoreByVehicule(vehicule_id: number, matricule: string) {
+  //   const record = { vehicule_id: vehicule_id, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') }
+  //   this.ecoconduiteService.scoreByVehicule(record).subscribe(
+  //     res => {
+  //       this.vehiculesByScore.push({ id: vehicule_id, matricule, score: res.new_score ?? '100.00' });
+  //       this.vehiculesByScore = [...this.vehiculesByScore].sort((a, b) => b.score - a.score);
+  //     }
+  //   )
+  // }
 
   depensesParType(){
     this.vehiculeDepensesService.getDepensesParType({date_debut:null, date_fin:null}).subscribe(

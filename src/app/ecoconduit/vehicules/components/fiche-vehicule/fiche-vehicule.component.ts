@@ -31,7 +31,7 @@ export class FicheVehiculeComponent implements OnInit {
     this.geoLocalisationService.getAnalyseVehicule(this.filter).subscribe(
       async res=>{
         this.infosGlobale.distanceParcourue= res.distance.reduce((prev:any,next:any)=>prev+next.distance,0);
-        this.infosGlobale.fuelConsomme= res.fuel.reduce((prev:any,next:any)=>prev+next.montant_carburant,0);
+        this.infosGlobale.fuelConsomme= res.fuel.reduce((prev:any,next:any)=>prev+next.qte,0);
         this.infosGlobale.dureeConduite=this.secondsToDhms(res.driveTime.reduce((prev:any,next:any)=>prev+this.toSeconds(next.duree),0));
         this.infosGlobale.consommationMoyenne=res.l100.reduce((prev:any,next:any)=>prev+next.consommation,0)/res.l100.length;
         this.infosGlobale.emissionCo2=res.carbone.reduce((prev:any,next:any)=>prev+next.CO2g,0);

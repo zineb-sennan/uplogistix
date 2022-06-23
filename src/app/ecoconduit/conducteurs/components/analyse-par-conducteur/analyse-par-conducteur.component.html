@@ -112,7 +112,7 @@
                                                         <option value="freinage">Freinage brusque</option>
                                                         <option value="virrage_serre">Comportement excessif</option>
                                                         <option value="driveTime">Temps de conduite</option>
-                                                        <option value="speedScore">Nbre des excès de vitesse</option>
+                                                        <option value="speedScore">Score d'excès de vitesse</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -123,21 +123,6 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <form class="row gx-0 mb-3 frm-search-jms" #searchForm="ngForm">
-                                                    <!-- <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
-                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="changeType('jour')">
-                                                            <a class="nav-link active" href="#" data-bs-toggle="tab">
-                                                                Jour
-                                                            </a>
-                                                        </li>
-                                                        <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="changeType('periode')">
-                                                            <a class="nav-link" href="#" data-bs-toggle="tab">
-                                                                Période
-                                                            </a>
-                                                        </li>
-                                                    </ul> -->
-                                                    <!-- jour -->
-                                                    <!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='jour'"> -->
-                                                    <!-- periode -->
                                                     <div class="input-group">
                                                         <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut">
                                                         <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin">

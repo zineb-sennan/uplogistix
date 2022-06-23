@@ -2,7 +2,7 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Véhicules
+                Gestion des véhicules
             </h6>
             <h2 class="header-title">
                 Historique carburants
@@ -76,8 +76,8 @@
                                 <tr>
                                     <th>Matricule</th>
                                     <th>Quantité en l</th>
-                                    <th>Prix unitaire</th>
-                                    <th>Total eb Dh</th>
+                                    <th>Prix unitaire en Dh</th>
+                                    <th>Total en Dh</th>
                                     <th>Date opération</th>
                                     <th width="100">Options</th>
                                 </tr>
@@ -161,7 +161,7 @@
                         </div>
                     </form>
                     <div class="text-muted pt-3 pb-3 bg-white shadow-sm row" [ngClass]="{'d-none':myChart}">
-                        <p class="text-center">Pas des données disponibles ...</p>
+                        <p class="text-center">Veuillez sélectionner un véhicule  ...</p>
                     </div>
                     <div class="row bg-white pt-4 shadow" [ngClass]="{'d-none':!myChart}">
                         <canvas id="chart-carburants" [ngClass]="{'d-none':!myChart}"></canvas>

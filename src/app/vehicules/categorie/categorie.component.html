@@ -2,26 +2,25 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Véhicules
+                Gestion des véhicules
             </h6>
             <h2 class="header-title">
                 Catégories de véhicule
             </h2>
         </div>
-    </div><!-- fin titre -->
+    </div>
+    <!-- fin titre -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal"
-                    data-bs-target="#modal-edit" style="float:right" (click)="clear()">
+                <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" style="float:right" (click)="clear()">
                     <i class="fa-solid fa-plus"></i>
                 </button>
                 <br><br><br>
                 <div class="row">
                     <div *ngIf="message" class="alert alert-success" role="alert">
                         {{message}}
-                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>
                 <div class="categories-list row">
@@ -29,12 +28,10 @@
                         <div class="categorie row" [ngClass]="{'_active': singleCategorie.id == categorie.id }">
                             <h3 class="col-md-8">{{categorie.nom}}</h3>
                             <div class="options col-md-4">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete"
-                                    class="btn btn-danger btn-delete" (click)="singleCategorie.id=categorie.id">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-danger btn-delete" (click)="singleCategorie.id=categorie.id">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit"
-                                    class="btn btn-success btn-edit" (click)="getCategorie(categorie.id)">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn btn-success btn-edit" (click)="getCategorie(categorie.id)">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
                             </div>
@@ -54,29 +51,24 @@
                             <h4 class="card-header-title" id="exampleModalCenterTitle">
                                 Categorie vehicule
                             </h4>
-                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="card-body">
                             <form #catForm="ngForm" (ngSubmit)="update(catForm.value)">
                                 <div class="frm-region">
-                                    <input type="hidden" [(ngModel)]="singleCategorie.id" name="id"
-                                        value="singleCategorie.id">
+                                    <input type="hidden" [(ngModel)]="singleCategorie.id" name="id" value="singleCategorie.id">
                                     <div class="form-group">
                                         <label for="nom" class="form-label">
                                             Nom
                                             <strong class="text-danger" *ngIf="!singleCategorie.nom">*</strong>
                                         </label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="Nom"
-                                            [(ngModel)]="singleCategorie.nom" name="nom" required>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleCategorie.nom" name="nom" required>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <small class="text-danger">*: Ce champ est obligatoire.</small>
-                                    <button type="submit" class="btn btn-success mb-2 float-right"
-                                        [disabled]="!catForm.valid">Enregister</button>
-                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal"
-                                        style="margin-right: 5px;">Annuler</button>
+                                    <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!catForm.valid">Enregister</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
                                 </div>
                             </form>
                         </div>
@@ -95,8 +87,7 @@
                             </i>
                         </div>
                         <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.
@@ -104,10 +95,8 @@
                         <br>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal"
-                            aria-label="Close">Annuler</button>
-                        <button type="button" class="btn btn-danger"
-                            (click)="delete(singleCategorie.id)">Supprimer</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                        <button type="button" class="btn btn-danger" (click)="delete(singleCategorie.id)">Supprimer</button>
                     </div>
                 </div>
             </div>

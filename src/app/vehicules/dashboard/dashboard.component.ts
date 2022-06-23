@@ -8,6 +8,7 @@ import { SecuriteClass } from '../../_globale/securite';
 import { Globale } from '../../_globale/globale';
 import * as $ from 'jquery';
 import * as L from 'leaflet';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class DashboardComponent implements OnInit {
     private vehiculeService:VehiculeService,
     private activatedRoute: ActivatedRoute,
     private ecoconduiteService:EcoconduiteService,
-    private geoLocalisationService: GeoLocalisationService
+    private geoLocalisationService: GeoLocalisationService,
+    private datePipe: DatePipe
   ) { }
 
   type='details'; myChart:any; date = new Date();
@@ -43,9 +45,6 @@ export class DashboardComponent implements OnInit {
     capacite_huile:null,volume_reservoir:null
   };
 
-  // resume={ compteur_km:0, cout_km:0, distance:0, duree:0, kilometres_litre:0, km_aujourdhui:0, litres:0, litres_100km:0, montant_carburant:0, 
-  //          cout_total:0, cout_maintenance:0, autre_cout:0 }
-
   resume={ cout_km:0, montant_carburant:0, cout_total:0, cout_maintenance:0, autre_cout:0, km_aujourdhui:0 };
 
   ngOnInit(): void {
@@ -60,9 +59,17 @@ export class DashboardComponent implements OnInit {
 
           /** *** *** */
           this._test(id);
+          this.getDistanceJour(id);
         }
       });
-  } 
+  }
+
+  getDistanceJour(vehicule_id: number){
+    //this.datePipe.transform(this.date, 'dd-MM-yyyy') 
+    this.geoLocalisationService.getAnalyseVehicule({vehicule_id: vehicule_id, date_debut: this.datePipe.transform(this.date, 'yyyy-MM-dd') , date_fin:this.datePipe.transform(this.date, 'yyyy-MM-dd') }).subscribe(
+      res => this.resume.km_aujourdhui= [...res.distance].reduce((prev: any, next: any) => prev + next.distance, 0)
+    )
+  }
 
   getVehiculeById(id:number){
     this.vehiculeService.getVehiculeById(id).subscribe(
@@ -77,30 +84,6 @@ export class DashboardComponent implements OnInit {
       );
   }
 
-  // getResumeForVehicule(id:number) {
-  //   this.ecoconduiteService.resumeOfVehicule(id).subscribe(
-  //     resume=>{
-  //       this.resume=resume
-  //     },
-  //     // error => {
-  //     //   if(error.status==401 && this.securiteClass.refreshToken()) this.getResumeForVehicule(id);
-  //     // }
-  //     );
-  // }
-
-  // getEtatCarburant(id:number){
-  //   this.vehiculeService.getEtatCarburant(id).subscribe(
-  //     res=>{
-  //       const labels=res.slice().reverse().map((t: any) => t.mois);
-  //       const data=res.slice().reverse().map((t: any) => t.total);
-  //       this.createChart("chartCoutTotalCarburant","Cout total carburants",data, labels); 
-  //       this.createChart("chartCoutTotal","Cout total",data, labels);
-  //     },
-  //     // error => {
-  //     //   if(error.status==401 && this.securiteClass.refreshToken()) this.getEtatCarburant(id);
-  //     // }
-  //   )
-  // }
 
 
   createChart(id:any, titre:any, _data:any){
@@ -117,6 +100,15 @@ export class DashboardComponent implements OnInit {
             backgroundColor: 'rgba(54, 162, 235)'
           }
         ],
+      },
+      options: {
+        scales: {
+          x: {
+            grid: { drawOnChartArea: false },
+          },
+          y: { grid: { drawOnChartArea: false } }
+        },
+        plugins: { legend: { display: false } }
       }
     })
   }
@@ -231,7 +223,7 @@ export class DashboardComponent implements OnInit {
         this.resume.cout_total=[...res.coutTotal].filter(c=>c.mois == (this.date.getMonth()+1))[0].coutTotal;
         this.resume.cout_maintenance=res.moisEncours.cout_maintenance;
         this.resume.autre_cout= this.resume.cout_total - (this.resume.montant_carburant + this.resume.cout_maintenance);
-        this.resume.km_aujourdhui= [...res.compteurTotal].reduce((prev: any, next: any) => prev + next.distance, 0);
+        //this.resume.km_aujourdhui= [...res.compteurTotal].reduce((prev: any, next: any) => prev + next.distance, 0);
         //
         this.createChart("chartCoutTotalCarburant","Cout total carburants",res.coutFuel.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutFuel }))); 
         this.createChart("chartCoutTotal","Cout total",res.coutTotal.map((ct: any) => ({ x: mois[ct.mois - 1], y: ct.coutTotal })));

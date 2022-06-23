@@ -114,8 +114,8 @@
                 <div class="card-body">
                     <div class="row align-items-center gx-0">
                         <div class="col">
-                            <h6 class="text-uppercase text-muted mb-2 opacity-50"> Total de fuel consommé (Dh) </h6>
-                            <span class="h2 mb-0">{{infosGlobaleVehicule.total_fuel_consomme}}</span>
+                            <h6 class="text-uppercase text-muted mb-2 opacity-50"> Total de fuel consommé (L) </h6>
+                            <span class="h2 mb-0">{{infosGlobaleVehicule.total_fuel_consomme?.toFixed(2)}}</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -170,7 +170,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Temps total de conduite </h6>
-                            <span class="h4 mb-0">{{infosGlobaleVehicule.total_temps_total_conduite}}</span>
+                            <span class="h3 mb-0">{{infosGlobaleVehicule.total_temps_total_conduite}}</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -197,7 +197,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Freinage extrême </h6>
-                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
+                            <span class="h5 mb-0 opacity-50">{{infosGlobaleVehicule.freinage_extreme?.toFixed(2)}}</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -211,7 +211,7 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Accélération brutale </h6>
-                            <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
+                            <span class="h5 mb-0 opacity-50">{{infosGlobaleVehicule.acceleration_brutale?.toFixed(2)}}</span>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-car text-muted mb-0"></i>
@@ -280,12 +280,44 @@
                                 Analyse des conducteurs
                             </h3>
                         </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <!-- Toggle -->
+                                <button class="btn btn-sm btn-white" type="button" (click)="show_dropdown_c()" style="float: right; margin-top: 50px;">
+                                    More <i class="fa-solid fa-angle-down text-muted mt-2 mb-0"></i>
+                                </button>
+                                <!-- Menu -->
+                                <form class="dropdown-menu dropdown-menu-end dropdown-menu-card dropdown-card-vehicule" [ngClass]="show_dropdown_conducteur ? 'd-block' : 'd-none'">
+                                    <div class="card-header">
+                                        <h4 class="card-header-title">
+                                            Analyse conducteur par :
+                                        </h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- List group -->
+                                        <div class="list-group list-group-flush">
+                                            <div class="list-group-item">
+                                                <ul>
+                                                    <li class="col" (click)="getResumeOfAllConducteur('chartConducteur','acceleration')">Acceleration brusque</li>
+                                                    <li class="col" (click)="getResumeOfAllConducteur('chartConducteur','freinage')">Freinage brusque</li>
+                                                    <li class="col" (click)="getResumeOfAllConducteur('chartConducteur','speedScore')">Score d'excès de vitesse</li>
+                                                    <li class="col" (click)="getResumeOfAllConducteur('chartConducteur','virrage_serre')">Comportement excessif</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body" style="height: 314px;">
-                        <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
+                        <!-- <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
                         <div class="text-center">
                             <h1>Pas de donnée</h1>
-                        </div>
+                        </div> -->
+                        <canvas id="chartConducteur"></canvas>
                     </div>
                 </div>
             </div>

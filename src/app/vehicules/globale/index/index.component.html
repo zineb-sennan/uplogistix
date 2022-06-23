@@ -2,13 +2,14 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Véhicule
+                Gestion des véhicules
             </h6>
             <h2 class="header-title">
                 Listes des véhicule
             </h2>
         </div>
-    </div><!-- fin titre -->
+    </div>
+    <!-- fin titre -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -37,13 +38,12 @@
                         </a>
                     </div>
                 </div>
-                
+
                 <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchVehicule(searchForm.value)">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="matricule">Matricule</label>
-                            <input type="search" class="form-control" name="matricule" [(ngModel)]="search.matricule"
-                                placeholder="Rechercher">
+                            <input type="search" class="form-control" name="matricule" [(ngModel)]="search.matricule" placeholder="Rechercher">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -99,20 +99,17 @@
                                     <td class="compteur-actuel">{{vehicule.compteur}}</td>
                                     <td class="mise_en_circulation"> {{vehicule.mise_en_circulation | date:"dd/MM/yyyy"}} </td>
                                     <td class="type_saisie" style="font-size: 16px;">
-                                        <i class="fa-solid fa-satellite-dish text-primary"
-                                            *ngIf="vehicule.balise"></i>&nbsp;
+                                        <i class="fa-solid fa-satellite-dish text-primary" *ngIf="vehicule.balise"></i>&nbsp;
                                         <i class="fa-solid fa-leaf text-success" *ngIf="vehicule.eco_conduite"></i>
                                     </td>
                                     <td width="100">
                                         <a [routerLink]="['/vehicules/',vehicule.id,'edit']" class="btn btn-operation">
                                             <i class="fa-solid fa-pen"></i>
                                         </a>&nbsp;
-                                        <a [routerLink]="['/vehicules/',vehicule.id,'dashboard']"
-                                            class="btn btn-operation">
+                                        <a [routerLink]="['/vehicules/',vehicule.id,'dashboard']" class="btn btn-operation">
                                             <i class="fa-solid fa-info"></i>
                                         </a>
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete"
-                                            class="btn btn-operation" (click)="idVehicule=vehicule.id">
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-operation" (click)="idVehicule=vehicule.id">
                                             <i _ngcontent-hhv-c59="" class="fa-solid fa-trash"></i>
                                         </button> &nbsp;
                                     </td>
@@ -122,22 +119,18 @@
                     </div>
                 </div>
                 <!-- fin table-responsive -->
-                <nav aria-label="Page navigation" class="pag-tab col-md-12"
-                    *ngIf="vehicules.total_records && vehicules.total_pages>1">
+                <nav aria-label="Page navigation" class="pag-tab col-md-12" *ngIf="vehicules.total_records && vehicules.total_pages>1">
                     <ul class="pagination">
                         <li class="page-item">
-                            <a class="page-link" href="#!" [routerLink]="['/vehicules/page', vehicules.current_page-1]"
-                                [ngClass]="{'_disabled':vehicules.current_page==1}">
+                            <a class="page-link" href="#!" [routerLink]="['/vehicules/page', vehicules.current_page-1]" [ngClass]="{'_disabled':vehicules.current_page==1}">
                                 Précédent
                             </a>
                         </li>
-                        <li class="page-item" *ngFor="let p of [].constructor(vehicules.total_pages); let i=index"
-                            [ngClass]="{'active':vehicules.current_page==i+1}">
+                        <li class="page-item" *ngFor="let p of [].constructor(vehicules.total_pages); let i=index" [ngClass]="{'active':vehicules.current_page==i+1}">
                             <a class="page-link" [routerLink]="['/vehicules/page', i+1]">{{i+1}}</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" [routerLink]="['/vehicules/page', vehicules.current_page+1]"
-                                [ngClass]="{'_disabled':vehicules.current_page==vehicules.total_pages}">
+                            <a class="page-link" [routerLink]="['/vehicules/page', vehicules.current_page+1]" [ngClass]="{'_disabled':vehicules.current_page==vehicules.total_pages}">
                                 Suivant
                             </a>
                         </li>

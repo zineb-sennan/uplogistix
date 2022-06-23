@@ -2,10 +2,10 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Véhicules
+                Gestion des véhicules
             </h6>
             <h2 class="header-title">
-                Tableau de bord des véhicules
+                Tableau de bord du véhicule
             </h2>
         </div>
     </div>
@@ -88,7 +88,7 @@
                                         <div class="card-body">
                                             <div class="row align-items-center gx-0">
                                                 <div class="col">
-                                                    <h6 class="text-uppercase text-muted mb-2">Coût total/Km</h6>
+                                                    <h6 class="text-uppercase text-muted mb-2">Coût total du 1 km</h6>
                                                     <span class="h2 mb-0">{{resume.cout_km?.toFixed(2)?? '0.00'}} Dhs</span>
                                                 </div>
                                                 <div class="col-auto">
@@ -164,7 +164,7 @@
                                         <div class="card-body">
                                             <div class="row align-items-center gx-0">
                                                 <div class="col">
-                                                    <h6 class="text-uppercase text-muted mb-2">KM/Jour</h6>
+                                                    <h6 class="text-uppercase text-muted mb-2">Distance parcourue par jour</h6>
                                                     <span class="h2 mb-0">{{resume.km_aujourdhui?.toFixed(2)?? '0.00'}} Km</span>
                                                 </div>
                                                 <div class="col-auto">
@@ -217,7 +217,7 @@
                                                 <h5 class="mb-0">Date de mise hors service</h5>
                                             </div>
                                             <div class="col-auto">
-                                                <time class="small text-muted" date="12-12-2012">{{singleVehicule.date_hors_service}}</time>
+                                                <time class="small text-muted" date="12-12-2012">{{singleVehicule.date_hors_service | date:'dd/MM/yyyy'}}</time>
                                             </div>
                                         </div>
                                     </div>
@@ -542,11 +542,11 @@
                 <div class="autre-infos" [ngClass]="{'d-none':type!='details'}">
                     <div class="row padding-top">
                         <div class="col-md-6 margin-right">
-                            <h3 class="titre">Coût total carburants</h3>
+                            <h3 class="titre">Coût total carburants Dhs</h3>
                             <canvas id="chartCoutTotalCarburant"></canvas>
                         </div>
                         <div class="col-md-6">
-                            <h3 class="titre">Coût total</h3>
+                            <h3 class="titre">Coût total Dhs</h3>
                             <canvas id="chartCoutTotal"></canvas>
                         </div>
                     </div>

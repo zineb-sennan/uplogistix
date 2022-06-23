@@ -2,13 +2,14 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                véhicule
+                Gestion des véhicules
             </h6>
             <h2 class="header-title">
                 {{ singleVehicule.id ? 'Modifie un véhicule' : 'Créer un nouveau véhicule'}}
             </h2>
         </div>
-    </div><!-- fin titre -->
+    </div>
+    <!-- fin titre -->
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -19,44 +20,37 @@
                             <div class="col">
                                 <ul class="nav nav-tabs nav-overflow header-tabs">
                                     <li class="nav-item">
-                                        <button class="nav-link active" (click)="type='generale'; message='';"
-                                            [ngClass]="{'active': type=='generale'}">
+                                        <button class="nav-link active" (click)="type='generale'; message='';" [ngClass]="{'active': type=='generale'}">
                                             Générale
                                         </button>
                                     </li>
                                     <li class="nav-item">
-                                        <button class="nav-link active" (click)="type='documents'; message='';"
-                                            [ngClass]="{'active': type=='documents'}" *ngIf="singleVehicule.id">
+                                        <button class="nav-link active" (click)="type='documents'; message='';" [ngClass]="{'active': type=='documents'}" *ngIf="singleVehicule.id">
                                             Documents du véhicule
                                         </button>
                                     </li>
                                     <li class="nav-item">
-                                        <button class="nav-link" (click)="type='cycle_de_vie'; message='';"
-                                            [ngClass]="{'active': type=='cycle_de_vie'}">
+                                        <button class="nav-link" (click)="type='cycle_de_vie'; message='';" [ngClass]="{'active': type=='cycle_de_vie'}">
                                             Cycle de vie
                                         </button>
                                     </li>
                                     <li class="nav-item">
-                                        <button class="nav-link" (click)="type='specifications'; message='';"
-                                            [ngClass]="{'active': type=='specifications'}">
+                                        <button class="nav-link" (click)="type='specifications'; message='';" [ngClass]="{'active': type=='specifications'}">
                                             Spécifications
                                         </button>
                                     </li>
                                     <li class="nav-item">
-                                        <button class="nav-link" (click)="type='moteur_transmission'; message='';"
-                                            [ngClass]="{'active': type=='moteur_transmission'}">
+                                        <button class="nav-link" (click)="type='moteur_transmission'; message='';" [ngClass]="{'active': type=='moteur_transmission'}">
                                             Moteur/transmission
                                         </button>
                                     </li>
                                     <li class="nav-item">
-                                        <button class="nav-link" (click)="type='roues_pneus'; message='';"
-                                            [ngClass]="{'active': type=='roues_pneus'}">
+                                        <button class="nav-link" (click)="type='roues_pneus'; message='';" [ngClass]="{'active': type=='roues_pneus'}">
                                             Roues et pneus
                                         </button>
                                     </li>
                                     <li class="nav-item">
-                                        <button class="nav-link" (click)="type='liquides'; message='';"
-                                            [ngClass]="{'active': type=='liquides'}">
+                                        <button class="nav-link" (click)="type='liquides'; message='';" [ngClass]="{'active': type=='liquides'}">
                                             Liquides
                                         </button>
                                     </li>
@@ -66,8 +60,7 @@
                         <div class="contient">
                             <div *ngIf="message" class="alert alert-success" role="alert">
                                 {{message}}
-                                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
+                                <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                             <form class="frm-vehicule" #vehiculeForm="ngForm" (ngSubmit)="update(vehiculeForm.value)">
                                 <input type="hidden" name="id" [(ngModel)]="singleVehicule.id">
@@ -80,13 +73,11 @@
                                                     Matricule
                                                     <strong class="text-danger" *ngIf="!singleVehicule.matricule">*</strong>
                                                 </label>
-                                                <input type="text" class="form-control" name="matricule"
-                                                    [(ngModel)]="singleVehicule.matricule">
+                                                <input type="text" class="form-control" name="matricule" [(ngModel)]="singleVehicule.matricule">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Catégorie</label>
-                                                <select class="form-select" [(ngModel)]="singleVehicule.categorie_id"
-                                                    name="categorie_id" (change)="changeCategorie($event)">
+                                                <select class="form-select" [(ngModel)]="singleVehicule.categorie_id" name="categorie_id" (change)="changeCategorie($event)">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option *ngFor="let cat of categories" value="{{cat.id}}">{{cat.nom}}
                                                     </option>
@@ -94,8 +85,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Type de contrat</label>
-                                                <select class="form-select" name="type_contrat"
-                                                    [(ngModel)]="singleVehicule.type_contrat">
+                                                <select class="form-select" name="type_contrat" [(ngModel)]="singleVehicule.type_contrat">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option value="Propre">Propre</option>
                                                     <option value="Location LLD">Location LLD</option>
@@ -104,8 +94,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Énergie</label>
-                                                <select class="form-select" [(ngModel)]="singleVehicule.energie"
-                                                    name="energie">
+                                                <select class="form-select" [(ngModel)]="singleVehicule.energie" name="energie">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option value="Essence">Essence</option>
                                                     <option value="Diesel">Diesel</option>
@@ -118,15 +107,13 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Compteur initial (km)</label>
-                                                <input type="number" class="form-control" name="compteur_initial"
-                                                    [(ngModel)]="singleVehicule.compteur_initial">
+                                                <input type="number" class="form-control" name="compteur_initial" [(ngModel)]="singleVehicule.compteur_initial">
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label">Groupe</label>
-                                                <select class="form-select" name="groupe_id"
-                                                    [(ngModel)]="singleVehicule.groupe_id">
+                                                <select class="form-select" name="groupe_id" [(ngModel)]="singleVehicule.groupe_id">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option *ngFor="let groupe of groupes" [value]="groupe.id">
                                                         {{groupe.nom}}</option>
@@ -134,8 +121,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Modèle</label>
-                                                <select class="form-select" name="modele_id"
-                                                    [(ngModel)]="singleVehicule.modele_id">
+                                                <select class="form-select" name="modele_id" [(ngModel)]="singleVehicule.modele_id">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option *ngFor="let modele of modeles" [value]="modele.id">
                                                         {{modele.nom}}</option>
@@ -143,14 +129,11 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Mise en circulation</label>
-                                                <input class="form-control" name="mise_en_circulation" type="date"
-                                                    [ngModel]="singleVehicule.mise_en_circulation | date:'yyyy-MM-dd'">
+                                                <input class="form-control" name="mise_en_circulation" type="date" [ngModel]="singleVehicule.mise_en_circulation | date:'yyyy-MM-dd'">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Classe énergétique</label>
-                                                <select class="form-select"
-                                                    [(ngModel)]="singleVehicule.classe_energitique"
-                                                    name="classe_energitique">
+                                                <select class="form-select" [(ngModel)]="singleVehicule.classe_energitique" name="classe_energitique">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option value="A">A</option>
                                                     <option value="B">B</option>
@@ -163,15 +146,13 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Niveau du réservoir initiale</label>
-                                                <input type="number" class="form-control" name="niveau_reservoir"
-                                                    [(ngModel)]="singleVehicule.niveau_reservoir">
+                                                <input type="number" class="form-control" name="niveau_reservoir" [(ngModel)]="singleVehicule.niveau_reservoir">
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label">Marque</label>
-                                                <select class="form-select" name="marque_id"
-                                                    [(ngModel)]="singleVehicule.marque_id" (change)="changeMarque($event)">
+                                                <select class="form-select" name="marque_id" [(ngModel)]="singleVehicule.marque_id" (change)="changeMarque($event)">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option *ngFor="let marque of marques" [value]="marque.id">
                                                         {{marque.nom}}</option>
@@ -180,8 +161,7 @@
 
                                             <div class="form-group">
                                                 <label class="form-label">Statut</label>
-                                                <select class="form-select" name="statut"
-                                                    [(ngModel)]="singleVehicule.statut">
+                                                <select class="form-select" name="statut" [(ngModel)]="singleVehicule.statut">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option value="Actif">Actif</option>
                                                     <option value="Inactif">Inactif</option>
@@ -191,13 +171,11 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Puissance en CV</label>
-                                                <input type="number" class="form-control" name="puissance_cv"
-                                                    [(ngModel)]="singleVehicule.puissance_cv">
+                                                <input type="number" class="form-control" name="puissance_cv" [(ngModel)]="singleVehicule.puissance_cv">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Boite à vitesse </label>
-                                                <select class="form-select" [(ngModel)]="singleVehicule.boite_vitesse"
-                                                    name="boite_vitesse">
+                                                <select class="form-select" [(ngModel)]="singleVehicule.boite_vitesse" name="boite_vitesse">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option value="Manuel">Manuel</option>
                                                     <option value="Automatique">Automatique</option>
@@ -207,8 +185,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label">Description</label>
-                                            <textarea class="form-control" rows="3" name="description"
-                                                [(ngModel)]="singleVehicule.description"></textarea>
+                                            <textarea class="form-control" rows="3" name="description" [(ngModel)]="singleVehicule.description"></textarea>
                                         </div>
 
                                     </div>
@@ -217,8 +194,7 @@
                                 <div class="documents_vehicule" [ngClass]="{'d-none': type!='documents'}">
                                     <div class="form-group" *ngFor="let doc of vehiculeDoc; let i=index">
                                         <label class="form-label">{{doc.vehicule_document}}</label>
-                                        <input class="form-control" name="valeur_{{i}}" type="date"
-                                            [ngModel]="doc.valeur | date:'yyyy-MM-dd'">
+                                        <input class="form-control" name="valeur_{{i}}" type="date" [ngModel]="doc.valeur | date:'yyyy-MM-dd'">
                                     </div>
                                     <div class="card bg-light border" *ngIf="vehiculeDoc.length==0">
                                         <div class="card-body">
@@ -232,19 +208,15 @@
                                 <div class="cycle_de_vie" *ngIf="type=='cycle_de_vie'">
                                     <div class="form-group">
                                         <label class="form-label">Durée de vie estimée en mois</label>
-                                        <input type="number" class="form-control" name="cycle_vie_mois"
-                                            [(ngModel)]="singleVehicule.cycle_vie_mois">
+                                        <input type="number" class="form-control" name="cycle_vie_mois" [(ngModel)]="singleVehicule.cycle_vie_mois">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Durée de vie estimée en KM</label>
-                                        <input type="number" class="form-control" name="cycle_vie_km"
-                                            [(ngModel)]="singleVehicule.cycle_vie_km">
+                                        <input type="number" class="form-control" name="cycle_vie_km" [(ngModel)]="singleVehicule.cycle_vie_km">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Date de mise hors service</label>
-                                        <input type="date" class="form-control" name="date_hors_service"
-                                            [ngModel]="singleVehicule.date_hors_service | date:'yyyy-MM-dd'"
-                                            (ngModelChange)="singleVehicule.date_hors_service = $event">
+                                        <input type="date" class="form-control" name="date_hors_service" [ngModel]="singleVehicule.date_hors_service | date:'yyyy-MM-dd'" (ngModelChange)="singleVehicule.date_hors_service = $event">
                                     </div>
                                 </div>
                                 <!-- specifications -->
@@ -253,40 +225,33 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">Longueur (m)</label>
-                                                <input type="number" class="form-control" name="longeur"
-                                                    [(ngModel)]="singleVehicule.longeur">
+                                                <input type="number" class="form-control" name="longeur" [(ngModel)]="singleVehicule.longeur">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Largeur (m)</label>
-                                                <input type="number" class="form-control" name="largeur"
-                                                    [(ngModel)]="singleVehicule.largeur">
+                                                <input type="number" class="form-control" name="largeur" [(ngModel)]="singleVehicule.largeur">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Hauteur (m)</label>
-                                                <input type="number" class="form-control" name="hauteur"
-                                                    [(ngModel)]="singleVehicule.hauteur">
+                                                <input type="number" class="form-control" name="hauteur" [(ngModel)]="singleVehicule.hauteur">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Volume interieur (m³)</label>
-                                                <input type="number" class="form-control" name="volume"
-                                                    [(ngModel)]="singleVehicule.volume">
+                                                <input type="number" class="form-control" name="volume" [(ngModel)]="singleVehicule.volume">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">Poids à vide (KG)</label>
-                                                <input type="number" class="form-control" name="poids"
-                                                    [(ngModel)]="singleVehicule.poids">
+                                                <input type="number" class="form-control" name="poids" [(ngModel)]="singleVehicule.poids">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Capacité de remorquage (KG)</label>
-                                                <input type="number" class="form-control" name="capacite_remorquage"
-                                                    [(ngModel)]="singleVehicule.capacite_remorquage">
+                                                <input type="number" class="form-control" name="capacite_remorquage" [(ngModel)]="singleVehicule.capacite_remorquage">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Charge maximale (KG)</label>
-                                                <input type="number" class="form-control" name="charge_maximale"
-                                                    [(ngModel)]="singleVehicule.charge_maximale">
+                                                <input type="number" class="form-control" name="charge_maximale" [(ngModel)]="singleVehicule.charge_maximale">
                                             </div>
                                         </div>
                                     </div>
@@ -297,9 +262,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">Technologie moteur</label>
-                                                <select class="form-select"
-                                                    [(ngModel)]="singleVehicule.technologie_moteur"
-                                                    name="technologie_moteur">
+                                                <select class="form-select" [(ngModel)]="singleVehicule.technologie_moteur" name="technologie_moteur">
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option value="Injection directe (sans turbo)">Injection directe
                                                         (sans turbo)</option>
@@ -313,47 +276,39 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Nombre des cylindres</label>
-                                                <input type="number" class="form-control" name="nbre_cylindre"
-                                                    [(ngModel)]="singleVehicule.nbre_cylindre">
+                                                <input type="number" class="form-control" name="nbre_cylindre" [(ngModel)]="singleVehicule.nbre_cylindre">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Volume du cylindre</label>
-                                                <input type="number" class="form-control" name="volume_cylindre"
-                                                    [(ngModel)]="singleVehicule.volume_cylindre">
+                                                <input type="number" class="form-control" name="volume_cylindre" [(ngModel)]="singleVehicule.volume_cylindre">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Puissance fiscale (cv)</label>
-                                                <input type="number" class="form-control" name="puissance_fiscale"
-                                                    [(ngModel)]="singleVehicule.puissance_fiscale">
+                                                <input type="number" class="form-control" name="puissance_fiscale" [(ngModel)]="singleVehicule.puissance_fiscale">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Vitesse maximale (KM/H)</label>
-                                                <input type="number" class="form-control" name="limite_vitesse"
-                                                    [(ngModel)]="singleVehicule.limite_vitesse">
+                                                <input type="number" class="form-control" name="limite_vitesse" [(ngModel)]="singleVehicule.limite_vitesse">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">consommation en ville (ex.4,6 l/100
                                                     km)</label>
-                                                <input type="number" class="form-control" name="consommation_ville"
-                                                    [(ngModel)]="singleVehicule.consommation_ville">
+                                                <input type="number" class="form-control" name="consommation_ville" [(ngModel)]="singleVehicule.consommation_ville">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Consommation en autoroute (ex.3,6 l/100
                                                     km)</label>
-                                                <input type="number" class="form-control" name="consommation_autoroute"
-                                                    [(ngModel)]="singleVehicule.consommation_autoroute">
+                                                <input type="number" class="form-control" name="consommation_autoroute" [(ngModel)]="singleVehicule.consommation_autoroute">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Consommation mixte (ex.2,6 l/100 km)</label>
-                                                <input type="number" class="form-control" name="consommation_mixte"
-                                                    [(ngModel)]="singleVehicule.consommation_mixte">
+                                                <input type="number" class="form-control" name="consommation_mixte" [(ngModel)]="singleVehicule.consommation_mixte">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Emission CO2 (ex.103 g/km)</label>
-                                                <input type="number" class="form-control" name="emission_co2"
-                                                    [(ngModel)]="singleVehicule.emission_co2">
+                                                <input type="number" class="form-control" name="emission_co2" [(ngModel)]="singleVehicule.emission_co2">
                                             </div>
                                         </div>
                                     </div>
@@ -363,45 +318,37 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">Système du freinage</label>
-                                                <input type="text" class="form-control" name="systeme_freinage"
-                                                    [(ngModel)]="singleVehicule.systeme_freinage">
+                                                <input type="text" class="form-control" name="systeme_freinage" [(ngModel)]="singleVehicule.systeme_freinage">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Largeur du pneu en mm</label>
-                                                <input type="number" class="form-control" name="longeur_pneu"
-                                                    [(ngModel)]="singleVehicule.longeur_pneu">
+                                                <input type="number" class="form-control" name="longeur_pneu" [(ngModel)]="singleVehicule.longeur_pneu">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Rapport hauteur/largeur</label>
-                                                <input type="number" class="form-control" name="rapport_hauteur_longeur"
-                                                    [(ngModel)]="singleVehicule.rapport_hauteur_longeur">
+                                                <input type="number" class="form-control" name="rapport_hauteur_longeur" [(ngModel)]="singleVehicule.rapport_hauteur_longeur">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Indice de charge</label>
-                                                <input type="number" class="form-control" name="indice_charge"
-                                                    [(ngModel)]="singleVehicule.indice_charge">
+                                                <input type="number" class="form-control" name="indice_charge" [(ngModel)]="singleVehicule.indice_charge">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">Indice de vitesse</label>
-                                                <input type="number" class="form-control" name="indice_vitesse"
-                                                    [(ngModel)]="singleVehicule.indice_vitesse">
+                                                <input type="number" class="form-control" name="indice_vitesse" [(ngModel)]="singleVehicule.indice_vitesse">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Empattement</label>
-                                                <input type="number" class="form-control" name="empattement"
-                                                    [(ngModel)]="singleVehicule.empattement">
+                                                <input type="number" class="form-control" name="empattement" [(ngModel)]="singleVehicule.empattement">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Diamètre de la roue avant (m)</label>
-                                                <input type="number" class="form-control" name="diametre_roue_avant"
-                                                    [(ngModel)]="singleVehicule.diametre_roue_avant">
+                                                <input type="number" class="form-control" name="diametre_roue_avant" [(ngModel)]="singleVehicule.diametre_roue_avant">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Diamètre de la roue arrière (m)</label>
-                                                <input type="number" class="form-control" name="diametre_roue_arriere"
-                                                    [(ngModel)]="singleVehicule.diametre_roue_arriere">
+                                                <input type="number" class="form-control" name="diametre_roue_arriere" [(ngModel)]="singleVehicule.diametre_roue_arriere">
                                             </div>
                                         </div>
                                     </div>
@@ -409,13 +356,11 @@
                                 <div class="liquides" [ngClass]="{'d-none': type!='liquides'}">
                                     <div class="form-group">
                                         <label class="form-label">Capacité du huile (L)</label>
-                                        <input type="number" class="form-control" name="capacite_huile"
-                                            [(ngModel)]="singleVehicule.capacite_huile">
+                                        <input type="number" class="form-control" name="capacite_huile" [(ngModel)]="singleVehicule.capacite_huile">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Capacité du réservoir carburant (L)</label>
-                                        <input type="number" class="form-control" name="volume_reservoir"
-                                            [(ngModel)]="singleVehicule.volume_reservoir">
+                                        <input type="number" class="form-control" name="volume_reservoir" [(ngModel)]="singleVehicule.volume_reservoir">
                                     </div>
                                 </div>
                                 <hr class="mt-4 mb-4">

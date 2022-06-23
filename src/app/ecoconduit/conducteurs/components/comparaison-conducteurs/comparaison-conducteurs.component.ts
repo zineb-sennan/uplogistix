@@ -24,10 +24,9 @@ export class ComparaisonConducteursComponent implements OnInit {
     { index: 2, checked:true, libelle: 'Freinage brusque', slug:'freinage-brusque', data: [] },
     { index: 3, checked:true, libelle: 'Comportement excessif', slug:'comportement-excessif', data: [] },
     { index: 4, checked:true, libelle: 'Temps de conduite', slug:'temps-de-conduite', data: [] },
-    { index: 5, checked:true, libelle: 'Nbre des excès de vitesse', slug:'Nbre-exces-vitesse', data: [], last:true },
+    { index: 5, checked:true, libelle: 'Score d\'excès de vitesse', slug:'Nbre-exces-vitesse', data: [], last:true },
     // { index: 6, checked:true, libelle: 'Conduite dangereuse/100km', slug:'conduite-dangereuse', data: [], last:true },
     // { index: 7, libelle: 'Emission CO2', slug:'emission-co2', data: [] }
-
   ];
 
   constructor(
@@ -250,10 +249,42 @@ export class ComparaisonConducteursComponent implements OnInit {
     }
     //02
     infosChart.data = [...infosChart.data].sort((a, b) => (new Date(a.dateDebut).getTime()) / 1000 - (new Date(b.dateDebut).getTime()) / 1000);
+    //
+    //console.log(infosChart.data[0].values);
 
+    const dates:any=[];
     infosChart.data.forEach((chart: any) => {
       var item = { data: chart.values, label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
+      console.log(chart.values);
+      //
+      [...chart.values].forEach(v=>{
+        const date=[...dates].filter(d=> d == v.x);
+
+        if(date.length==0) dates.push(v.x);
+        //console.log(date)
+        
+      });
+
+      //console.log('data',dates)
+
+      //
       _infosChart.data.datasets.push(item);
+    })
+
+    dates.forEach((d:any)=>{
+      infosChart.data.forEach((chart: any) => {
+        var item = { data: chart.values, label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
+        console.log(chart.values);
+        //
+        [...chart.values].forEach(v=>{
+          const date=[...dates].filter(d=> d == v.x);
+  
+          if(date.length==0) dates.push(v.x);
+          //console.log(date)
+        });
+        //
+        //_infosChart.data.datasets.push(item);
+      })
     })
 
     //03 Temps de conduite 

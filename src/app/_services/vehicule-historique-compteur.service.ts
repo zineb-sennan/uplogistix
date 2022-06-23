@@ -37,4 +37,12 @@ export class VehiculeHistoriqueCompteurService {
     return this.http.post<any>(environment.apiURL + '/vehicules/gps-compteurs/find/page/'+page,record)
   }
 
+  getAllCompteurManuel(record:any){
+    return this.http.post(environment.apiURL + '/vehicules/compteurs/all', record)
+  }
+
+  getAllCompteurAutomatique(record: any){
+    return this.http.post(environment.apiURL + '/vehicules/gps-compteurs/all', record)
+  }
+
 }

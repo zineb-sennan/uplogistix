@@ -29,7 +29,7 @@ export class HistoriqueCompteurComponent implements OnInit {
     private router:Router
   ) { }
 
-  currentDate = new Date();
+  currentDate = new Date(); total={ manuel: 0, automatique:0 };
   compteurs : any = []; compteurs_gps:any=[]; vehicules_sans_balise:any=[]; vehicules_avec_balise:any=[]; vehicules:any=[];
   date = new Date(); page=1; type='saisi-manuel'; message:any;
   singleCompteur={ id:null, vehicule_id:null, date_operation:null, compteur:null }
@@ -47,7 +47,10 @@ export class HistoriqueCompteurComponent implements OnInit {
     this.activatedRoute.params.subscribe(param => {
       this.page = param['page'];
       if(this.page){
-        if(this.router.url.search('/vehicules/gps-compteurs/find/page/') != -1){this.searchCompteursAutomatique(this.search); this.type='releve-automatique' } 
+        if(this.router.url.search('/vehicules/gps-compteurs/find/page/') != -1){
+          //this.searchCompteursAutomatique(this.search); 
+          this.type='releve-automatique'
+        } 
         else { this.searchCompteurs(this.search); this.type='saisi-manuel' }
       } 
     });
@@ -78,6 +81,16 @@ export class HistoriqueCompteurComponent implements OnInit {
         if(error.status==401 && await this.securiteClass.refreshToken()) this.searchCompteurs(data);
       }
     )
+
+    this.vehiculeHistoriqueCompteurService.getAllCompteurManuel(data).subscribe(
+      res=>{
+        const data = JSON.parse(JSON.stringify(res));
+        this.total.manuel=data.reduce((prev: any, next: any) => prev + next.distance, 0);
+        //console.log('mmm',x);
+      }
+    )
+     
+    
   }
 
   searchCompteursAutomatique(record:any){
@@ -85,6 +98,13 @@ export class HistoriqueCompteurComponent implements OnInit {
       res => this.compteurs_gps=res, 
       async error => {
         if(error.status==401 && await this.securiteClass.refreshToken()) this.searchCompteursAutomatique(record);
+      }
+    )
+
+    this.vehiculeHistoriqueCompteurService.getAllCompteurAutomatique(this.search).subscribe(
+      res=>{
+        const data = JSON.parse(JSON.stringify(res));
+        this.total.automatique=data.reduce((prev: any, next: any) => prev + next.distance, 0);
       }
     )
   }
@@ -140,15 +160,26 @@ export class HistoriqueCompteurComponent implements OnInit {
 
   generateChart(record: any){
     if([...this.vehicules_avec_balise.filter((v: any) =>v.id == record.vehicule_id)].length>0){
-      this.vehiculeHistoriqueCompteurService.getGpsCompteur(this.page,this.search).subscribe(
-        res => this.chartEvolutionConpteur(res.records.map((f: any) => ({ x: this.datePipe.transform(f.date_heure, 'dd-MM-yyyy') , y: f.distance }))),
+      this.vehiculeHistoriqueCompteurService.getAllCompteurAutomatique(this.search).subscribe(
+        res =>{
+          const data = JSON.parse(JSON.stringify(res));
+          // const x = [...data].map((f: any) => ({ x: this.datePipe.transform(f.date_heure, 'dd-MM-yyyy') , y: f.distance }));
+          this.chartEvolutionConpteur([...data].map((f: any) => ({ x: this.datePipe.transform(f.date_heure, 'dd-MM-yyyy') , y: f.distance })));
+        },
         async error => {
           if(error.status==401 && await this.securiteClass.refreshToken()) this.generateChart(record);
         }
       )
     }
     else{
-      // *** sans balise  pas de data ***
+      //*** sans balise  pas de data ***
+      this.vehiculeHistoriqueCompteurService.getAllCompteurManuel(this.search).subscribe(
+        res => {
+          //console.log('***',res);
+          const data = JSON.parse(JSON.stringify(res));
+          this.chartEvolutionConpteur([...data].map((f: any) => ({ x: this.datePipe.transform(f.date_operation, 'dd-MM-yyyy') , y: f.distance })));
+        }
+      )
     }
   }
 
@@ -167,8 +198,7 @@ export class HistoriqueCompteurComponent implements OnInit {
             backgroundColor: 'rgba(44, 123, 228)',
             borderColor: 'rgba(44, 123, 228)'
           }
-        ],
-        labels:["	06/05/2022 18:25", "16/05/2022 12:31", "16/05/2022 12:35"]
+        ]
       },
       options:{
         maintainAspectRatio:false,

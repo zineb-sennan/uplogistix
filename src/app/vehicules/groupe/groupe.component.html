@@ -2,26 +2,25 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Véhicules
+                Gestion des véhicules
             </h6>
             <h2 class="header-title">
                 Groupes de véhicules
             </h2>
         </div>
-    </div><!-- fin titre -->
+    </div>
+    <!-- fin titre -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal"
-                    data-bs-target="#modal-edit" style="float:right" (click)="clear()">
+                <button type="button" class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modal-edit" style="float:right" (click)="clear()">
                     <i class="fa-solid fa-plus"></i>
                 </button>
                 <br><br><br>
                 <div class="row">
                     <div *ngIf="message" class="alert alert-success" role="alert">
                         {{message}}
-                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>
                 <div class="groupes-list row">
@@ -30,12 +29,10 @@
                             <h3> {{gr.nom}} </h3>
                             <small class="text-muted categorie" *ngIf="gr.description"> {{gr.description}} </small>
                             <div class="operations">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete"
-                                    class="btn btn-danger btn-delete" (click)="singleGroupe.id=gr.id">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-danger btn-delete" (click)="singleGroupe.id=gr.id">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit"
-                                    class="btn btn-success btn-edit" (click)="getGroupe(gr.id)">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn btn-success btn-edit" (click)="getGroupe(gr.id)">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
                             </div>
@@ -54,34 +51,28 @@
                             <h4 class="card-header-title" id="exampleModalCenterTitle">
                                 Groupe de véhicule
                             </h4>
-                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="card-body">
                             <form #grpForm="ngForm" (ngSubmit)="update(grpForm.value)">
                                 <div class="frm-region">
-                                    <input type="hidden" [(ngModel)]="singleGroupe.id" name="id"
-                                        value="singleGroupe.id">
+                                    <input type="hidden" [(ngModel)]="singleGroupe.id" name="id" value="singleGroupe.id">
                                     <div class="form-group">
                                         <label for="nom" class="form-label">
                                             Type de groupe
                                             <strong class="text-danger" *ngIf="!singleGroupe.nom">*</strong>
                                         </label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="Nom"
-                                            [(ngModel)]="singleGroupe.nom" name="nom" required>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singleGroupe.nom" name="nom" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="description" class="form-label">Description</label>
-                                        <textarea rows="3" name="adresse" class="form-control" placeholder="Description"
-                                            [(ngModel)]="singleGroupe.description" name="description"></textarea>
+                                        <textarea rows="3" name="adresse" class="form-control" placeholder="Description" [(ngModel)]="singleGroupe.description" name="description"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <small class="text-danger">*: Ce champ est obligatoire.</small>
-                                    <button type="submit" class="btn btn-success mb-2 float-right"
-                                        [disabled]="!grpForm.valid">Enregister</button>
-                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal"
-                                        style="margin-right: 5px;">Annuler</button>
+                                    <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!grpForm.valid">Enregister</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
                                 </div>
                             </form>
                         </div>
@@ -100,18 +91,15 @@
                             </i>
                         </div>
                         <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.
                         </p>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal"
-                            aria-label="Close">Annuler</button>
-                        <button type="button" class="btn btn-danger"
-                            (click)="delete(singleGroupe.id)">Supprimer</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                        <button type="button" class="btn btn-danger" (click)="delete(singleGroupe.id)">Supprimer</button>
                     </div>
                 </div>
             </div>

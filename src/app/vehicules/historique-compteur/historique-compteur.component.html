@@ -2,7 +2,7 @@
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
-                Véhicules
+                Gestion des véhicules
             </h6>
             <h2 class="header-title">
                 Historiques de compteur
@@ -83,22 +83,22 @@
                                     <th>Matricule</th>
                                     <th>Ancien compteur Km</th>
                                     <th>Nouveau compteur Km</th>
-                                    <th>Kilométrage parcouru</th>
+                                    <th>Kilométrage parcouru Km</th>
                                     <th>Date d'opération</th>
-                                    <th width="100">Eco-conduite</th>
+                                    <th width="100">Options</th>
                                 </tr>
                             </thead>
                             <tbody class="list">
                                 <tr *ngFor="let compteur of compteurs['records']">
                                     <td class="matricule">{{compteur.matricule}}</td>
                                     <td class="ancien-compteur">
-                                        <strong class="text-primary">{{compteur.ancien_compteur}}</strong>
+                                        <strong>{{compteur.ancien_compteur}}</strong>
                                     </td>
                                     <td class="nouveau-compteur">
-                                        <strong class="text-primary">{{compteur.compteur}}</strong><br>
+                                        <strong>{{compteur.compteur}}</strong><br>
                                         <!-- <strong class="small">{{compteur.date_operation | date: 'dd/MM/yyyy HH:mm' }}</strong> -->
                                     </td>
-                                    <td class="kilométrage-parcouru text-danger font-weight-bold">
+                                    <td class="kilométrage-parcouru text-primary font-weight-bold">
                                         <strong>{{compteur.cumule_distance}}</strong>
                                     </td>
                                     <td class="date-operation">
@@ -114,15 +114,21 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            <tfoot *ngIf="compteurs.total_records == 0 || compteurs.total_records == null">
-                                <tr>
+                            <tfoot>
+                                <tr *ngIf="compteurs.total_records == 0 || compteurs.total_records == null">
                                     <td colspan="5">
                                         <div class="text-muted pt-3 pb-3 bg-white" [ngClass]="{'d-none':mychart}">
-                                            <p class="text-center">Pas des données disponibles ...</p>
+                                            <p class="text-center">Veuillez sélectionner un véhicule ...</p>
                                         </div>
                                     </td>
                                 </tr>
-
+                                <tr *ngIf="compteurs.total_records > 0">
+                                    <td colspan="6">
+                                        <h3 class="float-right text-danger font-weight-normal">
+                                            Total distance: <span>{{total.manuel?.toFixed(2)}} <small>Km</small></span>
+                                        </h3>
+                                    </td>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
@@ -188,34 +194,40 @@
                             <th>Matricule</th>
                             <th>Ancien compteur Km</th>
                             <th>Nouveau compteur Km</th>
-                            <th>Kilométrage parcouru</th>
-                            <th>Date d'opération</th>
+                            <th>Kilométrage parcouru Km</th>
+                            <th>Date d'opération  {{compteurs_gps.total_records}}</th>
                         </tr>
                     </thead>
                     <tbody class="list">
                         <tr *ngFor="let c_gps of compteurs_gps['records']">
                             <td class="matricule">{{c_gps.matricule}}</td>
                             <td class="ancien-compteur">
-                                <strong class="text-primary">{{c_gps.ancien_compteur.toFixed(3)}}</strong>
+                                <strong>{{c_gps.ancien_compteur.toFixed(3)}}</strong>
                             </td>
                             <td class="nouveau-compteur">
-                                <strong class="text-primary ">{{c_gps.nouveau_compteur.toFixed(3)}}</strong><br>
+                                <strong>{{c_gps.nouveau_compteur.toFixed(3)}}</strong><br>
                             </td>
-                            <td class="kilométrage-parcouru text-danger">
+                            <td class="kilométrage-parcouru text-primary">
                                 <strong>{{c_gps.distance.toFixed(3)}}</strong>
                             </td>
                             <td>{{c_gps.date_heure | date: 'dd/MM/yyyy HH:mm' }}</td>
                         </tr>
                     </tbody>
-                    <tfoot *ngIf="compteurs_gps.total_records == 0 || compteurs_gps.total_records==null">
-                        <tr>
+                    <tfoot>
+                        <tr *ngIf="compteurs_gps.total_records == 0 || compteurs_gps.total_records==null">
                             <td colspan="5">
                                 <div class="text-muted pt-3 pb-3 bg-white" [ngClass]="{'d-none':mychart}">
-                                    <p class="text-center">Pas des données disponibles ...</p>
+                                    <p class="text-center">Veuillez sélectionner un véhicule ...</p>
                                 </div>
                             </td>
                         </tr>
-
+                        <tr *ngIf="compteurs_gps?.total_records > 0">
+                            <td colspan="6">
+                                <h3 class="float-right text-danger font-weight-normal">
+                                    Total distance: <span>{{total.automatique?.toFixed(2)}} <small>Km</small></span>
+                                </h3>
+                            </td>
+                        </tr>
                     </tfoot>
                 </table>
                 <nav aria-label="Page navigation" class="pag-tab col-md-12 navigation" *ngIf="compteurs_gps.total_records && compteurs_gps.total_pages>1">
@@ -275,7 +287,7 @@
                 </div>
             </form>
             <div class="text-muted pt-3 pb-3 bg-white shadow-sm row" [ngClass]="{'d-none':mychart}">
-                <p class="text-center">Pas des données disponibles ...</p>
+                <p class="text-center">Veuillez sélectionner un véhicule ...</p>
             </div>
             <div class="row bg-white pt-4" [ngClass]="{'d-none':!mychart}">
                 <canvas id="chart-compteurs"></canvas>

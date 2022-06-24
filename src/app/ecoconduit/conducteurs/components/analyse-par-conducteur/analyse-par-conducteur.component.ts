@@ -39,11 +39,10 @@ export class AnalyseParConducteurComponent implements OnInit {
         //
         if(this.conducteurs.length > 0){
           this.filter.vehicule_id = this.conducteurs[0].vehicule_id;
-          this.filter.conducteur = this.conducteurs[0].prenom + this.conducteurs[0].nom;
+          this.filter.conducteur = this.conducteurs[0].prenom +' '+ this.conducteurs[0].nom;
           this.getEvolutionScore();
           this.filterData();
         } 
-        //console.log(this.filter);
       }  
     )
   }
@@ -57,30 +56,16 @@ export class AnalyseParConducteurComponent implements OnInit {
     this.getEvolutionScore();
   }
 
-  // changeType(type:any){
-  //   //this.typeFilter = type;
-  //   if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datepipe.transform(this.date, 'yyyy-MM-dd');
-  //   else {
-  //       this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
-  //       this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
-  //     }
-  // }
-
-  /* *** *** *** *** */
   filterData(){
     this.geoLocalisationService.analyseConducteur(this.filter).subscribe(
       res => {
         var _data=null;
         if(this.filter.typeFilter=='acceleration' || this.filter.typeFilter=='freinage' || this.filter.typeFilter=='virrage_serre' || this.filter.typeFilter=='speedScore') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date), y: v.score }));
         else if(this.filter.typeFilter=='driveTime') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date), y: this.toSeconds(v.time) , z: v.time }));
-        // else if(this.filter.typeFilter=='driveTime') _data=res[this.filter.typeFilter].map((v: any) => ({ x: this.formateDate(v.date_heure), y: this.toSeconds(v.duree) , z: v.duree }));
 
         this.genererGraphe('chart_conducteur', _data,1);
         $('#maxVal').text( (Math.max(..._data.map((d: any) => d.y))).toFixed(2) )
 
-
-        // if(this.filter.typeFilter=='driveTime') $('#maxVal').text( this.secondsToDhms(Math.max(..._data.map((d: any) => d.y))) )
-        // else $('#maxVal').text( (Math.max(..._data.map((d: any) => d.y))).toFixed(2) )
       }
     )
   }
@@ -89,14 +74,9 @@ export class AnalyseParConducteurComponent implements OnInit {
     const record = { vehicule_id: this.filter.vehicule_id, date_debut: this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') }
     this.geoLocalisationService.analyseConducteur(record).subscribe(
       res =>{
-        //console.log('score',res.score);
-        this.genererGraphe('chart_score', res.score.map((v: any) => ({ x: this.datepipe.transform(v.date,'dd-MM-yyyy') , y: v.score })),0);
+        this.genererGraphe('chart_score', res.score.map((v: any) => ({ x: this.datepipe.transform(v.date,'dd/MM') , y: v.score })),0);
         this.score.maximale = Math.max(...res.score.map((d:any) => d.score)).toFixed(2);
         this.score.minimal = Math.min(...res.score.map((d:any) => d.score)).toFixed(2);
-        //
-        // var data = res.score.map((d:any) => Number(d.score));
-        // console.log(Math.max(...data), data);
-        //console.log( Math.max(res.score.map((d:any) => Number(d.score)) ) );
       } 
     )
   }
@@ -181,7 +161,6 @@ export class AnalyseParConducteurComponent implements OnInit {
   }
 
   formateDate(data:number){
-    //if(this.typeFilter=='jour') return data.toString().padStart(2, '0')+':00'
     return this.datepipe.transform(data,'dd-MM-yyyy')
   }
 

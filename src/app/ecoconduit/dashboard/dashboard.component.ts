@@ -67,66 +67,23 @@ export class DashboardComponent implements OnInit {
 
 
     this.show_dropdown_conducteur = false;
+    this.createChart(idChart, titre,  data, 1);
+  }
 
-    //this.createChart(idChart, 'titre',  data, 1);
-    if (this.myChart[1]) this.myChart[1].destroy();
-
-    this.myChart[1] = new Chart(<any>$('#chartConducteur'), {
-      type: 'bar',
-      data: {
-        labels: [...data].map(d=> d.x),
-        datasets: [{
-          label: titre,
-          data: [...data].map(d=> d.y),
-          backgroundColor:'rgba(54, 162, 235)',
-          borderWidth: 1,
-          borderRadius: 10,
-          borderSkipped: false,
-          barPercentage: 0.40,
-          categoryPercentage: 0.3
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        maintainAspectRatio: false,
-        scales: {
-          x: { grid: { drawOnChartArea: false } },
-          y: { grid: { drawOnChartArea: false } }
-        }
-      }
-    });
-
-    
-
-   // console.log(data,this.list_resume_conducteur, ChartBy);
+  claculMoy(data:any){
+    const data_def_0 = [...data].filter(d=> d.score != 0);
+    return [...data_def_0].length > 0 ? [...data_def_0].reduce((prev:any,next:any)=>prev+next.score,0) / [...data_def_0].length: 0
   }
 
   private getAnalyseByConducteur(conducteur: any): any {
     var acceleration:any={}; var freinage:any ={}; var speedScore:any ={}; var virrage_serre:any ={};
     return this.geoLocalisationService.analyseConducteur({vehicule_id: conducteur.vehicule_id, date_debut: this.filter.date_debut, date_fin:this.filter.date_fin}).pipe(
-      map(res => {
-        acceleration.tab=[... res.acceleration].filter(a => a.score!=0); 
-        acceleration.length=acceleration.tab.length;
-        acceleration.score_moy=acceleration.length>0?  acceleration.tab.reduce((prev: any, next: any) => prev + next.score, 0)/acceleration.length: 0;
-
-        freinage.tab=[... res.freinage].filter(a => a.score!=0);
-        freinage.length= freinage.tab.length;
-        freinage.score_moy=freinage.length>0? freinage.tab.reduce((prev: any, next: any) => prev + next.score, 0)/freinage.length: 0;
-
-        
-        speedScore.tab=[... res.speedScore].filter(a => a.score!=0);
-        speedScore.length= speedScore.tab.length;
-        speedScore.score_moy=speedScore.length>0? speedScore.tab.reduce((prev: any, next: any) => prev + next.score, 0)/speedScore.length: 0;
-
-        virrage_serre.tab=[... res.virrage_serre].filter(a => a.score!=0);
-        virrage_serre.length= virrage_serre.tab.length;
-        virrage_serre.score_moy=virrage_serre.length>0? virrage_serre.tab.reduce((prev: any, next: any) => prev + next.score, 0)/virrage_serre.length:0;
-        
+      map(res => { 
         return {
-            acceleration: acceleration.score_moy,
-            freinage: freinage.score_moy,
-            speedScore: speedScore.score_moy,
-            virrage_serre: virrage_serre.score_moy,
+            acceleration: this.claculMoy(res.acceleration),
+            speedScore: this.claculMoy(res.speedScore),
+            freinage: this.claculMoy(res.freinage),
+            virrage_serre: this.claculMoy(res.virrage_serre),
             nom_complet: conducteur.prenom +' '+conducteur.nom
           }
 
@@ -144,11 +101,12 @@ export class DashboardComponent implements OnInit {
 
     //02
     this.list_resume_vehicule = await vehicules$.toPromise();
+    console.log('list',this.list_resume_vehicule);
     //03
     if (ChartBy == "fuel_consomme") { data = this.list_resume_vehicule.map((t: any) => ({ x: t.matricule, y: t.fuel_consomme })); titre = "Fuel consommé"; }
     else if (ChartBy == "fuel_gaspille") { data = this.list_resume_vehicule.map((t: any) => ({ x:t.matricule, y:t.fuel_gaspille })); titre = "Fuel gaspillé"; }
-    else if (ChartBy == "distance_conduite") { data = [...this.list_resume_vehicule].map(t => ({ x:t.distance_conduite, y: t.matricule })); titre = "Distance conduite"; }
-    else if (ChartBy == "temps_total_conduite") { data = this.list_resume_vehicule.map((t: any, index: any = 2) => ({ x: t.matricule, y: index, matricule: t.temps_total_conduite })); data.push({x:0, y:0, t:'0:00'}); titre = "Temps conduite"; }
+    else if (ChartBy == "distance_conduite") { data = [...this.list_resume_vehicule].map(t => ({ x: t.matricule, y:t.distance_conduite })); titre = "Distance conduite"; }
+    else if (ChartBy == "temps_total_conduite") { data = this.list_resume_vehicule.map((t: any, index: any = 2) => ({ x: t.matricule, y: index, matricule: t.temps_total_conduite })); titre = "Temps conduite"; }
     //04
     this.createChart(idChart, titre,  data, 0);
     this.show_dropdown_vehicule = false;
@@ -221,29 +179,35 @@ export class DashboardComponent implements OnInit {
 
 
   createChart(id: any, titre: any, _data: any, position:number) {
+    // this.myChart[1] = new Chart(<any>$('#chartConducteur'), {
+     
+    // });
+
+
+
     if (this.myChart[position]) this.myChart[position].destroy();
     const _myChar: any = {
       type: 'bar',
       data: {
+        labels: [..._data].map(d=> d.x),
         datasets: [{
           label: titre,
-          data: _data,
-          backgroundColor: 'rgba(54, 162, 235)',
+          data: [..._data].map(d=> d.y),
+          backgroundColor:'rgba(54, 162, 235)',
           borderWidth: 1,
           borderRadius: 10,
           borderSkipped: false,
-          barPercentage: 0.20
+          barPercentage: 0.40,
+          categoryPercentage: 0.3
         }]
       },
       options: {
+        indexAxis: 'y',
         maintainAspectRatio: false,
         scales: {
           x: { grid: { drawOnChartArea: false } },
           y: { grid: { drawOnChartArea: false } }
         }
-      },
-      plugins: {
-        legend: { display: false }
       }
     };
 

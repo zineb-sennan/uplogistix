@@ -13,20 +13,18 @@ import { ConducteurService } from '../../../../_services/conducteur.service';
 })
 export class ComparaisonConducteursComponent implements OnInit {
   date = new Date();
-  //typeFilter='periode';
-  filter: any = { vehicule_id: null, date_debut: this.datepipe.transform(this.date, 'yyyy-MM-dd'), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') };
+  filter: any = { vehicule_id: null, date_debut: this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') };
   //
   colors=['56, 95, 158','247, 189, 1', '20, 156, 56', '94, 202, 223'];
   viewChartPrincipale:any=null;  maxConducteur = 2; maxChart=5;
   conducteurs: any[] = []; conducteursSelected: any[] = []; 
+
   chartSelected: any = [
-    { index: 1, checked:true, libelle: 'Acceleration brusque', slug:'acceleration-brusque', data: [] },
-    { index: 2, checked:true, libelle: 'Freinage brusque', slug:'freinage-brusque', data: [] },
-    { index: 3, checked:true, libelle: 'Comportement excessif', slug:'comportement-excessif', data: [] },
-    { index: 4, checked:true, libelle: 'Temps de conduite', slug:'temps-de-conduite', data: [] },
-    { index: 5, checked:true, libelle: 'Score d\'excès de vitesse', slug:'Nbre-exces-vitesse', data: [], last:true },
-    // { index: 6, checked:true, libelle: 'Conduite dangereuse/100km', slug:'conduite-dangereuse', data: [], last:true },
-    // { index: 7, libelle: 'Emission CO2', slug:'emission-co2', data: [] }
+    { index: 1, libelle: 'Acceleration brusque', slug:'acceleration-brusque', data: [], dates: [] },
+    { index: 2, libelle: 'Freinage brusque', slug:'freinage-brusque', data: [], dates: [] },
+    { index: 3, libelle: 'Comportement excessif', slug:'comportement-excessif', data: [], dates: [] },
+    { index: 4, libelle: 'Temps de conduite', slug:'temps-de-conduite', data: [], dates: [] },
+    { index: 5, libelle: 'Score d\'excès de vitesse', slug:'Nbre-exces-vitesse', data: [], dates: [] }
   ];
 
   constructor(
@@ -38,12 +36,10 @@ export class ComparaisonConducteursComponent implements OnInit {
 
   ngOnInit(): void {
     Chart.register(...registerables);
-
     this.getConducteurs();
-
     //
-    this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
-    this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
+    for (let index = 0; index < this.maxChart; index++) this.chartSelected[index].checked=true;
+    this.chartSelected[this.maxChart-1].last=true;
   }
 
   getConducteurs() {
@@ -112,19 +108,25 @@ export class ComparaisonConducteursComponent implements OnInit {
     this.geoLocalisationService.analyseConducteur(this.filter).subscribe(
       res => {
         this.chartSelected.forEach((chart: any) => {
-          //Acceleration brusque
-          if (chart.index == 1) _data = [...res.acceleration].map((v: any) => ({ x: this.formateDate(v.date), y: v.score, z: v.date }));
-          //Freinage brusque
-          else if (chart.index == 2) _data = [...res.freinage].map((v: any) => ({ x: this.formateDate(v.date), y: v.score, z: v.date }));
-          //Comportement excessif
-          else if (chart.index == 3) _data = [...res.virrage_serre].map((v: any) => ({ x: this.formateDate(v.date), y: v.score, z: v.date }));
-          //Temps de conduite
-          else if (chart.index == 4) _data = res.driveTime.map((v: any) => ({ x: this.formateDate(v.date), y: this.toSeconds(v.time), z: v.date }));
-          //
-          else if (chart.index == 5) _data = res.speedScore.map((v: any) => ({ x: this.formateDate(v.date), y: v.score, z: v.date }));
-          //
-          else  _data = [];
-          this.chartSelected[chart.index - 1].data.push({ values: _data, dateDebut: (_data[0]?.z) ?? 0, matricule: conducteur.nom, color: conducteur.color });
+           //Acceleration brusque
+           if (chart.index == 1) _data = [...res.acceleration].map((v: any) => ({ x: v.date, y: v.score }));
+           //Freinage brusque
+           else if (chart.index == 2) _data = [...res.freinage].map((v: any) => ({ x: v.date, y: v.score }));
+           //Comportement excessif
+           else if (chart.index == 3) _data = [...res.virrage_serre].map((v: any) => ({ x: v.date, y: v.score }));
+           //Temps de conduite
+           else if (chart.index == 4) _data = res.driveTime.map((v: any) => ({ x: v.date, y: this.toSeconds(v.time) }));
+           //
+           else if (chart.index == 5) _data = res.speedScore.map((v: any) => ({ x: v.date, y: v.score }));
+           //
+           else  _data = [];
+
+          const item = {
+            values: _data,
+            matricule: conducteur.nom, 
+            color: conducteur.color
+          };
+          this.chartSelected[chart.index - 1].data.push(item);
           this.createChart((conducteur.id + '' + chart.index), _data, conducteur, Math.max(..._data.map((d: any) => d.y)), chart.index);
         });//fin forEach
       }
@@ -132,8 +134,7 @@ export class ComparaisonConducteursComponent implements OnInit {
   }
 
   formateDate(date: number) {
-    //if (this.typeFilter == 'jour') return date.toString().padStart(2, '0') + ':00'
-    return this.datepipe.transform(date, 'dd-MM-yyyy')
+    return this.datepipe.transform(date, 'dd-MM-yyyy')?.toString()
   }
 
   myChart: any = [];
@@ -171,42 +172,8 @@ export class ComparaisonConducteursComponent implements OnInit {
     };
 
     //temps de conduite par date 
-    if (indexChart == 6) {
-      _myChart.options = {
-        maintainAspectRatio: false,
-        scales: {
-          x: { display: false },
-          y: {
-            display: false,
-            grid: { drawOnChartArea: false },
-            ticks: {
-              callback: function (_seconds: any) {
-                var hours = Math.floor(_seconds / 3600),
-                  minutes = Math.floor((_seconds % 3600) / 60),
-                  seconds = Math.floor(_seconds % 60);
-
-                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-              }//;
-            }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function (context: any): any {
-                var hours = Math.floor(context.parsed.y / 3600),
-                  minutes = Math.floor((context.parsed.y % 3600) / 60),
-                  seconds = Math.floor(context.parsed.y % 60);
-                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-              }
-            }
-          }
-        }
-      }
-      //
-      $('#max_' + index).text(this.secondsToDhms(maxValue));
-    }// fin if
+    if (indexChart == 4) $('#max_' + index).text(this.secondsToDhms(maxValue));
+  
     else{
       if (maxValue != '-Infinity' && !isNaN(maxValue)) $('#max_' + index).text(maxValue.toFixed(2));
     }
@@ -224,6 +191,18 @@ export class ComparaisonConducteursComponent implements OnInit {
     }
     else
       this.viewChartPrincipale=false;
+  }
+
+  traiterData(data:any, dates:any){
+    [...dates].forEach(date => {
+      if([...data].filter(dt=> dt.x== date).length==0){
+        data.push({x:date, y:0})
+      }
+    });
+
+    data = [...data].sort((a, b) => (new Date(a.x).getTime()) / 1000 - (new Date(b.x).getTime()) / 1000);
+    return [...data].map(d=> ({ x: this.formateDate(d.x), y: d.y}) );
+    
   }
 
   createChartPrincipale(infosChart: any) {
@@ -247,45 +226,19 @@ export class ComparaisonConducteursComponent implements OnInit {
         }
       }
     }
-    //02
-    infosChart.data = [...infosChart.data].sort((a, b) => (new Date(a.dateDebut).getTime()) / 1000 - (new Date(b.dateDebut).getTime()) / 1000);
+
     //
-    //console.log(infosChart.data[0].values);
-
-    const dates:any=[];
-    infosChart.data.forEach((chart: any) => {
-      var item = { data: chart.values, label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
-      console.log(chart.values);
-      //
-      [...chart.values].forEach(v=>{
-        const date=[...dates].filter(d=> d == v.x);
-
-        if(date.length==0) dates.push(v.x);
-        //console.log(date)
-        
+    let dates:any=[];
+    infosChart.data.forEach((chart: any) => { 
+      [...chart.values].forEach(val => {
+        if([...dates].filter(d => d== val.x).length==0) dates.push(val.x)
       });
-
-      //console.log('data',dates)
-
-      //
-      _infosChart.data.datasets.push(item);
-    })
-
-    dates.forEach((d:any)=>{
-      infosChart.data.forEach((chart: any) => {
-        var item = { data: chart.values, label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
-        console.log(chart.values);
-        //
-        [...chart.values].forEach(v=>{
-          const date=[...dates].filter(d=> d == v.x);
-  
-          if(date.length==0) dates.push(v.x);
-          //console.log(date)
-        });
-        //
-        //_infosChart.data.datasets.push(item);
-      })
-    })
+     })
+    //
+    infosChart.data.forEach((chart: any) => {
+       var item = { data: this.traiterData(chart.values, dates), label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
+       _infosChart.data.datasets.push(item);
+     })
 
     //03 Temps de conduite 
     if (infosChart.index == 4) {
@@ -328,7 +281,6 @@ export class ComparaisonConducteursComponent implements OnInit {
 
   changeData(){
     //01
-    //this.typeFilter=type; this.viewChartPrincipale=null;
     $('.tchart').removeClass('active'); $('.col-chart').removeClass('border-bottom');
     //02
     this.chartSelected.forEach((chart: any) => {
@@ -369,16 +321,6 @@ export class ComparaisonConducteursComponent implements OnInit {
   entierAleatoire(min: number, max: number){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-
-  /***  */
-  // changeType(type:any){
-  //   this.typeFilter = type;
-  //   if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datepipe.transform(this.date, 'yyyy-MM-dd');
-  //   else {
-  //       this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
-  //       this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
-  //     }
-  // }
 
   secondsToDhms(_seconds:number) {
     var hours = Math.floor(_seconds / 3600),

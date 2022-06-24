@@ -15,20 +15,18 @@ import { DatePipe } from "@angular/common";
 export class ComparaisonVehiculeComponent implements OnInit {
   //
   date: any = new Date();
-  typeFilter = 'jour'; filter: any = { vehicule_id: null, date_debut: this.datepipe.transform(this.date, 'yyyy-MM-dd'), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') };
+  typeFilter = 'periode'; filter: any = { vehicule_id: null, date_debut: this.datepipe.transform(this.date, 'yyyy-MM-dd'), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') };
   colors = ['56, 95, 158', '247, 189, 1', '20, 156, 56', '94, 202, 223'];
   viewChartPrincipale: any = null; maxVehicule = 2; maxChart = 5;
   vehicules: any[] = []; vehiculesSelected: any[] = [];
   chartSelected: any = [
-    { index: 1, checked: true, libelle: 'Vitesse maximale Km', slug: 'vitesse-moyenne', data: [] },
-    { index: 2, checked: true, libelle: 'Vitesse moyenne Km', slug: 'vitesse-moyenne', data: [] },
-    { index: 3, checked: true, libelle: 'Consommation carburant', slug: 'vitesse-moyenne', data: [] },
-    { index: 4, checked: true, libelle: 'Distance parcourue Km', slug: 'distance-parcourue', data: [] },
-    { index: 5, checked: true, libelle: 'Emission CO2 kg', slug: 'emission-co2', data: [], last: true },
+    { index: 1, libelle: 'Vitesse maximale Km', slug: 'vitesse-moyenne', data: [] },
+    { index: 2, libelle: 'Vitesse moyenne Km', slug: 'vitesse-moyenne', data: [] },
+    { index: 3, libelle: 'Consommation carburant', slug: 'vitesse-moyenne', data: [] },
+    { index: 4, libelle: 'Distance parcourue Km', slug: 'distance-parcourue', data: [] },
+    { index: 5, libelle: 'Emission CO2 kg', slug: 'emission-co2', data: [] },
     { index: 6, libelle: 'Temps de conduite', slug: 'temps-conduite', data: [] },
-    { index: 7, libelle: 'Consommation l/100km', slug: 'Consommation-l-100km', data: [] },
-    // { index: 8, libelle: 'Fuel consomme', slug: 'fuel-consomme', data: [] },
-    // { index: 9, libelle: 'Fuel gaspillé', slug: 'Fuel-gaspille', data: [] }
+    { index: 7, libelle: 'Consommation l/100km', slug: 'Consommation-l-100km', data: [] }
   ];
 
   constructor(
@@ -40,8 +38,12 @@ export class ComparaisonVehiculeComponent implements OnInit {
 
   ngOnInit(): void {
     Chart.register(...registerables);
-
     this.getVehiculeWitheEco();
+    //
+    for (let index = 0; index < this.maxChart; index++) this.chartSelected[index].checked=true;
+    this.chartSelected[this.maxChart-1].last=true;
+    //
+    this.changeType('periode');
   }
 
   getVehiculeWitheEco() {
@@ -111,21 +113,28 @@ export class ComparaisonVehiculeComponent implements OnInit {
       res => {
         this.chartSelected.forEach((chart: any) => {
           //MaxSpeed | Vitesse maximale Km
-          if (chart.index == 1) _data = res.maxSpeed.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average, z: v.date_heure }));
+          if (chart.index == 1) _data = res.maxSpeed.map((v: any) => ({ x: v.date_heure.toString(), y: v.average }));
           //SpeedAverage| Vitesse moyenne Km
-          else if (chart.index == 2) _data = res.speedAverage.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.average, z: v.date_heure }));
+          else if (chart.index == 2) _data = res.speedAverage.map((v: any) => ({ x: v.date_heure.toString(), y: v.average }));
           //Fuel | Consommation carburant
-          else if (chart.index == 3) _data = res.fuel.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.montant_carburant), z: v.date_heure }));
+          else if (chart.index == 3) _data = res.fuel.map((v: any) => ({ x: v.date_heure.toString(), y: Number(v.montant_carburant) }));
           //Distance | Distance parcourue Km
-          else if (chart.index == 4) _data = res.distance.map((v: any) => ({ x: this.formateDate(v.date_heure), y: v.distance, z: v.date_heure }));
+          else if (chart.index == 4) _data = res.distance.map((v: any) => ({ x: v.date_heure.toString(), y: v.distance }));
           //carbone | Emission CO2 kg
-          else if (chart.index == 5) _data = res.carbone.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.CO2g), z: v.date_heure }));
+          else if (chart.index == 5) _data = res.carbone.map((v: any) => ({ x: v.date_heure.toString(), y: Number(v.CO2g) }));
           //DriveTime | Temps de conduite
-          else if (chart.index == 6) _data = res.driveTime.map((v: any) => ({ x: this.formateDate(v.date_heure), y: this.toSeconds(v.duree), z: v.date_heure }));
+          else if (chart.index == 6) _data = res.driveTime.map((v: any) => ({ x: v.date_heure.toString(), y: this.toSeconds(v.duree) }));
           //L100 | Consommation l/100km
-          else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: this.formateDate(v.date_heure), y: Number(v.consommation), z: v.date_heure }));
+          else if (chart.index == 7) _data = res.l100.map((v: any) => ({ x: v.date_heure.toString(), y: Number(v.consommation) }));
           //
-          this.chartSelected[chart.index - 1].data.push({ values: _data, dateDebut: (_data[0]?.z) ?? 0, matricule: vehicule.matricule, color: vehicule.color });
+          const item = {
+            values: _data, 
+            matricule: vehicule.nom, 
+            color: vehicule.color
+          };
+
+          //console.log(_data);
+          this.chartSelected[chart.index - 1].data.push(item);
           this.createChart((vehicule.id + '' + chart.index), _data, vehicule, Math.max(..._data.map((d: any) => d.y)), chart.index);
         });//fin forEach
       }
@@ -173,42 +182,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
     };
 
     //temps de conduite par date 
-    if (indexChart == 6) {
-      _myChart.options = {
-        maintainAspectRatio: false,
-        scales: {
-          x: { display: false },
-          y: {
-            display: false,
-            grid: { drawOnChartArea: false },
-            ticks: {
-              callback: function (_seconds: any) {
-                var hours = Math.floor(_seconds / 3600),
-                  minutes = Math.floor((_seconds % 3600) / 60),
-                  seconds = Math.floor(_seconds % 60);
-
-                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-              }//;
-            }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function (context: any): any {
-                var hours = Math.floor(context.parsed.y / 3600),
-                  minutes = Math.floor((context.parsed.y % 3600) / 60),
-                  seconds = Math.floor(context.parsed.y % 60);
-                return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-              }
-            }
-          }
-        }
-      }
-      //
-      $('#max_' + index).text(this.secondsToDhms(maxValue));
-    }// fin if
+    if (indexChart == 6) $('#max_' + index).text(this.secondsToDhms(maxValue));
     else{
       if (maxValue != '-Infinity' && !isNaN(maxValue)) $('#max_' + index).text(maxValue.toFixed(2));
     }
@@ -225,6 +199,22 @@ export class ComparaisonVehiculeComponent implements OnInit {
     }
     else
       this.viewChartPrincipale = false;
+  }
+
+  traiterData(data:any, dates:any){
+    [...dates].forEach(date => {
+      if([...data].filter(dt=> dt.x== date).length==0){
+        data.push({x:date, y:0})
+      }
+    });
+
+    if(this.typeFilter=='jour')
+      data = [...data].sort((a, b) => Number(a.x) - Number(b.x));
+    else
+      data = [...data].sort((a, b) => (new Date(a.x).getTime()) / 1000 - (new Date(b.x).getTime()) / 1000);
+
+    return [...data].map(d=> ({ x: this.formateDate(d.x), y: d.y}) );
+    
   }
 
   //myChart:any = [];
@@ -250,12 +240,23 @@ export class ComparaisonVehiculeComponent implements OnInit {
       }
     }
     //02
-    infosChart.data = [...infosChart.data].sort((a, b) => (new Date(a.dateDebut).getTime()) / 1000 - (new Date(b.dateDebut).getTime()) / 1000);
+    // infosChart.data = [...infosChart.data].sort((a, b) => (new Date(a.dateDebut).getTime()) / 1000 - (new Date(b.dateDebut).getTime()) / 1000);
 
+    // infosChart.data.forEach((chart: any) => {
+    //   var item = { data: chart.values, label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
+    //   _infosChart.data.datasets.push(item);
+    // })
+    let dates:any=[];
+    infosChart.data.forEach((chart: any) => { 
+      [...chart.values].forEach(val => {
+        if([...dates].filter(d => d== val.x).length==0) dates.push(val.x)
+      });
+     })
+    //
     infosChart.data.forEach((chart: any) => {
-      var item = { data: chart.values, label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
-      _infosChart.data.datasets.push(item);
-    })
+       var item = { data: this.traiterData(chart.values, dates), label: chart.matricule, borderColor: 'rgba(' + chart.color + ',1)' };
+       _infosChart.data.datasets.push(item);
+     })
 
     //03 Temps de conduite 
     if (infosChart.index == 6) {
@@ -297,7 +298,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
   }
 
   changeData(type: any) {
-    //if (type == "jour") this.filter.date_fin = this.filter.date_debut;
+    if (type == "jour") this.filter.date_fin = this.filter.date_debut;
     //01
     this.typeFilter = type; this.viewChartPrincipale = null;
     $('.tchart').removeClass('active'); $('.col-chart').removeClass('border-bottom');

@@ -124,3 +124,7 @@ a.nav-link.active {
     width: 250px;
     float: right;
 }
+
+.container-fluid{
+    width: 100% !important;
+}

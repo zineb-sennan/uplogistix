@@ -1,6 +1,9 @@
 <div class="row">
     <div class="col-md-12">
         <div class="col-auto">
+            <small class="text-primary mb-6 h5">
+                {{filter.conducteur}}: du {{filter.date_debut | date:'dd/MM/yyyy'}}, au {{filter.date_fin | date:'dd/MM/yyyy'}}
+            </small>
             <!-- Dropdown -->
             <div class="dropdown float-right">
                 <!-- Toggle -->
@@ -17,8 +20,8 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="vehicule_id">Véhicules</label>
-                                            <select class="form-select form-select-sm" [(ngModel)]="filter.vehicule_id" name="vehicule_id">
-                                                <option>Veuillez choisir ...</option>
+                                            <select class="form-select form-select-sm" [(ngModel)]="filter.vehicule_id" name="vehicule_id" (change)="changeConducteur($event)">
+                                                <option disabled>Veuillez choisir ...</option>
                                                 <option value="{{conducteur.vehicule_id}}" *ngFor="let conducteur of conducteurs">{{conducteur.prenom}} {{conducteur.nom}}</option>
                                             </select>
                                         </div>
@@ -30,25 +33,25 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <form class="row gx-0 mb-3 frm-search-jms" #searchForm="ngForm">
-                                            <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
-                                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="changeType('jour')">
+                                            <!-- <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
+                                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" >
                                                     <a class="nav-link active" href="#" data-bs-toggle="tab">
                                                         Jour
                                                     </a>
                                                 </li>
-                                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="changeType('periode')">
+                                                <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2">
                                                     <a class="nav-link" href="#" data-bs-toggle="tab">
                                                         Période
                                                     </a>
                                                 </li>
-                                            </ul>
+                                            </ul> -->
                                             <!-- *** *** -->
                                             <div class="input-group">
                                                 <!-- jour -->
-                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='jour'">
+                                                <!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut"> -->
                                                 <!-- periode -->
-                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='periode'">
-                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin" *ngIf="typeFilter=='periode'">
+                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut">
+                                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin">
                                             </div>
                                             <!-- -->
                                         </form>
@@ -58,7 +61,7 @@
                             </div>
                         </div>
                         <!-- Button -->
-                        <button class="btn w-100 btn-outline-primary" type="submit">
+                        <button class="btn w-100 btn-outline-primary" type="button" (click)="getResumeConducteur()">
                             Appliquer le filtre
                         </button>
                     </div>
@@ -72,7 +75,7 @@
 <div class="row" style="padding: 0 10px;">
     <div class="main-card mb-3 card">
         <div class="no-gutters row">
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-4">
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
@@ -85,11 +88,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-4">
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
-                            <div class="widget-numbers text-warning">{{infosGlobale.distanceParcourue}} Km</div>
+                            <div class="widget-numbers text-warning">{{infosGlobale.distanceParcourue?.toFixed(0)}} Km</div>
                         </div>
                         <div class="widget-content-left">
                             <div class="widget-heading">Distance parcourue</div>
@@ -98,7 +101,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-4">
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
@@ -111,7 +114,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-md-block col-md-6 col-xl-3">
+            <!-- <div class="d-md-block col-md-6 col-xl-3">
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
@@ -119,11 +122,10 @@
                         </div>
                         <div class="widget-content-left">
                             <div class="widget-heading">Excède vitesse</div>
-                            <!-- <div class="widget-subheading">Lorem ipsum dolor</div> -->
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -145,19 +147,15 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-header-title">
-                        ...
+                        {{dataComportement[0]?.x}}
                     </h4>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <circle-progress style="display: block; margin:auto;" [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
+                            <circle-progress style="display: block; margin:auto;" [percent]="dataComportement[0]?.y" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
                             </circle-progress>
                         </div>
-                        <!-- <div class="col-md-6">
-                            <circle-progress class="text-center" [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
-                            </circle-progress>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -167,15 +165,13 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-header-title">
-                        ...
+                        {{dataComportement[1]?.x}}
                     </h4>
                 </div>
                 <div class="card-body">
                     <div>
-                        <circle-progress [percent]="50" [space]="-10" [radius]="52" [innerStrokeWidth]="7" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'rgba(72, 130, 194, 0.3)'" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
+                        <circle-progress [percent]="dataComportement[1]?.y" [space]="-10" [radius]="52" [innerStrokeWidth]="7" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'rgba(72, 130, 194, 0.3)'" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
                         </circle-progress>
-                        <!-- <circle-progress [percent]="70" [space]="-10" [radius]="50" [innerStrokeWidth]="5" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'rgba(72, 130, 194, 0.3)'" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
-                        </circle-progress> -->
                     </div>
                 </div>
             </div>
@@ -188,15 +184,13 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-header-title">
-                        ...
+                        {{dataComportement[2]?.x}}
                     </h4>
                 </div>
                 <div class="card-body">
                     <div>
-                        <circle-progress [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [outerStrokeColor]="'#dd0417'" [innerStrokeColor]="'rgba(221, 4, 23, 0.3)'" [showSubtitle]="false">
+                        <circle-progress [percent]="dataComportement[2]?.y" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [outerStrokeColor]="'#dd0417'" [innerStrokeColor]="'rgba(221, 4, 23, 0.3)'" [showSubtitle]="false">
                         </circle-progress>
-                        <!-- <circle-progress [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [outerStrokeColor]="'#dd0417'" [innerStrokeColor]="'rgba(221, 4, 23, 0.3)'" [showSubtitle]="false">
-                        </circle-progress> -->
                     </div>
                 </div>
             </div>
@@ -206,15 +200,13 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-header-title">
-                        ...
+                        {{dataComportement[3]?.x}}
                     </h4>
                 </div>
                 <div class="card-body">
                     <div>
-                        <circle-progress [percent]="50" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [outerStrokeColor]="'#ec6708'" [innerStrokeColor]="'rgba(236, 103, 8, 0.3)'" [showSubtitle]="false">
+                        <circle-progress [percent]="dataComportement[3]?.y" [space]="-10" [radius]="50" [animation]="true" [animationDuration]="1000" [outerStrokeColor]="'#ec6708'" [innerStrokeColor]="'rgba(236, 103, 8, 0.3)'" [showSubtitle]="false">
                         </circle-progress>
-                        <!-- <circle-progress [percent]="70" [space]="-10" [radius]="50" [innerStrokeWidth]="5" [outerStrokeColor]="'#ec6708'" [innerStrokeColor]="'rgba(236, 103, 8, 0.3)'" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
-                        </circle-progress> -->
                     </div>
                 </div>
             </div>

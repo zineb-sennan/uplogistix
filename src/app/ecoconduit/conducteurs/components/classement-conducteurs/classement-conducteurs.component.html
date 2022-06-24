@@ -25,7 +25,7 @@
                                 <div class="row align-items-center g-0">
                                     <div class="col-auto">
                                         <div class="progress" style="width: 150px; height: 11px;">
-                                            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" ngClass="{{conducteur.moy_score < 70 ? 'bg-danger' : ''}}" role="progressbar" [ngStyle]="{ 'width': conducteur.moy_score <= 20 ? '30%' : conducteur.moy_score+'%' }">{{conducteur.moy_score.toFixed(2)}}%</div>
+                                            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" ngClass="{{conducteur.moy_score < 70 ? 'bg-danger' : ''}}" role="progressbar" [ngStyle]="{ 'width': conducteur.moy_score <= 25 ? '35%' : conducteur.moy_score+'%' }">{{conducteur.moy_score.toFixed(2)}}%</div>
                                         </div>
                                     </div>
                                 </div>
@@ -44,7 +44,7 @@
         <div class="card" *ngIf="classement.min.length > 0 || classement.max.length > 0">
             <div class="card-body">
                 <!-- List group -->
-                <div class="list-group list-group-flush list-group-activity my-n3" *ngIf="classement.max.length > 0">
+                <div class="list-group list-group-flush list-group-activity my-n3" *ngIf="classement.min.length > 0">
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-auto">
@@ -58,9 +58,8 @@
                                 <h5 class="mb-1">
                                     Conducteur le plus dangereux
                                 </h5>
-                                <p class="small text-gray-700 mb-0" *ngFor="let classement_max of classement.max">
-                                    {{classement_max.matricule}} &nbsp;
-                                    <small class="text-muted"> {{classement_max.marque}} </small>
+                                <p class="small text-gray-700 mb-0" *ngFor="let classement_min of classement.min">
+                                    {{classement_min.nom_complet}}
                                 </p>
                             </div>
                         </div>
@@ -68,7 +67,7 @@
                     </div>
                 </div>
                 <!-- ./list-group -->
-                <div class="list-group list-group-flush list-group-activity my-n3" *ngIf="classement.min.length > 0">
+                <div class="list-group list-group-flush list-group-activity my-n3" *ngIf="classement.max.length > 0">
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-auto">
@@ -82,8 +81,8 @@
                                 <h5 class="mb-1">
                                     Conducteur le moins dangereux
                                 </h5>
-                                <p class="small text-gray-700 mb-0" *ngFor="let classement_min of classement.min">
-                                    {{classement_min.nom_complet}}
+                                <p class="small text-gray-700 mb-0" *ngFor="let classement_max of classement.max">
+                                    {{classement_max.nom_complet}}
                                 </p>
                             </div>
                         </div>

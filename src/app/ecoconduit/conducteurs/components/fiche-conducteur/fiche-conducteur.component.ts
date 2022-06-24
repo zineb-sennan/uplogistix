@@ -14,8 +14,10 @@ import { GeoLocalisationService } from 'src/app/_services/geolocalisation.servic
 export class FicheConducteurComponent implements OnInit {
   //
   date=new Date(); infosGlobale:any = { dureeConduite: 0, distanceParcourue:0, nbTrajets:0 }; conducteurs:any = [];
-  typeFilter='jour'; filter: any = { vehicule_id: null, date_debut: this.datepipe.transform(this.date, 'yyyy-MM-dd'), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') };
-  
+  //typeFilter='jour'; 
+  filter: any = { vehicule_id: null, date_debut: this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd'), conducteur:'' };
+  dataComportement:any=[];
+
   constructor(
     private datepipe:DatePipe,
     private geoLocalisationService:GeoLocalisationService,
@@ -24,8 +26,6 @@ export class FicheConducteurComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.charTest();
-
     //
     this.getAllConducteurs();
 
@@ -37,15 +37,15 @@ export class FicheConducteurComponent implements OnInit {
       res=> {
         this.conducteurs=[...res].filter(c=> c.vehicule_id);
         if(this.conducteurs.length > 0){
+          this.filter.conducteur = this.conducteurs[0].prenom +' '+ this.conducteurs[0].nom;
           this.filter.vehicule_id = this.conducteurs[0].vehicule_id;
-          this.getResumeVehicule();
+          this.getResumeConducteur();
         } 
       }
     )
   }
 
-  getResumeVehicule(){
-    console.log(this.filter);
+  getResumeConducteur(){
     //01
     this.geoLocalisationService.getAnalyseVehicule(this.filter).subscribe(
       async res=>{
@@ -54,26 +54,64 @@ export class FicheConducteurComponent implements OnInit {
       }
     )
     //02
-
     this.ecoconduiteService.historiqueVehicule(9, {date_debut: this.filter.date_debut+"T00:00:00", date_fin: this.filter.date_fin+"T23:59:59"}).subscribe(
       res=>  this.infosGlobale.nbTrajets = [...res.records].filter(r=> r.genre == "trip").length
     )
+    //03
+    this.geoLocalisationService.analyseConducteur(this.filter).subscribe(
+      res=> {
+        this.dataComportement=[];
+
+        this.dataComportement.push({
+          x: "Score d'excès de vitesse",
+          y: this.claculMoy(res.speedScore)
+        })
+        this.dataComportement.push({
+          x: "Freinage brusque",
+          y: this.claculMoy(res.freinage)
+        })
+        this.dataComportement.push({
+          x: "Comportement excessif",
+          y: this.claculMoy(res.virrage_serre)
+        })
+        this.dataComportement.push({
+          x: "Accélération brusque",
+          y: this.claculMoy(res.acceleration)
+        })
+
+        this.charComportement(this.dataComportement);
+
+      }
+    )
   }
 
-  charTest(){
-    let chart:any=$('#chart_test');
-    new Chart(chart,{
+  changeConducteur(e:any){
+    this.filter.conducteur = [...this.conducteurs].filter(c=> c.vehicule_id == e.target.value).map(c=> c.prenom + ' '+ c.nom);
+    this.filter.vehicule_id = e.target.value;
+  }
+
+  claculMoy(data:any){
+    const data_def_0 = [...data].filter(d=> d.score != 0);
+    return [...data_def_0].length > 0 ? [...data_def_0].reduce((prev:any,next:any)=>prev+next.score,0) / [...data_def_0].length: 0
+  }
+
+  myChart:any=null;
+  charComportement(_data:any){
+    if (this.myChart) this.myChart.destroy();
+
+    //let chart:any=$('#chart_test');
+
+    this.myChart= new Chart(<any>$('#chart_test'),{
       type:'radar',
       data:{
         datasets:[
           {
-            data:[ 100, 80, 50, 100 ],
+            data: [..._data].map(d=> d.y),
             label:"chart",
-            //backgroundColor: 'rgb(44, 123, 228)',
             borderColor: 'rgba(44, 123, 228, 0.5)'
           }
         ],
-        labels:["Score consommation", "Freinage brusque", "Comportement excessif", "Accélération brusque"]
+        labels: [..._data].map(d=> d.x)
       },
       options:{
         maintainAspectRatio:false,
@@ -90,15 +128,6 @@ export class FicheConducteurComponent implements OnInit {
         }
       },
     })
-  }
-
-  changeType(type:any){
-    this.typeFilter = type;
-    if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datepipe.transform(this.date, 'yyyy-MM-dd');
-    else {
-        this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
-        this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
-      }
   }
 
 

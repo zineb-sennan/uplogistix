@@ -5,7 +5,7 @@
                 <div class="form-group" style="width: 300px; float:right; margin-bottom: 50px;">
                     <label for="vehicule_id">Conducteurs</label>
                     <select class="form-select form-select-sm" id="vehicule_id" (change)="changeConducteur($event)" [(ngModel)]="filter.vehicule_id" name="vehicule_id">
-                        <option>Veuillez choisir ...</option>
+                        <option disabled>Veuillez choisir ...</option>
                         <option value="{{conducteur.vehicule_id}}" *ngFor="let conducteur of conducteurs">{{conducteur.prenom}} {{conducteur.nom}}</option>
                     </select>
                 </div>
@@ -87,7 +87,7 @@
             <!-- ./row fiche vehicule -->
             <div class="row">
                 <div class="col-md-12">
-                    <small class="text-muted mb-6 h4">
+                    <small class="text-primary mb-6 h5">
                         {{filter.conducteur}}: du {{filter.date_debut | date:'dd/MM/yyyy'}}, au {{filter.date_fin | date:'dd/MM/yyyy'}}
                     </small>
                     <!--- **** **** **** **** **** **** *** **** **** *** -->
@@ -142,7 +142,7 @@
                         </form>
                     </div>
                     <!-- ./select -->
-                    <div class="card bg">
+                    <div class="card bg bg-white">
                         <div class="card-header">
                             <canvas id="chart_conducteur"></canvas>
                         </div>

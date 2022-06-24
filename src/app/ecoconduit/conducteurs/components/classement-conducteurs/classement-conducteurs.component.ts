@@ -32,7 +32,7 @@ export class ClassementConducteursComponent implements OnInit {
     this.classement.minValeur = Math.min(...this.conducteurs.map((d: any) => d.moy_score));
 
     if(this.classement.maxValeur > 70) this.classement.max = [...this.conducteurs].filter(v=> v.moy_score == this.classement.maxValeur);
-    if(this.classement.minValeur < 30) this.classement.min = [...this.conducteurs].filter(v=> v.moy_score == this.classement.maxValeur);
+    if(this.classement.minValeur < 30) this.classement.min = [...this.conducteurs].filter(v=> v.moy_score == this.classement.minValeur);
   }
 
   private getScoreByConducteur(conducteur: any): any {

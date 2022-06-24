@@ -6,7 +6,7 @@
                 <div class="form-group" style="width: 300px; float: right;">
                     <label for="vehicule_id">Véhicules</label>
                     <select class="form-select form-select-sm" [(ngModel)]="filter.vehicule_id" name="vehicule_id" (change)="changeVehicule($event)">
-                        <option value=null>Veuillez choisir ...</option>
+                        <option value=null disabled>Veuillez choisir ...</option>
                         <option value="{{vehicule.id}}" *ngFor="let vehicule of vehicules">{{vehicule.matricule}}
                         </option>
                     </select>
@@ -132,12 +132,12 @@
                                                         <div class="col">
                                                             <ul class="nav nav-tabs nav-tabs-sm card-header-tabs mb-3">
                                                                 <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="changeType('jour')">
-                                                                    <a class="nav-link active" href="#" data-bs-toggle="tab">
+                                                                    <a class="nav-link" href="#" data-bs-toggle="tab">
                                                                         Jour
                                                                     </a>
                                                                 </li>
                                                                 <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="changeType('periode')">
-                                                                    <a class="nav-link" href="#" data-bs-toggle="tab">
+                                                                    <a class="nav-link active" href="#" data-bs-toggle="tab">
                                                                         Période
                                                                     </a>
                                                                 </li>
@@ -171,7 +171,9 @@
                         </div>
                         <div class="card-body">
                             <h4 class="card-header-title txt-card">
-                                Chart selectionner <span class="badge badge-warning bg-primary">Max: <span id="maxVal">_</span> </span>
+                                {{ filter.typeFilter =='speedAverage'? 'Vitesse moyenne' : (filter.typeFilter =='fuel'? 'Consommation carburant' : (filter.typeFilter =='distance'? 'Distance parcourue':(filter.typeFilter =='carbone'? 'Emission CO2':(filter.typeFilter
+                                =='driveTime'? 'Temps de conduite':(filter.typeFilter =='l100'? 'Consommation l/100km':(filter.typeFilter =='maxSpeed'? 'Vitesse maximale':'')))))) }}
+                                 <span class="badge badge-warning bg-primary">Max: <span id="maxVal">_</span> </span>
                             </h4>
 
                         </div>

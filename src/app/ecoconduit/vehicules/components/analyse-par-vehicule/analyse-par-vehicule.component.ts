@@ -33,9 +33,10 @@ export class AnalyseParVehiculeComponent implements OnInit {
     this.vehicules = (await this.vehiculeService.getAll().toPromise()).filter((v: any) => v.eco_conduite);
     if(this.vehicules.length > 0) { this.filter.vehicule_id=this.vehicules[0].id;  this.filter.matricule=this.vehicules[0].matricule;};
     //03- remplissage des données
-    this.filterData();
     this.getEvolutionScore();
-
+    //
+    this.changeType('periode');
+    this.filterData();
   }
   
 
@@ -66,14 +67,14 @@ export class AnalyseParVehiculeComponent implements OnInit {
 
   formateDate(data:number){
     if(this.typeFilter=='jour') return data.toString().padStart(2, '0')+':00'
-    return this.datepipe.transform(data,'dd-MM-yyyy')
+    return this.datepipe.transform(data,'dd/MM')
   }
   
   getEvolutionScore(){
     const record = { vehicule_id: this.filter.vehicule_id, date_debut: this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd') }
     this.ecoconduiteService.evolutionScoreByVehicule(record).subscribe(
       res =>{
-        this.genererGraphe('chart_score',res.map((v:any)=> ({ x:this.datepipe.transform(v.date_operation, 'dd-MM-yyyy'), y: Number(v.score) })),0);
+        this.genererGraphe('chart_score',res.map((v:any)=> ({ x:this.datepipe.transform(v.date_operation, 'dd/MM'), y: Number(v.score) })),0);
         this.score.maximale = Math.max(...res.map((d: any) => d.score));
         this.score.minimal = Math.min(...res.map((d: any) => d.score));
       } 

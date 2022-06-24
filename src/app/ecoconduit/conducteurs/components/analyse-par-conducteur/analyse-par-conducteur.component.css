@@ -14,7 +14,7 @@ ul li {
     position: relative;
 }
 
-canvas#chart_score {
+canvas#chart_score, #chart_conducteur{
     height: 220px !important;
 }
 

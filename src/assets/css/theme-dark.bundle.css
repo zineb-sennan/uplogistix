@@ -8984,7 +8984,7 @@ fieldset:disabled .btn {
 }
 
 .invisible {
-    visibility: hidden!important;
+    visibility: hidden;
 }
 
 .border-top-2 {

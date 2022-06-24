@@ -129,7 +129,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
           //
           const item = {
             values: _data, 
-            matricule: vehicule.nom, 
+            matricule: vehicule.matricule, 
             color: vehicule.color
           };
 
@@ -148,6 +148,9 @@ export class ComparaisonVehiculeComponent implements OnInit {
 
   myChart: any = [];
   createChart(index: any, _data: any, vehicule: any, maxValue: any, indexChart: Number) {
+    ///console.log(''index);
+
+
     if (this.myChart[index]) this.myChart[index].destroy();
 
     //
@@ -181,13 +184,15 @@ export class ComparaisonVehiculeComponent implements OnInit {
       }
     };
 
+    this.myChart[index] = new Chart(<any>$('#chart_' + index), _myChart);
+
     //temps de conduite par date 
     if (indexChart == 6) $('#max_' + index).text(this.secondsToDhms(maxValue));
     else{
       if (maxValue != '-Infinity' && !isNaN(maxValue)) $('#max_' + index).text(maxValue.toFixed(2));
     }
 
-    this.myChart[index] = new Chart(<any>$('#chart_' + index), _myChart);
+    
   }
 
   remplissageChartPrincipale(index: any) {

@@ -48,6 +48,8 @@ export class AnalyseParVehiculeComponent implements OnInit {
   }
 
   filterData(){
+    if (this.typeFilter=='jour')  this.filter.date_fin = this.filter.date_debut;
+
     this.geoLocalisationService.getAnalyseVehicule(this.filter).subscribe(
       res => {
         var _data=null;
@@ -160,7 +162,7 @@ export class AnalyseParVehiculeComponent implements OnInit {
 
   changeType(type:any){
     this.typeFilter = type;
-    if (type == "jour")  this.filter.date_fin = this.filter.date_debut=this.datepipe.transform(this.date, 'yyyy-MM-dd');
+    if (type == "jour")  this.filter.date_fin = this.filter.date_debut = this.datepipe.transform(this.date, 'yyyy-MM-dd');
     else {
         this.filter.date_debut = this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd");
         this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');

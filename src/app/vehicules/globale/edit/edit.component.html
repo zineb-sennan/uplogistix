@@ -73,7 +73,7 @@
                                                     Matricule
                                                     <strong class="text-danger" *ngIf="!singleVehicule.matricule">*</strong>
                                                 </label>
-                                                <input type="text" class="form-control" name="matricule" [(ngModel)]="singleVehicule.matricule">
+                                                <input type="text" class="form-control" name="matricule" [(ngModel)]="singleVehicule.matricule" required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Catégorie</label>
@@ -106,8 +106,11 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label class="form-label">Compteur initial (km)</label>
-                                                <input type="number" class="form-control" name="compteur_initial" [(ngModel)]="singleVehicule.compteur_initial">
+                                                <label class="form-label">
+                                                    Compteur initial (km)
+                                                    <strong class="text-danger" *ngIf="!singleVehicule.compteur_initial">*</strong>
+                                                </label>
+                                                <input type="number" class="form-control" name="compteur_initial" [(ngModel)]="singleVehicule.compteur_initial" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-12">
@@ -145,8 +148,11 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label class="form-label">Niveau du réservoir initiale</label>
-                                                <input type="number" class="form-control" name="niveau_reservoir" [(ngModel)]="singleVehicule.niveau_reservoir">
+                                                <label class="form-label">
+                                                    Niveau du réservoir initiale
+                                                    <strong class="text-danger" *ngIf="!singleVehicule.niveau_reservoir">*</strong>
+                                                </label>
+                                                <input type="number" class="form-control" name="niveau_reservoir" [(ngModel)]="singleVehicule.niveau_reservoir" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-12">
@@ -365,7 +371,7 @@
                                 </div>
                                 <hr class="mt-4 mb-4">
                                 <small class="text-danger">*: Ce champ est obligatoire.</small>
-                                <button type="submit" class="btn btn-primary w-10 btn-float">
+                                <button type="submit" class="btn btn-primary w-10 btn-float" [disabled]="!vehiculeForm.valid">
                                     Enregistrer
                                 </button>
                                 <button type="button" class="btn btn-secondary w-10 btn-float" (click)="fermer()">

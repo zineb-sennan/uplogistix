@@ -53,7 +53,7 @@
         </div>
     </form>
 
-    <h6 *ngIf="vehicule?.matricule">Matricule (<b>{{vehicule.matricule}}</b>)</h6>
+    <h4 *ngIf="vehicule?.matricule">Matricule (<b>{{vehicule.matricule}}</b>)</h4>
     <div class="timeline" *ngIf="historique['records']?.length > 0">
         <div class="entry" *ngFor="let item of historique['records']">
             <div [ngClass]="item.genre == 'trip' ? 'title2' : 'title'">

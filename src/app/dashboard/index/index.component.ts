@@ -184,16 +184,6 @@ export class IndexComponent implements OnInit {
     )
   }
 
-  // getScoreByVehicule(vehicule_id: number, matricule: string) {
-  //   const record = { vehicule_id: vehicule_id, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') }
-  //   this.ecoconduiteService.scoreByVehicule(record).subscribe(
-  //     res => {
-  //       this.vehiculesByScore.push({ id: vehicule_id, matricule, score: res.new_score ?? '100.00' });
-  //       this.vehiculesByScore = [...this.vehiculesByScore].sort((a, b) => b.score - a.score);
-  //     }
-  //   )
-  // }
-
   depensesParType(){
     this.vehiculeDepensesService.getDepensesParType({date_debut:null, date_fin:null}).subscribe(
       res => {

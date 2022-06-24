@@ -13,7 +13,7 @@ import { GeoLocalisationService } from 'src/app/_services/geolocalisation.servic
 })
 export class FicheConducteurComponent implements OnInit {
   //
-  date=new Date(); infosGlobale:any = { dureeConduite: 0, distanceParcourue:0, nbTrajets:0 }; conducteurs:any = [];
+  date=new Date(); infosGlobale:any = {scoreGlobal:0, dureeConduite: 0, distanceParcourue:0, nbTrajets:0 }; conducteurs:any = [];
   //typeFilter='jour'; 
   filter: any = { vehicule_id: null, date_debut: this.datepipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datepipe.transform(this.date, 'yyyy-MM-dd'), conducteur:'' };
   dataComportement:any=[];
@@ -28,7 +28,6 @@ export class FicheConducteurComponent implements OnInit {
   ngOnInit(): void {
     //
     this.getAllConducteurs();
-
   }
 
 
@@ -79,6 +78,8 @@ export class FicheConducteurComponent implements OnInit {
           y: this.claculMoy(res.acceleration)
         })
 
+        this.infosGlobale.scoreGlobal = (this.dataComportement[0].y+ this.dataComportement[1].y + this.dataComportement[2].y+ this.dataComportement[3].y)/4
+
         this.charComportement(this.dataComportement);
 
       }
@@ -92,14 +93,12 @@ export class FicheConducteurComponent implements OnInit {
 
   claculMoy(data:any){
     const data_def_0 = [...data].filter(d=> d.score != 0);
-    return [...data_def_0].length > 0 ? [...data_def_0].reduce((prev:any,next:any)=>prev+next.score,0) / [...data_def_0].length: 0
+    return [...data_def_0].length > 0 ? [...data_def_0].reduce((prev:any,next:any)=>prev+next.score,0) / [...data_def_0].length: 100
   }
 
   myChart:any=null;
   charComportement(_data:any){
     if (this.myChart) this.myChart.destroy();
-
-    //let chart:any=$('#chart_test');
 
     this.myChart= new Chart(<any>$('#chart_test'),{
       type:'radar',
@@ -129,7 +128,6 @@ export class FicheConducteurComponent implements OnInit {
       },
     })
   }
-
 
   /*** *** ** ** */
   toSeconds(str:string) {

@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="col-auto">
-            <small class="text-muted mb-6 h5">
+            <small class="text-primary mb-6 h5">
                 <br>
                 {{filter.matricule}} du: {{filter.date_debut | date:'dd/MM/yyyy'}} au: {{filter.date_fin |
                 date:'dd/MM/yyyy'}}
@@ -9,11 +9,13 @@
             <!-- Dropdown -->
             <div class="dropdown float-right">
                 <!-- Toggle -->
-                <button class="btn btn-primary shadow" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-primary shadow" type="button" data-bs-toggle="dropdown"
+                    data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                     <i class="fa-solid fa-arrow-down-wide-short"></i> Fiche de ...
                 </button>
                 <!-- Menu -->
-                <form class="dropdown-menu dropdown-menu-end dropdown-menu-card" #filerForm="ngForm" (ngSubmit)="filterFun()">
+                <form class="dropdown-menu dropdown-menu-end dropdown-menu-card" #filerForm="ngForm"
+                    (ngSubmit)="filterFun()">
                     <div class="card-body">
                         <!-- List group -->
                         <div class="list-group list-group-flush mt-n4 mb-4">
@@ -22,7 +24,9 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="vehicule_id">Véhicules</label>
-                                            <select class="form-select form-select-sm" id="vehicule_id" [(ngModel)]="filter.vehicule_id" name="vehicule_id" (change)="changeVehicule($event)">
+                                            <select class="form-select form-select-sm" id="vehicule_id"
+                                                [(ngModel)]="filter.vehicule_id" name="vehicule_id"
+                                                (change)="changeVehicule($event)">
                                                 <option value="null" disabled>Veuillez choisir ...</option>
                                                 <option value="{{vehicule.id}}" *ngFor="let vehicule of vehicules">
                                                     {{vehicule.matricule}}</option>
@@ -38,12 +42,16 @@
                                         <div class="row align-items-center">
                                             <div class="col">
                                                 <ul class="nav nav-tabs nav-tabs-sm card-header-tabs">
-                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="0" (click)="changeType('jour')">
+                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart"
+                                                        data-trigger="click" data-action="toggle" data-dataset="0"
+                                                        (click)="changeType('jour')">
                                                         <a class="nav-link active" href="#" data-bs-toggle="tab">
                                                             Jour
                                                         </a>
                                                     </li>
-                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart" data-trigger="click" data-action="toggle" data-dataset="2" (click)="changeType('periode')">
+                                                    <li class="nav-item" data-toggle="chart" data-target="#salesChart"
+                                                        data-trigger="click" data-action="toggle" data-dataset="2"
+                                                        (click)="changeType('periode')">
                                                         <a class="nav-link" href="#" data-bs-toggle="tab">
                                                             Période
                                                         </a>
@@ -52,10 +60,16 @@
                                                 <!-- *** *** -->
                                                 <div class="input-group mb-3 mt-3">
                                                     <!-- jour -->
-                                                    <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='jour'">
+                                                    <input type="date" class="form-control form-control-sm"
+                                                        [(ngModel)]="filter.date_debut" name="date_debut"
+                                                        *ngIf="typeFilter=='jour'">
                                                     <!-- periode -->
-                                                    <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut" *ngIf="typeFilter=='periode'">
-                                                    <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin" *ngIf="typeFilter=='periode'">
+                                                    <input type="date" class="form-control form-control-sm"
+                                                        [(ngModel)]="filter.date_debut" name="date_debut"
+                                                        *ngIf="typeFilter=='periode'">
+                                                    <input type="date" class="form-control form-control-sm"
+                                                        [(ngModel)]="filter.date_fin" name="date_fin"
+                                                        *ngIf="typeFilter=='periode'">
                                                 </div>
                                                 <!-- -->
                                             </div>
@@ -84,7 +98,8 @@
                 <div class="widget-content">
                     <div class="widget-content-wrapper">
                         <div class="widget-content-right ml-0 mr-3">
-                            <div class="widget-numbers text-success">{{infosGlobale.distanceParcourue.toFixed()}} Km</div>
+                            <div class="widget-numbers text-success">{{infosGlobale.distanceParcourue?.toFixed()}} Km
+                            </div>
                         </div>
                         <div class="widget-content-left">
                             <div class="widget-heading">Distance parcourue</div>
@@ -132,6 +147,8 @@
                 </h4>
             </div>
             <div class="card-body">
+                <strong class="float-right"> Émissions= {{infosGlobale.class_energetique?.toFixed(2)}} g/CO2/km</strong>
+                <br>
                 <div class="energy-class row">
                     <div class="col-md-6">
                         <div class="eca"></div>
@@ -142,14 +159,16 @@
                         <div class="ecf"></div>
                         <div class="ecg"></div>
                     </div>
-                    <div class="col-md-6" style="transform: rotate(180deg);">
-                        <div class="_ecg invisible"></div>
-                        <div class="_ecf invisible"></div>
-                        <div class="_ece invisible"></div>
-                        <div class="_ecd invisible"></div>
-                        <div class="_ecc"></div>
-                        <div class="_ecb invisible"></div>
-                        <div class="_eca invisible"></div>
+                    <div class="col-md-6">
+                        <div style="transform: rotate(180deg);">
+                            <div class="_ecg invisible" [ngClass]="{'visible': infosGlobale.class_energetique>250  }"></div>
+                            <div class="_ecf invisible" [ngClass]="{'visible': infosGlobale.class_energetique>=201 && infosGlobale.class_energetique<=250}"></div>
+                            <div class="_ece invisible" [ngClass]="{'visible': infosGlobale.class_energetique>=161 && infosGlobale.class_energetique<=200}"></div>
+                            <div class="_ecd invisible" [ngClass]="{'visible': infosGlobale.class_energetique>=141 && infosGlobale.class_energetique<=160}"></div>
+                            <div class="_ecc invisible" [ngClass]="{'visible': infosGlobale.class_energetique>=121 && infosGlobale.class_energetique<=140}"></div>
+                            <div class="_ecb invisible" [ngClass]="{'visible': infosGlobale.class_energetique>=101 && infosGlobale.class_energetique<=120}"></div>
+                            <div class="_eca invisible" [ngClass]="{'visible': infosGlobale.class_energetique<=100 && infosGlobale.length> 0}"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -165,7 +184,7 @@
                 </div>
                 <div class="card-body">
                     <h3 class="text-center">
-                        {{infosGlobale.consommationMoyenne.toFixed(2)}}
+                        {{infosGlobale.consommationMoyenne.toFixed(2)}} <small>L/100Km</small> 
                     </h3>
                 </div>
             </div>
@@ -180,7 +199,7 @@
                 </div>
                 <div class="card-body">
                     <h3 class="text-center">
-                        {{infosGlobale.emissionCo2?.toFixed(2)}}
+                        {{infosGlobale.emissionCo2?.toFixed(2)}} <small>Kg </small>
                     </h3>
                 </div>
             </div>
@@ -198,7 +217,7 @@
                 </div>
                 <div class="card-body">
                     <h3 class="text-center">
-                        {{infosGlobale.scoreGlobale}}%
+                        {{infosGlobale.scoreGlobale}} <small>%</small>
                     </h3>
                 </div>
             </div>
@@ -213,7 +232,7 @@
                 </div>
                 <div class="card-body">
                     <h3 class="text-center">
-                        {{infosGlobale.empreinteCarbone?.toFixed(2)}}
+                        {{infosGlobale.empreinteCarbone?.toFixed(2)}} <small>Kg</small>
                     </h3>
                 </div>
             </div>

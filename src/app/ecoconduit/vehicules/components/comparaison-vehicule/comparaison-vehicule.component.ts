@@ -22,7 +22,7 @@ export class ComparaisonVehiculeComponent implements OnInit {
   chartSelected: any = [
     { index: 1, libelle: 'Vitesse maximale Km', slug: 'vitesse-moyenne', data: [] },
     { index: 2, libelle: 'Vitesse moyenne Km', slug: 'vitesse-moyenne', data: [] },
-    { index: 3, libelle: 'Consommation carburant', slug: 'vitesse-moyenne', data: [] },
+    { index: 3, libelle: 'Coût du carburant Dh', slug: 'vitesse-moyenne', data: [] },
     { index: 4, libelle: 'Distance parcourue Km', slug: 'distance-parcourue', data: [] },
     { index: 5, libelle: 'Emission CO2 kg', slug: 'emission-co2', data: [] },
     { index: 6, libelle: 'Temps de conduite', slug: 'temps-conduite', data: [] },

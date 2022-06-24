@@ -53,7 +53,7 @@ export class FicheConducteurComponent implements OnInit {
       }
     )
     //02
-    this.ecoconduiteService.historiqueVehicule(9, {date_debut: this.filter.date_debut+"T00:00:00", date_fin: this.filter.date_fin+"T23:59:59"}).subscribe(
+    this.ecoconduiteService.historiqueVehicule(this.filter.vehicule_id, {date_debut: this.filter.date_debut+"T00:00:00", date_fin: this.filter.date_fin+"T23:59:59"}).subscribe(
       res=>  this.infosGlobale.nbTrajets = [...res.records].filter(r=> r.genre == "trip").length
     )
     //03

@@ -5,8 +5,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <form class="row gx-0 mb-3 frm-search-jms" #searchForm="ngForm">
+                            <label>Période</label>
                             <div class="input-group mb-3">
-                                <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_debut" name="date_debut">
+                                <input type="date" class="form-control form-control-sm mr" [(ngModel)]="filter.date_debut" name="date_debut">
                                 <input type="date" class="form-control form-control-sm" [(ngModel)]="filter.date_fin" name="date_fin">
                                 <div class="input-group-append">
                                     <button class="btn btn-sm btn-outline-primary" type="button" (click)="changeData()">

@@ -54,6 +54,10 @@ const routes: Routes = [
         path: 'geolocalisation',
         loadChildren: () => import('./geolocalisation/geolocalisation.module').then(m => m.GeolocalisationModule)
       },
+      {
+        path: 'fournisseurs',
+        loadChildren: () => import('./fournisseurs/fournisseurs.module').then(m => m.FournisseursModule)
+      },
     ]
   }
 ];

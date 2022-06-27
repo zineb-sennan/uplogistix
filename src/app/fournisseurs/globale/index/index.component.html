@@ -1,0 +1,121 @@
+<section class="page-clients">
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Fournisseur
+            </h6>
+            <h2 class="header-title">
+                Liste des fournisseurs
+            </h2>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <a [routerLink]="['/clients/edit']" class="btn btn-outline-primary mb-2 btn-ajouter">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+                <br><br><br>
+                <form class="form-search row" #searchForm="ngForm" (ngSubmit)="searchClient(searchForm.value)">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="titre">Pays</label>
+                            <select class="form-select" (change)="changePays($event)" [(ngModel)]="search.pays_id"
+                                name="pays_id">
+                                <option value=''>Tous</option>
+                                <option *ngFor="let pay of pays" [value]="pay.id">{{pay.nom}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="titre">Région</label>
+                            <select class="form-select" (change)="changeRegion($event)" [(ngModel)]="search.region_id"
+                                name="region_id">
+                                <option value=''>Tous</option>
+                                <option *ngFor="let reg of regions" value="{{reg.id}}">{{reg.nom}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="titre">Ville</label>
+                            <select class="form-select" [(ngModel)]="search.ville_id" name="ville_id">
+                                <option value=''>Tous</option>
+                                <option *ngFor="let vil of villes" value="{{vil.id}}">{{vil.nom}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group input-group">
+                            <label for="filtre" style="width: 100%;">Filtre</label>
+                            <input type="text" class="form-control" [(ngModel)]="search.filtre" name="filtre">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary text-dark" type="button"
+                                    (click)="search.filtre=''" [ngStyle]="{'border-radius': 0}">
+                                    <i class="fas fa-eraser"></i>
+                                </button>
+                                <button type="submit" class="btn btn-outline-primary" style="margin-left: 12px;">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive row">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                            <tr>
+                                <th>Raison sociale</th>
+                                <th>Nom complet</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Ville</th>
+                                <th>Éditer</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            <tr *ngFor="let client of clients['records']">
+                                <td class="raison_sociale"> {{client.raison_sociale}} </td>
+                                <td class="nom_complet"> {{client.prenom}} {{client.nom}} </td>
+                                <td class="email"> {{client.email}} </td>
+                                <td class="tel_mobile"> {{client.tel_mobile}} </td>
+                                <td class="ville"> {{client.ville}} </td>
+                                <td width="75">
+                                    <a [routerLink]="['/fournisseurs/',client.id,'edit']" type="button"
+                                        class="btn btn-operation">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation" class="pag-tab col-md-12"
+                        *ngIf="clients.total_records && clients.total_pages>1">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#!" [routerLink]="['/clients/page', clients.current_page-1]"
+                                    [ngClass]="{'_disabled':clients.current_page==1}">
+                                    Précédent
+                                </a>
+                            </li>
+                            <li class="page-item" *ngFor="let p of [].constructor(clients.total_pages); let i=index"
+                                [ngClass]="{'active':clients.current_page==i+1}">
+                                <a class="page-link" [routerLink]="['/clients/page', i+1]">{{i+1}}</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" [routerLink]="['/clients/page', clients.current_page+1]"
+                                    [ngClass]="{'_disabled':clients.current_page==clients.total_pages}">
+                                    Suivant
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+</section>

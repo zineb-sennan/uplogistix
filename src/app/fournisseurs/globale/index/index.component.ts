@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Globale } from 'src/app/_globale/globale';
 import { SecuriteClass } from 'src/app/_globale/securite';
-import { AuthService } from '../../../_services/auth.service';
-import { ClientService } from '../../../_services/client.service';
+import { FournisseursService } from 'src/app/_services/fournisseurs.service';
 import { PaysService } from '../../../_services/pays.service';
 import { RegionsService } from '../../../_services/regions.service';
 import { VillesService } from '../../../_services/villes.service';
@@ -23,7 +22,7 @@ export class IndexComponent implements OnInit {
   constructor(
     private securiteClass: SecuriteClass,
     public globale:Globale,
-    private clientService: ClientService,
+    private fournisseursService:FournisseursService,
     private activatedRoute: ActivatedRoute,
     private paysService: PaysService,
     private regionsService: RegionsService,
@@ -75,7 +74,7 @@ export class IndexComponent implements OnInit {
   }
 
   searchClient(form:any){
-    this.clientService.search(form, this.page).subscribe(
+    this.fournisseursService.search(form, this.page).subscribe(
       res=>this.clients=res,
       async error => {
         if(error.status==401 && await this.securiteClass.refreshToken()) this.searchClient(form);

@@ -9,6 +9,7 @@ import { VillesService } from '../../../_services/villes.service';
 import { SecuriteClass } from '../../../_globale/securite';
 import { Globale } from '../../../_globale/globale';
 import * as $ from 'jquery';
+import { FournisseursService } from 'src/app/_services/fournisseurs.service';
 
 
 
@@ -37,7 +38,7 @@ export class EditComponent implements OnInit {
     private paysService: PaysService,
     private regionsService: RegionsService,
     private villesService: VillesService,
-    private clientService: ClientService,
+    private fournisseursService:FournisseursService,
     private idFiscaleService: IdFiscaleService,
     private activatedRoute: ActivatedRoute,
     private location:Location
@@ -66,7 +67,7 @@ export class EditComponent implements OnInit {
   }
 
   getInfosClientById(id: any) {
-    this.clientService.getClient(id).subscribe(result => {
+    this.fournisseursService.getClient(id).subscribe(result => {
       this.singleClient = result;
       this.getRegionsByPays(this.singleClient.pays_id);
       this.getVillesByRegion(this.singleClient.region_id);
@@ -137,7 +138,7 @@ export class EditComponent implements OnInit {
   update(form: any) {
     if(form.tel_mobile.indexOf(0)==0 && form.tel_mobile.length >= 9){
       if (!form.id) {
-        this.clientService.create(form).subscribe(
+        this.fournisseursService.create(form).subscribe(
           res => {
             this. getInfosClientById(res.id);
             this.message = "Le client est ajouté avec succès !";
@@ -159,7 +160,7 @@ export class EditComponent implements OnInit {
         )
       }
       else {
-        this.clientService.update(form).subscribe(res => {
+        this.fournisseursService.update(form).subscribe(res => {
           this.message = "Le client est modifié avec succès !";
         },
         async error => {
@@ -178,7 +179,7 @@ export class EditComponent implements OnInit {
   }
 
   getContcatsByClientId(id:number){
-    this.clientService.getContactByClientId(id).subscribe(
+    this.fournisseursService.getContactByClientId(id).subscribe(
       res=>this.contacts=res,
       async error => {
         if(error.status==401 && await this.securiteClass.refreshToken()) this.getContcatsByClientId(id);
@@ -188,30 +189,30 @@ export class EditComponent implements OnInit {
 
   updateContact(form:any){
     if(!form.id){
-      this.clientService.createContact(form).subscribe(res=>{
+      this.fournisseursService.createContact(form).subscribe(res=>{
         this.getContcatsByClientId(this.singleClient.id);
         this.message="Le contact est ajouté avec succès !";
         this.globale.closeModal();
       },
-      async error => {
+      async error=>{
         if(error.status==401 && await this.securiteClass.refreshToken()) this.updateContact(form);
       })
     }
     else{
-      this.clientService.updateContact(form).subscribe(
+      this.fournisseursService.updateContact(form).subscribe(
         res=>{
           this.getContcatsByClientId(this.singleClient.id);
           this.message="Le contact est modifié avec succès !";
           this.globale.closeModal();
         },
-        async error => {
+        async error=>{
           if(error.status==401 && await this.securiteClass.refreshToken()) this.updateContact(form);
         })
     }
   }
 
   deleteContact(id: any){
-    this.clientService.deleteContact(id).subscribe(
+    this.fournisseursService.deleteContact(id).subscribe(
       res=>{
         this.getContcatsByClientId(this.singleClient.id);
         this.message="Le contact est supprimé avec succès !";

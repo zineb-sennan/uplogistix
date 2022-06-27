@@ -819,3 +819,12 @@ button.nav-link.active {
 .widget-content-wrapper{
     display: block !important;
 }
+
+.border-none{
+    border: none !important;
+    margin-bottom: -18px !important;
+}
+
+.input-group .mr{
+    margin-right: 15px !important;
+}

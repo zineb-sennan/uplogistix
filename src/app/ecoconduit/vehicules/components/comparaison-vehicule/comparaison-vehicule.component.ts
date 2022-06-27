@@ -367,6 +367,5 @@ export class ComparaisonVehiculeComponent implements OnInit {
         this.filter.date_fin = this.datepipe.transform(this.date, 'yyyy-MM-dd');
       }
   }
-  
 
 }

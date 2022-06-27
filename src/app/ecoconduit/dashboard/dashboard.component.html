@@ -103,7 +103,7 @@
                             <span class="h2 mb-0">{{infosGlobaleVehicule.nb_conducteurs}}</span>
                         </div>
                         <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                            <i class="fa-solid fa-users text-muted mb-0"></i>
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                             <span class="h2 mb-0">{{infosGlobaleVehicule.total_fuel_consomme?.toFixed(2)}}</span>
                         </div>
                         <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                            <i class="fa-solid fa-gas-pump text-muted mb-0"></i>
                         </div>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
                             <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
                         </div>
                         <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                            <i class="fa-solid fa-gas-pump text-muted mb-0"></i>
                         </div>
                     </div>
                 </div>
@@ -146,7 +146,7 @@
                             <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
                         </div>
                         <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                            <i class="fa-solid fa-car-burst text-muted mb-0"></i>
                         </div>
                     </div>
                 </div>
@@ -173,7 +173,7 @@
                             <span class="h3 mb-0">{{infosGlobaleVehicule.total_temps_total_conduite}}</span>
                         </div>
                         <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                            <i class="fa-solid fa-hourglass-start text-muted mb-0"></i>
                         </div>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
                             <span class="h5 mb-0 text-danger opacity-50">Pas de donnée</span>
                         </div>
                         <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                            <i class="fa-solid fa-hourglass-start text-muted mb-0"></i>
                         </div>
                     </div>
                 </div>
@@ -197,10 +197,10 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Freinage extrême (%)</h6>
-                            <span class="h5 mb-0 opacity-50">{{infosGlobaleVehicule.freinage_extreme?.toFixed(2)}}</span>
+                            <span class="h2 mb-0">{{infosGlobaleVehicule.freinage_extreme?.toFixed(2)}}</span>
                         </div>
                         <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                            <i class="fa-solid fa-car-burst text-muted mb-0"></i>
                         </div>
                     </div>
                 </div>
@@ -211,10 +211,10 @@
                     <div class="row align-items-center gx-0">
                         <div class="col">
                             <h6 class="text-uppercase text-muted mb-2"> Accélération brutale (%)</h6>
-                            <span class="h5 mb-0 opacity-50">{{infosGlobaleVehicule.acceleration_brutale?.toFixed(2)}}</span>
+                            <span class="h2 mb-0">{{infosGlobaleVehicule.acceleration_brutale?.toFixed(2)}}</span>
                         </div>
                         <div class="col-auto">
-                            <i class="fa-solid fa-car text-muted mb-0"></i>
+                            <i class="fa-solid fa-car-burst text-muted mb-0"></i>
                         </div>
                     </div>
                 </div>
@@ -251,10 +251,22 @@
                                             <div class="list-group list-group-flush">
                                                 <div class="list-group-item">
                                                     <ul>
-                                                        <li class="col" (click)="getResumeOfAllehicule('chartVehicule','fuel_consomme')">Total de fuel consommé</li>
-                                                        <li class="col" (click)="getResumeOfAllehicule('chartVehicule','fuel_gaspille')">Total de fuel gaspillé</li>
-                                                        <li class="col" (click)="getResumeOfAllehicule('chartVehicule','distance_conduite')">Distance conduite</li>
-                                                        <li class="col" (click)="getResumeOfAllehicule('chartVehicule','temps_total_conduite')">Temps total de conduite</li>
+                                                        <li class="col" [ngClass]="{'text-primary':  filterBy[0]=='fuel_consomme'}"
+                                                            (click)="getResumeOfAllehicule('chartVehicule','fuel_consomme')">
+                                                            Total de fuel consommé
+                                                        </li>
+                                                        <li class="col" [ngClass]="{'text-primary':  filterBy[0]=='fuel_gaspille'}"
+                                                           (click)="getResumeOfAllehicule('chartVehicule','fuel_gaspille')">
+                                                            Total de fuel gaspillé
+                                                        </li>
+                                                        <li class="col" [ngClass]="{'text-primary':  filterBy[0]=='distance_conduite'}"
+                                                            (click)="getResumeOfAllehicule('chartVehicule','distance_conduite')">
+                                                            Distance conduite
+                                                        </li>
+                                                        <li class="col" [ngClass]="{'text-primary':  filterBy[0]=='temps_total_conduite'}"
+                                                            (click)="getResumeOfAllehicule('chartVehicule','temps_total_conduite')">
+                                                            Temps total de conduite
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -298,10 +310,22 @@
                                         <div class="list-group list-group-flush">
                                             <div class="list-group-item">
                                                 <ul>
-                                                    <li class="col" (click)="getResumeOfAllConducteur('chartConducteur','acceleration')">Acceleration brusque</li>
-                                                    <li class="col" (click)="getResumeOfAllConducteur('chartConducteur','freinage')">Freinage brusque</li>
-                                                    <li class="col" (click)="getResumeOfAllConducteur('chartConducteur','speedScore')">Score d'excès de vitesse</li>
-                                                    <li class="col" (click)="getResumeOfAllConducteur('chartConducteur','virrage_serre')">Comportement excessif</li>
+                                                    <li class="col" [ngClass]="{'text-primary':  filterBy[1]=='acceleration'}"
+                                                        (click)="getResumeOfAllConducteur('chartConducteur','acceleration')">
+                                                        Acceleration brusque
+                                                    </li>
+                                                    <li class="col" [ngClass]="{'text-primary':  filterBy[1]=='freinage'}"
+                                                        (click)="getResumeOfAllConducteur('chartConducteur','freinage')">
+                                                        Freinage brusque
+                                                    </li>
+                                                    <li class="col" [ngClass]="{'text-primary':  filterBy[1]=='speedScore'}"
+                                                        (click)="getResumeOfAllConducteur('chartConducteur','speedScore')">
+                                                        Score d'excès de vitesse
+                                                    </li>
+                                                    <li class="col" [ngClass]="{'text-primary':  filterBy[1]=='virrage_serre'}"
+                                                        (click)="getResumeOfAllConducteur('chartConducteur','virrage_serre')">
+                                                        Comportement excessif
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>

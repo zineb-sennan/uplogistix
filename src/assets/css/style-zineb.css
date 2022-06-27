@@ -373,7 +373,7 @@ button.nav-link.active {
 }
 
 
-/*** *** *** tableau de bord *** *** ***/
+/*** *** *** tableau bord *** *** ***/
 
 @media (max-width: 600px) {
     .card-header-title,
@@ -417,10 +417,10 @@ button.nav-link.active {
 }
 
 .eca:before {
-    content: "A";
+    content: "A: <= 100";
     position: relative;
     background-color: #29ad57;
-    padding: 4px 70px 4px 10px;
+    padding: 4px 8px 4px 10px; 
     margin-right: 0px;
     color: white;
     display: inline-block;
@@ -444,10 +444,10 @@ button.nav-link.active {
 }
 
 .ecb:before {
-    content: "B";
+    content: "B: 101 à 120";
     position: relative;
     background-color: #f7bd00;
-    padding: 4px 90px 4px 10px;
+    padding: 4px 12px 4px 10px;
     margin-right: 0px;
     color: white;
     display: inline-block;
@@ -471,10 +471,10 @@ button.nav-link.active {
 }
 
 .ecc:before {
-    content: "C";
+    content: "C: 121 à 140";
     position: relative;
     background-color: #eb6708;
-    padding: 4px 110px 4px 10px;
+    padding: 4px 35px 4px 10px;
     margin-right: 0px;
     color: white;
     display: inline-block;
@@ -498,10 +498,10 @@ button.nav-link.active {
 }
 
 .ecd:before {
-    content: "D";
+    content: "D: 141 à 160";
     position: relative;
     background-color: #de0418;
-    padding: 4px 130px 4px 10px;
+    padding: 4px 60px 4px 10px;
     margin-right: 0px;
     color: white;
     display: inline-block;
@@ -525,10 +525,10 @@ button.nav-link.active {
 }
 
 .ece:before {
-    content: "E";
+    content: "E : 161 à 200";
     position: relative;
     background-color: #de0418;
-    padding: 4px 150px 4px 10px;
+    padding: 4px 85px 4px 10px;
     margin-right: 0px;
     color: white;
     display: inline-block;
@@ -552,10 +552,10 @@ button.nav-link.active {
 }
 
 .ecf:before {
-    content: "F";
+    content: "F: 201 à 250";
     position: relative;
     background-color: #de0418;
-    padding: 4px 170px 4px 10px;
+    padding: 4px 120px 4px 10px;
     margin-right: 0px;
     color: white;
     display: inline-block;
@@ -579,10 +579,10 @@ button.nav-link.active {
 }
 
 .ecg:before {
-    content: "G";
+    content: "G: > 250";
     position: relative;
     background-color: #de0418;
-    padding: 4px 190px 4px 10px;
+    padding: 4px 170px 4px 10px;
     margin-right: 0px;
     color: white;
     display: inline-block;

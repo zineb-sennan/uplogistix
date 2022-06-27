@@ -150,7 +150,7 @@
                 <strong class="float-right"> Émissions= {{infosGlobale.class_energetique?.toFixed(2)}} g/CO2/km</strong>
                 <br>
                 <div class="energy-class row">
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="eca"></div>
                         <div class="ecb"></div>
                         <div class="ecc"></div>
@@ -159,7 +159,7 @@
                         <div class="ecf"></div>
                         <div class="ecg"></div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div style="transform: rotate(180deg);">
                             <div class="_ecg invisible" [ngClass]="{'visible': infosGlobale.class_energetique>250  }"></div>
                             <div class="_ecf invisible" [ngClass]="{'visible': infosGlobale.class_energetique>=201 && infosGlobale.class_energetique<=250}"></div>
@@ -167,7 +167,7 @@
                             <div class="_ecd invisible" [ngClass]="{'visible': infosGlobale.class_energetique>=141 && infosGlobale.class_energetique<=160}"></div>
                             <div class="_ecc invisible" [ngClass]="{'visible': infosGlobale.class_energetique>=121 && infosGlobale.class_energetique<=140}"></div>
                             <div class="_ecb invisible" [ngClass]="{'visible': infosGlobale.class_energetique>=101 && infosGlobale.class_energetique<=120}"></div>
-                            <div class="_eca invisible" [ngClass]="{'visible': infosGlobale.class_energetique<=100 && infosGlobale.length> 0}"></div>
+                            <div class="_eca invisible" [ngClass]="{'visible': infosGlobale.class_energetique<=100 }"></div>
                         </div>
                     </div>
                 </div>
@@ -199,7 +199,7 @@
                 </div>
                 <div class="card-body">
                     <h3 class="text-center">
-                        {{infosGlobale.emissionCo2?.toFixed(2)}} <small>Kg </small>
+                        {{(infosGlobale.emissionCo2/1000)?.toFixed(2)}} <small>Kg </small>
                     </h3>
                 </div>
             </div>
@@ -232,7 +232,7 @@
                 </div>
                 <div class="card-body">
                     <h3 class="text-center">
-                        {{infosGlobale.empreinteCarbone?.toFixed(2)}} <small>Kg</small>
+                        {{(infosGlobale.empreinteCarbone/1000)?.toFixed(2)}} <small>Kg</small>
                     </h3>
                 </div>
             </div>

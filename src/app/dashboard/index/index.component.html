@@ -18,7 +18,9 @@
                                     <h6 class="text-uppercase text-muted mb-2">Totale distance Km</h6>
                                     <div class="ml">
                                         <span class="h2 mb-0">{{moisEncours.distance?.toFixed(2)}}</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.distance > moisEncours.distance}">{{calc(moisEncours.distance, moisPrecedent.distance)}}%</span><br>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute"
+                                            [ngClass]="{'bg-danger-soft': moisEncours.distance > moisEncours.distance}">{{calc(moisEncours.distance,
+                                            moisPrecedent.distance)}}%</span><br>
                                         <span class="text-secondary">{{moisPrecedent.distance?.toFixed(2)}}</span>
                                     </div>
                                 </div>
@@ -38,7 +40,9 @@
                                     <h6 class="text-uppercase text-muted mb-2">Total coût du carburant Dh</h6>
                                     <div class="ml">
                                         <span class="h2 mb-0">{{moisEncours.cout_carburant?.toFixed(2)}}</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.cout_carburant > moisEncours.cout_carburant}">{{calc(moisEncours.cout_carburant, moisPrecedent.cout_carburant)}}%</span><br>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute"
+                                            [ngClass]="{'bg-danger-soft': moisEncours.cout_carburant > moisEncours.cout_carburant}">{{calc(moisEncours.cout_carburant,
+                                            moisPrecedent.cout_carburant)}}%</span><br>
                                         <span class="text-secondary">{{moisPrecedent.cout_carburant?.toFixed(2)}}</span>
                                     </div>
                                 </div>
@@ -58,8 +62,11 @@
                                     <h6 class="text-uppercase text-muted mb-2">Total coût de maintenance DH</h6>
                                     <div class="ml">
                                         <span class="h2 mb-0">{{moisEncours.cout_maintenance?.toFixed(2)}}</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.cout_maintenance>moisPrecedent.cout_maintenance}">{{calc(moisEncours.cout_maintenance, moisPrecedent.cout_maintenance)}}%</span><br>
-                                        <span class="text-secondary">{{moisPrecedent.cout_maintenance?.toFixed(2)}}</span>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute"
+                                            [ngClass]="{'bg-danger-soft': moisEncours.cout_maintenance>moisPrecedent.cout_maintenance}">{{calc(moisEncours.cout_maintenance,
+                                            moisPrecedent.cout_maintenance)}}%</span><br>
+                                        <span
+                                            class="text-secondary">{{moisPrecedent.cout_maintenance?.toFixed(2)}}</span>
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -78,7 +85,9 @@
                                     <h6 class="text-uppercase text-muted mb-2">Total coût des dépenses DH</h6>
                                     <div class="ml">
                                         <span class="h2 mb-0">{{moisEncours.cout_depenses?.toFixed(2)}}</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.cout_depenses > moisEncours.cout_depenses}">{{calc(moisEncours.cout_depenses, moisPrecedent.cout_depenses)}}%</span><br>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute"
+                                            [ngClass]="{'bg-danger-soft': moisEncours.cout_depenses > moisEncours.cout_depenses}">{{calc(moisEncours.cout_depenses,
+                                            moisPrecedent.cout_depenses)}}%</span><br>
                                         <span class="text-secondary">{{moisPrecedent.cout_depenses?.toFixed(2)}}</span>
                                     </div>
                                 </div>
@@ -121,7 +130,9 @@
                                     <h6 class="text-uppercase text-muted mb-2">Coût 1 Km en DH</h6>
                                     <div class="ml">
                                         <span class="h2 mb-0">{{moisEncours.cout_1km?.toFixed(2)}}</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute">{{calc(moisEncours.cout_1km, moisPrecedent.cout_1km)}}%</span><br>
+                                        <span
+                                            class="badge bg-success-soft ml mt-3 position-absolute">{{calc(moisEncours.cout_1km,
+                                            moisPrecedent.cout_1km)}}%</span><br>
                                         <span class="text-secondary">{{moisPrecedent.cout_1km?.toFixed(2)}}</span>
                                     </div>
                                 </div>
@@ -141,7 +152,9 @@
                                     <h6 class="text-uppercase text-muted mb-2">Total émission CO2 Kg</h6>
                                     <div class="ml">
                                         <span class="h2 mb-0">{{moisEncours.co2?.toFixed(2)}}</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.co2 < moisEncours.co2}">{{calc(moisEncours.co2, moisPrecedent.co2)}}%</span><br>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute"
+                                            [ngClass]="{'bg-danger-soft': moisEncours.co2 < moisEncours.co2}">{{calc(moisEncours.co2,
+                                            moisPrecedent.co2)}}%</span><br>
                                         <span class="text-secondary">{{moisPrecedent.co2?.toFixed(2)}}</span>
                                     </div>
                                 </div>
@@ -161,7 +174,9 @@
                                     <h6 class="text-uppercase text-muted mb-2">Bilan carbone Kg</h6>
                                     <div class="ml">
                                         <span class="h2 mb-0">{{moisEncours.c?.toFixed(2)}}</span>
-                                        <span class="badge bg-success-soft ml mt-3 position-absolute" [ngClass]="{'bg-danger-soft': moisEncours.c < moisEncours.c}">{{calc(moisEncours.c, moisPrecedent.c)}}%</span><br>
+                                        <span class="badge bg-success-soft ml mt-3 position-absolute"
+                                            [ngClass]="{'bg-danger-soft': moisEncours.c < moisEncours.c}">{{calc(moisEncours.c,
+                                            moisPrecedent.c)}}%</span><br>
                                         <span class="text-secondary">{{moisPrecedent.c?.toFixed(2)}}</span>
                                     </div>
                                 </div>
@@ -186,7 +201,8 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <canvas id="chart-total-consommation" style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
+                            <canvas id="chart-total-consommation"
+                                style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>
                     </div>
@@ -200,16 +216,17 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <canvas id="chart-depenses" style="display: block; box-sizing: border-box; height: 176.67px; width: 100%;">
+                            <canvas id="chart-depenses"
+                                style="display: block; box-sizing: border-box; height: 176.67px; width: 100%;">
                             </canvas>
                         </div>
                     </div>
                 </div>
                 <!-- ./Chart dépenses -->
             </div>
-            
+
             <!-- *** *** *** *** *** *** *** ***-->
-            
+
             <div class="row">
                 <div class="col-12 col-xl-4">
                     <div class="card">
@@ -219,7 +236,8 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <canvas id="chart-cout-km" style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
+                            <canvas id="chart-cout-km"
+                                style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>
                     </div>
@@ -233,7 +251,8 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <canvas id="chart-consommation-carburant" style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
+                            <canvas id="chart-consommation-carburant"
+                                style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>
                     </div>
@@ -252,10 +271,14 @@
                                 <li class="text-secondary">Avec GPS<span class="badge bg-primary-soft">{{etatVehicule.gps}}</span></li> -->
                                 <!-- (Avec GPS) -->
                                 <!-- <li class="text-secondary">Sans GPS <span class="badge bg-secondary-soft">{{etatVehicule.non_gps}}</span></li> -->
-                                <li class="text-secondary">Actifs <span class="badge bg-success-soft">{{etatVehicule.actif}}</span></li>
-                                <li class="text-secondary">Inactifs <span class="badge bg-secondary-soft">{{etatVehicule.inactif}}</span></li>
-                                <li class="text-secondary">En maintenances <span class="badge bg-warning">{{etatVehicule.maintenance}}</span></li>
-                                <li class="text-secondary">Occupés <span class="badge bg-danger">{{etatVehicule.occupe}}</span></li>
+                                <li class="text-secondary">Actifs <span
+                                        class="badge bg-success-soft">{{etatVehicule.actif}}</span></li>
+                                <li class="text-secondary">Inactifs <span
+                                        class="badge bg-secondary-soft">{{etatVehicule.inactif}}</span></li>
+                                <li class="text-secondary">En maintenances <span
+                                        class="badge bg-warning">{{etatVehicule.maintenance}}</span></li>
+                                <li class="text-secondary">Occupés <span
+                                        class="badge bg-danger">{{etatVehicule.occupe}}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -274,7 +297,8 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <canvas id="chart-maintenance" style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
+                            <canvas id="chart-maintenance"
+                                style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>
                     </div>
@@ -288,7 +312,8 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <canvas id="chart-evolution-compteur" style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
+                            <canvas id="chart-evolution-compteur"
+                                style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>
                     </div>
@@ -303,12 +328,30 @@
                         </div>
                         <div class="card-body d-height">
                             <ul>
-                                <li class="text-primary" *ngIf="classement.min_v.length > 0">
-                                    <strong>Véhicule polluant:</strong> {{classement.min_v[0]?.matricule}}
-                                    <span class="badge bg-success">{{classement.min_v[0]?.score}}%</span>
+                                <li class="text-primary mb-4 resume-classement" *ngIf="classement.min_v.length > 0">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="avatar avatar-sm">
+                                                <div
+                                                    class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary shadow">
+                                                    <i class="fas fa-car"></i>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col ms-n2">
+                                            <h5 class="mt-3"> 
+                                                Véhicule polluant
+                                                <span class="text-dark h5">
+                                                    {{classement.min_v[0]?.matricule}}
+                                                </span>
+                                            </h5>
+                                        </div>
+                                    </div>
                                 </li>
                                 <li class="text-secondary" *ngFor="let vs of vehicules">
-                                    {{vs.matricule}} <span class="badge bg-success" [ngClass]="{'bg-danger-soft': vs.score<70}">{{vs.score}}</span>
+                                    {{vs.matricule}} <span class="badge bg-success"
+                                        [ngClass]="{'bg-danger-soft': vs.score<70}">{{vs.score}}</span>
                                 </li>
                             </ul>
                         </div>
@@ -327,7 +370,8 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <canvas id="chart-co2" style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
+                            <canvas id="chart-co2"
+                                style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>
                     </div>
@@ -341,7 +385,8 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <canvas id="chart-carbone" style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
+                            <canvas id="chart-carbone"
+                                style="display: block; box-sizing: border-box; height: 175px; width: 100%;">
                             </canvas>
                         </div>
                     </div>
@@ -355,12 +400,31 @@
                         </div>
                         <div class="card-body d-height">
                             <ul>
-                                <li class="text-primary" *ngIf="classement.min.length > 0">
-                                   <strong>Conducteur dangereux:</strong> {{classement.min[0]?.nom_complet}}
+                                <li class="text-primary mb-4 resume-classement" *ngIf="classement.min.length > 0">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="avatar avatar-sm">
+                                                <div
+                                                    class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary shadow">
+                                                    <i class="fa-solid fa-user"></i>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col ms-n2">
+                                            <h5 class="mt-3"> 
+                                                Le conducteur dangereux 
+                                                <span class="text-dark h5">
+                                                    {{classement.min[0]?.nom_complet}}
+                                                </span>
+                                            </h5>
+                                        </div>
+                                    </div>
                                 </li>
                                 <li class="text-secondary" *ngFor="let conducteur of conducteurs">
                                     {{conducteur.nom_complet}}
-                                    <!--span class="badge bg-success" [ngClass]="{'bg-danger-soft': conducteur.moy_score<70}">{{conducteur.moy_score?.toFixed(2)}}</span-->
+                                    <span class="badge bg-success"
+                                        [ngClass]="{'bg-danger-soft': conducteur.moy_score<70}">{{conducteur.moy_score?.toFixed(2)}}</span>
                                 </li>
                             </ul>
                         </div>

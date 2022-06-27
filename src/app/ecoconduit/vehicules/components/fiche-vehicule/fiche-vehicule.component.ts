@@ -40,7 +40,7 @@ export class FicheVehiculeComponent implements OnInit {
         this.infosGlobale.emissionCo2=res.carbone.reduce((prev:any,next:any)=>prev+next.CO2g,0);
         this.infosGlobale.empreinteCarbone=res.carbone.reduce((prev:any,next:any)=>prev+next.Cg,0);
         this.infosGlobale.scoreGlobale=(await this.ecoconduiteService.scoreByVehicule(this.filter).toPromise()).new_score;
-        this.infosGlobale.class_energetique = (this.infosGlobale.emissionCo2*1000)/this.infosGlobale.distanceParcourue;
+        this.infosGlobale.class_energetique = this.infosGlobale.emissionCo2/this.infosGlobale.distanceParcourue;
       }
     )
   }

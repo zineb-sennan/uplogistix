@@ -29,11 +29,11 @@ export class DashboardComponent implements OnInit {
   //conducteur
   //temps_total_inactivité = 0; freinage_extreme = 0; acceleration_brutale = 0; conduite_dangereuse = 0;
 
-  type: any = null; filterBy: any = null;
+  //type: any = null; 
+  filterBy: any = [];
 
   constructor(
     private vehiculeService: VehiculeService,
-    private readonly ecoconduiteService: EcoconduiteService,
     private conducteurService: ConducteurService,
     private geoLocalisationService: GeoLocalisationService,
     private datePipe: DatePipe,
@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
 
   async getResumeOfAllConducteur(idChart: any, ChartBy: any) {
      //01 
+    this.filterBy[1]= ChartBy;
     var data=null; var titre:any=null;
     const conducteur$:any = this.conducteurService.getConducteurs().pipe(
       map(conducteur => conducteur.filter((c: any) => c.vehicule_id)),
@@ -91,6 +92,7 @@ export class DashboardComponent implements OnInit {
   }
 
   async getResumeOfAllehicule(idChart: any, ChartBy: any) {
+    this.filterBy[0]= ChartBy;
     var titre = null; var data = null;
     //01
     const vehicules$ = this.vehiculeService.getAll().pipe(
@@ -105,7 +107,7 @@ export class DashboardComponent implements OnInit {
     else if (ChartBy == "fuel_gaspille") { data = this.list_resume_vehicule.map((t: any) => ({ x:t.matricule, y:t.fuel_gaspille })); titre = "Fuel gaspillé"; }
     else if (ChartBy == "distance_conduite") { data = [...this.list_resume_vehicule].map(t => ({ x: t.matricule, y:t.distance_conduite })); titre = "Distance conduite"; }
     //else if (ChartBy == "temps_total_conduite") { data = this.list_resume_vehicule.map((t: any, index: any = 2) => ({ x: t.matricule, y: index, matricule: t.temps_total_conduite })); titre = "Temps conduite"; }
-    else if (ChartBy == "temps_total_conduite") { data = this.list_resume_vehicule.map((t: any, index: any = 2) => ({ x: t.matricule, y: t.temps_total_conduite })); titre = "Temps conduite"; }
+    else if (ChartBy == "temps_total_conduite") { data = this.list_resume_vehicule.map((t: any) => ({ x: t.matricule, y: t.temps_total_conduite })); titre = "Temps conduite"; }
 
     //04
     this.createChart(idChart, titre,  data, 0);
@@ -236,7 +238,7 @@ export class DashboardComponent implements OnInit {
           }
         }
       }
-      _myChar.data.datasets[0].categoryPercentage = 0.15;
+      _myChar.data.datasets[0].categoryPercentage = 0.11;
     }
     else{
       _myChar.options.indexAxis='y';

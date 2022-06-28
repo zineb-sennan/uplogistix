@@ -46,7 +46,7 @@ export class EditComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(param => {
       const { id } = param;
-      if (id) this. getInfosClientById(id);
+      if (id) this.getInfosClientById(id);
     });
     this.getAllPays();
   }

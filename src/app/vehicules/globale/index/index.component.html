@@ -96,7 +96,7 @@
                                     <td class="statut">{{vehicule.statut}}</td>
                                     <td class="categorie">{{vehicule.categorie}}</td>
                                     <td class="groupe"> {{vehicule.groupe}} </td>
-                                    <td class="compteur-actuel">{{vehicule.compteur}}</td>
+                                    <td class="compteur-actuel">{{vehicule.compteur?.toFixed(2)}}</td>
                                     <td class="mise_en_circulation"> {{vehicule.mise_en_circulation | date:"dd/MM/yyyy"}} </td>
                                     <td class="type_saisie" style="font-size: 16px;">
                                         <i class="fa-solid fa-satellite-dish text-primary" *ngIf="vehicule.balise"></i>&nbsp;

@@ -58,6 +58,10 @@ const routes: Routes = [
         path: 'fournisseurs',
         loadChildren: () => import('./fournisseurs/fournisseurs.module').then(m => m.FournisseursModule)
       },
+      {
+        path: 'stock',
+        loadChildren: () => import('./stock/stock.module').then(m => m.StockModule)
+      },
     ]
   }
 ];

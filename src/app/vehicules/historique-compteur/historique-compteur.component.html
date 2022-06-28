@@ -92,14 +92,14 @@
                                 <tr *ngFor="let compteur of compteurs['records']">
                                     <td class="matricule">{{compteur.matricule}}</td>
                                     <td class="ancien-compteur">
-                                        <strong>{{compteur.ancien_compteur}}</strong>
+                                        <strong>{{compteur.ancien_compteur.toFixed(2)}}</strong>
                                     </td>
                                     <td class="nouveau-compteur">
-                                        <strong>{{compteur.compteur}}</strong><br>
-                                        <!-- <strong class="small">{{compteur.date_operation | date: 'dd/MM/yyyy HH:mm' }}</strong> -->
+                                        <strong>{{compteur.compteur.toFixed(2)}}</strong>
                                     </td>
                                     <td class="kilométrage-parcouru text-primary font-weight-bold">
-                                        <strong>{{compteur.cumule_distance}}</strong>
+                                        <!--strong>{{compteur.cumule_distance}}</strong-->
+                                        <strong>{{compteur.distance.toFixed(2)}}</strong>
                                     </td>
                                     <td class="date-operation">
                                         {{compteur.date_operation | date: 'dd/MM/yyyy HH:mm' }}

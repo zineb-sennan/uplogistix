@@ -55,8 +55,8 @@ export class GeozoneEditComponent implements OnInit {
         this.zone.coords = this.zone.coords ? JSON.parse(this.zone.coords) : null;
         this.initMap(33.9727213, -6.8867775, 6);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getZoneById(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getZoneById(id);
       });
   }
 

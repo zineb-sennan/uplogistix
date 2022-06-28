@@ -1,0 +1,96 @@
+<div class="app">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Stock
+            </h6>
+            <h2 class="header-title">
+                Entrepots
+            </h2>
+        </div>
+    </div> <!-- ./titre -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #entrepotForm="ngForm" (ngSubmit)="update(entrepotForm.value)">
+                    <!-- *** *** *** Forms *** *** *** -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="hidden" name="id" [(ngModel)]="singleEntrepot.id">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Nom
+                                    <strong class="text-danger" *ngIf="!singleEntrepot.nom">*</strong>
+                                </label>
+                                <input type="text" class="form-control" name="nom" [(ngModel)]="singleEntrepot.nom" placeholder="Nom" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pays_id" class="form-label">Pays</label>
+                                <select class="form-select" name="pays_id" (change)="changePays($event)" [ngModel]="singleEntrepot.pays_id">
+                                    <option value=null disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let pay of pays" [value]="pay.id">{{pay.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Ville
+                                    <strong class="text-danger" *ngIf="!singleEntrepot.ville_id">*</strong>
+                                </label>
+                                <select class="form-select" name="ville_id" [(ngModel)]="singleEntrepot.ville_id" required>
+                                    <option value=null disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let vil of villes" value="{{vil.id}}">{{vil.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tel bureau</label>
+                                <input type="text" class="form-control" name="tel_bureau" [(ngModel)]="singleEntrepot.tel_bureau" placeholder="tel_bureau">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" rows="3" name="description" [(ngModel)]="singleEntrepot.description"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Email
+                                </label>
+                                <input type="email" class="form-control" name="email" [(ngModel)]="singleEntrepot.email" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Region</label>
+                                <select name="region_id" class="form-select" (change)="changeRegion($event)" [ngModel]="singleEntrepot.region_id">
+                                    <option value=null disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let reg of regions" value="{{reg.id}}">{{reg.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">tel_mobile</label>
+                                <input type="text" class="form-control" name="tel_bureau" [(ngModel)]="singleEntrepot.tel_mobile" placeholder="tel_mobile">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Fax</label>
+                                <input type="text" class="form-control" name="fax" [(ngModel)]="singleEntrepot.fax" placeholder="Fax">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Addresse</label>
+                                <textarea class="form-control" rows="3" name="adresse" [(ngModel)]="singleEntrepot.adresse"></textarea>
+                            </div>
+                        </div> <!-- ./col-md-6 -->
+
+                    </div>
+                    <hr class="mt-4 mb-4">
+                    <small class="text-danger">*: Ces champs sont obligatoires.</small>
+                    <!-- Buttons -->
+                    <button type="submit" class="btn w-10 btn-float btn-primary">
+                        Enregistrer
+                    </button>
+                    <button type="button" class="btn btn-secondary w-10 btn-float" (click)="fermer()">Annuler</button>
+                </form>
+            </div>
+        </div>
+    </div> <!-- ./container-fluid -->
+ 
+       
+
+</div>

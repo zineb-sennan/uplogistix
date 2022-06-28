@@ -34,7 +34,7 @@ export class VehiculeService {
   }
 
   search(record: any){
-    return this.http.post(environment.apiURL + '/vehicules/find' ,record)
+    return this.http.post<any>(environment.apiURL + '/vehicules/find' ,record)
   }
 
   getEtatCarburant(id:number){

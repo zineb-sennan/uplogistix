@@ -26,8 +26,8 @@ export class GeozonesComponent implements OnInit {
   getZones() {
     this.geoService.getAllZones().subscribe(
       result => this.zones = result,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getZones();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getZones();
       });
   }
 
@@ -38,8 +38,8 @@ export class GeozonesComponent implements OnInit {
   deleteZone() {
     this.geoService.deleteZoneById(this.currId).subscribe(
       result => this.getZones(),
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.deleteZone();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.deleteZone();
       });
   }
 

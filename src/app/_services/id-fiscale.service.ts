@@ -17,6 +17,10 @@ export class IdFiscaleService {
     return this.http.get<any>(environment.apiURL + '/clients/' + id + '/identifiants_fiscaux')
   }
 
+  identifiantsByFournisseur(id: number) {
+    return this.http.get<any>(environment.apiURL + '/fournisseurs/' + id + '/identifiants_fiscaux')
+  }
+
   create(record: any) {
     return this.http.post(environment.apiURL + '/international/identifiants_fiscaux', record)
   }
@@ -31,6 +35,10 @@ export class IdFiscaleService {
 
   updateIdentifiantsClient(record: any) {
     return this.http.put(environment.apiURL +'/clients/'+ record.client_id+'/identifiant_fiscale/' + record.identifiant_fiscale_id, record)
+  }
+
+  updateIdentifiantsFournisseur(record: any) {
+    return this.http.put(environment.apiURL +'/fournisseurs/'+ record.client_id+'/identifiant_fiscale/' + record.identifiant_fiscale_id, record)
   }
 
   getIdFiscale(id:number){

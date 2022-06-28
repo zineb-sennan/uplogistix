@@ -1,0 +1,73 @@
+<div class="app">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Stock
+            </h6>
+            <h2 class="header-title">
+                Piece categories
+            </h2>
+        </div>
+    </div> <!-- ./titre -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                
+                <a [routerLink]="['/stock/entrepots/edit']" type="button" class="btn btn-outline-primary float-right">
+                    <i class="fa-solid fa-plus"></i> 
+                </a><br><br><br>
+                
+                <div class="list-pieces-cat row">
+                    <div class="col-md-3" *ngFor="let pieceCat of pieceCategories">
+                        <div class="card">
+                            <div class="card-header">
+                                {{pieceCat.nom}}
+                                <div>
+                                    <button type="button" class="btn btn-danger btn-delete float-right" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-edit float-right" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p>{{pieceCat.description}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </div> <!-- ./container-fluid -->
+     
+    <!-- **** Modal de confirmation **** -->
+    <!-- <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="material-icons">
+                            <i class="fa-solid fa-x"></i>
+                        </i>
+                    </div>
+                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                    <button type="button" class="btn btn-danger" (click)="delete(entrepot_id)">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+</div>

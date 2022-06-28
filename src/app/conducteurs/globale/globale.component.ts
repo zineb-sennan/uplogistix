@@ -49,7 +49,7 @@ export class GlobaleComponent implements OnInit {
     }
   }
 
-  getAllVehicules() {
+   getAllVehicules() {
     this.vehiculeService.getAll().subscribe(
       res => {
         let usedVehicules: any = [];
@@ -62,8 +62,8 @@ export class GlobaleComponent implements OnInit {
           this.vehicules.push(_vehicule[0]);
         }
       },
-      error => {
-        if (error.status == 401 && this.securiteClass.refreshToken()) this.getAllVehicules();
+      async error => {
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getAllVehicules();
       }
     )
   }
@@ -71,8 +71,8 @@ export class GlobaleComponent implements OnInit {
   getAllConducteurs() {
     this.conducteurService.getAll(this.page).subscribe(
       result => this.conducteurs = result,
-      error => {
-        if (error.status == 401 && this.securiteClass.refreshToken()) this.getAllConducteurs();
+      async error => {
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getAllConducteurs();
       }
     );
   }
@@ -84,8 +84,8 @@ export class GlobaleComponent implements OnInit {
         this.singleConducteur = res;
         this.getAllVehicules();
       },
-      error => {
-        if (error.status == 401 && this.securiteClass.refreshToken()) this.getConducteur(id);
+      async error => {
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getConducteur(id);
       }
     )
   }
@@ -98,8 +98,8 @@ export class GlobaleComponent implements OnInit {
           this.message = "Le conducteur est ajouté avec succès !";
           this.globale.closeModal();
         },
-        error => {
-          if (error.status == 401 && this.securiteClass.refreshToken()) this.update(form);
+        async error => {
+          if (error.status == 401 && await this.securiteClass.refreshToken()) this.update(form);
         })
     } else {
       this.conducteurService.update(form).subscribe(res => {
@@ -107,8 +107,8 @@ export class GlobaleComponent implements OnInit {
         this.message = "Le conducteur est modifié avec succès !";
         this.globale.closeModal();
       },
-        error => {
-          if (error.status == 401 && this.securiteClass.refreshToken()) this.update(form);
+        async error => {
+          if (error.status == 401 && await this.securiteClass.refreshToken()) this.update(form);
         })
     }
   }
@@ -119,8 +119,9 @@ export class GlobaleComponent implements OnInit {
         this.getAllConducteurs();
         this.message = "Le conducteur est supprimé avec succès !";
         this.globale.closeModal();
-      },error => {
-          if (error.status == 401 && this.securiteClass.refreshToken()) this.delete();
+      },
+      async error => {
+          if (error.status == 401 && await this.securiteClass.refreshToken()) this.delete();
       })
   }
 

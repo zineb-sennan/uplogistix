@@ -21,15 +21,15 @@ export class FournisseursService {
     return this.http.get(environment.apiURL + '/fournisseurs/page/'+page)
   }
 
-  getAllfournisseurs(){
+  getAllFournisseurs(){
     return this.http.get(environment.apiURL + '/fournisseurs')
   }
 
-  getClient(id: number) {
+  getFournisseur(id: number) {
     return this.http.get(environment.apiURL + '/fournisseurs/'+id)
   }
 
-  getContactByClientId(id:number){
+  getContactByFournisseurId(id:number){
     return this.http.get<any>(environment.apiURL + '/fournisseurs/'+id+'/contacts')
   }
 

@@ -13,7 +13,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="row align-items-center" *ngIf="singleClient.id">
+                <div class="row align-items-center" *ngIf="singleFournisseur.id">
                     <div class="col">
                         <ul class="nav nav-tabs nav-overflow header-tabs">
                             <li class="nav-item">
@@ -42,8 +42,8 @@
                         <div class="header-body">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h6 class="header-pretitle">Client</h6>
-                                    <h2 class="header-title">{{ singleClient.id ? 'Modifiez le client' : 'Créer un nouveau client'}}</h2>
+                                    <h6 class="header-pretitle">Fournisseurs</h6>
+                                    <h2 class="header-title">{{ singleFournisseur.id ? 'Modifiez le fournisseur' : 'Créer un nouveau fournisseur'}}</h2>
                                 </div>
                             </div>
                         </div>
@@ -53,28 +53,21 @@
                         {{message}}
                         <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #clientForm="ngForm" (ngSubmit)="update(clientForm.value)">
+                    <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #fournisseurForm="ngForm" (ngSubmit)="update(fournisseurForm.value)">
                         <!-- *** *** *** Forms *** *** *** -->
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="hidden" name="id" [(ngModel)]="singleClient.id">
+                                <input type="hidden" name="id" [(ngModel)]="singleFournisseur.id">
                                 <div class="form-group">
                                     <label class="form-label">
                                         Raison sociale
-                                        <strong class="text-danger" *ngIf="!singleClient.raison_sociale">*</strong>
+                                        <strong class="text-danger" *ngIf="!singleFournisseur.raison_sociale">*</strong>
                                     </label>
-                                    <input type="text" class="form-control" name="raison_sociale" [(ngModel)]="singleClient.raison_sociale" placeholder="Raison sociale" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        Prénom
-                                        <strong class="text-danger" *ngIf="!singleClient.prenom">*</strong>
-                                    </label>
-                                    <input type="text" class="form-control" name="prenom" [(ngModel)]="singleClient.prenom" placeholder="Prénom">
+                                    <input type="text" class="form-control" name="raison_sociale" [(ngModel)]="singleFournisseur.raison_sociale" placeholder="Raison sociale" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Region</label>
-                                    <select id="inputState" name="region_id" class="form-select" (change)="changeRegion($event)" [ngModel]="singleClient.region_id">
+                                    <select id="inputState" name="region_id" class="form-select" (change)="changeRegion($event)" [ngModel]="singleFournisseur.region_id">
                                         <option value=null disabled>Veuillez choisir...</option>
                                         <option *ngFor="let reg of regions" value="{{reg.id}}">{{reg.nom}}</option>
                                     </select>
@@ -82,34 +75,18 @@
                                 <div class="form-group">
                                     <label class="form-label">
                                         Email
-                                        <strong class="text-danger" *ngIf="!singleClient.email">*</strong>
                                     </label>
-                                    <input type="email" class="form-control" name="email" [(ngModel)]="singleClient.email" placeholder="Email" required>
-                                    <small id="error_email" class="form-text text-danger"></small>
+                                    <input type="email" class="form-control" name="email" [(ngModel)]="singleFournisseur.email" placeholder="Email">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Tel bureau</label>
-                                    <input type="text" class="form-control" name="tel_bureau" [(ngModel)]="singleClient.tel_bureau" placeholder="Tel bureau">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        Nombre vehicules
-                                        <strong class="text-danger" *ngIf="!singleClient.nbre_vehicules">*</strong>
-                                    </label>
-                                    <input type="number" class="form-control" name="nbre_vehicules" [(ngModel)]="singleClient.nbre_vehicules" placeholder="Nombre vehicules" required>
+                                    <label class="form-label">Fax</label>
+                                    <input type="text" class="form-control" name="fax" [(ngModel)]="singleFournisseur.fax" placeholder="Fax">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">
-                                        Nom
-                                        <strong class="text-danger" *ngIf="!singleClient.nom">*</strong>
-                                    </label>
-                                    <input type="text" class="form-control" name="nom" [(ngModel)]="singleClient.nom" placeholder="Nom" required>
-                                </div>
-                                <div class="form-group">
                                     <label for="pays_id" class="form-label">Pays</label>
-                                    <select class="form-select" name="pays_id" (change)="changePays($event)" [ngModel]="singleClient.pays_id" [disabled]="singleClient.id">
+                                    <select class="form-select" name="pays_id" (change)="changePays($event)" [ngModel]="singleFournisseur.pays_id" [disabled]="singleFournisseur.id">
                                         <option value=null disabled>Veuillez choisir...</option>
                                         <option *ngFor="let pay of pays" [value]="pay.id">{{pay.nom}}</option>
                                     </select>
@@ -117,44 +94,31 @@
                                 <div class="form-group">
                                     <label class="form-label">
                                         Ville
-                                        <strong class="text-danger" *ngIf="!singleClient.ville_id">*</strong>
+                                        <strong class="text-danger" *ngIf="!singleFournisseur.ville_id">*</strong>
                                     </label>
-                                    <select id="inputState" class="form-select" name="ville_id" [(ngModel)]="singleClient.ville_id" required>
+                                    <select id="inputState" class="form-select" name="ville_id" [(ngModel)]="singleFournisseur.ville_id" required>
                                         <option value=null disabled>Veuillez choisir...</option>
                                         <option *ngFor="let vil of villes" value="{{vil.id}}">{{vil.nom}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">
-                                        Tel mobile
-                                        <strong class="text-danger" *ngIf="!singleClient.tel_mobile">*</strong>
+                                        Téléphone
                                     </label>
-                                    <input type="text" class="form-control" name="tel_mobile" [(ngModel)]="singleClient.tel_mobile" placeholder="Tel mobile" required>
-                                    <small id="error_tel_mobile" class="form-text text-danger"></small>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Fax</label>
-                                    <input type="text" class="form-control" name="fax" [(ngModel)]="singleClient.fax" placeholder="Fax">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        Nombre balises
-                                        <strong class="text-danger" *ngIf="!singleClient.nbre_balises">*</strong>
-                                    </label>
-                                    <input type="number" class="form-control" name="nbre_balises" [(ngModel)]="singleClient.nbre_balises" placeholder="Nombre balises" required>
+                                    <input type="text" class="form-control" name="tel_mobile" [(ngModel)]="singleFournisseur.tel_mobile" placeholder="Tel mobile">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Adresse</label>
-                                <textarea class="form-control" rows="3" name="adresse" [(ngModel)]="singleClient.adresse" placeholder="Adresse"></textarea>
+                                <textarea class="form-control" rows="3" name="adresse" [(ngModel)]="singleFournisseur.adresse" placeholder="Adresse"></textarea>
                             </div>
 
                         </div>
                         <hr class="mt-4 mb-4">
                         <small class="text-danger">*: Ces champs sont obligatoires.</small>
                         <!-- Buttons -->
-                        <button type="submit" class="btn w-10 btn-float" [ngClass]="{'btn-primary': fiscaux.length == 0, 'btn-danger': fiscaux.length > 0}" [disabled]="!clientForm.valid">
-                            {{ singleClient.id ? 'Enregistrer' : 'Créer'}}
+                        <button type="submit" class="btn w-10 btn-float" [ngClass]="{'btn-primary': fiscaux.length == 0, 'btn-danger': fiscaux.length > 0}" [disabled]="!fournisseurForm.valid">
+                            {{ singleFournisseur.id ? 'Enregistrer' : 'Créer'}}
                         </button>
                         <button type="button" class="btn btn-secondary w-10 btn-float" (click)="fermer()">Annuler</button>
                     </form>
@@ -180,9 +144,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <form class="mb-4 shadow p-3 mb-5 bg-white rounded" #FiscauxForm="ngForm" (ngSubmit)="upadateIdentifiantsFiscaux()">
-                                <input type="hidden" name="id" [(ngModel)]="singleClient.id">
+                                <input type="hidden" name="id" [(ngModel)]="singleFournisseur.id">
                                 <div class="form-group" *ngFor="let fis of fiscaux; let i=index">
-                                    <label class="form-label">{{fis.identifiant_fisccale}}</label>
+                                    <label class="form-label">{{fis.nom}}</label>
                                     <input type="text" class="form-control" [(ngModel)]="fis.valeur" name="valeur[{{i}}]">
                                 </div>
                                 <hr class="mt-4 mb-4">
@@ -273,7 +237,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <input type="hidden" [ngModel]="singleContact.id" name="id">
-                                                    <input type="hidden" [ngModel]="singleClient.id" name="client_id">
+                                                    <input type="hidden" [ngModel]="singleFournisseur.id" name="fournisseur_id">
                                                     <div class="form-group">
                                                         <label for="titre" class="form-label">
                                                             Titre

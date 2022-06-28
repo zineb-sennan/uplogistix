@@ -13,7 +13,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <a [routerLink]="['/clients/edit']" class="btn btn-outline-primary mb-2 btn-ajouter">
+                <a [routerLink]="['/fournisseurs/edit']" class="btn btn-outline-primary mb-2 btn-ajouter">
                     <i class="fa-solid fa-plus"></i>
                 </a>
                 <br><br><br>
@@ -68,22 +68,22 @@
                         <thead>
                             <tr>
                                 <th>Raison sociale</th>
-                                <th>Nom complet</th>
                                 <th>Email</th>
-                                <th>Mobile</th>
+                                <th>Téléphone</th>
+                                <th>Fax</th>
                                 <th>Ville</th>
                                 <th>Éditer</th>
                             </tr>
                         </thead>
                         <tbody class="list">
-                            <tr *ngFor="let client of clients['records']">
-                                <td class="raison_sociale"> {{client.raison_sociale}} </td>
-                                <td class="nom_complet"> {{client.prenom}} {{client.nom}} </td>
-                                <td class="email"> {{client.email}} </td>
-                                <td class="tel_mobile"> {{client.tel_mobile}} </td>
-                                <td class="ville"> {{client.ville}} </td>
+                            <tr *ngFor="let fournisseur of fournisseurs['records']">
+                                <td class="raison_sociale"> {{fournisseur.raison_sociale}} </td>
+                                <td class="email"> {{fournisseur.email}} </td>
+                                <td class="tel_mobile"> {{fournisseur.tel}} </td>
+                                <td class="fax"> {{fournisseur.fax}} </td>
+                                <td class="ville"> {{fournisseur.ville}} </td>
                                 <td width="75">
-                                    <a [routerLink]="['/fournisseurs/',client.id,'edit']" type="button"
+                                    <a [routerLink]="['/fournisseurs/',fournisseur.id,'edit']" type="button"
                                         class="btn btn-operation">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
@@ -92,21 +92,21 @@
                         </tbody>
                     </table>
                     <nav aria-label="Page navigation" class="pag-tab col-md-12"
-                        *ngIf="clients.total_records && clients.total_pages>1">
+                        *ngIf="fournisseurs.total_records && fournisseurs.total_pages>1">
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" href="#!" [routerLink]="['/clients/page', clients.current_page-1]"
-                                    [ngClass]="{'_disabled':clients.current_page==1}">
+                                <a class="page-link" href="#!" [routerLink]="['/fournisseurs/page', fournisseurs.current_page-1]"
+                                    [ngClass]="{'_disabled':fournisseurs.current_page==1}">
                                     Précédent
                                 </a>
                             </li>
-                            <li class="page-item" *ngFor="let p of [].constructor(clients.total_pages); let i=index"
-                                [ngClass]="{'active':clients.current_page==i+1}">
-                                <a class="page-link" [routerLink]="['/clients/page', i+1]">{{i+1}}</a>
+                            <li class="page-item" *ngFor="let p of [].constructor(fournisseurs.total_pages); let i=index"
+                                [ngClass]="{'active':fournisseurs.current_page==i+1}">
+                                <a class="page-link" [routerLink]="['/fournisseurs/page', i+1]">{{i+1}}</a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" [routerLink]="['/clients/page', clients.current_page+1]"
-                                    [ngClass]="{'_disabled':clients.current_page==clients.total_pages}">
+                                <a class="page-link" [routerLink]="['/fournisseurs/page', fournisseurs.current_page+1]"
+                                    [ngClass]="{'_disabled':fournisseurs.current_page==fournisseurs.total_pages}">
                                     Suivant
                                 </a>
                             </li>

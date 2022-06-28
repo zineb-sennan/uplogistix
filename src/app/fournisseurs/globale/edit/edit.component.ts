@@ -24,66 +24,69 @@ export class EditComponent implements OnInit {
   regions: any[] = [];
   villes: any[] = [];
   fiscaux: any[] = [];
-  contacts:any[] = [];
+  contacts: any[] = [];
 
-  singleClient: any = { id: null, raison_sociale: null, adresse: null, nom: null, prenom: null, pays_id: null, region_id: null, ville_id: null, email: null, tel_mobile: null, tel_bureau: null, fax: null, nbre_balises:null };
-  singleContact: any= { id: null, client_id:null, titre:null, fonction:null, prenom:null, nom:null, email:null, tel_mobile:null, tel_bureau:null, fax:null }
+  singleFournisseur: any = { id: null, raison_sociale: null, adresse: null, pays_id: null, region_id: null, ville_id: null, email: null, tel: null, fax: null, nbre_balises: null };
+  singleContact: any = { id: null, client_id: null, titre: null, fonction: null, prenom: null, nom: null, email: null, tel_mobile: null, tel_bureau: null, fax: null }
 
   message: any = null;
   type: string = "client";
 
   constructor(
     private securiteClass: SecuriteClass,
-    public globale:Globale,
+    public globale: Globale,
     private paysService: PaysService,
     private regionsService: RegionsService,
     private villesService: VillesService,
-    private fournisseursService:FournisseursService,
+    private fournisseursService: FournisseursService,
     private idFiscaleService: IdFiscaleService,
     private activatedRoute: ActivatedRoute,
-    private location:Location
+    private location: Location
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(param => {
       const { id } = param;
-      if (id) this. getInfosClientById(id);
+      if (id) this.getInfosFournisseurById(id);
     });
     this.getAllPays();
   }
 
 
-  fermer(){
+  fermer() {
     this.location.back();
   }
 
   changeType(type: any) {
-    this.message=null;
+    this.message = null;
     this.type = type;
   }
 
   clear() {
-    this.singleClient = { id: null, raison_sociale: null, adresse: null, nom: null, prenom: null, pays_id: null, region_id: null, ville_id: null, email: null, tel_mobile: null, tel_bureau: null, fax: null, nbre_balises:null };
+    this.singleFournisseur = { id: null, raison_sociale: null, adresse: null, nom: null, prenom: null, pays_id: null, region_id: null, ville_id: null, email: null, tel_mobile: null, tel_bureau: null, fax: null, nbre_balises: null };
   }
 
-  getInfosClientById(id: any) {
-    this.fournisseursService.getClient(id).subscribe(result => {
-      this.singleClient = result;
-      this.getRegionsByPays(this.singleClient.pays_id);
-      this.getVillesByRegion(this.singleClient.region_id);
-      this.getIdentifiantsByClient(id);
-      this.getContcatsByClientId(id);
+  getInfosFournisseurById(id: any) {
+    console.log('id: ',id)
+
+    this.fournisseursService.getFournisseur(id).subscribe(result => {
+      this.singleFournisseur = result;
+      this.getRegionsByPays(this.singleFournisseur.pays_id);
+      this.getVillesByRegion(this.singleFournisseur.region_id);
+
+      this.getIdentifiantsByFournisseur(id);
+      this.getContcatsByFournisseurId(id);
     },
-    async error => {
-      if(error.status==401 && await this.securiteClass.refreshToken()) this.getInfosClientById(id);
-    });
+      async error => {
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getInfosFournisseurById(id);
+      });
   }
 
   getAllPays() {
     this.paysService.getAll().subscribe(
       result => this.pays = result,
       async error => {
-        if(error.status==401 && await this.securiteClass.refreshToken()) this.getAllPays();
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getAllPays();
       });
   }
 
@@ -92,10 +95,10 @@ export class EditComponent implements OnInit {
     this.regionsService.regionsByPays(id).subscribe(
       result => {
         this.regions = result;
-        this.singleClient.pays_id = id;
+        this.singleFournisseur.pays_id = id;
       },
       async error => {
-        if(error.status==401 && await this.securiteClass.refreshToken()) this.getRegionsByPays(id);
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getRegionsByPays(id);
       });
   }
 
@@ -103,11 +106,11 @@ export class EditComponent implements OnInit {
     this.villesService.villesByRegion(id).subscribe(
       result => {
         this.villes = result;
-        this.singleClient.region_id = id;
-    },
-    async error => {
-      if(error.status==401 && await this.securiteClass.refreshToken()) this.getVillesByRegion(id);
-    });
+        this.singleFournisseur.region_id = id;
+      },
+      async error => {
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getVillesByRegion(id);
+      });
   }
 
   changePays(e: any) {
@@ -118,119 +121,105 @@ export class EditComponent implements OnInit {
     this.getVillesByRegion(e.target.value);
   }
 
-  getIdentifiantsByClient(id: number) {
-    this.idFiscaleService.identifiantsByClient(id).subscribe(
+  getIdentifiantsByFournisseur(id: number) {
+    this.idFiscaleService.identifiantsByFournisseur(id).subscribe(
       result => this.fiscaux = result,
       async error => {
-        if(error.status==401 && await this.securiteClass.refreshToken()) this.getIdentifiantsByClient(id);
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getIdentifiantsByFournisseur(id);
       });
   }
 
-  updateIdentifiantsClient(record: any) {
-    this.idFiscaleService.updateIdentifiantsClient(record).subscribe(
-      res=> console.log(),
+  updateIdentifiantsFournisseur(record: any) {
+    this.idFiscaleService.updateIdentifiantsFournisseur(record).subscribe(
+      res => console.log(),
       async error => {
-        if(error.status==401 && await this.securiteClass.refreshToken()) this.updateIdentifiantsClient(record);
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.updateIdentifiantsFournisseur(record);
       }
     )
   }
 
   update(form: any) {
-    if(form.tel_mobile.indexOf(0)==0 && form.tel_mobile.length >= 9){
-      if (!form.id) {
-        this.fournisseursService.create(form).subscribe(
-          res => {
-            this. getInfosClientById(res.id);
-            this.message = "Le client est ajouté avec succès !";
-            this.type="identifiants_fiscaux";
-            $('#error_tel_mobile').text('');
-            $('#error_email').text('');
-          },
-          async error => {
-            if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
-            else if(error.status==409){
-              //tel mobile
-              if(error.error.tel_double)  $('#error_tel_mobile').text("Ce téléphone mobile est déjà existé."); 
-              else $('#error_tel_mobile').text('');
-              //email
-              if(error.error.email_doubles) $('#error_email').text("Cette adresse e-mail est déjà existée.");
-              else $('#error_email').text('');
-            }
-          }
-        )
-      }
-      else {
-        this.fournisseursService.update(form).subscribe(res => {
-          this.message = "Le client est modifié avec succès !";
+    if (!form.id) {
+      this.fournisseursService.create(form).subscribe(
+        res => {
+          console.log('***',res, res.id);
+          this.getInfosFournisseurById(res.id);
+          // this.message = "Le client est ajouté avec succès !";
+          // this.type = "identifiants_fiscaux";
         },
         async error => {
-          if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
+          if (error.status == 401 && await this.securiteClass.refreshToken()) this.update(form);
+        }
+      )
+    }
+    else {
+      this.fournisseursService.update(form).subscribe(res => {
+        this.message = "Le client est modifié avec succès !";
+      },
+        async error => {
+          if (error.status == 401 && await this.securiteClass.refreshToken()) this.update(form);
         })
-      }
-    }
-    else{
-      $('#error_tel_mobile').text("Le téléphone mobile doit être commencer par 0 et contient aux minimaux 9 chiffres !");
     }
   }
 
-  clearContact(){
-    this.message=null;
-    this.singleContact = { id: null, client_id:null, titre:null, fonction:null, prenom:null, nom:null, email:null, tel_mobile:'', tel_bureau:'', fax:'' }
+  clearContact() {
+    this.message = null;
+    this.singleContact = { id: null, client_id: null, titre: null, fonction: null, prenom: null, nom: null, email: null, tel_mobile: '', tel_bureau: '', fax: '' }
   }
 
-  getContcatsByClientId(id:number){
-    this.fournisseursService.getContactByClientId(id).subscribe(
-      res=>this.contacts=res,
+  getContcatsByFournisseurId(id: number) {
+    this.fournisseursService.getContactByFournisseurId(id).subscribe(
+      res => this.contacts = res,
       async error => {
-        if(error.status==401 && await this.securiteClass.refreshToken()) this.getContcatsByClientId(id);
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.getContcatsByFournisseurId(id);
       }
     )
   }
 
-  updateContact(form:any){
-    if(!form.id){
-      this.fournisseursService.createContact(form).subscribe(res=>{
-        this.getContcatsByClientId(this.singleClient.id);
-        this.message="Le contact est ajouté avec succès !";
+  updateContact(form: any) {
+    if (!form.id) {
+      this.fournisseursService.createContact(form).subscribe(res => {
+        this.getContcatsByFournisseurId(this.singleFournisseur.id);
+        this.message = "Le contact est ajouté avec succès !";
         this.globale.closeModal();
       },
-      async error=>{
-        if(error.status==401 && await this.securiteClass.refreshToken()) this.updateContact(form);
-      })
+        async error => {
+          if (error.status == 401 && await this.securiteClass.refreshToken()) this.updateContact(form);
+        })
     }
-    else{
+    else {
       this.fournisseursService.updateContact(form).subscribe(
-        res=>{
-          this.getContcatsByClientId(this.singleClient.id);
-          this.message="Le contact est modifié avec succès !";
+        res => {
+          this.getContcatsByFournisseurId(this.singleFournisseur.id);
+          this.message = "Le contact est modifié avec succès !";
           this.globale.closeModal();
         },
-        async error=>{
-          if(error.status==401 && await this.securiteClass.refreshToken()) this.updateContact(form);
+        async error => {
+          if (error.status == 401 && await this.securiteClass.refreshToken()) this.updateContact(form);
         })
     }
   }
 
-  deleteContact(id: any){
+  deleteContact(id: any) {
     this.fournisseursService.deleteContact(id).subscribe(
-      res=>{
-        this.getContcatsByClientId(this.singleClient.id);
-        this.message="Le contact est supprimé avec succès !";
+      res => {
+        this.getContcatsByFournisseurId(this.singleFournisseur.id);
+        this.message = "Le contact est supprimé avec succès !";
         this.globale.closeModal();
       },
-      async error=>{
-        if(error.status==401 && await this.securiteClass.refreshToken()) this.deleteContact(id);
+      async error => {
+        if (error.status == 401 && await this.securiteClass.refreshToken()) this.deleteContact(id);
       })
   }
 
-  setContact(data: any){
-    this.message=null;
+  setContact(data: any) {
+    this.message = null;
     this.singleContact = data;
   }
 
-  upadateIdentifiantsFiscaux(){
+  upadateIdentifiantsFiscaux() {
     this.fiscaux.forEach(element => {
-      this.updateIdentifiantsClient(element);
+      this.updateIdentifiantsFournisseur(element);
     });
     this.message = "Les identifiants fiscaux sont ajoutés avec succès !";
   }

@@ -31,16 +31,16 @@ export class IdentifiantsFiscaleComponent implements OnInit {
   getAllPays() {
     this.paysService.getAll().subscribe(
       result => this.pays = result,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllPays();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getAllPays();
       });
   }
 
   getIdFiscaleByPays(id:number){
     this.idFiscaleService.identifiantsByPays(id).subscribe(
       result => this.fiscaux = result,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getIdFiscaleByPays(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getIdFiscaleByPays(id);
       });
     this.singleFisc.pays_id=id;
   }
@@ -59,8 +59,8 @@ export class IdentifiantsFiscaleComponent implements OnInit {
           this.message = "L'identifiant fiscal est ajouté avec succès !";
           this.globale.closeModal();
         },
-        error => {
-          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+        async error => {
+          if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
         })
     } else {
       this.idFiscaleService.update(form).subscribe(
@@ -69,8 +69,8 @@ export class IdentifiantsFiscaleComponent implements OnInit {
           this.message = "L'identifiant fiscal est modifie avec succès !";
           this.globale.closeModal();
         },
-        error => {
-          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+        async error => {
+          if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
         })
     }
   }
@@ -82,8 +82,8 @@ export class IdentifiantsFiscaleComponent implements OnInit {
           this.message = "L'identifiant fiscal est supprimé avec succès !";
           this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.delete(id);
       })
   }
 

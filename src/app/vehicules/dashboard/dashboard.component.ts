@@ -23,7 +23,6 @@ export class DashboardComponent implements OnInit {
     private globale:Globale,
     private vehiculeService:VehiculeService,
     private activatedRoute: ActivatedRoute,
-    private ecoconduiteService:EcoconduiteService,
     private geoLocalisationService: GeoLocalisationService,
     private datePipe: DatePipe
   ) { }
@@ -55,7 +54,6 @@ export class DashboardComponent implements OnInit {
           this.getVehiculeById(id);
           //
           Chart.register(...registerables);
-          //this.getEtatCarburant(id);
 
           /** *** *** */
           this._test(id);
@@ -65,7 +63,6 @@ export class DashboardComponent implements OnInit {
   }
 
   getDistanceJour(vehicule_id: number){
-    //this.datePipe.transform(this.date, 'dd-MM-yyyy') 
     this.geoLocalisationService.getAnalyseVehicule({vehicule_id: vehicule_id, date_debut: this.datePipe.transform(this.date, 'yyyy-MM-dd') , date_fin:this.datePipe.transform(this.date, 'yyyy-MM-dd') }).subscribe(
       res => this.resume.km_aujourdhui= [...res.distance].reduce((prev: any, next: any) => prev + next.distance, 0)
     )

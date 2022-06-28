@@ -16,7 +16,7 @@ export class IndexComponent implements OnInit {
 
   page=null;
   pays: any[] = []; regions: any[] = []; villes: any[] = [];
-  clients:  any = { total_records: null, current_page: null, total_pages: null, records: [] };
+  fournisseurs:  any = { total_records: null, current_page: null, total_pages: null, records: [] };
   search:  any = { pays_id: '', region_id: '', ville_id:'', filtre:null };
 
   constructor(
@@ -75,7 +75,7 @@ export class IndexComponent implements OnInit {
 
   searchClient(form:any){
     this.fournisseursService.search(form, this.page).subscribe(
-      res=>this.clients=res,
+      res => this.fournisseurs=res,
       async error => {
         if(error.status==401 && await this.securiteClass.refreshToken()) this.searchClient(form);
     });

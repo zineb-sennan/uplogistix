@@ -9,6 +9,7 @@ import { VehiculeDepensesService } from 'src/app/_services/vehicule-depenses.ser
 import { ConducteurService } from 'src/app/_services/conducteur.service';
 import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { Globale } from 'src/app/_globale/globale';
 
 
 @Component({
@@ -27,12 +28,16 @@ export class IndexComponent implements OnInit {
     private ecoconduiteService: EcoconduiteService,
     private datePipe: DatePipe,
     private vehiculeDepensesService:VehiculeDepensesService,
-    private conducteurService:ConducteurService
+    private conducteurService:ConducteurService,
+    private globale: Globale
   ) { }
 
   ngOnInit(): void {
     Chart.register(...registerables);
+    //
+    //console.log('***',(this.globale.getAuth()))
   }
+
 
   ngAfterViewInit() {
     this.getInfos();
@@ -148,19 +153,15 @@ export class IndexComponent implements OnInit {
         plugins: { legend: { display: false } }
       }
     };
-    
     if(typeChart == 'bar'){
       _myChar.data.datasets[0].borderWidth='0.5';
       _myChar.data.datasets[0].borderRadius=6;
       _myChar.data.datasets[0].borderSkipped=false;
-      
       if(idChart == "chart-total-consommation") _myChar.data.datasets[0].categoryPercentage=0.09;
       else _myChar.data.datasets[0].categoryPercentage=0.2;
-
     }
     new Chart(<any>$('#' + idChart), _myChar);
   }
-
 
   calc(val1: number, val2: number): string {
     return ((val1 / (val1 + val2)) * 100).toFixed(2);

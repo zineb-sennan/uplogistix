@@ -30,8 +30,8 @@ export class GlobaleComponent implements OnInit {
   getAllClients(){
     this.clientService.getAllClients().subscribe(
       res=> this.clients=res,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllClients();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getAllClients();
     })
   }
 
@@ -42,8 +42,8 @@ export class GlobaleComponent implements OnInit {
   getAllBalise() {
     this.baliseService.getAll().subscribe(
       result => this.balises = result,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllBalise();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getAllBalise();
       });
   }
 
@@ -55,8 +55,8 @@ export class GlobaleComponent implements OnInit {
         this.singleBalise._client_id=res.client_id;
         if(res.client_id) this.getVehiculesByClientWithoutGPS(res.client_id);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getBalise(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getBalise(id);
       })
   }
 
@@ -67,8 +67,8 @@ export class GlobaleComponent implements OnInit {
         this.message = "La balise est ajoutée avec succès !";
         this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.baliseService.update(form).subscribe(res => {
@@ -76,8 +76,8 @@ export class GlobaleComponent implements OnInit {
         this.message = "La balise est modifiée avec succès !";
         this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -88,8 +88,8 @@ export class GlobaleComponent implements OnInit {
       this.message = "La balise est supprimée avec succès !";
       this.globale.closeModal();
     },
-    error => {
-      if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
+    async error => {
+      if(error.status==401 && await this.securiteClass.refreshToken()) this.delete(id);
     })
   }
 
@@ -106,8 +106,8 @@ export class GlobaleComponent implements OnInit {
         if(this.singleBalise._client_id==id) this.vehicules.push({id:this.singleBalise.vehicule_id, matricule:this.singleBalise.matricule, marque:this.singleBalise.marque});
         
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.delete(id);
       }
     )
   }

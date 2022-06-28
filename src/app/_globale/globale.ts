@@ -4,12 +4,14 @@ import * as $ from 'jquery';
 import { UtilisateurService } from "../_services/utilisateur.service";
 import { TokenService } from "../_services/token.service";
 
+import { map, switchMap } from 'rxjs/operators';
+
 @Injectable({
     providedIn: 'root'
 })
-export class Globale {
+ export class Globale {
     payload:any=this.tokenService.payload(this.tokenService.getToken() ?? ''); 
-    public utilisateur: any;
+    utilisateur: any= null;
    
     constructor(
         private location: Location,
@@ -18,9 +20,22 @@ export class Globale {
     ) { }
 
     async init() {
+        //console.log("Bonjour !!!");
+
         //01-infos d'utilisateur
-        this.utilisateur = await this.utilisateurService.getUtilisateur(this.payload.id).toPromise();
+        //this.utilisateur = await this.utilisateurService.getUtilisateur(this.payload.id).toPromise();
+        //this.getAuth();
         //
+
+        // this.utilisateurService.getUtilisateur(this.payload.id).subscribe(
+        //     res=> this.utilisateur= res
+        // )
+
+        //console.log('***',this.utilisateur);
+
+
+
+
     }
     
     //02-Function globale
@@ -33,6 +48,10 @@ export class Globale {
     //02-
     fermer() {
         this.location.back();
+    }
+    //03-
+    getAuth(){
+        const promise = this.utilisateurService.getUtilisateur(this.payload.id).toPromise();
     }
 
 }

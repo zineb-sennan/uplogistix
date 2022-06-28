@@ -10,9 +10,9 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: 'page/:page', component: IndexComponent, canActivate: [AuthGuardAdmin] },
-      { path: 'edit', component: EditComponent, canActivate: [AuthGuardAdmin] },
-      { path: ':id/edit', component: EditComponent, canActivate: [AuthGuardAdmin] },
+      { path: 'page/:page', component: IndexComponent, canActivate: [AuthGuardUser] },
+      { path: 'edit', component: EditComponent, canActivate: [AuthGuardUser] },
+      { path: ':id/edit', component: EditComponent, canActivate: [AuthGuardUser] },
     ]
   }
 ];

@@ -27,7 +27,6 @@ export class IndexComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private vehiculeGroupeService: VehiculeGroupeService,
     private vehiculeMarqueService: VehiculeMarqueService,
-    private ecoconduiteService: EcoconduiteService,
     private tokenService: TokenService,
     private utilisateurService:UtilisateurService
   ) { }
@@ -36,7 +35,7 @@ export class IndexComponent implements OnInit {
     this.activatedRoute.params.subscribe(param => {
       //01
       const { page } = param;
-      if (page) this.getAllVehicule(page);
+      if (page) this.searchVehicule(this.search);
       //02
       this.getAllGroupes();
       this.getAllMarques();
@@ -74,12 +73,10 @@ export class IndexComponent implements OnInit {
   }
 
   searchVehicule(form: any) {
+
     this.vehiculeService.search(form).subscribe(
       res =>{
         this.vehicules = res;
-        const vehicules = this.vehicules['records'];
-        vehicules.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : v.compteur_initial);
-        this.vehicules['records'] = vehicules;
       },
       async error => {
         if (error.status == 401 && await this.refreshToken()) this.searchVehicule(form);
@@ -105,14 +102,14 @@ export class IndexComponent implements OnInit {
     )
   }
 
-  getAllVehicule(page: number) {
-    this.vehiculeService.getAllByPage(page).subscribe(res => {
-      this.vehicules = res;
-      const vehicules = this.vehicules['records'];
-      vehicules.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : v.compteur_initial);
-      this.vehicules['records'] = vehicules;
-    })
-  }
+  // getAllVehicule(page: number) {
+  //   this.vehiculeService.getAllByPage(page).subscribe(res => {
+  //     this.vehicules = res;
+  //     // const vehicules = this.vehicules['records'];
+  //     // vehicules.map(async (v: any) => v.compteur = v.eco_conduite ? (await this.ecoconduiteService.resumeOfVehicule(v.id).toPromise()).compteur_km : v.compteur_initial);
+  //     //this.vehicules['records'] = vehicules;
+  //   })
+  // }
 
   // getIdVehicule(id: number) {
   //   this.idVehicule = id;
@@ -120,7 +117,7 @@ export class IndexComponent implements OnInit {
 
   delete(id: number) {
     this.vehiculeService.delete(id).subscribe(res => {
-      this.getAllVehicule(1);
+      this.searchVehicule(this.search);
       this.message = "Le vehicule est supprimé avec succès !";
       this.closeModal();
     },

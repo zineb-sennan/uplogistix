@@ -10,23 +10,23 @@ export class PieceCategoriesService {
   constructor(private http: HttpClient) { }
 
   getAll() {
-    return this.http.get<any>(environment.apiURL + '/stock/entrepots')
+    return this.http.get<any>(environment.apiURL + '/stock/categories')
   }
 
   create(record: any) {
-    return this.http.post(environment.apiURL + '/stock/entrepots', record)
+    return this.http.post(environment.apiURL + '/stock/categories', record)
   }
 
   update(record: any) {
-    return this.http.put(environment.apiURL + '/stock/entrepots/' + record.id, record)
+    return this.http.put(environment.apiURL + '/stock/categories/' + record.id, record)
   }
 
   delete(id: any) {
-    return this.http.delete(environment.apiURL + '/stock/entrepots/' + id)
+    return this.http.delete(environment.apiURL + '/stock/categories/' + id)
   }
 
   getPieceCat(id:number){
-    return this.http.get<any>(environment.apiURL + '/stock/entrepots/'+id)
+    return this.http.get<any>(environment.apiURL + '/stock/categories/'+id)
   }
 
 }

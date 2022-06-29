@@ -7,6 +7,10 @@ import { IndexEntrepotComponent } from './entrepots/index-entrepot/index-entrepo
 import { IndexPiecesRechangeComponent } from './pieces-rechange/index-pieces-rechange/index-pieces-rechange.component';
 import { EditPiecesRechangeComponent } from './pieces-rechange/edit-pieces-rechange/edit-pieces-rechange.component';
 import { FormsModule } from '@angular/forms';
+import { IndexBonsReceptionComponent } from './bons_reception/index-bons-reception/index-bons-reception.component';
+import { EditBonsReceptionComponent } from './bons_reception/edit-bons-reception/edit-bons-reception.component';
+import { IndexBonsRetourComponent } from './bons_retour/index-bons-retour/index-bons-retour.component';
+import { EditBonsRetourComponent } from './bons_retour/edit-bons-retour/edit-bons-retour.component';
 
 
 
@@ -16,7 +20,11 @@ import { FormsModule } from '@angular/forms';
     EditEntrepotComponent,
     IndexEntrepotComponent,
     IndexPiecesRechangeComponent,
-    EditPiecesRechangeComponent
+    EditPiecesRechangeComponent,
+    IndexBonsReceptionComponent,
+    EditBonsReceptionComponent,
+    IndexBonsRetourComponent,
+    EditBonsRetourComponent
   ],
   imports: [
     CommonModule,

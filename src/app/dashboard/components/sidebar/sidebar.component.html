@@ -181,7 +181,6 @@
                         <li class="nav-item" *ngIf="!isAdmin">
                             <a href="#sidebarStock" class="nav-link collapsed" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarStock">
-                                <!--img src="assets/img/icones/icon-international.png" width="25" style="margin-right: 5px; margin-top: -3px; margin-left: -3px;"-->
                                 Stock
                             </a>
                             <div class="collapse ml-19" id="sidebarStock" [routerLinkActive]="['show']">
@@ -193,15 +192,30 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                            <a [routerLink]="['/stock/entrepots']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
+                                        <a [routerLink]="['/stock/entrepots']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Entrepots
                                         </a> 
                                     </li>
                                     <li class="nav-item">
                                         <a [routerLink]="['/stock/piece-categories']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                        priece categories
-                                    </a> 
-                                </li>
+                                           Priece categories
+                                        </a> 
+                                    </li>
+                                    <li class="nav-item">
+                                        <a [routerLink]="['/stock/pieces-rechange']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
+                                            Pieces rechange
+                                        </a> 
+                                    </li>
+                                    <li class="nav-item">
+                                        <a [routerLink]="['/stock/bons-reception']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
+                                            Bons recepetion
+                                        </a> 
+                                    </li>
+                                    <li class="nav-item">
+                                        <a [routerLink]="['/stock/bons-retour']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
+                                            Bons retour
+                                        </a> 
+                                    </li>
                                 </ul>
                             </div>
                         </li>

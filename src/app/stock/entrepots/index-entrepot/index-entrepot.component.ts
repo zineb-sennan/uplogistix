@@ -35,4 +35,6 @@ export class IndexEntrepotComponent implements OnInit {
       }
     )
   }
+
+  
 }

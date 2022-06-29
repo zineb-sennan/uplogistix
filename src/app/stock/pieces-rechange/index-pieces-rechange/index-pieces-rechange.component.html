@@ -1,1 +1,99 @@
-<p>index-pieces-rechange works!</p>
+<div class="app">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Stock
+            </h6>
+            <h2 class="header-title">
+                Pieces rechange
+            </h2>
+        </div>
+    </div> <!-- ./titre -->
+
+    <!-- <div *ngIf="message" class="alert alert-success" role="alert">
+        {{message}}
+        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div> -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                
+                <a [routerLink]="['/stock/pieces-rechange/edit']" type="button" class="btn btn-outline-primary float-right">
+                    <i class="fa-solid fa-plus"></i> 
+                </a><br><br><br>
+
+                <div class="table-responsive row">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                            <tr>
+                                <th>designation</th>
+                                <th>unite_mesure</th>
+                                <th>marque</th>
+                                <th>reference</th>
+                                <th>duree_vie_km</th>
+                                <th>duree_vie_annee</th>
+                                <th>alerte_km</th>
+                                <th>alerte_jours</th>
+                                <th>stock_min</th>
+                                <th>gerer_stock</th>
+                                <th>piece_categories</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            <tr *ngFor="let piece of list_pieces_rechange">
+                                <td class="designation"> {{piece.designation}} </td>
+                                <td class="unite_mesure"> {{piece.unite_mesure}} </td>
+                                <td class="marque"> {{piece.marque}} </td>
+                                <td class="reference"> {{piece.reference}} </td>
+                                <td class="duree_vie_km"> {{piece.duree_vie_km}} </td>
+                                <td class="duree_vie_annee"> {{piece.duree_vie_annee}} </td>
+                                <td class="alerte_km"> {{piece.alerte_km}} </td>
+                                <td class="alerte_jours"> {{piece.alerte_jours}} </td>
+                                <td class="stock_min"> {{piece.stock_min}} </td>
+                                <td class="gerer_stock"> {{piece.gerer_stock}} </td>
+                                <td class="piece_categories">{{piece.piece_categories}}</td>
+                                <td width="75">
+                                    <a [routerLink]="['/stock/pieces-rechange/',piece.id,'edit']" type="button"
+                                        class="btn btn-operation">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="piece_id=piece.id">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> <!-- ./container-fluid -->
+     
+    <!-- **** Modal de confirmation **** -->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="material-icons">
+                            <i class="fa-solid fa-x"></i>
+                        </i>
+                    </div>
+                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                    <button type="button" class="btn btn-danger" (click)="delete(piece_id)">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

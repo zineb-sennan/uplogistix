@@ -32,7 +32,7 @@ export class IndexComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(param => {
       this.page = param['page'];
-      if(this.page) this.searchClient(this.search);
+      if(this.page) this.searchFournisseur(this.search);
       this.getAllPays();
     });
   }
@@ -73,11 +73,11 @@ export class IndexComponent implements OnInit {
     this.getVillesByRegion(e.target.value);
   }
 
-  searchClient(form:any){
+  searchFournisseur(form:any){
     this.fournisseursService.search(form, this.page).subscribe(
       res => this.fournisseurs=res,
       async error => {
-        if(error.status==401 && await this.securiteClass.refreshToken()) this.searchClient(form);
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.searchFournisseur(form);
     });
   }
 

@@ -82,7 +82,7 @@
                     <hr class="mt-4 mb-4">
                     <small class="text-danger">*: Ces champs sont obligatoires.</small>
                     <!-- Buttons -->
-                    <button type="submit" class="btn w-10 btn-float btn-primary">
+                    <button type="submit" class="btn w-10 btn-float btn-primary" [disabled]="!entrepotForm.valid">
                         Enregistrer
                     </button>
                     <button type="button" class="btn btn-secondary w-10 btn-float" (click)="fermer()">Annuler</button>

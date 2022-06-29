@@ -1,1 +1,130 @@
-<p>edit-pieces-rechange works!</p>
+<div class="app">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Stock
+            </h6>
+            <h2 class="header-title">
+                Pieces rechange
+            </h2>
+        </div>
+    </div> <!-- ./titre -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #pieceForm="ngForm" (ngSubmit)="update(pieceForm.value)">
+                    <!-- *** *** *** Forms *** *** *** -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="hidden" name="id" [(ngModel)]="singlePiece.id">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Designation
+                                    <strong class="text-danger" *ngIf="!singlePiece.designation">*</strong>
+                                </label>
+                                <input type="text" class="form-control" name="designation" [(ngModel)]="singlePiece.designation" placeholder="Designation" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    unite_mesure
+                                    <strong class="text-danger" *ngIf="!singlePiece.unite_mesure">*</strong>
+                                </label>
+                                <select class="form-select" name="unite_mesure"  [(ngModel)]="singlePiece.unite_mesure" required>
+                                    <option value=null disabled>Veuillez choisir...</option>
+                                    <option value="Unitaire (U)">Unitaire (U)</option>
+                                    <option value="Liquide (Litre)">Liquide (Litre)</option>
+                                    <option value="Poids (Kg)">Poids (Kg)</option>
+                                    <option value="Forfait">Forfait</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Reference</label>
+                                <input type="text" class="form-control" name="reference" [(ngModel)]="singlePiece.reference" placeholder="Reference">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    duree_vie_annee
+                                    <strong class="text-danger" *ngIf="!singlePiece.duree_vie_annee">*</strong>
+                                </label>
+                                <input type="number" class="form-control" name="duree_vie_annee" [(ngModel)]="singlePiece.duree_vie_annee" placeholder="duree_vie_annee" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    alerte_jours
+                                    <strong class="text-danger" *ngIf="!singlePiece.alerte_jours">*</strong>
+                                </label>
+                                <input type="number" class="form-control" name="alerte_jours" [(ngModel)]="singlePiece.alerte_jours" placeholder="alerte_jours" required>
+                            </div>
+                            <!-- <div class="form-group">
+                                <label class="form-label">
+                                    gerer_stock
+                                    <strong class="text-danger" *ngIf="!singlePiece.gerer_stock">*</strong>
+                                </label>
+                                <input type="number" class="form-control" name="gerer_stock" [(ngModel)]="singlePiece.gerer_stock" placeholder="gerer_stock" required>
+                            </div> -->
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                    [(ngModel)]="singlePiece.gerer_stock" name="gerer_stock">
+                                <label class="form-check-label">
+                                    gerer_stock <i class="fa-solid fa-question"></i>
+                                </label>
+                            </div>
+                            <br>
+                        </div> <!-- ./col-md-6 -->
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Categorie
+                                    <strong class="text-danger" *ngIf="!singlePiece.categorie_id">*</strong>
+                                </label>
+                                <select class="form-select" name="categorie_id"  [(ngModel)]="singlePiece.categorie_id" required>
+                                    <option value=null disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let cat of categories" [value]="cat.id">{{cat.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">marque</label>
+                                <input type="text" class="form-control" name="marque" [(ngModel)]="singlePiece.marque" placeholder="marque">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    duree_vie_km
+                                    <strong class="text-danger" *ngIf="!singlePiece.duree_vie_km">*</strong>
+                                </label>
+                                <input type="number" class="form-control" name="duree_vie_km" [(ngModel)]="singlePiece.duree_vie_km" placeholder="duree_vie_annee" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    alerte_km
+                                    <strong class="text-danger" *ngIf="!singlePiece.alerte_km">*</strong>
+                                </label>
+                                <input type="number" class="form-control" name="alerte_km" [(ngModel)]="singlePiece.alerte_km" placeholder="duree_vie_annee" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">stock_min</label>
+                                <input type="number" class="form-control" name="stock_min" [(ngModel)]="singlePiece.stock_min" placeholder="duree_vie_annee">
+                            </div>
+                        </div> <!-- ./col-md-6 -->
+                        <div class="form-group">
+                            <label class="form-label">description</label>
+                            <textarea class="form-control" rows="3" name="description" [(ngModel)]="singlePiece.description"></textarea>
+                        </div>
+
+                    </div>
+                    <hr class="mt-4 mb-4">
+                    <small class="text-danger">*: Ces champs sont obligatoires.</small>
+                    <!-- Buttons -->
+                    <button type="submit" class="btn w-10 btn-float btn-primary" [disabled]="!pieceForm.valid">
+                        Enregistrer
+                    </button>
+                    <button type="button" class="btn btn-secondary w-10 btn-float" (click)="close()">Annuler</button>
+                </form>
+            </div>
+        </div>
+    </div> <!-- ./container-fluid -->
+ 
+       
+
+</div>

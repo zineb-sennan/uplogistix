@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Globale } from 'src/app/_globale/globale';
 import { PieceCategoriesService } from 'src/app/_services/piece-categories.service';
 
 @Component({
@@ -8,11 +9,12 @@ import { PieceCategoriesService } from 'src/app/_services/piece-categories.servi
 })
 export class PieceCategoriesComponent implements OnInit {
   pieceCategories:any=[]; message:any=null;
-  singlePieceCatForm:any={id:null, nom:null, description:null }
+  singlePieceCat:any={id:null, nom:null, description:null }
 
 
   constructor(
-    private pieceCategoriesService: PieceCategoriesService
+    private pieceCategoriesService: PieceCategoriesService,
+    private globale:Globale
   ) { }
 
   ngOnInit(): void {
@@ -20,7 +22,7 @@ export class PieceCategoriesComponent implements OnInit {
   }
 
   clear(){
-    this.singlePieceCatForm=null;
+    this.singlePieceCat ={id:null, nom:null, description:null };
     this.message=null;
   }
 
@@ -33,7 +35,7 @@ export class PieceCategoriesComponent implements OnInit {
   getPieceCategorie(id:number){
     this.pieceCategoriesService.getPieceCat(id).subscribe(
       res => {
-        this.singlePieceCatForm = res;
+        this.singlePieceCat = res;
         this.getAll();
       }
     )
@@ -43,6 +45,8 @@ export class PieceCategoriesComponent implements OnInit {
     this.pieceCategoriesService.delete(id).subscribe(
       res => {
         this.getAll();
+        this.message ="Pièce catégorie est supprimée avec succès";
+        this.globale.closeModal();
       }
     )
   }
@@ -52,6 +56,7 @@ export class PieceCategoriesComponent implements OnInit {
       this.pieceCategoriesService.create(form).subscribe(
         res=>{
           this.getAll();
+          this.message ="Pièce catégorie est ajoutée avec succès";
         }
       )
     }
@@ -59,6 +64,8 @@ export class PieceCategoriesComponent implements OnInit {
       this.pieceCategoriesService.update(form).subscribe(
         res=>{
           this.getAll();
+          this.message ="Pièce catégorie est modifiée avec succès";
+          this.globale.closeModal();
         }
       )
        

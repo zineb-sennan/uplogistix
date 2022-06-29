@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Globale } from 'src/app/_globale/globale';
 import { SecuriteClass } from 'src/app/_globale/securite';
 import { EntrepotsService } from 'src/app/_services/entrepots.service';
 import { PaysService } from 'src/app/_services/pays.service';
@@ -23,7 +24,8 @@ export class EditEntrepotComponent implements OnInit {
     private villesService:VillesService,
     private securiteClass:SecuriteClass,
     private entrepotsService:EntrepotsService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private globale:Globale
   ) { }
 
   ngOnInit(): void {
@@ -76,21 +78,21 @@ export class EditEntrepotComponent implements OnInit {
   }
 
   fermer(){
-    console.log("bbbb");
+    this.globale.closeModal();
   }
 
   update(form:any){
     if (!form.id) {
       this.entrepotsService.create(form).subscribe(
         res=>{
-          console.log('Bien ajouter !!!');
+          this.message="Bien ajouter !"
         }
       )
     }
     else{
       this.entrepotsService.update(form).subscribe(
         res=>{
-          console.log('Bien modifie !!!');
+          this.message="Bien modifie !"
         }
       )
     }

@@ -17,13 +17,18 @@
                     <i class="fa-solid fa-plus"></i> 
                 </button><br><br><br>
 
+                <div *ngIf="message" class="alert alert-success" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
                 <div class="list-pieces-cat row">
                     <div class="col-md-3" *ngFor="let pieceCat of pieceCategories">
                         <div class="card">
                             <div class="card-header">
                                 {{pieceCat.nom}}
                                 <div>
-                                    <button type="button" class="btn btn-light float-right" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                    <button type="button" class="btn btn-light float-right" style="margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="singlePieceCat.id = pieceCat.id">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                     <button type="button" class="btn btn-light float-right" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getPieceCategorie(pieceCat.id)">
@@ -62,7 +67,7 @@
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
-                    <!-- <button type="button" class="btn btn-danger" (click)="delete(1)">Supprimer</button> -->
+                    <button type="button" class="btn btn-danger" (click)="delete(singlePieceCat.id)">Supprimer</button>
                 </div>
             </div>
         </div>
@@ -81,24 +86,23 @@
                     </div>
                     <div class="card-body">
                         <form #pieceCatForm="ngForm" (ngSubmit)="update(pieceCatForm.value)">
-                            <input type="hidden" [(ngModel)]="singlePieceCatForm.id" name="id">
+                            <input type="hidden" [(ngModel)]="singlePieceCat.id" name="id">
                             <div class="form-group">
                                 <label for="nom" class="form-label">
                                     Nom
-                                    <strong class="text-danger" *ngIf="!singlePieceCatForm.nom">*</strong>
+                                    <strong class="text-danger" *ngIf="!singlePieceCat.nom">*</strong>
                                 </label>
-                                <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singlePieceCatForm.nom" name="nom" required>
+                                <input type="text" class="form-control form-control-sm" placeholder="Nom" [(ngModel)]="singlePieceCat.nom" name="nom" required>
                             </div>
                             <div class="form-group">
                                 <label for="nom" class="form-label">
                                     Description
-                                    <strong class="text-danger" *ngIf="!singlePieceCatForm.nom">*</strong>
                                 </label>
-                                <textarea class="form-control" rows="3" [(ngModel)]="singlePieceCatForm.description" name="description"></textarea>
+                                <textarea class="form-control" rows="3" [(ngModel)]="singlePieceCat.description" name="description"></textarea>
                             </div>
                             <div class="col-md-12">
                                 <small class="text-danger">*: Ce champ est obligatoire.</small>
-                                <button type="submit" class="btn btn-success mb-2 btn-save float-right" [disabled]="!pieceCatForm.valid" >Enregister</button>
+                                <button type="submit" class="btn btn-success mb-2 btn-save float-right" [disabled]="!pieceCatForm.valid">Enregister</button>
                                 <button type="button" class="btn btn-secondary float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
                             </div>
                         </form>

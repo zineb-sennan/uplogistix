@@ -16,15 +16,18 @@ export class SidebarComponent implements OnInit {
     private globale:Globale
   ) { }
 
-  isAdmin:boolean=false; idUtilisateur=0; permissions:any=[];
+  isAdmin:boolean=false; idUtilisateur=0; permissions:any=[]; type_compte:any="";
 
   async ngOnInit() {
     const payload = this.tokenService.payload(this.tokenService.getToken() ?? '');
     this.isAdmin = payload?.cid == null;
+    
     //01
     const utilsateur$ = await this.utilisateurService.getUtilisateur(payload.id).toPromise();
     this.permissions=utilsateur$.permissions;
+    this.type_compte=utilsateur$.type_compte;
 
+    console.log("type compte",this.type_compte)
   }
 
   permissionExiste(slug: any){

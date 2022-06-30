@@ -9,7 +9,9 @@
         <!-- Brand -->
         <a class="navbar-brand">
             <img src="assets/img/logo.png" class="navbar-brand-img mx-auto" alt="...">
-            <span class="logo-name">UPLOGISTIX</span>
+            <span class="logo-name">
+                UPLOGISTIX <i class="fa-solid fa-leaf text-success"></i>
+            </span>
         </a>
 
         <!-- Collapse -->
@@ -18,7 +20,7 @@
             <ul class="navbar-nav">
                 <div class="collapse show" id="sidebarDashboards">
                     <ul class="nav nav-sm flex-column">
-                        <li class="nav-item">
+                        <li class="nav-item" *ngIf="type_compte == 'Super administrateur'">
                             <a class="nav-link" [routerLink]="['/']">
                                 <img src="assets/img/icones/icon-home.png" width="18"
                                     style="margin-right: 5px; margin-top: -3px;"> Tableau de bord
@@ -181,39 +183,51 @@
                         <li class="nav-item" *ngIf="!isAdmin">
                             <a href="#sidebarStock" class="nav-link collapsed" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarStock">
-                                Stock
+                            <img src="assets/img/icones/icon-stock.png" width="25"
+                                    style="margin-right: 5px; margin-top: -3px; margin-left: -3px;">
+                                Pièces de rechange
                             </a>
                             <div class="collapse ml-19" id="sidebarStock" [routerLinkActive]="['show']">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a [routerLink]="['/fournisseurs/page/1']" class="nav-link"
                                             routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Fournisseurs
+                                            Gestion des fournisseurs
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a [routerLink]="['/stock/entrepots']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Entrepots
+                                            Les entrepôts
                                         </a> 
                                     </li>
                                     <li class="nav-item">
                                         <a [routerLink]="['/stock/piece-categories']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                           Priece categories
+                                            Catégories des pièces
                                         </a> 
                                     </li>
                                     <li class="nav-item">
                                         <a [routerLink]="['/stock/pieces-rechange']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Pieces rechange
+                                            Les pièces
                                         </a> 
                                     </li>
                                     <li class="nav-item">
                                         <a [routerLink]="['/stock/bons-reception']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Bons recepetion
+                                            Bons de réception
                                         </a> 
                                     </li>
                                     <li class="nav-item">
                                         <a [routerLink]="['/stock/bons-retour']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Bons retour
+                                            Bons de retour
+                                        </a> 
+                                    </li>
+                                    <li class="nav-item">
+                                        <a [routerLink]="['/stock/bons-transfert']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
+                                            Bons de transfert
+                                        </a> 
+                                    </li>
+                                    <li class="nav-item">
+                                        <a [routerLink]="['/stock/inventaires']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
+                                            Inventaires
                                         </a> 
                                     </li>
                                 </ul>

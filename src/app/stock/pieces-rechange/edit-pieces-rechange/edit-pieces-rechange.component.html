@@ -5,7 +5,7 @@
                 Stock
             </h6>
             <h2 class="header-title">
-                Pieces rechange
+                Pièces de rechange
             </h2>
         </div>
     </div> <!-- ./titre -->
@@ -26,7 +26,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
-                                    unite_mesure
+                                    Unité de mesure
                                     <strong class="text-danger" *ngIf="!singlePiece.unite_mesure">*</strong>
                                 </label>
                                 <select class="form-select" name="unite_mesure"  [(ngModel)]="singlePiece.unite_mesure" required>
@@ -43,31 +43,23 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
-                                    duree_vie_annee
+                                    Duree de vie annee
                                     <strong class="text-danger" *ngIf="!singlePiece.duree_vie_annee">*</strong>
                                 </label>
-                                <input type="number" class="form-control" name="duree_vie_annee" [(ngModel)]="singlePiece.duree_vie_annee" placeholder="duree_vie_annee" required>
+                                <input type="number" class="form-control" name="duree_vie_annee" [(ngModel)]="singlePiece.duree_vie_annee" placeholder="Duree de vie annee" required>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
-                                    alerte_jours
+                                    Alerte jours
                                     <strong class="text-danger" *ngIf="!singlePiece.alerte_jours">*</strong>
                                 </label>
-                                <input type="number" class="form-control" name="alerte_jours" [(ngModel)]="singlePiece.alerte_jours" placeholder="alerte_jours" required>
+                                <input type="number" class="form-control" name="alerte_jours" [(ngModel)]="singlePiece.alerte_jours" placeholder="Alerte jours" required>
                             </div>
-                            <!-- <div class="form-group">
-                                <label class="form-label">
-                                    gerer_stock
-                                    <strong class="text-danger" *ngIf="!singlePiece.gerer_stock">*</strong>
-                                </label>
-                                <input type="number" class="form-control" name="gerer_stock" [(ngModel)]="singlePiece.gerer_stock" placeholder="gerer_stock" required>
-                            </div> -->
-
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox"
                                     [(ngModel)]="singlePiece.gerer_stock" name="gerer_stock">
                                 <label class="form-check-label">
-                                    gerer_stock <i class="fa-solid fa-question"></i>
+                                    gerer le stock <i class="fa-solid fa-question"></i>
                                 </label>
                             </div>
                             <br>
@@ -76,7 +68,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">
-                                    Categorie
+                                    Catégorie
                                     <strong class="text-danger" *ngIf="!singlePiece.categorie_id">*</strong>
                                 </label>
                                 <select class="form-select" name="categorie_id"  [(ngModel)]="singlePiece.categorie_id" required>
@@ -85,31 +77,31 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">marque</label>
+                                <label class="form-label">Marque</label>
                                 <input type="text" class="form-control" name="marque" [(ngModel)]="singlePiece.marque" placeholder="marque">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
-                                    duree_vie_km
+                                    Duree de vie km
                                     <strong class="text-danger" *ngIf="!singlePiece.duree_vie_km">*</strong>
                                 </label>
-                                <input type="number" class="form-control" name="duree_vie_km" [(ngModel)]="singlePiece.duree_vie_km" placeholder="duree_vie_annee" required>
+                                <input type="number" class="form-control" name="duree_vie_km" [(ngModel)]="singlePiece.duree_vie_km" placeholder="Duree de vie km" required>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
-                                    alerte_km
+                                    Alerte km
                                     <strong class="text-danger" *ngIf="!singlePiece.alerte_km">*</strong>
                                 </label>
-                                <input type="number" class="form-control" name="alerte_km" [(ngModel)]="singlePiece.alerte_km" placeholder="duree_vie_annee" required>
+                                <input type="number" class="form-control" name="alerte_km" [(ngModel)]="singlePiece.alerte_km" placeholder="Alerte km" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">stock_min</label>
-                                <input type="number" class="form-control" name="stock_min" [(ngModel)]="singlePiece.stock_min" placeholder="duree_vie_annee">
+                                <label class="form-label">stock min</label>
+                                <input type="number" class="form-control" name="stock_min" [(ngModel)]="singlePiece.stock_min" placeholder="stock min">
                             </div>
                         </div> <!-- ./col-md-6 -->
                         <div class="form-group">
                             <label class="form-label">description</label>
-                            <textarea class="form-control" rows="3" name="description" [(ngModel)]="singlePiece.description"></textarea>
+                            <textarea class="form-control" rows="3" name="description" [(ngModel)]="singlePiece.description" placeholder="Description"></textarea>
                         </div>
 
                     </div>

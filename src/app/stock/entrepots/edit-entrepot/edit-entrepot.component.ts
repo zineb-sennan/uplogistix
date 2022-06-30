@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Globale } from 'src/app/_globale/globale';
 import { SecuriteClass } from 'src/app/_globale/securite';
 import { EntrepotsService } from 'src/app/_services/entrepots.service';
@@ -13,7 +13,7 @@ import { VillesService } from 'src/app/_services/villes.service';
   styleUrls: ['./edit-entrepot.component.css']
 })
 export class EditEntrepotComponent implements OnInit {
-  pays:any=[]; regions:any=[]; villes:any=[]; message:any='';
+  pays:any=[]; regions:any=[]; villes:any=[];
 
   singleEntrepot:any={id:null, nom:null, description:null, adresse:null, pays_id:null, region_id :null, ville_id :null, 	tel_mobile:null, 	tel_bureau:null, 	fax :null, email :null };
 
@@ -25,6 +25,7 @@ export class EditEntrepotComponent implements OnInit {
     private securiteClass:SecuriteClass,
     private entrepotsService:EntrepotsService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private globale:Globale
   ) { }
 
@@ -85,14 +86,14 @@ export class EditEntrepotComponent implements OnInit {
     if (!form.id) {
       this.entrepotsService.create(form).subscribe(
         res=>{
-          this.message="Bien ajouter !"
+          this.router.navigate(['stock/entrepots'])
         }
       )
     }
     else{
       this.entrepotsService.update(form).subscribe(
         res=>{
-          this.message="Bien modifie !"
+          this.router.navigate(['stock/entrepots'])
         }
       )
     }
@@ -100,7 +101,11 @@ export class EditEntrepotComponent implements OnInit {
 
   getEntrepotById(id:number){
     this.entrepotsService.getEntrepot(id).subscribe(
-      res=> this.singleEntrepot=res
+      res=>{
+        this.singleEntrepot=res;
+        this.getRegionsByPays(this.singleEntrepot.pays_id);
+        this.getVillesByRegion(this.singleEntrepot.region_id);
+      } 
     )
   }
 

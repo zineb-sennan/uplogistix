@@ -1,4 +1,20 @@
-.card-header{
+.list-pieces-cat .card-header{
     height: 45px;
     font-weight: 500;
+}
+
+.list-pieces-cat .card-body{
+    padding: 1rem !important;
+    max-height: 100px !important;
+    height: 100px !important;
+}
+
+._btn{
+    background-color: #fff !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+._btn:hover{
+    background-color: #12263f !important;
+    color: #fff !important;
 }

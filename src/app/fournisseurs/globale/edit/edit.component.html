@@ -17,7 +17,7 @@
                     <div class="col">
                         <ul class="nav nav-tabs nav-overflow header-tabs">
                             <li class="nav-item">
-                                <button class="nav-link" (click)="changeType('client')" [ngClass]="{'active': type=='client'}">
+                                <button class="nav-link" (click)="changeType('fournisseur')" [ngClass]="{'active': type=='fournisseur'}">
                                     Fournisseur
                                 </button>
                             </li>
@@ -36,9 +36,9 @@
                     <br><br><br><br>
                 </div>
 
-                <div class="client" *ngIf="type == 'client'">
+                <div class="fournisseur" *ngIf="type == 'fournisseur'">
                     <!-- Titre Page -->
-                    <div class="header mt-md-3">
+                    <!-- <div class="header mt-md-3">
                         <div class="header-body">
                             <div class="row align-items-center">
                                 <div class="col">
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Content -->
                     <div *ngIf="message" class="alert alert-success" role="alert">
                         {{message}}
@@ -126,7 +126,7 @@
                 <!-- *** *** identifiant_fisccale *** ***-->
                 <div class="identifiants_fiscaux" *ngIf="type == 'identifiants_fiscaux'">
                     <!-- Titre Page -->
-                    <div class="header mt-md-3">
+                    <!-- <div class="header mt-md-3">
                         <div class="header-body">
                             <div class="row align-items-center">
                                 <div class="col">
@@ -135,7 +135,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Content -->
                     <div *ngIf="message" class="alert alert-success" role="alert">
                         {{message}}
@@ -163,15 +163,14 @@
                 <div class="contacts" *ngIf="type == 'contacts'">
                     <!-- Header -->
                     <div class="header mt-md-3">
-                        <div class="header-body">
+                        <!-- <div class="header-body">
                             <div class="row align-items-center">
                                 <div class="col">
                                     <h6 class="header-pretitle">Contacts</h6>
                                     <h2 class="header-title">List de Contacts</h2>
                                 </div>
                             </div>
-                            <!-- / .row -->
-                        </div>
+                        </div> -->
                         <!-- fin titre -->
                         <br>
                         <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn btn-outline-primary mb-2 btn-add-contact" (click)="clearContact()">

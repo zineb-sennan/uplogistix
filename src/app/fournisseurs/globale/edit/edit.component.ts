@@ -29,8 +29,8 @@ export class EditComponent implements OnInit {
   singleFournisseur: any = { id: null, raison_sociale: null, adresse: null, pays_id: null, region_id: null, ville_id: null, email: null, tel: null, fax: null, nbre_balises: null };
   singleContact: any = { id: null, client_id: null, titre: null, fonction: null, prenom: null, nom: null, email: null, tel_mobile: null, tel_bureau: null, fax: null }
 
-  message: any = null;
-  type: string = "client";
+  message: any = "";
+  type: string = "fournisseur";
 
   constructor(
     private securiteClass: SecuriteClass,
@@ -67,8 +67,6 @@ export class EditComponent implements OnInit {
   }
 
   getInfosFournisseurById(id: any) {
-    console.log('id: ',id)
-
     this.fournisseursService.getFournisseur(id).subscribe(result => {
       this.singleFournisseur = result;
       this.getRegionsByPays(this.singleFournisseur.pays_id);
@@ -142,10 +140,9 @@ export class EditComponent implements OnInit {
     if (!form.id) {
       this.fournisseursService.create(form).subscribe(
         res => {
-          console.log('***',res, res.id);
           this.getInfosFournisseurById(res.id);
-          // this.message = "Le client est ajouté avec succès !";
-          // this.type = "identifiants_fiscaux";
+          this.message = "Le fournisseur est ajouté avec succès .";
+          this.type = "identifiants_fiscaux";
         },
         async error => {
           if (error.status == 401 && await this.securiteClass.refreshToken()) this.update(form);
@@ -154,7 +151,7 @@ export class EditComponent implements OnInit {
     }
     else {
       this.fournisseursService.update(form).subscribe(res => {
-        this.message = "Le client est modifié avec succès !";
+        this.message = "Le fournisseur est modifié avec succès !";
       },
         async error => {
           if (error.status == 401 && await this.securiteClass.refreshToken()) this.update(form);

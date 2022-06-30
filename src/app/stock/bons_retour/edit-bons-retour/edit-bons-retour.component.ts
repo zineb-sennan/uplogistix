@@ -102,7 +102,7 @@ export class EditBonsRetourComponent implements OnInit {
     this.bonsRetourService.getBonReception(id).subscribe(
      res =>{
        this.singleBonR=res;
-       this.singleDetailBR.bon_retour_id=this.singleBonR.id;
+       this.singleDetailBR.bon_retour_id =this.singleBonR.id;
      } 
     )
  }

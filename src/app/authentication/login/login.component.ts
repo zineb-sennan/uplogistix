@@ -30,11 +30,24 @@ export class LoginComponent implements OnInit {
         this.tokenService.setToken(result.token);
         this.tokenService.setRefershToken(result.refreshToken);
         const utilisateur = await this.utilisateurService.getUtilisateur(Number(JSON.parse(atob(result.token.split('.')[1])).id)).toPromise();
-        console.log()
+        //console.log(utilisateur.permissions)
         if( utilisateur.type_compte == "Super administrateur") this.router.navigate(['dashboard']);
         else{
-          //*** les permi ***
-          //console.log(utilisateur.);
+          //*** les permissions ***
+          [...utilisateur.permissions].forEach(permission => {
+            //console.log('***',permission);
+
+            if(permission.slug == "vehicules") this.router.navigate(['vehicules/page/1']);
+            else if(permission.slug == "vehicules") this.router.navigate(['vehicules/page/1']);
+            else if(permission.slug == "carburants") this.router.navigate(['vehicules/carburants/page/1']);
+            else if(permission.slug == "compteurs") this.router.navigate(['vehicules/compteurs/page/1']);
+            else if(permission.slug == "depenses") this.router.navigate(['vehicules/depenses/page/1']);
+            else if(permission.slug == "groupe-vehicules") this.router.navigate(['vehicules/groupes']);
+            else if(permission.slug == "conducteurs") this.router.navigate(['conducteurs/page/1']);
+            else if(permission.slug == "geolocalisations") this.router.navigate(['geolocalisation/derniere-position']);
+            else if(permission.slug == "eco-conduite") this.router.navigate(['ecoconduit']);
+            else if(permission.slug == "geozones") this.router.navigate(['geolocalisation/geozones']);
+          });
         }
       },
       error => {

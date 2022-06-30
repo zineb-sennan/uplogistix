@@ -1,0 +1,153 @@
+<section>
+    <!-- *** *** Titre *** ***  -->
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Stock
+            </h6>
+            <h2 class="header-title">
+                Inventaire
+            </h2>
+        </div>
+    </div>
+    <!-- *** *** Content *** ***  -->
+    <div class="container-fluid">
+        <div class="row">
+            <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #roleForm="ngForm">
+                <!-- *** *** *** Forms *** *** *** -->
+                <div class="row">
+                    <form #inventaireForm="ngForm" (ngSubmit)="updateInventaire(inventaireForm.value)">
+                        <input type="hidden" name="id"  [(ngModel)]="singleInventaire.id">
+                        <div class="form-group">
+                            <label class="form-label">Numero</label>
+                            <input class="form-control" type="text" placeholder="Numero" name="numero" [(ngModel)]="singleInventaire.numero" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                entrepot
+                                <strong class="text-danger" *ngIf="!singleInventaire.entrepot_id">*</strong>
+                            </label>
+                            <select class="form-select" name="entrepot_id"  [(ngModel)]="singleInventaire.entrepot_id" required>
+                                <option value=null disabled>Veuillez choisir...</option>
+                                <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">commentaire</label>
+                            <textarea class="form-control" rows="3" name="commentaire" [(ngModel)]="singleInventaire.commentaire"></textarea>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!inventaireForm.valid">Enregister</button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+                <hr class="mt-4 mb-4">
+                <small class="text-danger">*: Ce champ est obligatoire.</small>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 shadow p-3 mb-5 bg-white rounded">
+
+                <div class="header md-5">
+                    <div class="header-body">
+                        <h2 class="header-title">Detail inventaire</h2>
+                    </div>
+                </div>
+
+                <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;" (click)="clearDetailInventaire()">
+                    <i class="fa-solid fa-plus"></i>
+                </button> <br><br>
+
+                <table class="table table-sm table-nowrap card-table">
+                    <thead>
+                        <tr>
+                            <th>Piece</th>
+                            <th>Qte</th>
+                            <th>Éditer</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        <tr *ngFor="let di of list_detail_inventaire">
+                            <td class="marque"> {{di.pieces}} </td>
+                            <td class="qte"> {{di.qte}} </td>
+                            <td width="75">
+                                <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailInventaireById(di.id)">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button> &nbsp;
+                                <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="singleDetailInventaire.id=di.id">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- *** *** *** *** ***-->
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-card card" data-list=''>
+                    <div class="card-header">
+                        <h4 class="card-header-title" id="exampleModalCenterTitle">
+                            Detail inventaire
+                        </h4>
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="card-body">
+                        <form #detailsInventaireForm="ngForm" (ngSubmit)="updateDetailsInventaire(detailsInventaireForm.value)">
+                            <input type="hidden" name="id" [(ngModel)]="singleDetailInventaire.id">
+                            <input type="hidden" name="inventaire_id" [(ngModel)]="singleDetailInventaire.inventaire_id">
+                            <div class="form-group">
+                                <label class="form-label">Pieces</label>
+                                <select class="form-select" name="piece_id" [(ngModel)]="singleDetailInventaire.piece_id" required>
+                                    <option value=null disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let piece of pieces" [value]="piece.id">{{piece.designation}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Qte</label>
+                                <input type="text" class="form-control" name="qte" [(ngModel)]="singleDetailInventaire.qte" placeholder="qte">
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary mb-2 mt-4 float-right">Enregister</button>
+                                <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- *** *** *** *** -->
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="material-icons">
+                            <i class="fa-solid fa-x"></i>
+                        </i>
+                    </div>
+                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+                    <br>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                    <button type="button" class="btn btn-danger" (click)="deleteDetailInventaire(singleDetailInventaire.id)">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+</section>

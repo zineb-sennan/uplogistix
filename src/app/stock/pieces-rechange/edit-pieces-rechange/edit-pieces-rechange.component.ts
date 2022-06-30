@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Globale } from 'src/app/_globale/globale';
 import { PieceCategoriesService } from 'src/app/_services/piece-categories.service';
 import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service';
@@ -18,7 +18,8 @@ export class EditPiecesRechangeComponent implements OnInit {
     private pieceCategoriesService: PieceCategoriesService,
     private piecesRechangeService:PiecesRechangeService,
     private activatedRoute: ActivatedRoute,
-    private globale:Globale
+    private globale:Globale,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -52,14 +53,14 @@ export class EditPiecesRechangeComponent implements OnInit {
     if (!form.id) {
       this.piecesRechangeService.create(form).subscribe(
         res=>{
-          this.message="Bien ajouter !"
+          this.router.navigate(['stock/pieces-rechange'])
         }
       )
     }
     else{
       this.piecesRechangeService.update(this.singlePiece).subscribe(
         res=>{
-          this.message="Bien modifie !"
+          this.router.navigate(['stock/pieces-rechange'])
         }
       )
     }

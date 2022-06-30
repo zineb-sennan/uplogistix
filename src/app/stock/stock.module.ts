@@ -11,6 +11,10 @@ import { IndexBonsReceptionComponent } from './bons_reception/index-bons-recepti
 import { EditBonsReceptionComponent } from './bons_reception/edit-bons-reception/edit-bons-reception.component';
 import { IndexBonsRetourComponent } from './bons_retour/index-bons-retour/index-bons-retour.component';
 import { EditBonsRetourComponent } from './bons_retour/edit-bons-retour/edit-bons-retour.component';
+import { IndexBonsTransfertComponent } from './bons-transfert/index-bons-transfert/index-bons-transfert.component';
+import { EditBonsTransfertComponent } from './bons-transfert/edit-bons-transfert/edit-bons-transfert.component';
+import { IndexInventairesComponent } from './inventaires/index-inventaires/index-inventaires.component';
+import { EditInventairesComponent } from './inventaires/edit-inventaires/edit-inventaires.component';
 
 
 
@@ -24,7 +28,11 @@ import { EditBonsRetourComponent } from './bons_retour/edit-bons-retour/edit-bon
     IndexBonsReceptionComponent,
     EditBonsReceptionComponent,
     IndexBonsRetourComponent,
-    EditBonsRetourComponent
+    EditBonsRetourComponent,
+    IndexBonsTransfertComponent,
+    EditBonsTransfertComponent,
+    IndexInventairesComponent,
+    EditInventairesComponent
   ],
   imports: [
     CommonModule,

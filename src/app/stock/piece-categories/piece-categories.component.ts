@@ -45,7 +45,7 @@ export class PieceCategoriesComponent implements OnInit {
     this.pieceCategoriesService.delete(id).subscribe(
       res => {
         this.getAll();
-        this.message ="Pièce catégorie est supprimée avec succès";
+        this.message ="La pièce catégorie est supprimée avec succès";
         this.globale.closeModal();
       }
     )
@@ -56,7 +56,7 @@ export class PieceCategoriesComponent implements OnInit {
       this.pieceCategoriesService.create(form).subscribe(
         res=>{
           this.getAll();
-          this.message ="Pièce catégorie est ajoutée avec succès";
+          this.message ="La pièce catégorie est ajoutée avec succès";
         }
       )
     }
@@ -64,7 +64,7 @@ export class PieceCategoriesComponent implements OnInit {
       this.pieceCategoriesService.update(form).subscribe(
         res=>{
           this.getAll();
-          this.message ="Pièce catégorie est modifiée avec succès";
+          this.message ="La pièce catégorie est modifiée avec succès";
           this.globale.closeModal();
         }
       )

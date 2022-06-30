@@ -5,15 +5,15 @@
                 Stock
             </h6>
             <h2 class="header-title">
-                Pieces rechange
+                Pièces de rechange
             </h2>
         </div>
     </div> <!-- ./titre -->
 
-    <!-- <div *ngIf="message" class="alert alert-success" role="alert">
+    <div *ngIf="message" class="alert alert-success" role="alert">
         {{message}}
         <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div> -->
+    </div>
 
     <div class="container-fluid">
         <div class="row">
@@ -27,33 +27,23 @@
                     <table class="table table-sm table-nowrap card-table">
                         <thead>
                             <tr>
-                                <th>designation</th>
-                                <th>unite_mesure</th>
-                                <th>marque</th>
-                                <th>reference</th>
-                                <th>duree_vie_km</th>
-                                <th>duree_vie_annee</th>
-                                <th>alerte_km</th>
-                                <th>alerte_jours</th>
-                                <th>stock_min</th>
-                                <th>gerer_stock</th>
-                                <th>piece_categories</th>
+                                <th>Désignation</th>
+                                <th>Catégorie</th>
+                                <th>L'unite de mesure</th>
+                                <th>Marque</th>
+                                <th>Référence</th>
+                                <th>Gérer le stock</th>
                                 <th>Options</th>
                             </tr>
                         </thead>
                         <tbody class="list">
                             <tr *ngFor="let piece of list_pieces_rechange">
                                 <td class="designation"> {{piece.designation}} </td>
+                                <td class="piece_categories">{{piece.piece_categories}}</td>
                                 <td class="unite_mesure"> {{piece.unite_mesure}} </td>
                                 <td class="marque"> {{piece.marque}} </td>
                                 <td class="reference"> {{piece.reference}} </td>
-                                <td class="duree_vie_km"> {{piece.duree_vie_km}} </td>
-                                <td class="duree_vie_annee"> {{piece.duree_vie_annee}} </td>
-                                <td class="alerte_km"> {{piece.alerte_km}} </td>
-                                <td class="alerte_jours"> {{piece.alerte_jours}} </td>
-                                <td class="stock_min"> {{piece.stock_min}} </td>
-                                <td class="gerer_stock"> {{piece.gerer_stock}} </td>
-                                <td class="piece_categories">{{piece.piece_categories}}</td>
+                                <td class="gerer_stock"> {{piece.gerer_stock? 'true': 'false'}} </td>
                                 <td width="75">
                                     <a [routerLink]="['/stock/pieces-rechange/',piece.id,'edit']" type="button"
                                         class="btn btn-operation">

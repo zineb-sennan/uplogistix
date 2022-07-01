@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">
-                                entrepot
+                                Entrepôt
                                 <strong class="text-danger" *ngIf="!singleInventaire.entrepot_id">*</strong>
                             </label>
                             <select class="form-select" name="entrepot_id"  [(ngModel)]="singleInventaire.entrepot_id" required>
@@ -33,13 +33,13 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">commentaire</label>
+                            <label class="form-label">Commentaire</label>
                             <textarea class="form-control" rows="3" name="commentaire" [(ngModel)]="singleInventaire.commentaire"></textarea>
                         </div>
 
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!inventaireForm.valid">Enregister</button>
-                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">Annuler</button>
                         </div>
                     </form>
                 </div>
@@ -71,7 +71,7 @@
                     </thead>
                     <tbody class="list">
                         <tr *ngFor="let di of list_detail_inventaire">
-                            <td class="marque"> {{di.pieces}} </td>
+                            <td class="marque"> {{di.designation}} </td>
                             <td class="qte"> {{di.qte}} </td>
                             <td width="75">
                                 <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailInventaireById(di.id)">
@@ -103,7 +103,7 @@
                     <div class="card-body">
                         <form #detailsInventaireForm="ngForm" (ngSubmit)="updateDetailsInventaire(detailsInventaireForm.value)">
                             <input type="hidden" name="id" [(ngModel)]="singleDetailInventaire.id">
-                            <input type="hidden" name="inventaire_id" [(ngModel)]="singleDetailInventaire.inventaire_id">
+                            <input type="hidden" name="inventaire_id" [(ngModel)]="singleInventaire.id">
                             <div class="form-group">
                                 <label class="form-label">Pieces</label>
                                 <select class="form-select" name="piece_id" [(ngModel)]="singleDetailInventaire.piece_id" required>
@@ -113,7 +113,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Qte</label>
-                                <input type="text" class="form-control" name="qte" [(ngModel)]="singleDetailInventaire.qte" placeholder="qte">
+                                <input type="number" class="form-control" name="qte" [(ngModel)]="singleDetailInventaire.qte" placeholder="Qte">
                             </div>
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary mb-2 mt-4 float-right">Enregister</button>

@@ -28,7 +28,9 @@
                         <thead>
                             <tr>
                                 <th>Numero</th>
+                                <th>Raison sociale</th>
                                 <th>Bon reception</th>
+                                <th>entrepot</th>
                                 <th>Commentaire</th>
                                 <th>Options</th>
                             </tr>
@@ -36,7 +38,9 @@
                         <tbody class="list">
                             <tr *ngFor="let bonR of list_bons_retour">
                                 <td class="numero"> {{bonR.numero}} </td>
-                                <td class="bon_reception"> {{bonR.bon_reception_id}} </td>
+                                <td class="raison_sociale">{{bonR.raison_sociale}}</td>
+                                <td class="bon_reception"> {{bonR.bon_reception}} </td>
+                                <td class="numero"> {{bonR.entrepot}} </td>
                                 <td class="commentaire"> {{bonR.commentaire}} </td>
                                 <td width="75">
                                     <a [routerLink]="['/stock/bons-retour/',bonR.id,'edit']" type="button"
@@ -66,7 +70,17 @@
                         <form #bonRForm="ngForm" (ngSubmit)="update(bonRForm.value)">
                             <div class="form-group">
                                 <label class="form-label">
-                                    bon_reception_id
+                                    Entrepot
+                                    <strong class="text-danger" *ngIf="!singleBonR.entrepot_id">*</strong>
+                                </label>
+                                <select class="form-select" name="entrepot_id"  [(ngModel)]="singleBonR.entrepot_id" required>
+                                    <option value=null disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Bon reception
                                     <strong class="text-danger" *ngIf="!singleBonR.bon_reception_id">*</strong>
                                 </label>
                                 <select class="form-select" name="bon_reception_id"  [(ngModel)]="singleBonR.bon_reception_id" required>

@@ -113,5 +113,18 @@ export class EditBonsTransfertComponent implements OnInit {
     )
   }
 
+  valide(id:number){
+    this.bonsTransfertService.valide({id: id}).subscribe(
+      res => {
+        this.message ="Bon transfert bien validé !";
+        this.getBonReceptionById(id);
+      }
+    )
+  }
+
+  fermer(){
+    this.globale.fermer();
+  }
+
 
 }

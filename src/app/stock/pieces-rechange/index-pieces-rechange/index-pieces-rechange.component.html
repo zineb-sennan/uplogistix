@@ -33,6 +33,7 @@
                                 <th>Marque</th>
                                 <th>Référence</th>
                                 <th>Gérer le stock</th>
+                                <th>Stock</th>
                                 <th>Options</th>
                             </tr>
                         </thead>
@@ -44,6 +45,7 @@
                                 <td class="marque"> {{piece.marque}} </td>
                                 <td class="reference"> {{piece.reference}} </td>
                                 <td class="gerer_stock"> {{piece.gerer_stock? 'true': 'false'}} </td>
+                                <td class="stock"> {{piece.stock.toFixed(2)}} </td>
                                 <td width="75">
                                     <a [routerLink]="['/stock/pieces-rechange/',piece.id,'edit']" type="button"
                                         class="btn btn-operation">

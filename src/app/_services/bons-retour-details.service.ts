@@ -28,4 +28,5 @@ export class BonsRetourDetailsService {
   getDetailsBR(id:number){
     return this.http.get<any>(environment.apiURL + '/stock/bons_retour/details/'+id)
   }
+
 }

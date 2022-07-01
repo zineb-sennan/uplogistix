@@ -4,6 +4,7 @@ import { Globale } from 'src/app/_globale/globale';
 import { BonsReceptionService } from 'src/app/_services/bons-reception.service';
 import { BonsRetourDetailsService } from 'src/app/_services/bons-retour-details.service';
 import { BonsRetourService } from 'src/app/_services/bons-retour.service';
+import { EntrepotsService } from 'src/app/_services/entrepots.service';
 import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service';
 
 @Component({
@@ -13,9 +14,9 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 })
 export class EditBonsRetourComponent implements OnInit {
 
-  list_bons_reception:any=[]; pieces:any=[]; detailsBRs:any=[]; message:any='';
+  list_bons_reception:any=[]; pieces:any=[]; detailsBRs:any=[]; message:any=''; entrepots:any= [];
   singleDetailBR:any={id:null, bon_retour_id:null, piece_id:null, qte:null, prix_unitaire:null };
-  singleBonR:any={id:null, bon_reception_id:null, commentaire:null };
+  singleBonR:any={id:null, entrepot_id:null, bon_reception_id:null, commentaire:null };
 
   constructor(
     private bonsReceptionService:BonsReceptionService,
@@ -23,6 +24,7 @@ export class EditBonsRetourComponent implements OnInit {
     private bonsRetourService:BonsRetourService,
     private activatedRoute: ActivatedRoute,
     private piecesRechangeService: PiecesRechangeService,
+    private entrepotsService: EntrepotsService,
     private globale:Globale
   ) { }
 
@@ -34,6 +36,7 @@ export class EditBonsRetourComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllBonReceptions();
+    this.getAllEntrepots();
 
     this.activatedRoute.params.subscribe(param => {
       const { id } = param;
@@ -56,7 +59,7 @@ export class EditBonsRetourComponent implements OnInit {
       this.bonsRetourDetailsService.create(form).subscribe(
         res=>{
           this.message="Bien ajouter !";
-          this.getAllDetailsBR(this.singleDetailBR.bon_reception_id);
+          this.getAllDetailsBR(form.bon_retour_id);
           this.globale.closeModal();
         } 
       )
@@ -65,7 +68,7 @@ export class EditBonsRetourComponent implements OnInit {
       this.bonsRetourDetailsService.update(form).subscribe(
         res=>{
           this.message="Bien modifie !";
-          this.getAllDetailsBR(this.singleDetailBR.bon_reception_id);
+          this.getAllDetailsBR(form.bon_retour_id);
           this.globale.closeModal();
         } 
       )
@@ -80,7 +83,7 @@ export class EditBonsRetourComponent implements OnInit {
     this.bonsRetourDetailsService.delete(id).subscribe(
       res=>{
         this.message='bien sup !';
-        this.getAllDetailsBR(this.singleDetailBR.bon_reception_id);
+        this.getAllDetailsBR(this.singleDetailBR.bon_retour_id);
         this.globale.closeModal();
       } 
     )
@@ -111,6 +114,16 @@ export class EditBonsRetourComponent implements OnInit {
   this.bonsRetourService.update(form).subscribe(
     res => this.message="Bon retour bien modifie"
   )
+}
+
+getAllEntrepots(){
+  this.entrepotsService.getAll().subscribe(
+    res=> this.entrepots=res
+  )
+}
+
+fermer(){
+  this.globale.fermer();
 }
 
 }

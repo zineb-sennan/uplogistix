@@ -29,4 +29,9 @@ export class BonsTransfertService {
     return this.http.get<any>(environment.apiURL + '/stock/bons_transfert/'+id)
   }
 
+  valide(record:any){
+    return this.http.post(environment.apiURL + '/stock/bons_transfert/'+record.id+'/validate', record)
+  }
+
+
 }

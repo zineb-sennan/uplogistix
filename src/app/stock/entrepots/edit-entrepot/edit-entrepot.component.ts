@@ -79,7 +79,7 @@ export class EditEntrepotComponent implements OnInit {
   }
 
   fermer(){
-    this.globale.closeModal();
+    this.globale.fermer();
   }
 
   update(form:any){

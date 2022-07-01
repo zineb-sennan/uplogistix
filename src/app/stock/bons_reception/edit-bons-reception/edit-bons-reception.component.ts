@@ -15,7 +15,7 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 export class EditBonsReceptionComponent implements OnInit {
   
   message:any=null; detailsBRs:any=[]; pieces:any=[];
-  singleBonR:any={id:null, fournisseur_id:null, entrepot_id:null, commentaire:null };
+  singleBonR:any= { id:null, numero:null, fournisseur_id:null, entrepot_id:null, commentaire:null, validated_at:null, validated_by:null };
   singleDetailBR:any={id:null, bon_reception_id:null, piece_id:null, qte:null, prix_unitaire:null };
   entrepots:any=[]; fournisseurs:any=[];
 
@@ -103,13 +103,13 @@ export class EditBonsReceptionComponent implements OnInit {
     )
   }
 
-  
-
   getBonReceptionById(id:number){
      this.bonsReceptionService.getBonReception(id).subscribe(
       res =>{
         this.singleBonR=res;
         this.singleDetailBR.bon_reception_id=this.singleBonR.id;
+
+        console.log('*** ',this.singleBonR);
       } 
      )
   }
@@ -126,5 +126,18 @@ export class EditBonsReceptionComponent implements OnInit {
     )
   }
 
+  valideStock(id:number){
+    //
+    this.bonsReceptionService.valideStock({id: id}).subscribe(
+      res => {
+        this.message ="Bon reception bien validé !";
+        this.getBonReceptionById(id);
+      }
+    )
+  }
+
+  fermer(){
+    this.globale.fermer();
+  }
 
 }

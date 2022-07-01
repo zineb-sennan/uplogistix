@@ -6,7 +6,7 @@
                 Stock
             </h6>
             <h2 class="header-title">
-                Bons reception
+                Bons retour            
             </h2>
         </div>
     </div>
@@ -20,7 +20,7 @@
                         <input type="hidden" name="id"  [(ngModel)]="singleBonR.id">
                         <div class="form-group">
                             <label class="form-label">
-                                Entrepot
+                                Bon reception
                                 <strong class="text-danger" *ngIf="!singleBonR.bon_reception_id">*</strong>
                             </label>
                             <select class="form-select" name="bon_reception_id"  [(ngModel)]="singleBonR.bon_reception_id" required>
@@ -29,13 +29,22 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">commentaire</label>
+                            <label class="form-label">
+                                Entrepôt
+                                <strong class="text-danger" *ngIf="!singleBonR.entrepot_id">*</strong>
+                            </label>
+                            <select class="form-select" name="entrepot_id"  [(ngModel)]="singleBonR.entrepot_id" required>
+                                <option value=null disabled>Veuillez choisir...</option>
+                                <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Commentaire</label>
                             <textarea class="form-control" rows="3" name="commentaire" [(ngModel)]="singleBonR.commentaire"></textarea>
                         </div>
-
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!bonRForm.valid">Enregister</button>
-                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">Annuler</button>
                         </div>
                     </form>
                 </div>
@@ -63,7 +72,7 @@
                             <th>Categorie</th>
                             <th>Marque</th>
                             <th>Qte</th>
-                            <th>Prix_unitaire</th>
+                            <th>Prix unitaire</th>
                             <th>Total</th>
                             <th>Éditer</th>
                         </tr>
@@ -73,7 +82,7 @@
                             <td class="categorie"> {{dbr.categorie}} </td>
                             <td class="marque"> {{dbr.marque}} </td>
                             <td class="qte"> {{dbr.qte}} </td>
-                            <td class="prix_unitaire"> {{dbr.prix_unitaire}} </td>
+                            <td class="prix unitaire"> {{dbr.prix_unitaire}} </td>
                             <td class="total"> {{dbr.total}} </td>
                             <td width="75">
                                 <button type="button" ng-show="" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailBrById(dbr.id)">
@@ -118,7 +127,7 @@
                                 <input type="text" class="form-control" name="qte" [(ngModel)]="singleDetailBR.qte" placeholder="qte">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Prix_unitaire</label>
+                                <label class="form-label">Prix unitaire</label>
                                 <input type="text" class="form-control" name="prix_unitaire" [(ngModel)]="singleDetailBR.prix_unitaire" placeholder="prix_unitaire">
                             </div>
                             <div class="col-md-12">

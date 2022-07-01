@@ -44,7 +44,7 @@ export class EditPiecesRechangeComponent implements OnInit {
   }
 
   close(){
-    this.globale.closeModal();
+    this.globale.fermer();
   }
 
   update(form:any){

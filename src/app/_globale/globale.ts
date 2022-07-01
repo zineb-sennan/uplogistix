@@ -20,22 +20,6 @@ import { map, switchMap } from 'rxjs/operators';
     ) { }
 
     async init() {
-        //console.log("Bonjour !!!");
-
-        //01-infos d'utilisateur
-        //this.utilisateur = await this.utilisateurService.getUtilisateur(this.payload.id).toPromise();
-        //this.getAuth();
-        //
-
-        // this.utilisateurService.getUtilisateur(this.payload.id).subscribe(
-        //     res=> this.utilisateur= res
-        // )
-
-        //console.log('***',this.utilisateur);
-
-
-
-
     }
     
     //02-Function globale

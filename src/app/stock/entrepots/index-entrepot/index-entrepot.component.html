@@ -29,8 +29,8 @@
                             <tr>
                                 <th>Nom</th>
                                 <th>Email</th>
-                                <th>Mobile</th>
                                 <th>Ville</th>
+                                <th>Mobile</th>
                                 <th>tel bureau</th>
                                 <th>Options</th>
                             </tr>
@@ -39,9 +39,9 @@
                             <tr *ngFor="let entrepot of entrepots">
                                 <td class="nom"> {{entrepot.nom}} </td>
                                 <td class="email"> {{entrepot.email}} </td>
+                                <td class="ville"> {{entrepot.ville}} </td>
                                 <td class="tel_mobile"> {{entrepot.tel_mobile}} </td>
                                 <td class="tel_bureau"> {{entrepot.tel_bureau}} </td>
-                                <td class="ville"> {{entrepot.ville}} </td>
                                 <td width="75">
                                     <a [routerLink]="['/stock/entrepots/',entrepot.id,'edit']" type="button"
                                         class="btn btn-operation">

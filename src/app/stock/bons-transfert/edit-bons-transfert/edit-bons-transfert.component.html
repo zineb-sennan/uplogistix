@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <label class="form-label">
                                 source_entrepot
-                                <strong class="text-danger" *ngIf="!singleBonT.	source_entrepot_id">*</strong>
+                                <strong class="text-danger" *ngIf="!singleBonT.source_entrepot_id">*</strong>
                             </label>
                             <select class="form-select" name="source_entrepot_id"  [(ngModel)]="singleBonT.source_entrepot_id" required>
                                 <option value=null disabled>Veuillez choisir...</option>
@@ -35,9 +35,9 @@
                         <div class="form-group">
                             <label class="form-label">
                                 destination_entrepot
-                                <strong class="text-danger" *ngIf="!singleBonT.	destination_entrepot_id">*</strong>
+                                <strong class="text-danger" *ngIf="!singleBonT.destination_entrepot_id">*</strong>
                             </label>
-                            <select class="form-select" name="destination_entrepot_id"  [(ngModel)]="singleBonT.destination_entrepot_id" required>
+                            <select class="form-select" name="destination_entrepot_id" [(ngModel)]="singleBonT.destination_entrepot_id" required>
                                 <option value=null disabled>Veuillez choisir...</option>
                                 <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}</option>
                             </select>
@@ -47,9 +47,16 @@
                             <textarea class="form-control" rows="3" name="commentaire" [(ngModel)]="singleBonT.commentaire"></textarea>
                         </div>
 
+                        <div class="form-check" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">
+                            <input class="form-check-input" type="checkbox" (click)="valide(singleBonT.id)">
+                            <label class="form-check-label">
+                                Validé <i class="fa-solid fa-question"></i>
+                            </label>
+                        </div>
+
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!bonTForm.valid">Enregister</button>
-                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!bonTForm.valid" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">Enregister</button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">Annuler</button>
                         </div>
                     </form>
                 </div>
@@ -67,7 +74,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;" (click)="cleareDetailBT()">
+                <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;" (click)="cleareDetailBT()" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">
                     <i class="fa-solid fa-plus"></i>
                 </button> <br><br>
 
@@ -83,7 +90,7 @@
                         <tr *ngFor="let dbt of list_detail_bonsT">
                             <td class="marque"> {{dbt.pieces}} </td>
                             <td class="qte"> {{dbt.qte}} </td>
-                            <td width="75">
+                            <td width="75" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">
                                 <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailBtById(dbt.id)">
                                     <i class="fa-solid fa-pen"></i>
                                 </button> &nbsp;

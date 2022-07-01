@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Globale } from 'src/app/_globale/globale';
 import { BonsReceptionService } from 'src/app/_services/bons-reception.service';
 import { BonsRetourService } from 'src/app/_services/bons-retour.service';
+import { EntrepotsService } from 'src/app/_services/entrepots.service';
 
 @Component({
   selector: 'app-index-bons-retour',
@@ -9,18 +10,26 @@ import { BonsRetourService } from 'src/app/_services/bons-retour.service';
   styleUrls: ['./index-bons-retour.component.css']
 })
 export class IndexBonsRetourComponent implements OnInit {
-  list_bons_retour:any=[]; list_bons_reception:any=[]; message:any='';
-  singleBonR:any={ bon_reception_id:null, commentaire:null }
+  list_bons_retour:any=[]; list_bons_reception:any=[]; message:any=''; entrepots:any= [];
+  singleBonR:any={entrepot_id:null, bon_reception_id:null, commentaire:null }
 
   constructor(
     private bonsReceptionService:BonsReceptionService,
     private bonsRetourService: BonsRetourService,
+    private entrepotsService: EntrepotsService,
     private globale:Globale
   ) { }
 
   ngOnInit(): void {
     this.getAllBonsRetour();
     this.getAllBonReceptions();
+    this.getAllEntrepots();
+  }
+
+  getAllEntrepots(){
+    this.entrepotsService.getAll().subscribe(
+      res=> this.entrepots=res
+    )
   }
 
   getAllBonsRetour(){

@@ -57,6 +57,7 @@ export class PieceCategoriesComponent implements OnInit {
         res=>{
           this.getAll();
           this.message ="La pièce catégorie est ajoutée avec succès";
+          this.globale.closeModal();
         }
       )
     }

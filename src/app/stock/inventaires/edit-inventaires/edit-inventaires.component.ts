@@ -27,6 +27,16 @@ export class EditInventairesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getAllpiecesRechange();
+    this.getAllEntrepots();
+
+    this.activatedRoute.params.subscribe(param => {
+      const { id } = param;
+      if (id){
+        this.getInventaireById(id);
+        this.getAllDetailsInventaire(id);
+      } 
+    });
   }
 
   getAllpiecesRechange(){
@@ -46,7 +56,7 @@ export class EditInventairesComponent implements OnInit {
       this.inventaireDetailsService.create(form).subscribe(
         res=>{
           this.message="Bien ajouter !";
-          //this.getAllDetailsBT(this.singleDetailBT.bon_transfert_id);
+          this.getAllDetailsInventaire(this.singleInventaire.id);
           this.globale.closeModal();
         } 
       )
@@ -55,7 +65,7 @@ export class EditInventairesComponent implements OnInit {
       this.inventaireDetailsService.update(form).subscribe(
         res=>{
           this.message="Bien modifie !";
-          //this.getAllDetailsBT(this.singleDetailBT.bon_transfert_id);
+          this.getAllDetailsInventaire(this.singleInventaire.id);
           this.globale.closeModal();
         } 
       )
@@ -70,7 +80,7 @@ export class EditInventairesComponent implements OnInit {
     this.inventaireDetailsService.delete(id).subscribe(
       res=>{
         this.message='bien sup !';
-        //this.getAllDetailsBT(this.singleDetailBT.bon_transfert_id);
+        this.getAllDetailsInventaire(this.singleInventaire.id);
         this.globale.closeModal();
       } 
     )
@@ -101,6 +111,10 @@ export class EditInventairesComponent implements OnInit {
     this.inventairesService.update(form).subscribe(
       res => this.message="Bon reception bien modifie"
     )
+  }
+
+  fermer(){
+    this.globale.fermer();
   }
 
 }

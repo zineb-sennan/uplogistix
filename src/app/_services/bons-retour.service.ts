@@ -14,7 +14,7 @@ export class BonsRetourService {
   }
 
   create(record: any) {
-    return this.http.post(environment.apiURL + '/stock/bons_retour', record)
+    return this.http.post<any>(environment.apiURL + '/stock/bons_retour', record)
   }
 
   update(record: any) {

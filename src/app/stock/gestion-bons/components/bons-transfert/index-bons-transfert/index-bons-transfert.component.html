@@ -1,0 +1,124 @@
+<div *ngIf="message" class="alert alert-success" role="alert">
+    {{message}}
+    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                <i class="fa-solid fa-plus"></i>
+            </button><br><br><br>
+            
+            <div class="table-responsive row">
+                <table class="table table-sm table-nowrap card-table">
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>source_entrepot</th>
+                            <th>destination_entrepot</th>
+                            <th>Commentaire</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        <tr *ngFor="let bonT of list_bons_transfert">
+                            <td class="numero"> {{bonT.numero}} </td>
+                            <td class="source_entrepot"> {{bonT.source}} </td>
+                            <td class="destination_entrepot"> {{bonT.destination}} </td>
+                            <td class="commentaire"> {{bonT.commentaire}} </td>
+                            <td width="75">
+                                <a [routerLink]="['/stock/bons-transfert/',bonT.id,'edit']" type="button"
+                                    class="btn btn-operation">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> <!-- ./container-fluid -->
+
+<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-card card" data-list=''>
+                <div class="card-header">
+                    <h4 class="card-header-title" id="exampleModalCenterTitle">
+                        Bons de transfert
+                    </h4>
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="card-body">
+                    <form #bonRForm="ngForm" (ngSubmit)="update(bonRForm.value)">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Source entrepôt
+                                <strong class="text-danger" *ngIf="!singleBonT.source_entrepot_id">*</strong>
+                            </label>
+                            <select class="form-select" name="source_entrepot_id"
+                                [(ngModel)]="singleBonT.source_entrepot_id" required>
+                                <option value=null disabled>Veuillez choisir...</option>
+                                <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Destination entrepôt
+                                <strong class="text-danger" *ngIf="!singleBonT.destination_entrepot_id">*</strong>
+                            </label>
+                            <select class="form-select" name="destination_entrepot_id"
+                                [(ngModel)]="singleBonT.destination_entrepot_id" required>
+                                <option value=null disabled>Veuillez choisir...</option>
+                                <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Commentaire</label>
+                            <textarea class="form-control" rows="3" name="commentaire"
+                                [(ngModel)]="singleBonT.commentaire"></textarea>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right"
+                                [disabled]="!bonRForm.valid">Enregister</button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right"
+                                data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="material-icons">
+                        <i class="fa-solid fa-x"></i>
+                    </i>
+                </div>
+                <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal"
+                    aria-label="Close">Annuler</button>
+                <button type="button" class="btn btn-danger" (click)="delete(singleBonT.id)">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>

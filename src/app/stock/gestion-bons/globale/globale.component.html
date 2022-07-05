@@ -1,0 +1,54 @@
+<div class="app">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Stock
+            </h6>
+            <h2 class="header-title">
+                Gestion des bons
+            </h2>
+        </div>
+    </div> <!-- ./titre -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <ul class="nav nav-tabs nav-overflow header-tabs">
+                            <li class="nav-item">
+                                <button class="nav-link active" (click)="type='bons-reception'">
+                                    Bons de réception
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='bons-retour'">
+                                    Bons de retour
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='bons-transfert'">
+                                    Bons de transfert
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div> <!-- ./align-items-center -->
+                
+                <div class="bons-reception" *ngIf="type=='bons-reception'">
+                    <app-index-bons-reception></app-index-bons-reception>
+                </div>
+                <div class="bons-retour" *ngIf="type=='bons-retour'">
+                    <app-index-bons-retour></app-index-bons-retour>
+                </div>
+                <div class="bons-transfer" *ngIf="type=='bons-transfert'">
+                    <app-index-bons-transfert></app-index-bons-transfert>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

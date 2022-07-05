@@ -1,0 +1,100 @@
+<div *ngIf="message" class="alert alert-success" role="alert">
+    {{message}}
+    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                <i class="fa-solid fa-plus"></i>
+            </button><br><br><br>
+
+            <div class="table-responsive row">
+                <table class="table table-sm table-nowrap card-table">
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Fournisseur</th>
+                            <th>Entrepot</th>
+                            <th>Commentaire</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        <tr *ngFor="let bonR of list_bon_receptions">
+                            <td class="numero"> {{bonR.numero}} </td>
+                            <td class="fournisseur"> {{bonR.fournisseur}} </td>
+                            <td class="entrepot"> {{bonR.entrepot}} </td>
+                            <td class="commentaire"> {{bonR.commentaire}} </td>
+                            <td width="75">
+                                <a [routerLink]="['/stock/bons-reception/',bonR.id,'edit']" type="button"
+                                    class="btn btn-operation">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> <!-- ./container-fluid -->
+
+<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-card card" data-list=''>
+                <div class="card-header">
+                    <h4 class="card-header-title" id="exampleModalCenterTitle">
+                        Bons de réception
+                    </h4>
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="card-body">
+                    <form #bonRForm="ngForm" (ngSubmit)="update(bonRForm.value)">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Fournisseur
+                                <strong class="text-danger" *ngIf="!singleBonR.fournisseur_id">*</strong>
+                            </label>
+                            <select class="form-select" name="fournisseur_id" [(ngModel)]="singleBonR.fournisseur_id"
+                                required>
+                                <option value=null disabled>Veuillez choisir...</option>
+                                <option *ngFor="let fournisseur of fournisseurs" [value]="fournisseur.id">
+                                    {{fournisseur.raison_sociale}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Entrepôt
+                                <strong class="text-danger" *ngIf="!singleBonR.entrepot_id">*</strong>
+                            </label>
+                            <select class="form-select" name="entrepot_id" [(ngModel)]="singleBonR.entrepot_id"
+                                required>
+                                <option value=null disabled>Veuillez choisir...</option>
+                                <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Commentaire</label>
+                            <textarea class="form-control" rows="3" name="commentaire"
+                                [(ngModel)]="singleBonR.commentaire"></textarea>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right"
+                                [disabled]="!bonRForm.valid">Enregister</button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right"
+                                data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

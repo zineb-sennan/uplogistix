@@ -19,7 +19,7 @@
             <!-- Navigation -->
             <ul class="navbar-nav">
                 <div class="collapse show" id="sidebarDashboards">
-                    <ul class="nav nav-sm flex-column" *ngIf="utilisateur?.id != 80 && utilisateur?.id != 86">
+                    <ul class="nav nav-sm flex-column">
                         <!-- Tableau de bord --> 
                         <li class="nav-item" *ngIf="utilisateur?.type_compte == 'Super administrateur'">
                             <a class="nav-link" [routerLink]="['/']">
@@ -151,13 +151,13 @@
                                 </ul>
                             </div>
                         </li>
-                        <!-- stock -->
+                        <!-- stock + maintenance -->
                         <li class="nav-item" *ngIf="!isAdmin">
                             <a href="#sidebarStock" class="nav-link collapsed" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarStock">
                             <img src="assets/img/icones/icon-stock.png" width="25"
                                     style="margin-right: 5px; margin-top: -3px; margin-left: -3px;">
-                                Gestion de stock
+                                Maintenance
                             </a>
                             <div class="collapse ml-19" id="sidebarStock" [routerLinkActive]="['show']">
                                 <ul class="nav nav-sm flex-column">
@@ -169,20 +169,26 @@
                                     </li>
                                     <li class="nav-item">
                                         <a [routerLink]="['/stock/entrepots']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Les entrepôts
+                                            Gestion des entrepôts
                                         </a> 
                                     </li>
-                                    <li class="nav-item">
+
+                                    <!-- <li class="nav-item">
                                         <a [routerLink]="['/stock/piece-categories']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Catégories des pièces
                                         </a> 
-                                    </li>
+                                    </li> -->
                                     <li class="nav-item">
                                         <a [routerLink]="['/stock/pieces-rechange']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Pièces de rechange
                                         </a> 
                                     </li>
                                     <li class="nav-item">
+                                        <a [routerLink]="['/stock/gestions-bons']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
+                                            La gestion des bons
+                                        </a> 
+                                    </li>
+                                    <!--<li class="nav-item">
                                         <a [routerLink]="['/stock/bons-reception']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Bons de réception
                                         </a> 
@@ -196,7 +202,7 @@
                                         <a [routerLink]="['/stock/bons-transfert']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Bons de transfert
                                         </a> 
-                                    </li>
+                                    </li> -->
                                     <li class="nav-item">
                                         <a [routerLink]="['/stock/inventaires']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
                                             Inventaires
@@ -205,7 +211,7 @@
                                 </ul>
                             </div>
                         </li>
-                         <!-- Maintenance-GMAO -->
+                        <!-- Maintenance-GMAO -->
                         <!-- <li class="nav-item">
                             <a href="#sidebarMaintenance" class="nav-link collapsed" data-bs-toggle="collapse"
                                 role="button" aria-expanded="false" aria-controls="sidebarMaintenance">
@@ -239,7 +245,7 @@
                                 </ul>
                             </div>
                         </li> -->
-                        <!-- *** *** Partie administration *** *** -->
+                        <!-- *** administration *** -->
                         <li class="nav-item" *ngIf="isAdmin">
                             <a href="#sidebarInternational" class="nav-link collapsed" data-bs-toggle="collapse"
                                 role="button" aria-expanded="false" aria-controls="sidebarInternational">
@@ -301,201 +307,10 @@
                     </ul>
 
 
-                    <!-- **** **** hajar partie utilisateur **** ****-->
-                    <ul class="nav nav-sm flex-column" *ngIf="utilisateur?.id == 80">
-                        <li class="nav-item"
-                            *ngIf="(permissionExiste('carburants') || permissionExiste('compteurs') || permissionExiste('depenses') || permissionExiste('groupe-vehicules')) && !isAdmin">
-                            <a href="#sidebarVehicules" class="nav-link collapsed" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarInternational">
-                                <img src="assets/img/icones/icon-car.png" width="25"
-                                    style="margin-right: 5px; margin-top: -3px; margin-left: -2px;"> Gestion des
-                                véhicules
-                            </a>
-                            <div class="collapse ml-19" id="sidebarVehicules" [routerLinkActive]="['show']">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item" *ngIf="permissionExiste('vehicules')">
-                                        <a [routerLink]="['/vehicules/page/1']" class="nav-link" routerLinkActive="active"
-                                            [routerLinkActiveOptions]="{ exact:true }">
-                                            Liste des véhicules
-                                        </a>
-                                    </li>
-                                    <li class="nav-item" *ngIf="permissionExiste('carburants')">
-                                        <a [routerLink]="['/vehicules/carburants/page/1']" class="nav-link" routerLinkActive="active"
-                                            [routerLinkActiveOptions]="{ exact:true }">
-                                            Historique carburants
-                                        </a>
-                                    </li>
-                                    <li class="nav-item" *ngIf="permissionExiste('groupe-vehicules')">
-                                        <a [routerLink]="['/vehicules/groupes']" class="nav-link" routerLinkActive="active"
-                                            [routerLinkActiveOptions]="{ exact:true }">
-                                            Groupes de véhicules
-                                        </a>
-                                    </li>
-                                    <li class="nav-item" *ngIf="permissionExiste('vehicules')">
-                                        <a [routerLink]="['/vehicules/edit']" class="nav-link" routerLinkActive="active"
-                                            [routerLinkActiveOptions]="{ exact:true }">
-                                            Nouveau véhicule
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a [routerLink]="['/conducteurs/page/1']" class="nav-link" routerLinkActive="active">
-                                <img src="assets/img/icones/icon-driver.jpg" width="20"
-                                    style="margin-right: 5px; margin-top: -3px; margin-left: -3px;"> Gestion des
-                                conducteurs
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#sidebarStock" class="nav-link collapsed" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarStock">
-                            <img src="assets/img/icones/icon-stock.png" width="25"
-                                    style="margin-right: 5px; margin-top: -3px; margin-left: -3px;">
-                                Gestion de stock
-                            </a>
-                            <div class="collapse ml-19" id="sidebarStock" [routerLinkActive]="['show']">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/fournisseurs/page/1']" class="nav-link"
-                                            routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Gestion des fournisseurs
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/stock/entrepots']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Les entrepôts
-                                        </a> 
-                                    </li>
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/stock/piece-categories']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Catégories des pièces
-                                        </a> 
-                                    </li>
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/stock/pieces-rechange']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Pièces de rechange
-                                        </a> 
-                                    </li>
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/stock/bons-reception']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Bons de réception
-                                        </a> 
-                                    </li>
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/stock/bons-retour']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Bons de retour
-                                        </a> 
-                                    </li>
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/stock/bons-transfert']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Bons de transfert
-                                        </a> 
-                                    </li>
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/stock/inventaires']" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                            Inventaires
-                                        </a> 
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                    <!-- **** **** hajar partie admin **** **** -->
-                    <ul class="nav nav-sm flex-column" *ngIf="utilisateur?.id == 86">
-                        <li class="nav-item" *ngIf="isAdmin">
-                            <a href="#sidebarInternational" class="nav-link collapsed" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarInternational">
-                                <img src="assets/img/icones/icon-international.png" width="25"
-                                    style="margin-right: 5px; margin-top: -3px; margin-left: -3px;"> International
-                            </a>
-                            <div class="collapse ml-19" id="sidebarInternational" [routerLinkActive]="['show']">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/globale/localisations']" class="nav-link" routerLinkActive="active"
-                                            [routerLinkActiveOptions]="{ exact:true }">
-                                            Pays et villes
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/globale/identifiants-fiscale']" class="nav-link" routerLinkActive="active"
-                                            [routerLinkActiveOptions]="{ exact:true }">
-                                            Identifiants entreprise
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a [routerLink]="['/globale/documents-vehicule']" class="nav-link" routerLinkActive="active"
-                                            [routerLinkActiveOptions]="{ exact:true }">
-                                            Documents légal véhicule
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item" *ngIf="isAdmin">
-                            <a [routerLink]="['/clients/page',1]" class="nav-link" routerLinkActive="active"
-                                [routerLinkActiveOptions]="{ exact:true }">
-                                <img src="assets/img/icones/icon-client.png" width="20" style="margin-right: 5px; margin-top: -3px;">
-                                Comptes client
-                            </a>
-                        </li>
-                        <li class="nav-item" *ngIf="isAdmin">
-                            <a [routerLink]="['/vehicules/marques/page/1']" class="nav-link" routerLinkActive="active"
-                                [routerLinkActiveOptions]="{ exact:true }">
-                                <img src="assets/img/icones/icon-marque.png" width="25"
-                                    style="margin-right: 5px; margin-top: -3px; margin-left: -3px;"> Marques de véhicule
-                            </a>
-                        </li>
-                        <li class="nav-item" *ngIf="isAdmin">
-                            <a [routerLink]="['/vehicules/categories']" class="nav-link" routerLinkActive="active"
-                                [routerLinkActiveOptions]="{ exact:true }">
-                                <img src="assets/img/icones/icon-category.png" width="25"
-                                    style="margin-right: 5px; margin-top: -3px; margin-left: -3px;"> Catégories de
-                                véhicule
-                            </a>
-                        </li>
-                    </ul>
-
-
                 </div>
             </ul>
         </div>
         <!-- / .navbar-collapse -->
-        <div *ngIf="utilisateur?.id != 80 && utilisateur?.id != 86">
-            <div class="sidepanel-footers" *ngIf="permissionExiste('utilisateurs')">
-                <hr class="navbar-divider">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a href="#sidebarAdministation" class="nav-link collapsed" data-bs-toggle="collapse" role="button"
-                            aria-expanded="false" aria-controls="sidebarAdministation">
-                            <img src="assets/img/icones/icon-admin.png" width="25"
-                                style="margin-right: 5px; margin-top: -3px; margin-left: -3px;"> Administration
-                        </a>
-                        <div class="collapse ml-19" id="sidebarAdministation" [routerLinkActive]="['show']">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item" *ngIf="isAdmin || !isAdmin">
-                                    <a [routerLink]="['/utilisateurs']" class="nav-link" routerLinkActive="active"
-                                        [routerLinkActiveOptions]="{ exact:true }">
-                                        Gestion des utilisateurs
-                                    </a>
-                                </li>
-                                <li class="nav-item" *ngIf="isAdmin || !isAdmin">
-                                    <a [routerLink]="['/utilisateurs/droits-acces']" class="nav-link"
-                                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">
-                                        Droits d'acces
-                                    </a>
-                                </li>
-                                <li class="nav-item" *ngIf="!isAdmin">
-                                    <a [routerLink]="['/balises/informations']" class="nav-link"
-                                        routerLinkActive="active">Balises GPS
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
         
         <!-- / .sidepanel-footers -->
 

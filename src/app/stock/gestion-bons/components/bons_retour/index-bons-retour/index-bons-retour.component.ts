@@ -3,6 +3,7 @@ import { Globale } from 'src/app/_globale/globale';
 import { BonsReceptionService } from 'src/app/_services/bons-reception.service';
 import { BonsRetourService } from 'src/app/_services/bons-retour.service';
 import { EntrepotsService } from 'src/app/_services/entrepots.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-index-bons-retour',
@@ -14,10 +15,11 @@ export class IndexBonsRetourComponent implements OnInit {
   singleBonR:any={entrepot_id:null, bon_reception_id:null, commentaire:null }
 
   constructor(
-    private bonsReceptionService:BonsReceptionService,
+    private bonsReceptionService: BonsReceptionService,
     private bonsRetourService: BonsRetourService,
     private entrepotsService: EntrepotsService,
-    private globale:Globale
+    private globale: Globale,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -50,6 +52,7 @@ export class IndexBonsRetourComponent implements OnInit {
         this.getAllBonsRetour();
         this.globale.closeModal();
         this.message="Bien ajouter !";
+        this.router.navigate(['stock/bons-reception/'+res.id+'/edit']);
       } 
     )
   }

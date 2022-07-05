@@ -24,9 +24,6 @@ export class SidebarComponent implements OnInit {
     //01
     this.utilisateur = await this.utilisateurService.getUtilisateur(payload.id).toPromise();
     this.permissions=this.utilisateur.permissions;
-    // this.utilisateur
-    // this.type_compte=utilsateur$.type_compte;
-    //console.log("type compte",this.type_compte)
   }
 
   permissionExiste(slug: any){

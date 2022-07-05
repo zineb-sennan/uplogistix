@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Globale } from 'src/app/_globale/globale';
 import { BonsReceptionService } from 'src/app/_services/bons-reception.service';
 import { EntrepotsService } from 'src/app/_services/entrepots.service';
@@ -18,7 +19,8 @@ export class IndexBonsReceptionComponent implements OnInit {
     private bonsReceptionService:BonsReceptionService,
     private entrepotsService:EntrepotsService,
     private fournisseursService:FournisseursService,
-    private globale:Globale
+    private globale:Globale,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -39,17 +41,6 @@ export class IndexBonsReceptionComponent implements OnInit {
     )
   }
 
-  // delete(id:number){
-  //   console.log('**',id);
-  //   this.bonsReceptionService.delete(id).subscribe(
-  //     res => {
-  //       this.getAllBonReceptions();
-  //       this.message = "Bon reception est supprimé avec succès !";
-  //       this.globale.closeModal();
-  //     }
-  //   )
-  // }
-
   getAllFournisseurs(){
     this.fournisseursService.getAllFournisseurs().subscribe(
       res=> this.fournisseurs=res
@@ -57,13 +48,14 @@ export class IndexBonsReceptionComponent implements OnInit {
   }
 
   update(form:any){
-     this.bonsReceptionService.create(form).subscribe(
-        res=>{
-          this.getAllBonReceptions();
-          this.globale.closeModal();
-          this.message="Bien ajouter !";
-        } 
-     )
+    this.bonsReceptionService.create(form).subscribe(
+      res=>{
+        this.getAllBonReceptions();
+        this.globale.closeModal();
+        this.message="Bien ajouter !";
+        this.router.navigate(['stock/bons-reception/'+res.id+'/edit']);
+      } 
+    )
   }
 
 }

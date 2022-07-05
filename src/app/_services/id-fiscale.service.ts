@@ -38,7 +38,7 @@ export class IdFiscaleService {
   }
 
   updateIdentifiantsFournisseur(record: any) {
-    return this.http.put(environment.apiURL +'/fournisseurs/'+ record.client_id+'/identifiant_fiscale/' + record.identifiant_fiscale_id, record)
+    return this.http.put(environment.apiURL +'/fournisseurs/'+ record.fournisseur_id+'/identifiant_fiscale/' + record.identifiant_fiscale_id, record)
   }
 
   getIdFiscale(id:number){

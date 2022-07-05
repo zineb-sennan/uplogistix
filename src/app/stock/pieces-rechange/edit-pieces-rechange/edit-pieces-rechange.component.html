@@ -75,6 +75,9 @@
                                     <option value=null disabled>Veuillez choisir...</option>
                                     <option *ngFor="let cat of categories" [value]="cat.id">{{cat.nom}}</option>
                                 </select>
+                                <a [routerLink]="['/stock/piece-categories']" class="small form-text text-primary">
+                                    Ajouter une catégorie ?
+                                </a>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Marque</label>

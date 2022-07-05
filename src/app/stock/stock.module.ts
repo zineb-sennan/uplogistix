@@ -6,16 +6,17 @@ import { EditEntrepotComponent } from './entrepots/edit-entrepot/edit-entrepot.c
 import { IndexEntrepotComponent } from './entrepots/index-entrepot/index-entrepot.component';
 import { IndexPiecesRechangeComponent } from './pieces-rechange/index-pieces-rechange/index-pieces-rechange.component';
 import { EditPiecesRechangeComponent } from './pieces-rechange/edit-pieces-rechange/edit-pieces-rechange.component';
-import { FormsModule } from '@angular/forms';
-import { IndexBonsReceptionComponent } from './bons_reception/index-bons-reception/index-bons-reception.component';
-import { EditBonsReceptionComponent } from './bons_reception/edit-bons-reception/edit-bons-reception.component';
-import { IndexBonsRetourComponent } from './bons_retour/index-bons-retour/index-bons-retour.component';
-import { EditBonsRetourComponent } from './bons_retour/edit-bons-retour/edit-bons-retour.component';
-import { IndexBonsTransfertComponent } from './bons-transfert/index-bons-transfert/index-bons-transfert.component';
-import { EditBonsTransfertComponent } from './bons-transfert/edit-bons-transfert/edit-bons-transfert.component';
 import { IndexInventairesComponent } from './inventaires/index-inventaires/index-inventaires.component';
 import { EditInventairesComponent } from './inventaires/edit-inventaires/edit-inventaires.component';
-
+import { GestionBonsComponent } from './gestion-bons/gestion-bons.component';
+import { GlobaleComponent } from './gestion-bons/globale/globale.component';
+import { IndexBonsReceptionComponent } from './gestion-bons/components/bons_reception/index-bons-reception/index-bons-reception.component';
+import { EditBonsReceptionComponent } from './gestion-bons/components/bons_reception/edit-bons-reception/edit-bons-reception.component';
+import { IndexBonsRetourComponent } from './gestion-bons/components/bons_retour/index-bons-retour/index-bons-retour.component';
+import { EditBonsRetourComponent } from './gestion-bons/components/bons_retour/edit-bons-retour/edit-bons-retour.component';
+import { IndexBonsTransfertComponent } from './gestion-bons/components/bons-transfert/index-bons-transfert/index-bons-transfert.component';
+import { EditBonsTransfertComponent } from './gestion-bons/components/bons-transfert/edit-bons-transfert/edit-bons-transfert.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -32,7 +33,9 @@ import { EditInventairesComponent } from './inventaires/edit-inventaires/edit-in
     IndexBonsTransfertComponent,
     EditBonsTransfertComponent,
     IndexInventairesComponent,
-    EditInventairesComponent
+    EditInventairesComponent,
+    GestionBonsComponent,
+    GlobaleComponent
   ],
   imports: [
     CommonModule,

@@ -163,16 +163,6 @@
                 <div class="contacts" *ngIf="type == 'contacts'">
                     <!-- Header -->
                     <div class="header mt-md-3">
-                        <!-- <div class="header-body">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h6 class="header-pretitle">Contacts</h6>
-                                    <h2 class="header-title">List de Contacts</h2>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- fin titre -->
-                        <br>
                         <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn btn-outline-primary mb-2 btn-add-contact" (click)="clearContact()">
                             <i class="fa-solid fa-plus"></i>
                         </button><br><br><br>
@@ -205,14 +195,12 @@
                                         <td class="tel_mobile">{{contact.tel_mobile}}</td>
                                         <td class="tel_bureau">{{contact.tel_bureau}}</td>
                                         <td class="fax">{{contact.fax}}</td>
-                                        <td (click)="setContact(contact)">
-                                            <!-- *** edit ***-->
-                                            <button _ngcontent-oxg-c56="" type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn btn-operation">
-                                                <i _ngcontent-oxg-c56="" class="fa-solid fa-pen"></i>
-                                            </button>&nbsp;
-                                            <!-- *** delete ***-->
-                                            <button _ngcontent-oxg-c56="" type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-operation">
-                                                <i _ngcontent-oxg-c56="" class="fa-solid fa-trash"></i>
+                                        <td (click)="setContact(contact)" width="75">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modal-edit" class="btn btn-operation">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-operation">
+                                                <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -220,14 +208,14 @@
                             </table>
                         </div>
                     </div>
-                    <!-- **** **** **** Modal **** **** **** -->
+                    <!-- **** Modal **** -->
                     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-card card" data-list=''>
                                     <div class="card-header">
-                                        <h4 class="card-header-title" id="exampleModalCenterTitle">
-                                            {{type}}
+                                        <h4 class="card-header-title">
+                                            Contact
                                         </h4>
                                         <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
@@ -268,7 +256,6 @@
                                                         <input type="text" class="form-control form-control-sm" placeholder="Tel bureau" [(ngModel)]="singleContact.tel_bureau" name="tel_bureau">
                                                     </div>
                                                 </div>
-                                                <!-- *** *** **** **** **** ***-->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="fonction" class="form-label">Fonction</label>
@@ -296,8 +283,8 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <small class="text-danger">*: Ces champs sont obligatoires.</small>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
-                                                <button type="submit" class="btn btn-success mb-2 float-right" [disabled]="!contactForm.valid">Enregister</button>
+                                                <button type="button" class="btn btn-secondary float-right" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
+                                                <button type="submit" class="btn btn-success mb-2 float-right mr-5" [disabled]="!contactForm.valid" style="margin-right: 6px;">Enregister</button>
                                             </div>
                                         </form>
 

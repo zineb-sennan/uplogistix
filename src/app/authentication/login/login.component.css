@@ -12,3 +12,28 @@
 .min-vh-100 {
     min-height: 100.3vh!important;
 }
+
+.app{
+    height: 100vh!important;
+}
+
+.infos-form{
+    padding: 21px;
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.7);
+}
+
+.navbar-brand{
+    display: block;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.app{
+    background-image: url('/assets/img/covers/img2.png');
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}

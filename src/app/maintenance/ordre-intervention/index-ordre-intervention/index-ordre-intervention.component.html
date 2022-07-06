@@ -1,0 +1,183 @@
+<div class="app">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Stock
+            </h6>
+            <h2 class="header-title">
+                Order d'intervention
+            </h2>
+        </div>
+    </div> <!-- ./titre -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-4" style="display: flow-root;">
+                    <button type="button" class="btn btn-outline-primary float-right" data-bs-toggle="modal"
+                        data-bs-target="#modal-edit">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <div class="table-responsive row">
+                    <table class="table table-sm table-nowrap card-table">
+                        <thead>
+                            <tr>
+                                <th>Numero</th>
+                                <th>Véhicule</th>
+                                <th>Affecter à</th>
+                                <th>date d'intervention</th>
+                                <th>date limite</th>
+                                <th>Statut</th>
+                                <th>Le progrès</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            <tr *ngFor="let ordre of ordres">
+                                <td class="numero"> {{ordre.numero}} </td>
+                                <td class="vehicule"> {{ordre.vehicule_id}} </td>
+                                <td class="affecter_a"> {{ordre.ville}} </td>
+                                <td class="date_intervention"> {{ordre.date_intervention | date: 'yyyy-MM-dd HH:mm:ss'}}
+                                </td>
+                                <td class="date_limite"> {{ordre.date_limite | date: 'yyyy-MM-dd HH:mm:ss'}} </td>
+                                <td class="statut"> _ </td>
+                                <td class="progres"> _ </td>
+                                <td width="75">
+                                    <a [routerLink]="['/maintenance/ordre-intervention/',ordre.id,'edit']" type="button"
+                                        class="btn btn-operation">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal"
+                                        data-bs-target="#modal-delete">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> <!-- ./table-responsive -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- l'insertion d'un ordre -->
+<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-card card" data-list=''>
+                <div class="card-header">
+                    <h4 class="card-header-title" id="exampleModalCenterTitle">
+                        Ordre d'intervention
+                    </h4>
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="card-body">
+                    <form #orderForm="ngForm" >
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Véhicule
+                                        <strong class="text-danger" *ngIf="!singleOrder.vehicule_id">*</strong>
+                                    </label>
+                                    <select class="form-select form-select-sm" name="vehicule_id"
+                                        [(ngModel)]="singleOrder.vehicule_id" required>
+                                        <option value=null disabled>Veuillez choisir...</option>
+                                        <option *ngFor="let vehicule of vehicules" [value]="vehicule.id">
+                                            {{vehicule.matricule}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Tiers
+                                    </label>
+                                    <select class="form-select form-select-sm" name="tiers_id"
+                                        [(ngModel)]="singleOrder.tiers_id" required>
+                                        <option value=null disabled>Veuillez choisir...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Date limite</label>
+                                    <input type="date" class="form-control form-control-sm" name="date_limite" [(ngModel)]="singleOrder.date_limite">
+                                </div>
+                            </div><!-- ./col-md-6 -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="">
+                                        <label class="form-label inline-block" style="margin-right: 10px;">
+                                            Affecter à
+                                        </label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exampleRadios" (click)="affecter_a='conducteur'" checked>
+                                            <label class="form-check-label">
+                                                Conducteur
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exampleRadios" (click)="affecter_a='utilisteur'">
+                                            <label class="form-check-label">
+                                                Autre
+                                            </label>
+                                        </div>
+                                    </div><!-- ./check -->
+                                    <select class="form-select form-select-sm" name="conducteur_id"
+                                        [(ngModel)]="singleOrder.conducteur_id" *ngIf="affecter_a == 'conducteur'">
+                                        <option value=null disabled>Veuillez choisir...</option>
+                                        <option *ngFor="let conducteur of conducteurs" [value]="conducteur.id">
+                                            {{conducteur.prenom}} {{conducteur.nom}}
+                                        </option>
+                                    </select><!-- ./conducteur -->
+                                    <select class="form-select form-select-sm" name="utilisateur_id"
+                                        [(ngModel)]="singleOrder.utilisateur_id" *ngIf="affecter_a == 'utilisteur'">
+                                        <option value=null disabled>Veuillez choisir...</option>
+                                        <option *ngFor="let utilisateur of utilisateurs" [value]="utilisateur.id">
+                                            {{utilisateur.prenom}} {{utilisateur.nom}}
+                                        </option>
+                                    </select><!-- ./utilisateur -->
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        date d'intervention
+                                        <strong class="text-danger" *ngIf="!singleOrder.date_intervention">*</strong>
+                                    </label>
+                                    <input type="date" class="form-control form-control-sm" name="date_intervention" [(ngModel)]="singleOrder.date_intervention">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Priorité
+                                        <strong class="text-danger" *ngIf="!singleOrder.priorite">*</strong>
+                                    </label>
+                                    <select class="form-select form-select-sm" name="priorite"
+                                        [(ngModel)]="singleOrder.priorite" required>
+                                        <option value=null disabled>Veuillez choisir...</option>
+                                        <option value="Bas">Bas</option>
+                                        <option value="Normale">Normale</option>
+                                        <option value="Haute">Haute</option>
+                                        <option value="Urgent">Urgent</option>
+                                    </select>
+                                </div>
+                                
+                            </div><!-- ./col-md-6 -->
+                            <div class="form-group">
+                                <label class="form-label">Notes initiales</label>
+                                <textarea class="form-control" rows="3" name="note" [(ngModel)]="singleOrder.note"></textarea>
+                            </div>
+                        </div> <!-- ./row -->
+
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right"
+                                [disabled]="!orderForm.valid">Enregister</button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right"
+                                data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

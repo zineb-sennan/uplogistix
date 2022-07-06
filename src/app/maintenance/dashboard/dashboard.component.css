@@ -1,0 +1,37 @@
+.card-body-infos i{
+    font-size: 16px !important;
+    background-color: #fff;
+    padding: 17px;
+    position: absolute;
+    /*color: #fff !important;*/
+    margin-left: -47px;
+    margin-top: -41px;
+    border-radius: 10px;
+    box-shadow: rgb(50 50 93 / 25%) 0px 6px 12px -2px, rgb(0 0 0 / 30%) 0px 3px 7px -3px;
+}
+
+.card-body-infos{
+    padding: 7px 25px;
+}
+
+.card-body-infos h6{
+    font-size: 11px;
+}
+
+.ml{
+    margin-left: 15px;
+}
+
+.card-chart .card-header{
+    height: 35px;
+    border-bottom: 0px;
+}
+
+.card-chart .card-body{
+    padding: 5px !important;
+    height: 233px;
+}
+
+.card-chart{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}

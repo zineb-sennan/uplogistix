@@ -1,0 +1,11 @@
+.modal-dialog {
+    max-width: 750px !important;
+}
+
+.form-check .form-check-input{
+    border-radius: 20px !important;
+}
+
+.form-select-sm{
+    height: 32px;
+}

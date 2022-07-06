@@ -1,12 +1,18 @@
-<section>
-    <div class="container-fluid">
+<div class="app d-flex align-items-center bg-auth border-top border-top-2 border-primary">
+    <div class="container ">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-5 col-lg-6 col-xl-4 px-lg-6 my-5 align-self-center">
-                <h1 class="display-4 text-center mb-3">Réinitialisation du mot de passe</h1>
-                <p class="text-muted text-center mb-5">
-                    Entrez votre e-mail pour obtenir un lien de réinitialisation du mot de passe.
+            <div class="col-12 col-md-5 col-xl-4 my-5 infos-form">
+                <a class="navbar-brand">
+                    <img src="assets/img/logo.png" class="navbar-brand-img mx-auto" alt="...">
+                    <span class="logo-name">
+                        UPLOGISTIX <i class="fa-solid fa-leaf text-success"></i>
+                    </span>
+                </a>
+                <p class="text-dark text-center mb-5">
+                    Veuillez saisir votre login et mot de passe.
                 </p>
 
+                <!-- Form -->
                 <form #forgetPwdForm="ngForm" (ngSubmit)="forgetPwd(forgetPwdForm.value)">
                     <h3 class="float-right text-danger">{{time}}</h3>
                     <input type="hidden" [(ngModel)]="res.token" name="token">
@@ -22,20 +28,21 @@
                     </div>
                     <div class="form-group" *ngIf="res.token">
                         <label class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" [(ngModel)]="infosPwd.newpassword" name="newpassword" (keyup)="validationPWD($event)">
+                        <input type="password" class="form-control" [(ngModel)]="infosPwd.newpassword"
+                            name="newpassword" (keyup)="validationPWD($event)">
                         <small class="form-text text-danger" *ngIf="message">{{message}}</small>
                     </div>
                     <!-- *** *** *** -->
                     <button type="submit" class="btn btn-lg w-100 btn-primary mb-3">
-            Réinitialiser le mot de passe
-          </button>
+                        Réinitialiser le mot de passe
+                    </button>
                     <div class="text-center">
                         <small class="text-muted text-center">
-              N'oubliez pas votre mot de passe? <a [routerLink]="['/login']">Connexion</a>.
-            </small>
+                            N'oubliez pas votre mot de passe? <a [routerLink]="['/login']">Connexion</a>.
+                        </small>
                     </div>
-                </form>
-                <!-- *** *** *** *** *** -->
+                </form><!-- ./form -->
+                
                 <div id="pswd_info" class="d-none">
                     <br><br>
                     <h4>Le mot de passe doit contenir:</h4>
@@ -45,14 +52,9 @@
                         <li id="number" class="invalid">Au moins <strong>un numéro</strong></li>
                         <li id="length" class="invalid">Minimum <strong>8 caractères</strong></li>
                     </ul>
-                </div>
-
+                </div><!-- ./pswd_info -->
 
             </div>
-            <div class="col-12 col-md-7 col-lg-6 col-xl-8 d-none d-lg-block">
-                <div class="bg-cover h-100 min-vh-100 mt-n1 me-n3" style="background-image: url(assets/img/covers/auth-side-cover.jpg)"></div>
-            </div>
-        </div>
-        <!-- / .row -->
-    </div>
-</section>
+        </div> <!-- / .row -->
+    </div> <!-- / .container -->
+</div><!-- ./app -->

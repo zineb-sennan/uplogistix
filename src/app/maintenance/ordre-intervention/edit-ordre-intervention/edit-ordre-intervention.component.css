@@ -1,0 +1,42 @@
+.container-fluid { width: 90%; }
+.btn-edit:hover{ color: #209D05 !important; }
+
+.statut{
+    width: 400px;
+    float: right;
+}
+
+.fiche-order-intervention{
+    width: 70%;
+    display: block;
+    margin: auto;
+    box-shadow: rgb(50 50 93 / 25%) 0px 6px 12px -2px, rgb(0 0 0 / 30%) 0px 3px 7px -3px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    padding: 10px 60px;
+}
+
+dt, dd {
+    display: inline;
+}
+
+dd::after {
+    content: "";
+    display: block;
+    margin-top: 0.25em;
+}
+
+dt {
+    margin-right: 10px;
+    color: #002B4C;
+}
+
+.btn-edit{
+    margin-right: -47px;
+}
+
+.note-ordre{
+    font-size: 13px;
+    margin-right: -45px;
+}

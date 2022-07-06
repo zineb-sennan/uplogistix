@@ -1,0 +1,120 @@
+<div class="app">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Stock
+            </h6>
+            <h2 class="header-title">
+                Order d'intervention
+            </h2>
+        </div>
+    </div> <!-- ./titre -->
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row align-items-center">
+                    <div class="col">
+                       <h6 class="header-pretitle">Maintenance</h6>
+                       <h1 class="header-title">OI-2022/00001</h1>
+                    </div>
+                </div> <!-- ./num de ordre -->
+                <div class="card mt-3">
+                    <div class="card-body float-right">
+                        <div class="statut">
+                            <button type="button" class="btn btn-outline-success">Ouvert</button>&nbsp;
+                            <button type="button" class="btn btn-outline-warning">En instance</button>&nbsp;
+                            <button type="button" class="btn btn-outline-danger">En réparation</button>&nbsp;
+                            <button type="button" class="btn btn-outline-primary">Complet</button>
+                        </div>
+                    </div>
+
+                    <div class="fiche-order-intervention mt-3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <dl class="mt-5">
+                                    <dt>Véhicule:</dt>
+                                    <dd>17738-B-72</dd>
+                                
+                                    <dt>Affecter à:</dt>
+                                    <dd>disway</dd>
+                                
+                                    <dt>Date d'intervention:</dt>
+                                    <dd>06/07/2022</dd>
+
+                                    <dt>Date limite:</dt>
+                                    <dd>09/07/2022</dd>
+
+                                    <dt>Note:</dt>
+                                    <dd>
+                                        Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée 
+                                        à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer 
+                                        le faux-texte dès qu'il est prêt ou que la mise en page est achevée.
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="float-right">
+                                    <button type="button" class="btn btn-light mb-2 shadow float-right bg-white btn-edit">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button><br>
+                                    <circle-progress [percent]="10" [space]="-10" [radius]="75" [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
+                                    </circle-progress><br>
+                                    <a class="float-right note-ordre">Ajouter une note ?</a>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                    </div><!-- ./fiche-order-intervention -->
+
+                    <div class="taches p-5">
+                        <h3>Les tâches</h3>
+                        <div class="table-responsive row">
+                            <table class="table table-sm table-nowrap card-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tâche</th>
+                                        <th class="text-right" width="300">Intervention</th>
+                                        <th class="text-right" width="150">Terminé-le</th>
+                                        <th class="text-right" width="75">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="list">
+                                    <tr>
+                                        <td>
+                                            Tache test <br>
+                                            <strong class="text-muted">Ajouter une pièce</strong>&nbsp;|&nbsp;
+                                            <strong class="text-muted">Ajouter une note</strong>
+                                        </td>
+                                        <td>Intervention test</td>
+                                        <td>12/07/2022</td>
+                                        <td>
+                                            <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete">
+                                               <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">
+                                            <button type="button" class="btn btn-link mb-2">
+                                                <i class="fa-solid fa-plus"></i>
+                                                Ajouter une tâche
+                                            </button>
+
+                                            <h3 class="float-right text-danger font-weight-normal mt-4">
+                                                Total: <span>__,__</span>
+                                            </h3>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div> <!-- ./table-responsive -->
+                    </div><!-- ./tâches -->
+                </div> <!-- ./card -->
+            </div>
+        </div>
+    </div>
+</div>

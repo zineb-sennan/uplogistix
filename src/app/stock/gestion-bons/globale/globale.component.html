@@ -17,17 +17,17 @@
                     <div class="col">
                         <ul class="nav nav-tabs nav-overflow header-tabs">
                             <li class="nav-item">
-                                <button class="nav-link active" (click)="type='bons-reception'">
+                                <button class="nav-link" (click)="type='bons-reception'" [ngClass]="{'active': type=='bons-reception'}">
                                     Bons de réception
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link" (click)="type='bons-retour'">
+                                <button class="nav-link" (click)="type='bons-retour'" [ngClass]="{'active': type=='bons-retour'}">
                                     Bons de retour
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link" (click)="type='bons-transfert'">
+                                <button class="nav-link" (click)="type='bons-transfert'" [ngClass]="{'active': type=='bons-transfert'}">
                                     Bons de transfert
                                 </button>
                             </li>

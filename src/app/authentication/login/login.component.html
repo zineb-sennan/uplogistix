@@ -1,61 +1,51 @@
-<!-- CONTENT
-    ================================================== -->
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-5 col-lg-6 col-xl-4 px-lg-6 my-5 align-self-center">
+<div class="app d-flex align-items-center bg-auth border-top border-top-2 border-primary">
+    <div class="container ">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-5 col-xl-4 my-5 infos-form">
+                <a class="navbar-brand">
+                    <img src="assets/img/logo.png" class="navbar-brand-img mx-auto" alt="...">
+                    <span class="logo-name">
+                        UPLOGISTIX <i class="fa-solid fa-leaf text-success"></i>
+                    </span>
+                </a>
+                <p class="text-dark text-center mb-5">
+                    Veuillez saisir votre login et mot de passe.
+                </p>
 
-            <!-- Heading -->
-            <h1 class="display-4 text-center mb-3">
-                Authentification
-            </h1>
-
-            <!-- Subheading -->
-            <p class="text-muted text-center mb-5">
-                Veuillez saisir votre login et mot de passe.
-            </p>
-
-            <!-- Form -->
-            <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
-                <!-- Email address -->
-                <div class="form-group">
-                    <label class="form-label">Utilisateur</label>
-                    <input type="text" class="form-control" ngModel name="user">
-                </div>
-                <!-- Password -->
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <label class="form-label">Mot de passe</label>
+                <!-- Form -->
+                <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
+                    <div class="form-group">
+                        <label class="form-label">Utilisateur</label>
+                        <input type="text" class="form-control" ngModel name="user">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">Mot de passe</label>
+                            </div>
+                            <div class="col-auto">
+                                <a [routerLink]="['/pwd-oublie']" class="form-text small text-muted">
+                                   Mot de passe oublié? 
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <a [routerLink]="['/pwd-oublie']" class="form-text small text-muted">
-                               Mot de passe oublié? 
-                            </a>
+                        <div class="input-group input-group-merge">
+                            <input class="form-control" type="{{ viewPWD ? 'text' : 'password' }}" ngModel name="password">
+                            <span class="input-group-text" (click)="ChangeTypeInputPWD()">
+                              <i class="fa-solid {{ viewPWD ? 'fa-eye' : 'fa-eye-slash' }} "></i>
+                            </span>
                         </div>
                     </div>
-                    <!-- / .row -->
-                    <div class="input-group input-group-merge">
-                        <input class="form-control" type="{{ viewPWD ? 'text' : 'password' }}" ngModel name="password">
-                        <span class="input-group-text" (click)="ChangeTypeInputPWD()">
-                          <i class="fa-solid {{ viewPWD ? 'fa-eye' : 'fa-eye-slash' }} "></i>
-                        </span>
+                    <button class="btn btn-lg w-100 btn-primary mb-3" type="submit">
+                        Connexion
+                    </button>
+    
+                    <div class="err">
+                        {{message}}
                     </div>
-                </div>
-                <!-- Submit -->
-                <button class="btn btn-lg w-100 btn-primary mb-3" type="submit">
-                    Connexion
-                </button>
+                </form>
 
-                <div class="err">
-                    {{message}}
-                </div>
-            </form>
-
-        </div>
-        <div class="col-12 col-md-7 col-lg-6 col-xl-8 d-none d-lg-block">
-            <!-- Image -->
-            <div class="bg-cover h-100 min-vh-100 mt-n1 me-n3" style="background-image: url(assets/img/covers/auth-side-cover.jpg);"></div>
-        </div>
-    </div>
-    <!-- / .row -->
-</div>
+            </div>
+        </div> <!-- / .row -->
+    </div> <!-- / .container -->
+</div><!-- ./app -->

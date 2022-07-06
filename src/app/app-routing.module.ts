@@ -63,8 +63,8 @@ const routes: Routes = [
         loadChildren: () => import('./stock/stock.module').then(m => m.StockModule)
       },
       {
-        path: 'maintenances',
-        loadChildren: () => import('./maintenances/maintenances.module').then(m => m.MaintenancesModule)
+        path: 'maintenance',
+        loadChildren: () => import('./maintenance/maintenance.module').then(m => m.MaintenanceModule)
       }
     ]
   }

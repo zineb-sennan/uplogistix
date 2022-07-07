@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MaintenanceRoutingModule } from './maintenance-routing.module';
 import { IndexOrdreInterventionComponent } from './ordre-intervention/index-ordre-intervention/index-ordre-intervention.component';
@@ -19,6 +19,9 @@ import { FormsModule } from '@angular/forms';
     MaintenanceRoutingModule,
     NgCircleProgressModule.forRoot(),
     FormsModule
-  ]
+  ],
+  providers: [
+    DatePipe
+  ],
 })
 export class MaintenanceModule { }

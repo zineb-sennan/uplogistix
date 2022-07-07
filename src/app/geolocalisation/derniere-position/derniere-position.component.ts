@@ -35,8 +35,8 @@ export class DernierePositionComponent implements OnInit {
         this.positions = result;
         this.initMap(33.9727213, -6.8867775, 5);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getPositions(vehicule_id, group_id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getPositions(vehicule_id, group_id);
       });
   }
 
@@ -51,8 +51,8 @@ export class DernierePositionComponent implements OnInit {
         const vehiculesWithGPS = result.filter(v => v.balise === 1);
         this.vehicules = vehiculesWithGPS;
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getVehicules();
       });
   }
 

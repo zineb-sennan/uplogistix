@@ -47,8 +47,8 @@ export class HistoriqueComponent implements OnInit {
         [...this.positions].map(p=> p.matricule= result.matricule);
         this.initMap(33.9727213, -6.8867775, 10);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getTrajetDetails(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getTrajetDetails(id);
       });
   }
 
@@ -58,8 +58,8 @@ export class HistoriqueComponent implements OnInit {
         const vehiculesWithGPS = result.filter(v => v.balise === 1);
         this.vehicules = vehiculesWithGPS;
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getVehicules();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getVehicules();
       });
   }
 
@@ -67,8 +67,8 @@ export class HistoriqueComponent implements OnInit {
     this.vehicule = this.vehicules.find((v: any) => v.id == form.vehicule);
     this.geoLocalisationService.getHistorique(form.vehicule, form.date_debut, form.date_fin).subscribe(
       result => this.historique = result,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.recherche(form);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.recherche(form);
       }
     );
   }

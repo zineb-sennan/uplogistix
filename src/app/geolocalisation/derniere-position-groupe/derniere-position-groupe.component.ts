@@ -35,8 +35,8 @@ export class DernierePositionGroupeComponent implements OnInit {
         this.positions = result;
         this.initMap(33.9727213, -6.8867775, 5);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getPositions(vehicule_id, group_id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getPositions(vehicule_id, group_id);
       });
   }
 
@@ -48,8 +48,8 @@ export class DernierePositionGroupeComponent implements OnInit {
   getGroupes() {
     this.geoLocalisationService.getGroupes().subscribe(
       result => this.groupes = result,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getGroupes();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getGroupes();
       });
   }
 

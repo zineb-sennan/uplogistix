@@ -40,3 +40,39 @@ dt {
     font-size: 13px;
     margin-right: -45px;
 }
+
+
+/*** ***/
+.modal-dialog {
+    max-width: 750px !important;
+}
+
+.form-check .form-check-input{
+    border-radius: 20px !important;
+}
+
+.form-select-sm{
+    height: 32px;
+}
+
+.btn-ajouter, .btn-supp{
+    padding: 4px 15px;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+._disabled{
+    background-color: #fff !important;
+    color: #333333 !important;
+    border-color: #DDDDDD !important;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.add-tache {
+    box-shadow: rgb(50 50 93 / 25%) 0px 6px 12px -2px, rgb(0 0 0 / 30%) 0px 3px 7px -3px;
+    background-color: #F8F8FA;
+}
+
+.add-tache td{
+    padding: 8px !important;
+}

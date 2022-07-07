@@ -18,10 +18,14 @@ export class OrdreInterventionService {
   }
 
   update(record: any) {
-    return this.http.put(environment.apiURL + '/maintenance/ordres/' + record.id, record)
+    return this.http.put<any>(environment.apiURL + '/maintenance/ordres/' + record.id, record)
   }
 
   getOrdreInterventionById(id:number){
     return this.http.get<any>(environment.apiURL + '/maintenance/ordres/'+id)
+  }
+
+  changeStatut(record:any){
+    return this.http.post<any>(environment.apiURL + '/maintenance/ordres/'+ record.id, record)
   }
 }

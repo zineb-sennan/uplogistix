@@ -24,7 +24,7 @@
                         <thead>
                             <tr>
                                 <th>Numero</th>
-                                <th>Véhicule</th>
+                                <th>Matricule</th>
                                 <th>Affecter à</th>
                                 <th>date d'intervention</th>
                                 <th>date limite</th>
@@ -36,22 +36,22 @@
                         <tbody class="list">
                             <tr *ngFor="let ordre of ordres">
                                 <td class="numero"> {{ordre.numero}} </td>
-                                <td class="vehicule"> {{ordre.vehicule_id}} </td>
-                                <td class="affecter_a"> {{ordre.ville}} </td>
+                                <td class="vehicule"> {{ordre.matricule}} </td>
+                                <td class="affecter_a"> {{ordre.affecter_a}} </td>
                                 <td class="date_intervention"> {{ordre.date_intervention | date: 'yyyy-MM-dd HH:mm:ss'}}
                                 </td>
                                 <td class="date_limite"> {{ordre.date_limite | date: 'yyyy-MM-dd HH:mm:ss'}} </td>
                                 <td class="statut"> _ </td>
                                 <td class="progres"> _ </td>
-                                <td width="75">
+                                <td width="55">
                                     <a [routerLink]="['/maintenance/ordre-intervention/',ordre.id,'edit']" type="button"
                                         class="btn btn-operation">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
-                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal"
+                                    <!-- <button type="button" class="btn btn-operation" data-bs-toggle="modal"
                                         data-bs-target="#modal-delete">
                                         <i class="fa-solid fa-trash"></i>
-                                    </button>
+                                    </button> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -75,7 +75,7 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="card-body">
-                    <form #orderForm="ngForm" >
+                    <form #orderForm="ngForm" (ngSubmit)="update(orderForm.value)">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -92,59 +92,9 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">
-                                        Tiers
-                                    </label>
-                                    <select class="form-select form-select-sm" name="tiers_id"
-                                        [(ngModel)]="singleOrder.tiers_id" required>
-                                        <option value=null disabled>Veuillez choisir...</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label class="form-label">Date limite</label>
-                                    <input type="date" class="form-control form-control-sm" name="date_limite" [(ngModel)]="singleOrder.date_limite">
-                                </div>
-                            </div><!-- ./col-md-6 -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <div class="">
-                                        <label class="form-label inline-block" style="margin-right: 10px;">
-                                            Affecter à
-                                        </label>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" (click)="affecter_a='conducteur'" checked>
-                                            <label class="form-check-label">
-                                                Conducteur
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" (click)="affecter_a='utilisteur'">
-                                            <label class="form-check-label">
-                                                Autre
-                                            </label>
-                                        </div>
-                                    </div><!-- ./check -->
-                                    <select class="form-select form-select-sm" name="conducteur_id"
-                                        [(ngModel)]="singleOrder.conducteur_id" *ngIf="affecter_a == 'conducteur'">
-                                        <option value=null disabled>Veuillez choisir...</option>
-                                        <option *ngFor="let conducteur of conducteurs" [value]="conducteur.id">
-                                            {{conducteur.prenom}} {{conducteur.nom}}
-                                        </option>
-                                    </select><!-- ./conducteur -->
-                                    <select class="form-select form-select-sm" name="utilisateur_id"
-                                        [(ngModel)]="singleOrder.utilisateur_id" *ngIf="affecter_a == 'utilisteur'">
-                                        <option value=null disabled>Veuillez choisir...</option>
-                                        <option *ngFor="let utilisateur of utilisateurs" [value]="utilisateur.id">
-                                            {{utilisateur.prenom}} {{utilisateur.nom}}
-                                        </option>
-                                    </select><!-- ./utilisateur -->
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        date d'intervention
-                                        <strong class="text-danger" *ngIf="!singleOrder.date_intervention">*</strong>
-                                    </label>
-                                    <input type="date" class="form-control form-control-sm" name="date_intervention" [(ngModel)]="singleOrder.date_intervention">
+                                    <input type="datetime-local" class="form-control form-control-sm" name="date_limite"
+                                        [(ngModel)]="singleOrder.date_limite">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">
@@ -160,11 +110,50 @@
                                         <option value="Urgent">Urgent</option>
                                     </select>
                                 </div>
-                                
+                            </div><!-- ./col-md-6 -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="form-label inline-block" style="margin-right: 10px;">
+                                            Affecter à
+                                            <strong class="text-danger" *ngIf="!singleOrder.user_affecter">*</strong>
+                                        </label>
+                                        <select class="form-select form-select-sm" name="user_affecter"
+                                            [(ngModel)]="singleOrder.user_affecter" required>
+                                            <option value=null disabled>Veuillez choisir...</option>
+                                            <optgroup label="Conducteurs">
+                                                <option *ngFor="let conducteur of conducteurs"
+                                                    value="c.{{conducteur.id}}">
+                                                    {{conducteur.prenom}} {{conducteur.nom}}
+                                                </option>
+                                            </optgroup>
+                                            <optgroup label="Utilisateurs">
+                                                <option *ngFor="let utilisateur of utilisateurs"
+                                                    value="u.{{utilisateur.id}}">
+                                                    {{utilisateur.prenom}} {{utilisateur.nom}}
+                                                </option>
+                                            </optgroup>
+                                            <optgroup label="Tiers">
+                                                <option *ngFor="let tier of tiers" value="t.{{tier.id}}">
+                                                    {{tier.raison_sociale}}
+                                                </option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        date d'intervention
+                                        <strong class="text-danger" *ngIf="!singleOrder.date_intervention">*</strong>
+                                    </label>
+                                    <input type="datetime-local" class="form-control form-control-sm"
+                                        name="date_intervention" [(ngModel)]="singleOrder.date_intervention" required>
+                                </div>
                             </div><!-- ./col-md-6 -->
                             <div class="form-group">
                                 <label class="form-label">Notes initiales</label>
-                                <textarea class="form-control" rows="3" name="note" [(ngModel)]="singleOrder.note"></textarea>
+                                <textarea class="form-control" rows="3" name="note"
+                                    [(ngModel)]="singleOrder.note"></textarea>
                             </div>
                         </div> <!-- ./row -->
 
@@ -174,7 +163,6 @@
                             <button type="button" class="btn btn-secondary mb-2 mt-4 float-right"
                                 data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
                         </div>
-
                     </form>
                 </div>
             </div>

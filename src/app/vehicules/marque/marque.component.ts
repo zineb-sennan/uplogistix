@@ -44,8 +44,8 @@ export class MarqueComponent implements OnInit {
     this.logo=null;
     this.vehiculeMarqueService.getMarque(id).subscribe(
       res=> this.singleMarque=res,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getMarque(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getMarque(id);
       }
     )
   }
@@ -57,8 +57,8 @@ export class MarqueComponent implements OnInit {
     data.append("file", this.logo as Blob);
     this.vehiculeMarqueService.uploadLogo(data).subscribe(
       res => this.searchMarque(),
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.uploadFile(form);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.uploadFile(form);
       }
     )
   }
@@ -73,8 +73,8 @@ export class MarqueComponent implements OnInit {
           this.message = "La marque est ajoutée avec succès !";
           this.globale.closeModal();
         },
-        error => {
-          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+        async error => {
+          if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
         })
     } else {
       this.vehiculeMarqueService.update(form).subscribe(
@@ -84,8 +84,8 @@ export class MarqueComponent implements OnInit {
           this.message = "La marque est modifiée avec succès !";
           this.globale.closeModal();
         },
-        error => {
-          if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+        async error => {
+          if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
         })
     }
   }
@@ -96,8 +96,8 @@ export class MarqueComponent implements OnInit {
       this.message = "La marque est supprimée avec succès !";
       this.globale.closeModal();
     },
-    error => {
-      if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
+    async error => {
+      if(error.status==401 && await this.securiteClass.refreshToken()) this.delete(id);
     })
   }
 
@@ -121,8 +121,8 @@ export class MarqueComponent implements OnInit {
     //
     this.vehiculeMarqueService.search({nom: this.search},this.page).subscribe(
       res=>this.marques = res,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.searchMarque();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.searchMarque();
       }
     );
   }

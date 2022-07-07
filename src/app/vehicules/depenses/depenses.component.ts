@@ -50,8 +50,8 @@ export class DepensesComponent implements OnInit {
   getAllVehicule() {
     this.vehiculeService.getAll().subscribe(
       result => this.vehicules = result,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllVehicule();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getAllVehicule();
       }
     );
   }
@@ -68,8 +68,8 @@ export class DepensesComponent implements OnInit {
           this.message = "La dépense est ajoutée avec succès !";
           this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.vehiculeDepensesService.update(form).subscribe(
@@ -78,8 +78,8 @@ export class DepensesComponent implements OnInit {
           this.message = "La dépense est modifiée avec succès !";
           this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -91,24 +91,24 @@ export class DepensesComponent implements OnInit {
         this.message = "La dépense est supprimée avec succès !";
         this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.delete(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.delete(id);
       })
   }
 
   getDepense(id:number){
     this.vehiculeDepensesService.getDepenses(id).subscribe(
       res=> this.singleDepense=res,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getDepense(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getDepense(id);
     })
   }
 
   searchDepenses(record: any) {
     this.vehiculeDepensesService.search(record, this.page).subscribe(
       res => this.depenses = res,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.searchDepenses(record);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.searchDepenses(record);
       }
     );
   }
@@ -200,7 +200,7 @@ export class DepensesComponent implements OnInit {
           }],
       },
       options:{
-        cutout: '85%',
+        /*cutout: '85%',*/
         maintainAspectRatio:false,
         plugins: {
           legend: { position: 'left' }

@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
           }],
       },
       options:{
-        cutout: 80,
+        /*cutout: 80,*/
         maintainAspectRatio:false,
         plugins: {
           legend: { position: 'left' }
@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit {
           }],
       },
       options:{
-        cutout: 80,
+        /*cutout: 80,*/
         maintainAspectRatio:false,
         plugins: {
           legend: { position: 'left' }

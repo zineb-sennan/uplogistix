@@ -212,7 +212,7 @@ export class IndexComponent implements OnInit {
           }],
       },
       options:{
-        cutout: 60,
+        /*cutout: 60,*/
         maintainAspectRatio:false,
         plugins: {
           legend: { position: 'left' }

@@ -22,12 +22,26 @@
                 <div class="card mt-3">
                     <div class="card-body float-right">
                         <div class="statut">
-                            <button type="button" class="btn btn-outline-success" [ngClass]="{'_disabled': !singleOrder.en_instance && !singleOrder.en_reparation && !singleOrder.closed_at }" [disabled]="!singleOrder.en_instance && !singleOrder.en_reparation && !singleOrder.closed_at" (click)="changerStatutOrder('ouvert')">Ouvert</button>&nbsp;
-                            <button type="button" class="btn btn-outline-warning" [ngClass]="{'_disabled':singleOrder.en_instance}" [disabled]="singleOrder.en_instance" (click)="changerStatutOrder('en_instance')">En instance</button>&nbsp;
-                            <button type="button" class="btn btn-outline-danger" [ngClass]="{'_disabled':singleOrder.en_reparation}" [disabled]="singleOrder.en_reparation" (click)="changerStatutOrder('en_reparation')">En réparation</button>&nbsp;
-                            <button type="button" class="btn btn-outline-primary" [ngClass]="{'_disabled':singleOrder.closed_at}" [disabled]="singleOrder.closed_at" (click)="changerStatutOrder('cloturer')">Complet</button>
+                            <button type="button" class="btn btn-outline-success"
+                                [ngClass]="{'_disabled': !singleOrder.en_instance && !singleOrder.en_reparation && !singleOrder.closed_at }"
+                                [disabled]="!singleOrder.en_instance && !singleOrder.en_reparation && !singleOrder.closed_at"
+                                (click)="changerStatutOrder('ouvert')">Ouvert</button>&nbsp;
+                            <button type="button" class="btn btn-outline-warning"
+                                [ngClass]="{'_disabled':singleOrder.en_instance}" [disabled]="singleOrder.en_instance"
+                                (click)="changerStatutOrder('en_instance')">En instance</button>&nbsp;
+                            <button type="button" class="btn btn-outline-danger"
+                                [ngClass]="{'_disabled':singleOrder.en_reparation}"
+                                [disabled]="singleOrder.en_reparation" (click)="changerStatutOrder('en_reparation')">En
+                                réparation</button>&nbsp;
+                            <button type="button" class="btn btn-outline-primary"
+                                [ngClass]="{'_disabled':singleOrder.closed_at}" [disabled]="singleOrder.closed_at"
+                                (click)="changerStatutOrder('cloturer')">Clôturer</button>
 
-                            <p class="text-muted float-right"> {{singleOrder.en_instance ? 'En instance à: '+(singleOrder.en_instance | date:'yyyy-MM-dd HH:mm:ss' ): (singleOrder.en_reparation ? 'En reparation à: '+(singleOrder.en_reparation | date:'yyyy-MM-dd HH:mm:ss' ): (singleOrder.closed_at ? 'Clôturer à: '+(singleOrder.closed_at | date:'yyyy-MM-dd HH:mm:ss' ): '')) }}</p>
+                            <p class="text-muted float-right"> {{singleOrder.en_instance ? 'En instance à:
+                                '+(singleOrder.en_instance | date:'yyyy-MM-dd HH:mm:ss' ): (singleOrder.en_reparation ?
+                                'En reparation à: '+(singleOrder.en_reparation | date:'yyyy-MM-dd HH:mm:ss' ):
+                                (singleOrder.closed_at ? 'Clôturer à: '+(singleOrder.closed_at | date:'yyyy-MM-dd
+                                HH:mm:ss' ): '')) }}</p>
                         </div>
                     </div>
 
@@ -63,8 +77,8 @@
                                         data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="addNote=false">
                                         <i class="fa-solid fa-pen"></i>
                                     </button><br>
-                                    <circle-progress [percent]="10" [space]="-10" [radius]="75" [animation]="true"
-                                        [animationDuration]="1000" [showSubtitle]="false">
+                                    <circle-progress [percent]="singleOrder.progresOrder" [space]="-10" [radius]="75"
+                                        [animation]="true" [animationDuration]="1000" [showSubtitle]="false">
                                     </circle-progress><br>
 
                                     <button type="button" class="btn btn-link float-right note-ordre"
@@ -84,25 +98,196 @@
                                 <thead>
                                     <tr>
                                         <th>Tâche</th>
-                                        <th class="text-right" width="150">Terminé-le</th>
-                                        <th class="text-right" width="150">Coût total dh</th>
-                                        <th class="text-right" width="75">Options</th>
+                                        <th class="text-center" width="150">Terminé-le</th>
+                                        <th class="text-center" width="150">Coût total dh</th>
+                                        <th class="text-center" width="75">Options</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list">
-                                    <tr *ngFor="let tache of taches">
+                                    <tr *ngFor="let tache of taches" class="tr-tache">
                                         <td>
-                                            {{tache.tache}}<br>
-                                            <strong class="text-muted">{{tache.note}}<br></strong>
-                                            
-                                            <strong class="text-muted">Ajouter une pièce</strong>&nbsp;|&nbsp;
-                                            <strong class="text-muted">Ajouter une note</strong>&nbsp;|&nbsp;
-                                            <strong class="text-muted">Tâche validé</strong>
+                                            <strong class="text-primary">{{tache.tache}}<br></strong>
+                                            <p *ngIf="tache.note">{{tache.note}}</p>
+                                            <!-- note-->
+                                            <div class="form-group form-group-note" *ngIf="tache.isNote">
+                                                <label>Note</label>
+                                                <textarea class="form-control" rows="1" name="note"
+                                                    [(ngModel)]="singleTache.note"></textarea>
+                                                <button type="button" class="btn btn-operation w-auto float-right"
+                                                    (click)="addNoteTache(tache)">
+                                                    <i class="fa-solid fa-pencil"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-operation w-auto float-right"
+                                                    (click)="onEditNote(tache, false)">
+                                                    <i class="fa-solid fa-xmark"></i>
+                                                </button>
+                                            </div>
+                                            <!-- pieces-->
+                                            <table class="table table-sm table-nowrap pieces-table"
+                                                *ngIf="tache.isPiece || tache.pieces.length>0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Pièces</th>
+                                                        <th class="text-center" width="150">Qtn</th>
+                                                        <th class="text-center" width="150">Prix</th>
+                                                        <th class="text-center" width="150">Coût total dh</th>
+                                                        <th class="text-center" width="75">Options</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="list">
+                                                    <tr *ngFor="let piece of tache.pieces">
+                                                        <td>
+                                                            <div *ngIf="!piece.isEdit">
+                                                                {{piece.designation}}
+                                                            </div>
+                                                            <div *ngIf="piece.isEdit">
+                                                                <input type="hidden" name="id"
+                                                                    [(ngModel)]="singlePieceTache.id">
+                                                                <input type="hidden" name="oi_tache_id"
+                                                                    [(ngModel)]="singlePieceTache.oi_tache_id">
+                                                                <select class="form-select form-select-sm"
+                                                                    name="piece_id"
+                                                                    [(ngModel)]="singlePieceTache.piece_id" required>
+                                                                    <option value=null disabled>Veuillez choisir...
+                                                                    </option>
+                                                                    <option *ngFor="let piece of pieces"
+                                                                        value="{{piece.id}}">
+                                                                        {{piece.designation}}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div *ngIf="!piece.isEdit">
+                                                                {{piece.qte}}
+                                                            </div>
+                                                            <div *ngIf="piece.isEdit">
+                                                                <input class="form-control" type="number"
+                                                                    placeholder="Qtn" name="qte"
+                                                                    [(ngModel)]="singlePieceTache.qte"
+                                                                    (change)="singlePieceTache.total=singlePieceTache.qte*singlePieceTache.prix_unitaire">
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div *ngIf="!piece.isEdit">
+                                                                {{piece.prix_unitaire}}
+                                                            </div>
+                                                            <div *ngIf="piece.isEdit">
+                                                                <input class="form-control" type="number"
+                                                                    placeholder="Prix" name="prix_unitaire"
+                                                                    [(ngModel)]="singlePieceTache.prix_unitaire"
+                                                                    (change)="singlePieceTache.total=singlePieceTache.qte*singlePieceTache.prix_unitaire">
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div *ngIf="!piece.isEdit">
+                                                                {{piece.qte * piece.prix_unitaire}}
+                                                            </div>
+                                                            <div *ngIf="piece.isEdit">
+                                                                <input class="form-control" type="number"
+                                                                    placeholder="Total" name="total"
+                                                                    [(ngModel)]="singlePieceTache.total" disabled>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div *ngIf="!piece.isEdit">
+                                                                <button type="button"
+                                                                    class="btn w-auto float-right _btn-p"
+                                                                    (click)="deletePieceTache(tache.id, piece.id)">
+                                                                    <i class="fa-solid fa-xmark"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn w-auto float-right _btn-p"
+                                                                    (click)="onEditPieceOfTache(piece, true)">
+                                                                    <i class="fa-solid fa-pencil"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div *ngIf="piece.isEdit">
+                                                                <button type="button"
+                                                                    class="btn w-auto float-right _btn-p"
+                                                                    (click)="onEditPieceOfTache(piece, false)">
+                                                                    <i class="fa-solid fa-xmark"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn w-auto float-right _btn-p"
+                                                                    (click)="updatePieceTache()">
+                                                                    <i class="fa-solid fa-pencil"></i>
+                                                                </button>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot *ngIf="tache.isPiece">
+                                                    <tr class="add-tache">
+                                                        <td>
+                                                            <input type="hidden" name="oi_tache_id"
+                                                                [(ngModel)]="singlePieceTache.oi_tache_id">
+                                                            <select class="form-select form-select-sm" name="piece_id"
+                                                                [(ngModel)]="singlePieceTache.piece_id" required>
+                                                                <option value=null disabled>Veuillez choisir...</option>
+                                                                <option *ngFor="let piece of pieces"
+                                                                    value="{{piece.id}}">
+                                                                    {{piece.designation}}
+                                                                </option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="number" placeholder="Qtn"
+                                                                name="qte" [(ngModel)]="singlePieceTache.qte"
+                                                                (change)="singlePieceTache.total=singlePieceTache.qte*singlePieceTache.prix_unitaire">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="number" placeholder="Prix"
+                                                                name="prix_unitaire"
+                                                                [(ngModel)]="singlePieceTache.prix_unitaire"
+                                                                (change)="singlePieceTache.total=singlePieceTache.qte*singlePieceTache.prix_unitaire">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="number"
+                                                                placeholder="Total" name="total"
+                                                                [(ngModel)]="singlePieceTache.total" disabled>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-operation w-auto float-right"
+                                                                (click)="onEditPiece(tache, false)">
+                                                                <i class="fa-solid fa-xmark"></i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-operation w-auto float-right"
+                                                                (click)="addPieceTache()">
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </button>
+                                                        </td>
+
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                            <!-- actions -->
+                                            <strong class="text-muted cursor" (click)="onEditPiece(tache, true)" *ngIf="!tache.isPiece">Ajouter
+                                                une pièce &nbsp;|&nbsp;</strong>
+                                            <strong class="text-muted cursor" (click)="onEditNote(tache, true)"
+                                                *ngIf="!tache.isNote">Ajouter une note &nbsp;|&nbsp;</strong>
+
+                                            <strong class="text-success cursor" (click)="validateTache(tache, false)"
+                                                *ngIf="tache.terminated_at">Validé <i class="fa-solid fa-check"></i></strong>
+                                            <strong class="text-danger cursor" (click)="validateTache(tache, true)" *ngIf="!tache.terminated_at">
+                                                Pas encore validée
+                                            </strong>
                                         </td>
-                                        <td>{{tache.terminated_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                                        <td>{{tache.cout_tache?.toFixed(2)}}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-operation" (click)="deleteTache(tache.id)">
+                                        <td class="align-top pt-5 text-center">
+                                            {{tache.terminated_at | date:'yyyy-MM-dd HH:mm:ss'}}
+                                        </td>
+                                        <td class="align-top pt-5 text-center">
+                                            <strong class="text-danger">
+                                                {{tache.cout_tache?.toFixed(2)}}
+                                            </strong>
+                                        </td>
+                                        <td class="align-top pt-5 text-center">
+                                            <button type="button" class="btn btn-operation"
+                                                (click)="deleteTache(tache.id)">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </td>
@@ -120,20 +305,24 @@
                                                 <select class="form-select form-select-sm" name="intervention_id"
                                                     [(ngModel)]="singleTache.intervention_id" required>
                                                     <option value=null disabled>Veuillez choisir...</option>
-                                                    <option *ngFor="let intervention of interventions" value="{{intervention.id}}">
+                                                    <option *ngFor="let intervention of interventions"
+                                                        value="{{intervention.id}}">
                                                         {{intervention.libelle}}
                                                     </option>
                                                 </select>
                                             </div>
                                         </td>
                                         <td>
-                                            <input type="hidden" name="ordre_id_taches" [(ngModel)]="singleTache.ordre_id_taches">
+                                            <input type="hidden" name="ordre_id_taches"
+                                                [(ngModel)]="singleTache.ordre_id_taches">
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-success btn-ajouter" (click)="addTache()">Ajouter</button>
+                                            <button type="button" class="btn btn-success btn-ajouter"
+                                                (click)="addTache()">Ajouter</button>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-danger btn-supp" (click)="_addTache=false">Annuler</button>
+                                            <button type="button" class="btn btn-danger btn-supp"
+                                                (click)="_addTache=false">Annuler</button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -144,7 +333,7 @@
                                             </button>
 
                                             <h3 class="float-right text-danger font-weight-normal mt-4">
-                                                Total: <span>__,__</span>
+                                                Coût total: <span>{{singleOrder.cout_total.toFixed(2)}}</span> <small>Dh</small>
                                             </h3>
                                         </td>
                                     </tr>

@@ -76,3 +76,54 @@ dt {
 .add-tache td{
     padding: 8px !important;
 }
+
+.form-group .btn-ajouter{
+    margin-right: 10px;
+}
+
+.form-group-note{
+    box-shadow: rgb(50 50 93 / 25%) 0px 13px 27px -5px, rgb(0 0 0 / 30%) 0px 8px 16px -8px !important;
+    padding: 12px;
+    display: flex;
+    background-color: #F7F7F7;
+}
+
+.form-group-note .btn{
+    height: 32px;
+    margin: 4px;
+    background-color: #fff;
+    width: 35px !important;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.form-group-note label{
+    margin-right: 5px;
+}
+
+.form-group-note p{
+    font-size: 12px;
+}
+
+.pieces-table .form-control{
+    height: 32px;
+    background-color: #fff;
+}
+
+.pieces-table .btn-operation{
+    height: 28px;
+    margin: 2px;
+    background-color: #fff;
+    width: 27px !important;
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+    font-size: 13px;
+}
+
+._btn-p{
+    padding: 0.3rem 0.5rem !important;
+    height: 26px !important;
+    margin: 0px !important;
+    width: 23px !important;
+    font-size: 10px !important;
+    background-color: #fff;
+    box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;
+}

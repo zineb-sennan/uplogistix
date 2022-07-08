@@ -18,7 +18,7 @@ export class TachesService {
   }
 
   update(record: any) {
-    return this.http.put(environment.apiURL + '/maintenance/ordres/'+record.ordre_id_taches+'/taches/' + record.id, record)
+    return this.http.put(environment.apiURL + '/maintenance/ordres/'+record.ordre_id+'/taches/' + record.id, record)
   }
 
   delete(ordre_id:any,id: any) {
@@ -28,5 +28,13 @@ export class TachesService {
   getInterventions(){
     return this.http.get<any>(environment.apiURL + '/maintenance/interventions')
   }
+
+  validateTache(record:any){
+    return this.http.post(environment.apiURL + '/maintenance/ordres/'+record.ordre_id+'/taches/' + record.id, record)
+  }
+
+  // addNote(record:any){
+  //   return this.http.post(environment.apiURL + '/maintenance/ordres/'+record.ordre_id_taches+'/taches/'+ record.id, record)
+  // }
 
 }

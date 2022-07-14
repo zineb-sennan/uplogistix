@@ -6,13 +6,15 @@ import { IndexOrdreInterventionComponent } from './ordre-intervention/index-ordr
 import { EditOrdreInterventionComponent } from './ordre-intervention/edit-ordre-intervention/edit-ordre-intervention.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { FormsModule } from '@angular/forms';
+import { TiersComponent } from './tiers/tiers.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     IndexOrdreInterventionComponent,
-    EditOrdreInterventionComponent
+    EditOrdreInterventionComponent,
+    TiersComponent
   ],
   imports: [
     CommonModule,

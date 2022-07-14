@@ -34,8 +34,6 @@ export class IndexComponent implements OnInit {
 
   ngOnInit(): void {
     Chart.register(...registerables);
-    //
-    //console.log('***',(this.globale.getAuth()))
   }
 
 
@@ -88,7 +86,6 @@ export class IndexComponent implements OnInit {
     //if(this.classement.maxValeur > 70) this.classement.max = [...this.conducteurs].filter(v=> v.moy_score == this.classement.maxValeur);
     if(this.classement.minValeur < 30) this.classement.min = [...this.conducteurs].filter(v=> v.moy_score == this.classement.minValeur);
 
-    //console.log(this.classement);
   }
 
   private getScoreByConducteur(conducteur: any): any {

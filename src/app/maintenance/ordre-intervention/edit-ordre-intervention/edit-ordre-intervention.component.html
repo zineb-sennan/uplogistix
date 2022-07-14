@@ -115,7 +115,7 @@
                                                     [(ngModel)]="singleTache.note"></textarea>
                                                 <button type="button" class="btn btn-operation w-auto float-right"
                                                     (click)="addNoteTache(tache)">
-                                                    <i class="fa-solid fa-pencil"></i>
+                                                    <i class="fa-solid fa-check"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-operation w-auto float-right"
                                                     (click)="onEditNote(tache, false)">
@@ -124,7 +124,7 @@
                                             </div>
                                             <!-- pieces-->
                                             <table class="table table-sm table-nowrap pieces-table"
-                                                *ngIf="tache.isPiece || tache.pieces.length>0">
+                                                *ngIf="tache.isPiece || tache.pieces?.length>0">
                                                 <thead>
                                                     <tr>
                                                         <th>Pièces</th>
@@ -272,9 +272,9 @@
                                                 *ngIf="!tache.isNote">Ajouter une note &nbsp;|&nbsp;</strong>
 
                                             <strong class="text-success cursor" (click)="validateTache(tache, false)"
-                                                *ngIf="tache.terminated_at">Validé <i class="fa-solid fa-check"></i></strong>
+                                                *ngIf="tache.terminated_at">Terminé <i class="fa-solid fa-check"></i></strong>
                                             <strong class="text-danger cursor" (click)="validateTache(tache, true)" *ngIf="!tache.terminated_at">
-                                                Pas encore validée
+                                                Pas encore terminé
                                             </strong>
                                         </td>
                                         <td class="align-top pt-5 text-center">
@@ -333,7 +333,7 @@
                                             </button>
 
                                             <h3 class="float-right text-danger font-weight-normal mt-4">
-                                                Coût total: <span>{{singleOrder.cout_total.toFixed(2)}}</span> <small>Dh</small>
+                                                Coût total: <span>{{singleOrder.cout_total?.toFixed(2)}}</span> <small>Dh</small>
                                             </h3>
                                         </td>
                                     </tr>
@@ -424,6 +424,9 @@
                                             </option>
                                         </optgroup>
                                     </select>
+                                    <a [routerLink]="['/maintenance/tiers']" class="small form-text text-primary">
+                                        Ajouter un tiers ?
+                                    </a>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">

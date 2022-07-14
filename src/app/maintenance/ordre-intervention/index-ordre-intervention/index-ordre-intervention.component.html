@@ -29,7 +29,7 @@
                                 <th>date d'intervention</th>
                                 <th>date limite</th>
                                 <th>Statut</th>
-                                <th>Le progrès</th>
+                                <th class="text-center">Le progrès</th>
                                 <th>Options</th>
                             </tr>
                         </thead>
@@ -47,16 +47,14 @@
                                     <span class="badge bg-danger" *ngIf="ordre.en_reparation">En réparation</span>
                                     <span class="badge bg-info" *ngIf="ordre.closed_at">Clôturer</span>
                                 </td>
-                                <td class="progres"> _ </td>
+                                <td class="progres text-center"> 
+                                    {{ordre._nbOrders!=0 ? ((ordre._nbOrderValides*100)/ordre._nbOrders).toFixed(2)+'%': 'Pas des tâches'}} 
+                                </td>
                                 <td width="55">
                                     <a [routerLink]="['/maintenance/ordre-intervention/',ordre.id,'edit']" type="button"
                                         class="btn btn-operation">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
-                                    <!-- <button type="button" class="btn btn-operation" data-bs-toggle="modal"
-                                        data-bs-target="#modal-delete">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -144,6 +142,9 @@
                                                 </option>
                                             </optgroup>
                                         </select>
+                                        <a [routerLink]="['/maintenance/tiers']" class="small form-text text-primary">
+                                            Ajouter un tiers ?
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="form-group">

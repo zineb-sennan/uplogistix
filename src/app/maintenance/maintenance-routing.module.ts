@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EditOrdreInterventionComponent } from './ordre-intervention/edit-ordre-intervention/edit-ordre-intervention.component';
 import { IndexOrdreInterventionComponent } from './ordre-intervention/index-ordre-intervention/index-ordre-intervention.component';
+import { TiersComponent } from './tiers/tiers.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,11 @@ const routes: Routes = [
     component: EditOrdreInterventionComponent,
     data: { title: 'Gestion des order d\'intervention' }
   },
+  { 
+    path: 'tiers',
+    component: TiersComponent,
+    data: { title: 'Gestion des tiers' }
+  }
 ];
 
 @NgModule({

@@ -1,0 +1,10 @@
+.container-fluid {
+    width: 80%;
+}
+
+.date-validation{
+    color: #0c8f0c !important;
+    font-weight: 800;
+    margin-bottom: 20px;
+    display: block;
+}

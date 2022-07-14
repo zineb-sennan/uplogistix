@@ -26,7 +26,7 @@ export class TiersService {
     return this.http.delete(environment.apiURL + '/maintenance/tiers/' + id)
   }
 
-  getRole(id: number) {
+  getTier(id: number) {
     return this.http.get<any>(environment.apiURL + '/maintenance/tiers/'+id)
   }
 }

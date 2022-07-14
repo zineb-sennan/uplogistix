@@ -7,6 +7,10 @@ import { TiersService } from 'src/app/_services/tiers.service';
 import { UtilisateurService } from 'src/app/_services/utilisateur.service';
 import { VehiculeService } from 'src/app/_services/vehicule.service';
 
+import { map, switchMap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { TachesService } from 'src/app/_services/taches.service';
+
 @Component({
   selector: 'app-index-ordre-intervention',
   templateUrl: './index-ordre-intervention.component.html',
@@ -14,7 +18,7 @@ import { VehiculeService } from 'src/app/_services/vehicule.service';
 })
 export class IndexOrdreInterventionComponent implements OnInit {
   ordres:any=[]; vehicules:any=[]; conducteurs:any=[]; utilisateurs:any=[]; tiers:any=[];
-  singleOrder:any={ vehicule_id:null, conducteur_id:null, utilisateur_id:null, tiers_id:null, priorite:null, date_limite:null, note:null }
+  singleOrder:any={ vehicule_id:null, conducteur_id:null, utilisateur_id:null, tiers_id:null, priorite:null, date_limite:null, note:null, user_affecter:null }
 
   constructor(
     private ordreInterventionService:OrdreInterventionService,
@@ -22,12 +26,13 @@ export class IndexOrdreInterventionComponent implements OnInit {
     private conducteurService:ConducteurService,
     private utilisateurService:UtilisateurService,
     private tiersService:TiersService,
+    private tachesService:TachesService,
     private router: Router,
-    private globale:Globale
+    private globale:Globale,
   ) { }
 
   ngOnInit(): void {
-    this.getAllOrdres();
+    this.getAllOrder();
     this.getAllVehicules();
     this.getAllConducteurs();
     this.getAllUtilisateurs();
@@ -37,12 +42,6 @@ export class IndexOrdreInterventionComponent implements OnInit {
   getAllTiers(){
     this.tiersService.getAll().subscribe(
       res=> this.tiers=res
-    )
-  }
-
-  getAllOrdres(){
-    this.ordreInterventionService.getAll().subscribe(
-      res=> this.ordres=res
     )
   }
 
@@ -78,5 +77,25 @@ export class IndexOrdreInterventionComponent implements OnInit {
       }
     )
   }
+
+  //01 
+  async getAllOrder(){
+    const taches$ = this.ordreInterventionService.getAll().pipe(
+      switchMap(data => forkJoin(data.map(this.getProgresOrder.bind(this))))
+    );
+    this.ordres= await taches$.toPromise();
+  }
+
+  getProgresOrder(order: any){
+    return this.tachesService.getAll(order.id).pipe(
+      map(resume => (
+        {
+          ... order,
+          _nbOrders: [...resume]?.length,
+          _nbOrderValides: [...resume].filter(t=> t.terminated_at)?.length
+        }
+      ))
+    );
+ }
 
 }

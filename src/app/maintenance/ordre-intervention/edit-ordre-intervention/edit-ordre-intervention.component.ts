@@ -11,6 +11,7 @@ import { UtilisateurService } from 'src/app/_services/utilisateur.service';
 import { VehiculeService } from 'src/app/_services/vehicule.service';
 import { map, switchMap } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
+import { MaintenancePreventiveService } from 'src/app/_services/maintenance-preventive.service';
 
 @Component({
   selector: 'app-edit-ordre-intervention',
@@ -20,10 +21,10 @@ import { forkJoin, Observable } from 'rxjs';
 export class EditOrdreInterventionComponent implements OnInit {
 
   ordres:any=[]; vehicules:any=[]; conducteurs:any=[]; utilisateurs:any=[];  addNote=false;  tiers:any=[]; taches:any=[]; interventions:any=[];  _addTache:any=false; pieces:any=[]; piecesTache:any=[];
-  singleOrder:any={id:null, numero:null, vehicule_id:null, conducteur_id:null, utilisateur_id:null, tiers_id:null, priorite:null, date_limite:null, note:null, en_reparation:null, en_instance:null, closed_at:null, user_affecter:null, progresOrder:null}
+  singleOrder:any={id:null, numero:null, vehicule_id:null, conducteur_id:null, utilisateur_id:null, tiers_id:null, priorite:'Normale', date_limite:null, note:null, en_reparation:null, en_instance:null, closed_at:null, user_affecter:null, progresOrder:null}
   singleTache:any={ordre_id_taches:null, intervention_id:null, note:null, id:null}
 
-  singlePieceTache:any ={id:null, oi_tache_id:null, piece_id:null, qte:null, prix_unitaire:null, total:null }
+  singlePieceTache:any ={id:null, oi_tache_id:null, piece_id:null, qte:null, prix_unitaire:null, total:null }; type:any='ajouter-maintenance-order';
 
   constructor(
     private ordreInterventionService:OrdreInterventionService,
@@ -35,6 +36,7 @@ export class EditOrdreInterventionComponent implements OnInit {
     private tachesService:TachesService,
     private piecesTachesService :PiecesTachesService,
     private piecesRechangeService: PiecesRechangeService,
+    private maintenancePreventiveService:MaintenancePreventiveService,
     private globale:Globale
   ) { }
 
@@ -48,16 +50,42 @@ export class EditOrdreInterventionComponent implements OnInit {
     this.getAllPiecesRechange();
 
     /** */
-    this.getAllPiecesTache(32);
+   // this.getAllPiecesTache(32);
 
-    this.activatedRoute.params.subscribe(param => {
-      const { id } = param;
-      if (id){
-        this.getOrderById(id);
-        this.getAllTache(id);
-      } 
-    });
+    this.activatedRoute.data.subscribe((data) => {
+      this.type = data['title'];
+      //
+      this.activatedRoute.params.subscribe(param => {
+        const { id } = param;
+        if (id){
+          if(this.type!='ajouter-maintenance-order'){
+            this.getOrderById(id);
+            this.getAllTache(id);
+          }
+          else {
+            this.getInfosMP(id);
+          }
+        } 
+      });
+    })
   }
+
+
+  getInfosMP(id:number){
+    this.maintenancePreventiveService.getPiecesByVehicule(id).subscribe(
+      res => {
+        const result = res;
+
+        //01-les taches
+        this.taches = [...result].map(t => ({intervention_id: t.intervention_id, tache:t.intervention, pieces: [{piece_id: t.piece_id, isEdit:true}] }))
+       // console.log('***',this.taches);
+
+      }
+    )
+  }
+
+
+
 
   getAllPiecesRechange(){
     this.piecesRechangeService.getAll().subscribe(
@@ -132,8 +160,7 @@ export class EditOrdreInterventionComponent implements OnInit {
       map(resume => (
         {
           ... tache,
-          pieces: resume,
-          __idTache:tache.id
+          pieces: resume
         }
       ))
     );
@@ -197,8 +224,8 @@ export class EditOrdreInterventionComponent implements OnInit {
   }
 
   progresOrder(){
-    const nbTaches = this.taches.length;
-    const nbTachesValides = [...this.taches].filter(t=> t.terminated_at).length;
+    const nbTaches = this.taches?.length;
+    const nbTachesValides = [...this.taches].filter(t=> t.terminated_at)?.length;
     this.singleOrder.progresOrder=(nbTachesValides*100)/nbTaches;
   }
 

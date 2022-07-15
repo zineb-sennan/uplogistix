@@ -1,20 +1,36 @@
 import { Component, OnInit } from '@angular/core';
+import { MaintenancePreventiveService } from 'src/app/_services/maintenance-preventive.service';
 import { Chart, registerables } from 'chart.js';
 import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class IndexComponent implements OnInit {
+  showTask:boolean=false;  vehiculesEnMaintenance:any=[];
 
-  constructor() { }
+  constructor(
+    private maintenancePreventiveService:MaintenancePreventiveService
+  ) { }
 
   ngOnInit(): void {
     Chart.register(...registerables);
     this.chartOrderIntervention();
     this.chartCoutMaintenance();
+    this.getVehiculesEnMaintenance();
+  }
+
+  getVehiculesEnMaintenance(){
+    this.maintenancePreventiveService.getAllPieces().subscribe(
+      res =>{
+        const array = [...new Map([...res].map(item => [item['vehicule_id'], item])).values()];
+        array.forEach(piece => {
+          this.vehiculesEnMaintenance.push({matricule:piece.matricule, vehicule_id:piece.vehicule_id, pieces:[...res].filter(d=> d.vehicule_id==piece.vehicule_id)})
+        });
+      }
+    )
   }
 
   chartOrderIntervention(){
@@ -44,7 +60,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-
   chartCoutMaintenance(){
     let chart:any=$('#chart-cout-maintenance');
     new Chart(chart, {
@@ -72,5 +87,11 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+
+  chowTasks(vehicule:any, value:boolean){
+    vehicule.showTask=value;
+  }
+
+
 
 }

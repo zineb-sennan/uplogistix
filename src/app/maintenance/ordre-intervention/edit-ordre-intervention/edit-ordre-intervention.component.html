@@ -20,7 +20,7 @@
                     </div>
                 </div> <!-- ./num de ordre -->
                 <div class="card mt-3">
-                    <div class="card-body float-right">
+                    <div class="card-body float-right" *ngIf="type!='ajouter-maintenance-order'">
                         <div class="statut">
                             <button type="button" class="btn btn-outline-success"
                                 [ngClass]="{'_disabled': !singleOrder.en_instance && !singleOrder.en_reparation && !singleOrder.closed_at }"
@@ -43,9 +43,9 @@
                                 (singleOrder.closed_at ? 'Clôturer à: '+(singleOrder.closed_at | date:'yyyy-MM-dd
                                 HH:mm:ss' ): '')) }}</p>
                         </div>
-                    </div>
+                    </div> <!-- ./status d'ordre -->
 
-                    <div class="fiche-order-intervention mt-3">
+                    <div class="fiche-order-intervention mt-3" *ngIf="type!='ajouter-maintenance-order'">
                         <div class="row">
                             <div class="col-md-8">
                                 <dl class="mt-5">
@@ -86,10 +86,105 @@
                                         data-bs-target="#modal-edit">Ajouter une note ?</button>
                                 </div>
                             </div>
-
-
                         </div>
                     </div><!-- ./fiche-order-intervention -->
+
+                    <div class="add-ordre" *ngIf="type == 'ajouter-maintenance-order'">
+                        <form #orderForm="ngForm" (ngSubmit)="update(orderForm.value)" class="p-5">
+                            <div class="row">
+                                <div class="col-md-6" [ngClass]="{'d-none': addNote}">
+                                    <input type="hidden" name="id" [(ngModel)]="singleOrder.id">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Véhicule
+                                            <strong class="text-danger" *ngIf="!singleOrder.vehicule_id">*</strong>
+                                        </label>
+                                        <select class="form-select form-select-sm" name="vehicule_id"
+                                            [(ngModel)]="singleOrder.vehicule_id" required>
+                                            <option value=null disabled>Veuillez choisir...</option>
+                                            <option *ngFor="let vehicule of vehicules" [value]="vehicule.id">
+                                                {{vehicule.matricule}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Date limite</label>
+                                        <input type="datetime-local" class="form-control form-control-sm" name="date_limite"
+                                            [ngModel]="singleOrder.date_limite | date:'yyyy-MM-ddTHH:mm:ss'"
+                                            (ngModelChange)="singleOrder.date_limite = $event">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Priorité
+                                            <strong class="text-danger" *ngIf="!singleOrder.priorite">*</strong>
+                                        </label>
+                                        <select class="form-select form-select-sm" name="priorite"
+                                            [(ngModel)]="singleOrder.priorite" required>
+                                            <option value=null disabled>Veuillez choisir...</option>
+                                            <option value="Bas">Bas</option>
+                                            <option value="Normale">Normale</option>
+                                            <option value="Haute">Haute</option>
+                                            <option value="Urgent">Urgent</option>
+                                        </select>
+                                    </div>
+                                </div><!-- ./col-md-6 -->
+                                <div class="col-md-6" [ngClass]="{'d-none': addNote}">
+                                    <div class="form-group">
+                                        <label class="form-label inline-block" style="margin-right: 10px;">
+                                            Affecter à
+                                            <strong class="text-danger" *ngIf="!singleOrder.user_affecter">*</strong>
+                                        </label>
+                                        <select class="form-select form-select-sm" name="user_affecter"
+                                            [(ngModel)]="singleOrder.user_affecter" required>
+                                            <option value=null disabled>Veuillez choisir...</option>
+                                            <optgroup label="Conducteurs">
+                                                <option *ngFor="let conducteur of conducteurs" value="c.{{conducteur.id}}">
+                                                    {{conducteur.prenom}} {{conducteur.nom}}
+                                                </option>
+                                            </optgroup>
+                                            <optgroup label="Utilisateurs">
+                                                <option *ngFor="let utilisateur of utilisateurs"
+                                                    value="u.{{utilisateur.id}}">
+                                                    {{utilisateur.prenom}} {{utilisateur.nom}}
+                                                </option>
+                                            </optgroup>
+                                            <optgroup label="Tiers">
+                                                <option *ngFor="let tier of tiers" value="t.{{tier.id}}">
+                                                    {{tier.raison_sociale}}
+                                                </option>
+                                            </optgroup>
+                                        </select>
+                                        <a [routerLink]="['/maintenance/tiers']" class="small form-text text-primary">
+                                            Ajouter un tiers ?
+                                        </a>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Date d'intervention
+                                            <strong class="text-danger" *ngIf="!singleOrder.date_intervention">*</strong>
+                                        </label>
+                                        <input type="datetime-local" class="form-control form-control-sm"
+                                            name="date_intervention"
+                                            [ngModel]="singleOrder.date_intervention | date:'yyyy-MM-ddTHH:mm:ss'"
+                                            (ngModelChange)="singleOrder.date_intervention = $event" required>
+                                    </div>
+                                </div><!-- ./col-md-6 -->
+    
+                                <div class="form-group" [ngClass]="{'d-none': !addNote}">
+                                    <label class="form-label">Notes </label>
+                                    <textarea class="form-control" rows="3" name="note"
+                                        [(ngModel)]="singleOrder.note"></textarea>
+                                </div>
+                            </div> <!-- ./row -->
+    
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary mb-2 mt-4 float-right"
+                                    [disabled]="!orderForm.valid">Enregister</button>
+                                <button type="button" class="btn btn-secondary mb-2 mt-4 float-right"
+                                    data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
+                            </div>
+                        </form>
+                    </div><!-- ./add-ordre -->
 
                     <div class="taches p-5">
                         <h3>Les tâches</h3>

@@ -1,0 +1,164 @@
+<div class="app">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="card eq-blocks">
+                            <div class="card-body card-body-infos">
+                                <div class="row align-items-center gx-0 cursor">
+                                    <div class="col">
+                                        <h6 class="text-uppercase text-muted mb-2">Véhicule en maintenance</h6>
+                                        <div class="ml">
+                                            <span class="h2 mb-0">{{vehiculesEnMaintenance?.length}}</span>&nbsp;
+                                            <span class="badge bg-danger-soft">En retard: _</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fa-solid fa-car text-muted mb-0"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- ./col-md-4 -->
+                    <div class="col-md-4">
+                        <div class="card eq-blocks">
+                            <div class="card-body card-body-infos">
+                                <div class="row align-items-center gx-0 cursor">
+                                    <div class="col">
+                                        <h6 class="text-uppercase text-muted mb-2">Véhicules programmés</h6>
+                                        <div class="ml">
+                                            <span class="h2 mb-0">_</span>&nbsp;
+                                            <span class="badge bg-danger-soft">_: 0</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fa-solid fa-car text-muted mb-0"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- ./col-md-4 -->
+                    <div class="col-md-4">
+                        <div class="card eq-blocks">
+                            <div class="card-body card-body-infos cursor">
+                                <div class="row align-items-center gx-0">
+                                    <div class="col">
+                                        <h6 class="text-uppercase text-muted mb-2">_</h6>
+                                        <div class="ml">
+                                            <span class="h2 mb-0">_</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fa-solid fa-car text-muted mb-0"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- ./col-md-4 -->
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-header-title">
+                                    Véhicule en maintenance
+                                </h4>
+                            </div>
+                            <div class="table-responsive mb-0">
+                                <table class="table table-sm table-nowrap card-table table-hover">
+                                    <tbody class="list">
+                                        <tr *ngFor="let vehicule of vehiculesEnMaintenance" class="cursor">
+                                            <td class="matricule align-top" style=" padding-top: 18px !important;">
+                                                <h4 class="fw-normal mb-1">{{vehicule.matricule}}</h4>
+                                            </td>
+                                            <td class="status align-top" style="padding-top: 15px !important;">
+                                                <span class="badge bg-warning-soft">En attente</span>
+                                            </td>
+                                            <td class="taches align-top">
+                                                <button type="button" class="btn btn-link btn-add-piece" (click)="chowTasks(vehicule, true)">
+                                                    {{vehicule.pieces?.length}} Pièces ...
+                                                </button>
+                                                <div class="taches shadow p-3 mb-5 bg-white rounded" *ngIf="vehicule.showTask">
+                                                    <div class="close">
+                                                        <button class="btn btn-operation float-right" (click)="chowTasks(vehicule, false)">
+                                                            <i class="fa-solid fa-xmark" ></i>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="list-group list-group-flush list-group-activity my-n3">
+                                                        <div class="list-group-item" *ngFor="let piece of vehicule.pieces">
+                                                            <div class="row">
+                                                                <div class="col-auto">
+                                                                    <div class="avatar avatar-sm">
+                                                                        <div
+                                                                            class="avatar-title fs-lg bg-primary-soft rounded-circle text-primary">
+                                                                            <i class="fas fa-tasks"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col ms-n2">
+                                                                    <h5 class="mb-1">
+                                                                        {{piece.designation}} | {{piece.intervention}}
+                                                                    </h5>
+                                                                    <p class="small text-gray-700 mb-0">
+                                                                        {{piece.message}}
+                                                                    </p>
+                                                                    <small class="text-danger" *ngIf="piece.critique">
+                                                                        <i class="fas fa-clock" style="font-size: 17px;"></i>
+                                                                    </small>
+                                                                </div>
+                                                            </div><!-- /.row -->
+                                                        </div><!-- /.list-group-item -->
+                                                    </div>
+                                                </div><!-- ./taches -->
+                                            </td>
+                                            <td class="nouveauOrdre align-top" width="80" style="padding-top: 7px !important;">
+                                                <button type="button" class="btn btn-outline-success mb-2 btn-sm" [routerLink]="['/maintenance/dashboard/',vehicule.vehicule_id,'details']">
+                                                    Plus de détails
+                                                </button>&nbsp;
+                                                <button type="button" class="btn btn-outline-primary mb-2 btn-sm" [routerLink]="['/maintenance/ordre-intervention/',vehicule.vehicule_id,'add']">
+                                                    Nouveau order
+                                                </button>
+                                            </td>
+                                        </tr><!-- ./tr -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- .row -->
+            </div>
+            <div class="col-md-3">
+                <div class="card mt-3 card-chart">
+                    <div class="card-header">
+                        <h4 class="card-header-title">Order d'intervention</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart-order-intervention">
+                        </canvas>
+                    </div>
+                </div><!-- ./card -->
+                <div class="card mt-3 card-chart">
+                    <div class="card-header">
+                        <h4 class="card-header-title">Ordre d'achat</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="no-data">
+                            <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
+                            <p class="text-muted text-center">Pas de donnée ...</p>
+                        </div>
+                    </div>
+                </div><!-- ./card -->
+                <div class="card mt-3 card-chart">
+                    <div class="card-header">
+                        <h4 class="card-header-title">Coût de maintenance</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="chart-cout-maintenance"
+                            style="display: block; box-sizing: border-box; height: 220px; width: 100%;">
+                        </canvas>
+                    </div>
+                </div><!-- ./card -->
+            </div> <!-- ./col-md-3 -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,206 @@
+<div class="app">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Maintenance
+            </h6>
+            <h2 class="header-title">
+                Détails d'information
+            </h2>
+        </div>
+    </div> <!-- ./titre -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <ul class="nav nav-tabs nav-overflow header-tabs">
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='infos-vehicule'" [ngClass]="{'active': type=='infos-vehicule'}">
+                                    Informations générales
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='taches'" [ngClass]="{'active': type=='taches'}">
+                                    Tâches
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" (click)="type='historique'" [ngClass]="{'active': type=='istorique'}">
+                                    Historique des tâches
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div> <!-- ./align-items-center -->
+                
+                <div class="infos-vehicule" [ngClass]="{'d-none': type!='infos-vehicule'}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h3>Fiche véhicule</h3>
+                                    <dl class="mt-2">
+                                        <dt>Matricule:</dt>
+                                        <dd>{{singleVehicule.matricule}}</dd>
+    
+                                        <dt>Statut:</dt>
+                                        <dd>{{singleVehicule.statut}}</dd>
+    
+                                        <dt>Catégorie:</dt>
+                                        <dd>_</dd>
+    
+                                        <dt>Groupe:</dt>
+                                        <dd>_</dd>
+
+                                        <dt>Mise en circulation:</dt>
+                                        <dd>{{singleVehicule.mise_en_circulation | date: 'yyyy-MM-dd'}}</dd>
+
+                                        <dt>Date hors service:</dt>
+                                        <dd>{{singleVehicule.date_hors_service | date: 'yyyy-MM-dd'}}</dd>
+
+                                        <dt>Boîte de vitesse:</dt>
+                                        <dd>{{singleVehicule.boite_vitesse}}</dd>
+
+                                        <dt>Puissance cv:</dt>
+                                        <dd>{{singleVehicule.puissance_cv}}</dd>
+
+                                        <dt>Volume reservoir:</dt>
+                                        <dd>{{singleVehicule.volume_reservoir}}</dd>
+
+                                        <dt>Type contrat:</dt>
+                                        <dd>{{singleVehicule.type_contrat}}</dd>
+
+                                        <dt>Energie:</dt>
+                                        <dd>{{singleVehicule.energie}}</dd>
+
+                                        <dt>Energie:</dt>
+                                        <dd>{{singleVehicule.niveau_reservoir}}</dd>
+                                    </dl>
+                                </div>
+                            </div><!-- ./card -->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mt-3">
+                                <div class="card-body row">
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label>Du:</label>
+                                            <input type="date" class="form-control form-control-sm col-md-6" name="date_debut">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Au:</label>
+                                            <div class="input-group col-md-6">
+                                                <input type="date" class="form-control form-control-sm " name="date_fin">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary btn-sm" type="button" style="margin-left: calc(var(--bs-gutter-x) *1);">
+                                                       <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- ./row -->
+                                    <div class="row">
+                                        <canvas id="chart-cout-maintenance"
+                                            style="display: block; box-sizing: border-box; height: 285px; width: 100%;">
+                                        </canvas>
+                                    </div><!-- ./row -->
+                                </div>
+                            </div><!-- ./card -->
+                        </div>
+                    </div>
+                </div>
+                <div class="taches" *ngIf="type=='taches'">
+                    <h3>Tâches</h3>
+                    <div class="table-responsive row">
+                        <table class="table table-sm table-nowrap card-table">
+                            <thead>
+                                <tr>
+                                    <th>Designation</th>
+                                    <th>Marque</th>
+                                    <th>Référence</th>
+                                    <th>Durée de vie</th>
+                                    <th>L'intervention</th>
+                                    <th>Terminé à</th>
+                                    <th class="text-center">critique</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <tr *ngFor="let piece of pieces">
+                                    <td>{{piece.designation}}</td>
+                                    <td>{{piece.marque}}</td>
+                                    <td>{{piece.reference}}</td>
+                                    <td>{{piece.duree_jours}} Jours | {{piece.duree_km}} Km</td>
+                                    <td>{{piece.intervention}}</td>
+                                    <td>{{piece.terminated_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                    <td class="text-center">
+                                        <i class="fas fa-clock text-success" style="font-size: 17px;" [ngClass]="{'text-danger': piece.critique}"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div><!-- ./table-responsive -->
+                </div>
+                <div class="historique" *ngIf="type=='historique'">
+                    <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchHistorique()">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Du:</label>
+                                    <input type="date" class="form-control form-control-sm col-md-6" [(ngModel)]="search.date_debut" name="date_debut">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Au:</label>
+                                    <div class="input-group col-md-6">
+                                        <input type="date" class="form-control form-control-sm " [(ngModel)]="search.date_fin" name="date_fin">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-primary btn-sm" type="submit" style="margin-left: calc(var(--bs-gutter-x) *1);">
+                                               <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- ./row -->
+                        </div><!-- ./col-md-6 -->
+                        
+                    </form>
+                    <div class="table-responsive row">
+                        <table class="table table-sm table-nowrap card-table">
+                            <thead>
+                                <tr>
+                                    <th>Designation</th>
+                                    <th>Référence</th>
+                                    <th>Marque</th>
+                                    <th>L'intervention</th>
+                                    <th>Alerte km</th>
+                                    <th>Terminé à</th>
+                                    <th>Changé à</th>
+                                    <th class="text-center">Message</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <tr *ngFor="let his of historiques">
+                                    <td>{{his.designation}}</td>
+                                    <td>{{his.reference}}</td>
+                                    <td>{{his.marque}}</td>
+                                    <td>{{his.intervention}}</td>
+                                    <td>{{his.alerte_km}}</td>
+                                    <td>{{his.terminated_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                    <td>{{his.changed_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                    <td class="text-center">
+                                        {{his.message}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div><!-- ./historique -->
+
+            </div>
+        </div>
+    </div>
+
+
+</div><!-- ./app -->

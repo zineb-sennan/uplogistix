@@ -37,6 +37,20 @@
 }
 
 .table-responsive{
-    height: 729px;
+    height: 692px;
     border-radius: 8px;
+}
+
+.pagination{
+    margin-top: 50px;
+}
+
+.close i{
+    font-size: 20px;
+    float: right;
+}
+
+.btn-add-piece{
+    width: 100%;
+    text-align: left !important;
 }

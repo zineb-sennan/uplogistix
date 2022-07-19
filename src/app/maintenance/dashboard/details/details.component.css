@@ -1,4 +1,4 @@
-dt {
+/* dt {
     float: left;
     margin-right: 10%;
     max-width: 40%;
@@ -15,8 +15,14 @@ dd::after {
     content: " ";
     display: block;
     clear: left;
-} 
+}  */
 
 button.btn.btn-outline-primary.btn-sm{
     padding: 2px 25px;
+}
+
+.img-vehicule{
+    width: inherit;
+    display: block;
+    margin: auto;
 }

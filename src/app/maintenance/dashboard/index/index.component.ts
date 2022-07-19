@@ -9,7 +9,7 @@ import * as $ from 'jquery';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
-  showTask: boolean = false; vehiculesEnMaintenance: any = [];
+  showTask: boolean = false; vehiculesEnMaintenance: any = [];  pieces_critiques:number=0;
 
   constructor(
     private maintenancePreventiveService: MaintenancePreventiveService
@@ -20,7 +20,6 @@ export class IndexComponent implements OnInit {
     this.chartOrderIntervention();
     this.chartCoutMaintenance();
     this.getVehiculesEnMaintenance();
-
 
     //
 
@@ -33,6 +32,8 @@ export class IndexComponent implements OnInit {
         array.forEach(piece => {
           this.vehiculesEnMaintenance.push({ matricule: piece.matricule, vehicule_id: piece.vehicule_id, pieces: [...res].filter(d => d.vehicule_id == piece.vehicule_id) })
         });
+
+        this.pieces_critiques= [...res].filter(p=> p.critique).length;
       }
     )
   }

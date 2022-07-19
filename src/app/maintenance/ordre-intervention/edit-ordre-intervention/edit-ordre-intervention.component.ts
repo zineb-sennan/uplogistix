@@ -139,10 +139,10 @@ export class EditOrdreInterventionComponent implements OnInit {
             this.singleTache.intervention_id=this.taches[index].intervention_id;
             this.addTache(index);
           }
+
         }
       )
     }
-    
   }
 
   async getAllTache(id:number){
@@ -174,7 +174,6 @@ export class EditOrdreInterventionComponent implements OnInit {
           this.getAllTache(this.singleTache.ordre_id_taches);
           this._addTache=false;
         }
-         
       }
     )
   }
@@ -222,8 +221,6 @@ export class EditOrdreInterventionComponent implements OnInit {
   validateTache(tache:any, value:boolean){
     this.tachesService.validateTache({id:tache.id, ordre_id:tache.ordre_id, valider:value }).subscribe(
       res => {
-        // console.log("Tache bien validé !!")
-        
         if(this.type!='ajouter-maintenance-order') this.getAllTache(tache.ordre_id);
         else {
           console.log(tache, res);
@@ -254,21 +251,20 @@ export class EditOrdreInterventionComponent implements OnInit {
  }
 
  deletePieceTache(tache:any, piece:any){
-  console.log(tache, piece);
-
   this.piecesTachesService.delete(tache.id,piece.id).subscribe(
     res =>{
       if(this.type!='ajouter-maintenance-order') this.getAllTache(this.singleTache.ordre_id_taches)
       else {
         tache.pieces = [...tache.pieces].filter(p=> p.id != piece.id);
+        //Les couts
+        tache.cout_tache = [...tache.pieces].reduce((prev,next)=>prev+Number(next.prix_unitaire*next.qte),0);
+        this.singleOrder.cout_total = [...this.taches].reduce((prev,next)=>prev+Number(next.cout_tache),0);
       }
-
     }
   )
  }
 
- updatePieceTache(piece:any){
-    console.log(this.singlePieceTache, this.taches, piece);
+ updatePieceTache(tache:any, piece:any){
     this.piecesTachesService.update(this.singlePieceTache).subscribe(
       res =>{
         if(this.type!='ajouter-maintenance-order') this.getAllTache(this.singleTache.ordre_id_taches)
@@ -277,6 +273,12 @@ export class EditOrdreInterventionComponent implements OnInit {
           piece.prix_unitaire=this.singlePieceTache.prix_unitaire
           piece.total= Number(this.singlePieceTache.qte)*Number(this.singlePieceTache.prix_unitaire)
           piece.isEdit=false;
+          //Les couts
+          console.log(piece)
+          tache.cout_tache = [...tache.pieces].reduce((prev,next)=>prev+Number(next.prix_unitaire*next.qte),0);
+          this.singleOrder.cout_total = [...this.taches].reduce((prev,next)=>prev+Number(next.cout_tache),0);
+          //
+          console.log(this.taches, 'taches');
         }
       } 
     )
@@ -293,7 +295,7 @@ export class EditOrdreInterventionComponent implements OnInit {
   getInfosMP(id:number){
     this.maintenancePreventiveService.getPiecesByVehicule(id).subscribe(
       res => {
-        this.taches = [...new Map([...res].map(item => [item['intervention_id'], item])).values()].map(t => ({ intervention_id: t.intervention_id, tache:t.intervention }));
+        this.taches = [...new Map([...res].map(item => [item['intervention_id'], item])).values()].map(t => ({ intervention_id: t.intervention_id, tache:t.intervention, cout_tache:0 }));
         for (let index = 0; index < this.taches.length; index++) {
           const item = [...res].filter(d=> d.intervention_id == this.taches[index].intervention_id).map(i=> ({ piece_id: i.piece_id, designation: i.designation, index:index }));
           this.taches[index].pieces_added = item;
@@ -309,12 +311,16 @@ export class EditOrdreInterventionComponent implements OnInit {
       res=> {
         this.taches[item.index].pieces.push({...res, designation: item.designation});
         this.taches[item.index].pieces_added = [...this.taches[item.index].pieces_added].filter(p=> p.piece_id != item.piece_id);
+
+        //Les couts
+        this.taches[item.index].cout_tache = [...this.taches[item.index].pieces].reduce((prev,next)=>prev+Number(next.prix_unitaire*next.qte),0);
+        this.singleOrder.cout_total = [...this.taches].reduce((prev,next)=>prev+Number(next.cout_tache),0);
       }
     )
   }
 
   _deletePiece(item:any){
-    this.taches[item.index].pieces_added = [...this.taches[item.index].pieces_added].filter(p=> p.piece_id != item.piece_id)
+    this.taches[item.index].pieces_added = [...this.taches[item.index].pieces_added].filter(p=> p.piece_id != item.piece_id);
   }
 
   changeInputPiece(e:any, type:any, item:any){

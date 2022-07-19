@@ -227,7 +227,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Pièces</th>
-                                                        <th class="text-center" width="150">Qtn</th>
+                                                        <th class="text-center" width="150">Quantité</th>
                                                         <th class="text-center" width="150">Prix</th>
                                                         <th class="text-center" width="150">Coût total dh</th>
                                                         <th class="text-center" width="75">Options</th>
@@ -263,7 +263,7 @@
                                                             </div>
                                                             <div *ngIf="piece.isEdit">
                                                                 <input class="form-control" type="number"
-                                                                    placeholder="Qtn" name="qte"
+                                                                    placeholder="Quantité" name="qte"
                                                                     [(ngModel)]="singlePieceTache.qte"
                                                                     (change)="singlePieceTache.total=singlePieceTache.qte*singlePieceTache.prix_unitaire">
                                                             </div>
@@ -310,7 +310,7 @@
                                                                 </button>
                                                                 <button type="button"
                                                                     class="btn w-auto float-right _btn-p"
-                                                                    (click)="updatePieceTache(piece)">
+                                                                    (click)="updatePieceTache(tache,piece)">
                                                                     <i class="fa-solid fa-pencil"></i>
                                                                 </button>
                                                             </div>
@@ -333,7 +333,7 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input class="form-control" type="number" placeholder="Qtn"
+                                                            <input class="form-control" type="number" placeholder="Quantité"
                                                                 name="qte" [(ngModel)]="singlePieceTache.qte"
                                                                 (keyup)="singlePieceTache.total=singlePieceTache.qte*singlePieceTache.prix_unitaire">
                                                         </td>
@@ -375,7 +375,7 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input class="form-control" type="number" placeholder="Qtn" (keyup)="changeInputPiece($event, 'qtn', pa)">
+                                                            <input class="form-control" type="number" placeholder="Quantité" (keyup)="changeInputPiece($event, 'qtn', pa)">
                                                         </td>
                                                         <td>
                                                             <input class="form-control" type="number" placeholder="Prix" name="prix_unitaire" (keyup)="changeInputPiece($event, 'prix', pa)">

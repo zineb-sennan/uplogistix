@@ -16,3 +16,7 @@ dd::after {
     display: block;
     clear: left;
 } 
+
+button.btn.btn-outline-primary.btn-sm{
+    padding: 2px 25px;
+}

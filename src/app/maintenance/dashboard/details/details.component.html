@@ -60,14 +60,11 @@
                                         <dt>Date hors service:</dt>
                                         <dd>{{singleVehicule.date_hors_service | date: 'yyyy-MM-dd'}}</dd>
 
-                                        <dt>Boîte de vitesse:</dt>
+                                        <!-- <dt>Boîte de vitesse:</dt>
                                         <dd>{{singleVehicule.boite_vitesse}}</dd>
 
                                         <dt>Puissance cv:</dt>
-                                        <dd>{{singleVehicule.puissance_cv}}</dd>
-
-                                        <dt>Volume reservoir:</dt>
-                                        <dd>{{singleVehicule.volume_reservoir}}</dd>
+                                        <dd>{{singleVehicule.puissance_cv}}</dd> -->
 
                                         <dt>Type contrat:</dt>
                                         <dd>{{singleVehicule.type_contrat}}</dd>
@@ -75,8 +72,11 @@
                                         <dt>Energie:</dt>
                                         <dd>{{singleVehicule.energie}}</dd>
 
-                                        <dt>Energie:</dt>
-                                        <dd>{{singleVehicule.niveau_reservoir}}</dd>
+                                        <!-- <dt>Volume reservoir:</dt>
+                                        <dd>{{singleVehicule.volume_reservoir}}</dd>
+
+                                        <dt>Niveau réservoir:</dt>
+                                        <dd>{{singleVehicule.niveau_reservoir}}</dd> -->
                                     </dl>
                                 </div>
                             </div><!-- ./card -->
@@ -84,7 +84,7 @@
                         <div class="col-md-6">
                             <div class="card mt-3">
                                 <div class="card-body row">
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>Du:</label>
                                             <input type="date" class="form-control form-control-sm col-md-6" name="date_debut">
@@ -100,10 +100,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div><!-- ./row -->
+                                    </div>./row -->
                                     <div class="row">
                                         <canvas id="chart-cout-maintenance"
-                                            style="display: block; box-sizing: border-box; height: 285px; width: 100%;">
+                                            style="display: block; box-sizing: border-box; height: 280px; width: 100%;">
                                         </canvas>
                                     </div><!-- ./row -->
                                 </div>
@@ -123,6 +123,7 @@
                                     <th>Durée de vie</th>
                                     <th>L'intervention</th>
                                     <th>Terminé à</th>
+                                    <th>Message</th>
                                     <th class="text-center">critique</th>
                                 </tr>
                             </thead>
@@ -134,6 +135,7 @@
                                     <td>{{piece.duree_jours}} Jours | {{piece.duree_km}} Km</td>
                                     <td>{{piece.intervention}}</td>
                                     <td>{{piece.terminated_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                    <td>{{piece.message}}</td>
                                     <td class="text-center">
                                         <i class="fas fa-clock text-success" style="font-size: 17px;" [ngClass]="{'text-danger': piece.critique}"></i>
                                     </td>

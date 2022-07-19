@@ -14,11 +14,11 @@ export class TachesService {
   }
 
   create(record: any) {
-    return this.http.post(environment.apiURL + '/maintenance/ordres/'+record.ordre_id_taches+'/taches', record)
+    return this.http.post<any>(environment.apiURL + '/maintenance/ordres/'+record.ordre_id_taches+'/taches', record)
   }
 
   update(record: any) {
-    return this.http.put(environment.apiURL + '/maintenance/ordres/'+record.ordre_id+'/taches/' + record.id, record)
+    return this.http.put<any>(environment.apiURL + '/maintenance/ordres/'+record.ordre_id+'/taches/' + record.id, record)
   }
 
   delete(ordre_id:any,id: any) {

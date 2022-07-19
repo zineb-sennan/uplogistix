@@ -21,4 +21,8 @@ export class MaintenancePreventiveService {
     return this.http.post(environment.apiURL + '/maintenance/historique', record)
   }
 
+  getCoutMaintenance(record:any){
+    return this.http.post<any>(environment.apiURL + '/maintenance/cout', record)
+  }
+
 }

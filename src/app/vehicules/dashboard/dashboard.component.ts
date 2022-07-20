@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MaintenancePreventiveService } from 'src/app/_services/maintenance-preventive.service';
 import { Chart, registerables } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
-import { EcoconduiteService } from '../../_services/ecoconduite.service';
 import { VehiculeService } from '../../_services/vehicule.service';
 import { GeoLocalisationService } from '../../_services/geolocalisation.service';
 import { SecuriteClass } from '../../_globale/securite';
@@ -24,11 +24,11 @@ export class DashboardComponent implements OnInit {
     private vehiculeService:VehiculeService,
     private activatedRoute: ActivatedRoute,
     private geoLocalisationService: GeoLocalisationService,
+    private maintenancePreventiveService: MaintenancePreventiveService,
     private datePipe: DatePipe
   ) { }
 
-  type='details'; myChart:any; date = new Date();
-  private map: any; markers: any = []; positions: any = [];
+  type='details'; myChart:any; date = new Date(); private map: any; markers: any = []; positions: any = [];  pieces:any={ maintenance:[], rappels:[], alerts:[], historiques:[] };
   singleVehicule: any = {
     //Générale
     id:null, groupe_id:null, marque_id:null, modele_id:null ,matricule:null ,statut:null ,boite_vitesse:null ,description:null ,puissance_cv: null,mise_en_circulation:null ,classe_energitique:null , compteur_initial:null ,periode_revision:null,km_revision: null,niveau_reservoir:null,type_contrat:null,
@@ -45,6 +45,11 @@ export class DashboardComponent implements OnInit {
   };
 
   resume={ cout_km:0, montant_carburant:0, cout_total:0, cout_maintenance:0, autre_cout:0, km_aujourdhui:0 };
+  search: any = { 
+          vehicule_id: null, 
+          date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), 
+          date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') 
+        };
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(
@@ -54,13 +59,34 @@ export class DashboardComponent implements OnInit {
           this.getVehiculeById(id);
           //
           Chart.register(...registerables);
-
-          /** *** *** */
           this._test(id);
           this.getDistanceJour(id);
+          this.getMaintenancePreventive(id);
+          this.search.vehicule_id=id;
+          this.searchHistorique();
         }
       });
   }
+
+  /*** *** *** *** *** *** ***/
+  getMaintenancePreventive(id: number){
+    this.maintenancePreventiveService.getPiecesByVehicule(id).subscribe(
+      res => {
+        this.pieces.maintenance = res;
+        this.pieces.rappels= [...res].filter(pr=> !pr.critique);
+        this.pieces.alerts= [...res].filter(pr=> pr.critique);
+      }
+    )
+  }
+
+  searchHistorique() {
+    this.maintenancePreventiveService.getHistorique(this.search).subscribe(
+      res => {
+        this.pieces.historiques = res;
+      }
+    )
+  }
+  /*** *** *** *** *** *** ***/
 
   getDistanceJour(vehicule_id: number){
     this.geoLocalisationService.getAnalyseVehicule({vehicule_id: vehicule_id, date_debut: this.datePipe.transform(this.date, 'yyyy-MM-dd') , date_fin:this.datePipe.transform(this.date, 'yyyy-MM-dd') }).subscribe(

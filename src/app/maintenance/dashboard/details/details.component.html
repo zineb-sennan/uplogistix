@@ -24,13 +24,13 @@
                             </li>
                             <li class="nav-item">
                                 <button class="nav-link" (click)="type='taches'" [ngClass]="{'active': type=='taches'}">
-                                    Tâches
+                                    Maintenance préventive
                                 </button>
                             </li>
                             <li class="nav-item">
                                 <button class="nav-link" (click)="type='historique'"
                                     [ngClass]="{'active': type=='istorique'}">
-                                    Historique des tâches
+                                    Historique de maintenance
                                 </button>
                             </li>
                         </ul>
@@ -39,7 +39,7 @@
 
                 <div class="infos-vehicule" [ngClass]="{'d-none': type!='infos-vehicule'}">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-7">
 
                             <div class="card mt-3">
                                 <div class="card-body row">
@@ -98,12 +98,12 @@
                                 </div>
                             </div><!-- ./card -->
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="card mt-3">
                                 <div class="card-body row">
                                     <div class="row">
                                         <canvas id="chart-cout-maintenance"
-                                            style="display: block; box-sizing: border-box; height: 280px; width: 100%;">
+                                            style="display: block; box-sizing: border-box; height: 270px; width: 100%;">
                                         </canvas>
                                     </div><!-- ./row -->
                                 </div>
@@ -113,10 +113,7 @@
                 </div>
 
 
-
-
                 <div class="taches" *ngIf="type=='taches'">
-                    <h3>Tâches</h3>
                     <div class="table-responsive row">
                         <table class="table table-sm table-nowrap card-table">
                             <thead>
@@ -149,6 +146,8 @@
                         </table>
                     </div><!-- ./table-responsive -->
                 </div>
+
+
                 <div class="historique" *ngIf="type=='historique'">
                     <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchHistorique()">
                         <div class="col-md-6">
@@ -184,8 +183,8 @@
                                     <th>Marque</th>
                                     <th>L'intervention</th>
                                     <th>Alerte km</th>
-                                    <th>Terminé à</th>
-                                    <th>Changé à</th>
+                                    <th class="text-center">Terminé à</th>
+                                    <th class="text-center">Changé à</th>
                                     <th class="text-center">Message</th>
                                 </tr>
                             </thead>
@@ -196,8 +195,8 @@
                                     <td>{{his.marque}}</td>
                                     <td>{{his.intervention}}</td>
                                     <td>{{his.alerte_km}}</td>
-                                    <td>{{his.terminated_at | date:"dd/MM/yyyy HH:mm"}}</td>
-                                    <td>{{his.changed_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                    <td class="text-center">{{his.terminated_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                    <td class="text-center">{{his.changed_at != "-"? (his.changed_at | date:"dd/MM/yyyy HH:mm") : '-'}}</td>
                                     <td class="text-center">
                                         {{his.message}}
                                     </td>
@@ -207,6 +206,8 @@
                     </div>
 
                 </div><!-- ./historique -->
+
+
 
             </div>
         </div>

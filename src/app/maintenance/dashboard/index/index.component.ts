@@ -32,7 +32,6 @@ export class IndexComponent implements OnInit {
         array.forEach(piece => {
           this.vehiculesEnMaintenance.push({ matricule: piece.matricule, vehicule_id: piece.vehicule_id, pieces: [...res].filter(d => d.vehicule_id == piece.vehicule_id) })
         });
-
         this.pieces_critiques= [...res].filter(p=> p.critique).length;
       }
     )

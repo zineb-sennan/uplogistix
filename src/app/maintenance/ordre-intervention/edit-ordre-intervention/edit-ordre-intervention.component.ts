@@ -26,6 +26,8 @@ export class EditOrdreInterventionComponent implements OnInit {
 
   singlePieceTache:any ={id:null, oi_tache_id:null, piece_id:null, qte:null, prix_unitaire:null, total:null }; type:any='ajouter-maintenance-order';
 
+  error:any=null;
+
   constructor(
     private ordreInterventionService:OrdreInterventionService,
     private vehiculeService:VehiculeService,
@@ -168,7 +170,21 @@ export class EditOrdreInterventionComponent implements OnInit {
     this.tachesService.create(this.singleTache).subscribe(
       res=> {
         if(this.type=='ajouter-maintenance-order'){
-          this.taches[index].id=res.id;
+          if(index != -1) this.taches[index].id=res.id;
+          else{
+            const item= {
+              intervention_id: res.intervention_id,
+              tache: [...this.interventions].filter(i => i.id==res.intervention_id)[0].libelle,
+              cout_tache:0,
+              ordre_id:null,
+              id: res.id,
+              pieces_added:[],
+              pieces:[]
+            }
+            this.taches.push(item);
+            this._addTache=false;
+            console.log(this.taches, item)
+          }
         }
         else{
           this.getAllTache(this.singleTache.ordre_id_taches);
@@ -181,7 +197,8 @@ export class EditOrdreInterventionComponent implements OnInit {
   deleteTache(id:number){
     this.tachesService.delete(this.singleTache.ordre_id_taches,id).subscribe(
       res => {
-        this.getAllTache(this.singleTache.ordre_id_taches);
+        if(this.type=='ajouter-maintenance-order') this.taches = [...this.taches].filter(t => t.id!=id);
+        else this.getAllTache(this.singleTache.ordre_id_taches);
       }
     )
   }
@@ -193,12 +210,12 @@ export class EditOrdreInterventionComponent implements OnInit {
   }
 
   changerStatutOrder(statut:any){
-    this.ordreInterventionService.changeStatut({id:this.singleTache.ordre_id_taches, statut:statut}).subscribe(
-      res=>{
-        console.log("statut bien modifie !")
-        this.getOrderById(this.singleTache.ordre_id_taches);
-      } 
-    )
+    if(statut=="cloturer" && [...this.taches].length != [...this.taches].filter(t=> t.terminated_at).length) this.error="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua !";
+    else {
+      this.ordreInterventionService.changeStatut({id:this.singleTache.ordre_id_taches, statut:statut}).subscribe(
+        res=> this.getOrderById(this.singleTache.ordre_id_taches)
+      )
+    }
   }
 
   onEditNote(item:any, value:boolean){
@@ -219,22 +236,25 @@ export class EditOrdreInterventionComponent implements OnInit {
   }
 
   validateTache(tache:any, value:boolean){
-    this.tachesService.validateTache({id:tache.id, ordre_id:tache.ordre_id, valider:value }).subscribe(
-      res => {
-        if(this.type!='ajouter-maintenance-order') this.getAllTache(tache.ordre_id);
-        else {
-          console.log(tache, res);
-          tache.terminated_at= new Date();
-          this.progresOrder();
+    if(!this.singleOrder.closed_at){
+      this.tachesService.validateTache({id:tache.id, ordre_id:tache.ordre_id, valider:value }).subscribe(
+        res => {
+          if(this.type!='ajouter-maintenance-order') this.getAllTache(tache.ordre_id);
+          else {
+            tache.terminated_at= new Date();
+            this.progresOrder();
+          }
         }
-      }
-    )
+      )
+    }
   }
 
   progresOrder(){
-    const nbTaches = this.taches?.length;
-    const nbTachesValides = [...this.taches].filter(t=> t.terminated_at)?.length;
-    this.singleOrder.progresOrder=(nbTachesValides*100)/nbTaches;
+    if(this.taches){
+      const nbTaches = [...this.taches].length;
+      const nbTachesValides = [...this.taches].filter(t=> t.terminated_at)?.length;
+      if(nbTaches>0) this.singleOrder.progresOrder=(nbTachesValides*100)/nbTaches;
+    }
   }
 
   onEditPiece(item:any, value:boolean){
@@ -284,11 +304,11 @@ export class EditOrdreInterventionComponent implements OnInit {
     )
  }
 
- onEditPieceOfTache(item:any, value:boolean){
+  onEditPieceOfTache(item:any, value:boolean){
     item.isEdit = value;
     this.singlePieceTache=item;
     this.singlePieceTache.total= this.singlePieceTache.qte * this.singlePieceTache.prix_unitaire;
- }
+  }
 
 /** *** *** **/
 
@@ -305,16 +325,20 @@ export class EditOrdreInterventionComponent implements OnInit {
     )
   }
 
-  _addPieceTache(item:any, tache_id:number){
-    item.oi_tache_id= tache_id;
+  _addPieceTache(item:any, tache:any){
+    item.oi_tache_id= tache.id;
+
     this.piecesTachesService.create(item).subscribe(
       res=> {
-        this.taches[item.index].pieces.push({...res, designation: item.designation});
-        this.taches[item.index].pieces_added = [...this.taches[item.index].pieces_added].filter(p=> p.piece_id != item.piece_id);
-
+        //
+        if(!item.designation) item.designation= [...this.pieces].filter(p=> p.id == item.piece_id)[0].designation;
+        tache.pieces.push({...res, designation: item.designation });
+        tache.pieces_added = [...tache.pieces_added].filter(p=> p.piece_id != item.piece_id);
         //Les couts
-        this.taches[item.index].cout_tache = [...this.taches[item.index].pieces].reduce((prev,next)=>prev+Number(next.prix_unitaire*next.qte),0);
+        tache.cout_tache = [...tache.pieces].reduce((prev,next)=>prev+Number(next.prix_unitaire*next.qte),0);
         this.singleOrder.cout_total = [...this.taches].reduce((prev,next)=>prev+Number(next.cout_tache),0);
+        //
+        tache.isPiece=false;
       }
     )
   }
@@ -328,7 +352,5 @@ export class EditOrdreInterventionComponent implements OnInit {
     else if(type == 'prix') item.prix_unitaire = e.target.value;
     if(item.qte && item.prix_unitaire) item.total = Number(item.qte)*Number(item.prix_unitaire);
   }
-
-
 
 }

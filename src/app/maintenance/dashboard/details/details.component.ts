@@ -25,9 +25,7 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit(): void {
     Chart.register(...registerables);
-
-
-
+    
     this.activatedRoute.params.subscribe(param => {
       const { id } = param;
       if (id) {

@@ -43,8 +43,8 @@
                                 <td class="date_limite"> {{ordre.date_limite | date: 'yyyy-MM-dd HH:mm:ss'}} </td>
                                 <td class="statut">
                                     <span class="badge bg-success" *ngIf="!ordre.en_instance && !ordre.en_reparation && !ordre.closed_at">Ouvert</span>
-                                    <span class="badge bg-warning" *ngIf="ordre.en_instance">En instance</span>
-                                    <span class="badge bg-danger" *ngIf="ordre.en_reparation">En réparation</span>
+                                    <span class="badge bg-danger" *ngIf="ordre.en_instance">En instance</span>
+                                    <span class="badge bg-warning" *ngIf="ordre.en_reparation">En réparation</span>
                                     <span class="badge bg-info" *ngIf="ordre.closed_at">Clôturer</span>
                                 </td>
                                 <td class="progres text-center"> 

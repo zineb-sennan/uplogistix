@@ -21,19 +21,28 @@
                     </div>
                 </div> <!-- ./num de ordre -->
                 <div class="card mt-3">
-                    <div class="card-body float-right" *ngIf="type!='ajouter-maintenance-order'">
+                    <div class="card-body float-right" *ngIf="singleOrder.id">
+                        <div class="alert alert-danger" role="alert" *ngIf="error">
+                            {{error}}
+                            <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div><!-- ./alert -->
                         <div class="statut">
                             <button type="button" class="btn btn-outline-success"
                                 [ngClass]="{'_disabled': !singleOrder.en_instance && !singleOrder.en_reparation && !singleOrder.closed_at }"
-                                [disabled]="!singleOrder.en_instance && !singleOrder.en_reparation && !singleOrder.closed_at"
+                                [disabled]="!singleOrder.en_instance && !singleOrder.en_reparation && singleOrder.closed_at"
                                 (click)="changerStatutOrder('ouvert')">Ouvert</button>&nbsp;
+
                             <button type="button" class="btn btn-outline-warning"
-                                [ngClass]="{'_disabled':singleOrder.en_instance}" [disabled]="singleOrder.en_instance"
-                                (click)="changerStatutOrder('en_instance')">En instance</button>&nbsp;
-                            <button type="button" class="btn btn-outline-danger"
                                 [ngClass]="{'_disabled':singleOrder.en_reparation}"
-                                [disabled]="singleOrder.en_reparation" (click)="changerStatutOrder('en_reparation')">En
-                                réparation</button>&nbsp;
+                                [disabled]="singleOrder.en_reparation || singleOrder.closed_at" (click)="changerStatutOrder('en_reparation')">
+                                En réparation</button>&nbsp;
+
+                            <button type="button" class="btn btn-outline-danger"
+                                [ngClass]="{'_disabled':singleOrder.en_instance}" 
+                                [disabled]="singleOrder.en_instance || singleOrder.closed_at"
+                                (click)="changerStatutOrder('en_instance')">En instance</button>&nbsp;
+                            
+
                             <button type="button" class="btn btn-outline-primary"
                                 [ngClass]="{'_disabled':singleOrder.closed_at}" [disabled]="singleOrder.closed_at"
                                 (click)="changerStatutOrder('cloturer')">Clôturer</button>
@@ -75,7 +84,7 @@
                                 <div class="float-right">
                                     <button type="button"
                                         class="btn btn-light mb-2 shadow float-right bg-white btn-edit"
-                                        data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="addNote=false">
+                                        data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="addNote=false" [disabled]="singleOrder.closed_at">
                                         <i class="fa-solid fa-pen"></i>
                                     </button><br>
                                     <circle-progress [percent]="singleOrder.progresOrder" [space]="-10" [radius]="75"
@@ -293,12 +302,14 @@
                                                             <div *ngIf="!piece.isEdit">
                                                                 <button type="button"
                                                                     class="btn w-auto float-right _btn-p"
-                                                                    (click)="deletePieceTache(tache, piece)">
+                                                                    (click)="deletePieceTache(tache, piece)"
+                                                                    [disabled]="tache.terminated_at">
                                                                     <i class="fa-solid fa-xmark"></i>
                                                                 </button>
                                                                 <button type="button"
                                                                     class="btn w-auto float-right _btn-p"
-                                                                    (click)="onEditPieceOfTache(piece, true)">
+                                                                    (click)="onEditPieceOfTache(piece, true)"
+                                                                    [disabled]="tache.terminated_at">
                                                                     <i class="fa-solid fa-pencil"></i>
                                                                 </button>
                                                             </div>
@@ -349,16 +360,32 @@
                                                                 [(ngModel)]="singlePieceTache.total" disabled>
                                                         </td>
                                                         <td>
-                                                            <button type="button"
-                                                                class="btn btn-operation w-auto float-right"
-                                                                (click)="onEditPiece(tache, false)">
-                                                                <i class="fa-solid fa-xmark"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-operation w-auto float-right"
-                                                                (click)="addPieceTache()">
-                                                                <i class="fa-solid fa-plus"></i>
-                                                            </button>
+                                                            <div *ngIf="type!='ajouter-maintenance-order'">
+                                                                <button type="button"
+                                                                   class="btn btn-operation w-auto float-right"
+                                                                   (click)="onEditPiece(tache, false)">
+                                                                   <i class="fa-solid fa-xmark"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                   class="btn btn-operation w-auto float-right"
+                                                                   (click)="addPieceTache()">
+                                                                   <i class="fa-solid fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                            
+                                                            <div *ngIf="type=='ajouter-maintenance-order'">
+                                                                <button type="button"
+                                                                   class="btn btn-operation w-auto float-right"
+                                                                   (click)="_deletePiece(singlePieceTache)">
+                                                                   <i class="fa-solid fa-xmark"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                   class="btn btn-operation w-auto float-right"
+                                                                   (click)="_addPieceTache(singlePieceTache, tache)">
+                                                                   <i class="fa-solid fa-plus"></i>
+                                                                </button>
+                                                            </div>
+
                                                         </td>
 
                                                     </tr>
@@ -391,7 +418,7 @@
                                                             </button>
                                                             <button type="button"
                                                                 class="btn btn-operation w-auto float-right"
-                                                                (click)="_addPieceTache(pa, tache.id)">
+                                                                (click)="_addPieceTache(pa, tache)">
                                                                 <i class="fa-solid fa-plus"></i>
                                                             </button>
                                                         </td>
@@ -399,15 +426,14 @@
                                                 </tfoot>
                                             </table>
                                             <!-- actions -->
-                                            <strong class="text-muted cursor" (click)="onEditPiece(tache, true)"
-                                                *ngIf="!tache.isPiece">Ajouter
-                                                une pièce &nbsp;|&nbsp;</strong>
+                                            <strong class="text-muted cursor" (click)="!tache.terminated_at && onEditPiece(tache, true)"
+                                                *ngIf="!tache.isPiece">Ajouter une pièce &nbsp;|&nbsp;</strong>
                                             <strong class="text-muted cursor" (click)="onEditNote(tache, true)"
                                                 *ngIf="!tache.isNote">Ajouter une note &nbsp;|&nbsp;</strong>
 
-                                            <strong class="text-success cursor" (click)="validateTache(tache, false)"
-                                                *ngIf="tache.terminated_at">Terminé <i
-                                                    class="fa-solid fa-check"></i></strong>
+                                            <strong class="text-success cursor" (click)="validateTache(tache, false)" *ngIf="tache.terminated_at">
+                                                Terminé <i class="fa-solid fa-check"></i>
+                                            </strong>
                                             <strong class="text-danger cursor" (click)="validateTache(tache, true)"
                                                 *ngIf="!tache.terminated_at">
                                                 Pas encore terminé
@@ -423,7 +449,8 @@
                                         </td>
                                         <td class="align-top pt-5 text-center">
                                             <button type="button" class="btn btn-operation"
-                                                (click)="deleteTache(tache.id)">
+                                                (click)="deleteTache(tache.id)"
+                                                [disabled]="tache.terminated_at">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </td>
@@ -463,7 +490,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="4">
-                                            <button type="button" class="btn btn-link mb-2" (click)="_addTache=true">
+                                            <button type="button" class="btn btn-link mb-2" (click)="_addTache=true" [disabled]="singleOrder.closed_at">
                                                 <i class="fa-solid fa-plus"></i>
                                                 Ajouter une tâche
                                             </button>

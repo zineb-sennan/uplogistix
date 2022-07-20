@@ -75,6 +75,11 @@
                                         Liquides 
                                     </button>
                                 </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" (click)="type='historique-maintenance'" [ngClass]="{'active': type=='historique-maintenance'}"> 
+                                        Historique de maintenance 
+                                    </button>
+                                </li>
                             </ul>
                         </div>
                         <br><br><br><br>
@@ -222,7 +227,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div><!-- ./cycle_de_vie -->
                         <div class="specifications" *ngIf="type=='specifications'">
                             <div class="row">
                                 <div class="col-md-6">
@@ -310,7 +315,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div><!-- ./specifications -->
                         <div class="moteur_transmission" *ngIf="type=='moteur_transmission'">
                             <div class="row">
                                 <div class="col-md-6">
@@ -415,7 +420,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div><!-- ./moteur_transmission -->
                         <div class="roues_pneus" *ngIf="type=='roues_pneus'">
                             <div class="row">
                                 <div class="col-md-6">
@@ -508,7 +513,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div><!-- ./roues_pneus -->
                         <div class="liquides" *ngIf="type=='liquides'">
                             <div class="list-group list-group-flush my-n3">
                                 <div class="list-group-item">
@@ -533,7 +538,63 @@
                                 </div>
                             </div>
                             <br>
-                        </div>
+                        </div><!-- ./liquides -->
+                        <div class="historique-maintenance" *ngIf="type=='historique-maintenance'">
+                            <form class="row form-search" #searchForm="ngForm" (ngSubmit)="searchHistorique()">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label>Du:</label>
+                                            <input type="date" class="form-control form-control-sm col-md-6"
+                                                [(ngModel)]="search.date_debut" name="date_debut">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Au:</label>
+                                            <div class="input-group col-md-6">
+                                                <input type="date" class="form-control form-control-sm "
+                                                    [(ngModel)]="search.date_fin" name="date_fin">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary btn-sm" type="submit"
+                                                        style="margin-left: calc(var(--bs-gutter-x) *1);">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- ./row -->
+                                </div><!-- ./col-md-6 -->
+                            </form>
+                            <div class="table-responsive row">
+                                <table class="table table-sm table-nowrap card-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Designation</th>
+                                            <th>Référence</th>
+                                            <th>Marque</th>
+                                            <th>L'intervention</th>
+                                            <th>Alerte km</th>
+                                            <th class="text-center">Terminé à</th>
+                                            <th class="text-center">Changé à</th>
+                                            <th class="text-center">Message</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="list">
+                                        <tr *ngFor="let his of pieces.historiques">
+                                            <td>{{his.designation}}</td>
+                                            <td>{{his.reference}}</td>
+                                            <td>{{his.marque}}</td>
+                                            <td>{{his.intervention}}</td>
+                                            <td>{{his.alerte_km}}</td>
+                                            <td class="text-center">{{his.terminated_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                            <td class="text-center">{{his.changed_at != "-"? (his.changed_at | date:"dd/MM/yyyy HH:mm") : '-'}}</td>
+                                            <td class="text-center">
+                                                {{his.message}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><!-- ./historique-maintenance -->
                     </div>
                 </div>
                 <!---->
@@ -553,36 +614,58 @@
                     <div class="row">
                         <div class="col-md-6 margin-right">
                             <h3 class="titre">Maintenance prevue</h3>
-                            <div class="table-responsive row">
-                                <table class="table table-sm table-nowrap card-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Pièce</th>
-                                            <th>Designation</th>
-                                            <th>Marque</th>
-                                            <th>Référence</th>
-                                            <th>durée de vie</th>
-                                            <th width="80px">Options</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="list">
-                                        <tr>
-                                            <td>Pièce</td>
-                                            <td>Designation</td>
-                                            <td>Marque</td>
-                                            <td>Référence</td>
-                                            <td>durée de vie</td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div><!-- ./table-responsive -->
+                            <div class="content-card">
+                                <div class="table-responsive row">
+                                    <table class="table table-sm table-nowrap card-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Designation</th>
+                                                <th>L'intervention</th>
+                                                <th>Terminé à</th>
+                                                <th>Message</th>
+                                                <th class="text-center">critique</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list">
+                                            <tr *ngFor="let piece of pieces.maintenance">
+                                                <td>{{piece.designation}}</td>
+                                                <td>{{piece.intervention}}</td>
+                                                <td>{{piece.terminated_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                                <td>{{piece.message}}</td>
+                                                <td class="text-center">
+                                                    <i class="fas fa-clock text-success" style="font-size: 17px;"
+                                                        [ngClass]="{'text-danger': piece.critique}"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- ./table-responsive -->
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <h3 class="titre">Rappels</h3>
-                            <div class="no-data">
-                                <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
-                                <p class="text-muted text-center">Pas de donnée ...</p>
+                            <div class="content-card">
+                                <div class="table-responsive row">
+                                    <table class="table table-sm table-nowrap card-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Designation</th>
+                                                <th>L'intervention</th>
+                                                <th>Terminé à</th>
+                                                <th>Message</th>
+                                                <th class="text-center">critique</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list">
+                                            <tr *ngFor="let piece of pieces.rappels">
+                                                <td>{{piece.designation}}</td>
+                                                <td>{{piece.intervention}}</td>
+                                                <td>{{piece.terminated_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                                <td>{{piece.message}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- ./table-responsive -->
                             </div>
                         </div>
                     </div>
@@ -590,9 +673,28 @@
                     <div class="row">
                         <div class="col-md-6 margin-right">
                             <h3 class="titre">Alerts</h3>
-                            <div class="no-data">
-                                <img src="assets/img/illustrations/scale.svg" alt="" class="img-no-data">
-                                <p class="text-muted text-center">Pas de donnée ...</p>
+                            <div class="content-card">
+                                <div class="table-responsive row">
+                                    <table class="table table-sm table-nowrap card-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Designation</th>
+                                                <th>L'intervention</th>
+                                                <th>Terminé à</th>
+                                                <th>Message</th>
+                                                <th class="text-center">critique</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list">
+                                            <tr *ngFor="let piece of pieces.alerts">
+                                                <td>{{piece.designation}}</td>
+                                                <td>{{piece.intervention}}</td>
+                                                <td>{{piece.terminated_at | date:"dd/MM/yyyy HH:mm"}}</td>
+                                                <td>{{piece.message}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- ./table-responsive -->
                             </div>
                         </div>
                         <div class="col-md-6">

@@ -1,26 +1,34 @@
-<section>
-    <!-- *** *** Titre *** ***  -->
+<section class="app">
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
                 Stock
             </h6>
             <h2 class="header-title">
-                Bons retour            
+                Bon de retour            
             </h2>
         </div>
-    </div>
-    <!-- *** *** Content *** ***  -->
+    </div><!-- ./Titre -->
+
     <div class="container-fluid">
         <div class="row">
-            <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #roleForm="ngForm">
-                <!-- *** *** *** Forms *** *** *** -->
+            <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-br" #roleForm="ngForm">
+                <div *ngIf="message" class="alert alert-success" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <div class="row">
-                    <form #bonRForm="ngForm" (ngSubmit)="updateBonR(bonRForm.value)">
+                    <form #bonRForm="ngForm" (ngSubmit)="updateBonR(bonRForm.value)" class="frm-br">
                         <input type="hidden" name="id"  [(ngModel)]="singleBonR.id">
                         <div class="form-group">
                             <label class="form-label">
-                                Bon reception
+                                Numero
+                            </label>
+                            <input class="form-control" type="text" name="numero" [(ngModel)]="singleBonR.numero" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Bon de réception
                                 <strong class="text-danger" *ngIf="!singleBonR.bon_reception_id">*</strong>
                             </label>
                             <select class="form-select" name="bon_reception_id"  [(ngModel)]="singleBonR.bon_reception_id" required>
@@ -95,12 +103,10 @@
                         </tr>
                     </tbody>
                 </table>
-
-
             </div>
         </div>
-    </div>
-    <!-- *** *** *** *** ***-->
+    </div><!-- ./container -->
+
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -116,19 +122,26 @@
                             <input type="hidden" name="id" [(ngModel)]="singleDetailBR.id">
                             <input type="hidden" name="bon_retour_id" [(ngModel)]="singleDetailBR.bon_retour_id">
                             <div class="form-group">
+                                <label class="form-label">Catégorie de pièce</label>
+                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" required>
+                                    <option selected disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let cat of categorie_pieces" [value]="cat.id">{{cat.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label class="form-label">Pieces</label>
-                                <select class="form-select" name="piece_id" [(ngModel)]="singleDetailBR.piece_id" required>
+                                <select class="form-select form-select-sm" name="piece_id" [(ngModel)]="singleDetailBR.piece_id" required>
                                     <option value=null disabled>Veuillez choisir...</option>
                                     <option *ngFor="let piece of pieces" [value]="piece.id">{{piece.designation}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Qte</label>
-                                <input type="text" class="form-control" name="qte" [(ngModel)]="singleDetailBR.qte" placeholder="qte">
+                                <label class="form-label">Quantité</label>
+                                <input type="text" class="form-control form-control-sm" name="qte" [(ngModel)]="singleDetailBR.qte" placeholder="Quantité">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Prix unitaire</label>
-                                <input type="text" class="form-control" name="prix_unitaire" [(ngModel)]="singleDetailBR.prix_unitaire" placeholder="prix_unitaire">
+                                <input type="text" class="form-control form-control-sm" name="prix_unitaire" [(ngModel)]="singleDetailBR.prix_unitaire" placeholder="Prix unitaire">
                             </div>
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary mb-2 mt-4 float-right">Enregister</button>
@@ -139,8 +152,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- *** *** *** *** -->
+    </div><!-- ./modal -->
     <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-confirm">
             <div class="modal-content">
@@ -163,6 +175,5 @@
                 </div>
             </div>
         </div>
-    </div> 
-
+    </div><!-- ./modal -->
 </section>

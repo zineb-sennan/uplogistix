@@ -3,42 +3,37 @@
     <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
+<div class="contient">
+    <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#modal-edit">
+        <i class="fa-solid fa-plus"></i>
+    </button><br><br><br>
 
-            <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#modal-edit">
-                <i class="fa-solid fa-plus"></i>
-            </button><br><br><br>
-            
-            <div class="table-responsive row">
-                <table class="table table-sm table-nowrap card-table">
-                    <thead>
-                        <tr>
-                            <th>Numero</th>
-                            <th>source entrepôt</th>
-                            <th>destination entrepôt</th>
-                            <th>Commentaire</th>
-                            <th>Options</th>
-                        </tr>
-                    </thead>
-                    <tbody class="list">
-                        <tr *ngFor="let bonT of list_bons_transfert">
-                            <td class="numero"> {{bonT.numero}} </td>
-                            <td class="source_entrepot"> {{bonT.source}} </td>
-                            <td class="destination_entrepot"> {{bonT.destination}} </td>
-                            <td class="commentaire"> {{bonT.commentaire}} </td>
-                            <td width="75">
-                                <a [routerLink]="['/stock/bons-transfert/',bonT.id,'edit']" type="button"
-                                    class="btn btn-operation">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="table-responsive row">
+        <table class="table table-sm table-nowrap card-table">
+            <thead>
+                <tr>
+                    <th>Numero</th>
+                    <th>source entrepôt</th>
+                    <th>destination entrepôt</th>
+                    <th>Commentaire</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody class="list">
+                <tr *ngFor="let bonT of list_bons_transfert">
+                    <td class="numero"> {{bonT.numero}} </td>
+                    <td class="source_entrepot"> {{bonT.source}} </td>
+                    <td class="destination_entrepot"> {{bonT.destination}} </td>
+                    <td class="commentaire"> {{bonT.commentaire}} </td>
+                    <td width="75">
+                        <a [routerLink]="['/stock/bons-transfert/',bonT.id,'edit']" type="button"
+                            class="btn btn-operation">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div> <!-- ./container-fluid -->
 
@@ -60,7 +55,7 @@
                                 Source entrepôt
                                 <strong class="text-danger" *ngIf="!singleBonT.source_entrepot_id">*</strong>
                             </label>
-                            <select class="form-select" name="source_entrepot_id"
+                            <select class="form-select form-select-sm" name="source_entrepot_id"
                                 [(ngModel)]="singleBonT.source_entrepot_id" required>
                                 <option value=null disabled>Veuillez choisir...</option>
                                 <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}
@@ -72,7 +67,7 @@
                                 Destination entrepôt
                                 <strong class="text-danger" *ngIf="!singleBonT.destination_entrepot_id">*</strong>
                             </label>
-                            <select class="form-select" name="destination_entrepot_id"
+                            <select class="form-select form-select-sm" name="destination_entrepot_id"
                                 [(ngModel)]="singleBonT.destination_entrepot_id" required>
                                 <option value=null disabled>Veuillez choisir...</option>
                                 <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}
@@ -81,7 +76,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Commentaire</label>
-                            <textarea class="form-control" rows="3" name="commentaire"
+                            <textarea class="form-control form-control-sm" rows="3" name="commentaire"
                                 [(ngModel)]="singleBonT.commentaire"></textarea>
                         </div>
 
@@ -121,4 +116,4 @@
             </div>
         </div>
     </div>
-</div>
+</div><!-- ./modal -->

@@ -24,4 +24,5 @@ export class PiecesTachesService {
   delete(oi_tache_id:number, id: any) {
     return this.http.delete(environment.apiURL + '/maintenance/taches/'+oi_tache_id+'/pieces/' + id)
   }
+
 }

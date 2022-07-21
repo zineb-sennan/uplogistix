@@ -68,7 +68,6 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  /*** *** *** *** *** *** ***/
   getMaintenancePreventive(id: number){
     this.maintenancePreventiveService.getPiecesByVehicule(id).subscribe(
       res => {
@@ -86,7 +85,6 @@ export class DashboardComponent implements OnInit {
       }
     )
   }
-  /*** *** *** *** *** *** ***/
 
   getDistanceJour(vehicule_id: number){
     this.geoLocalisationService.getAnalyseVehicule({vehicule_id: vehicule_id, date_debut: this.datePipe.transform(this.date, 'yyyy-MM-dd') , date_fin:this.datePipe.transform(this.date, 'yyyy-MM-dd') }).subscribe(

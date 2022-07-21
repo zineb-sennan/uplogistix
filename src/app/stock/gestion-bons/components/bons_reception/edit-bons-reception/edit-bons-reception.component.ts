@@ -5,6 +5,7 @@ import { BonsReceptionDetailsService } from 'src/app/_services/bons-reception-de
 import { BonsReceptionService } from 'src/app/_services/bons-reception.service';
 import { EntrepotsService } from 'src/app/_services/entrepots.service';
 import { FournisseursService } from 'src/app/_services/fournisseurs.service';
+import { PieceCategoriesService } from 'src/app/_services/piece-categories.service';
 import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service';
 
 @Component({
@@ -14,10 +15,9 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 })
 export class EditBonsReceptionComponent implements OnInit {
   
-  message:any=null; detailsBRs:any=[]; pieces:any=[];
+  message:any=null; detailsBRs:any=[]; pieces:any=[]; entrepots:any=[]; fournisseurs:any=[]; categorie_pieces:any=[];
   singleBonR:any= { id:null, numero:null, fournisseur_id:null, entrepot_id:null, commentaire:null, validated_at:null, validated_by:null };
   singleDetailBR:any={id:null, bon_reception_id:null, piece_id:null, qte:null, prix_unitaire:null };
-  entrepots:any=[]; fournisseurs:any=[];
 
   constructor(
     private bonsReceptionService:BonsReceptionService,
@@ -26,6 +26,7 @@ export class EditBonsReceptionComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private bonsReceptionDetailsService:BonsReceptionDetailsService,
     private piecesRechangeService: PiecesRechangeService,
+    private pieceCategoriesService: PieceCategoriesService,
     private globale:Globale
   ) { }
 
@@ -39,10 +40,27 @@ export class EditBonsReceptionComponent implements OnInit {
       if (id){
         this.getBonReceptionById(id);
         this.getAllDetailsBR(id);
-        this.getAllpiecesRechange();
+        this. getAllCategoriesOfPieces();
       } 
     });
   }
+
+  changeCategorie(e:any){
+    this.piecesRechangeService.getPiecesByCategorie(e.target.value).subscribe(
+      res=> this.pieces =res
+    )
+  }
+  
+  getAllCategoriesOfPieces(){
+    this.pieceCategoriesService.getAll().subscribe(
+      async res =>{
+        const pieces= [...new Map([...await this.piecesRechangeService.getAll().toPromise()].map(item => [item['categorie_id'], item.categorie_id])).values()];
+        this.categorie_pieces= [...res].filter(i=> pieces.includes(i.id));
+      } 
+    )
+  }
+
+
 
   getDetailBrById(id:number){
     this.bonsReceptionDetailsService.getDetailsBR(id).subscribe(
@@ -85,12 +103,6 @@ export class EditBonsReceptionComponent implements OnInit {
     )
   }
 
-  getAllpiecesRechange(){
-    this.piecesRechangeService.getAll().subscribe(
-      res=> this.pieces =res
-    )
-  }
-
   getAllEntrepots(){
     this.entrepotsService.getAll().subscribe(
       res=> this.entrepots=res
@@ -108,8 +120,6 @@ export class EditBonsReceptionComponent implements OnInit {
       res =>{
         this.singleBonR=res;
         this.singleDetailBR.bon_reception_id=this.singleBonR.id;
-
-        console.log('*** ',this.singleBonR);
       } 
      )
   }

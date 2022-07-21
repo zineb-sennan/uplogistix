@@ -4,6 +4,7 @@ import { Globale } from 'src/app/_globale/globale';
 import { BonsTransfertDetailsService } from 'src/app/_services/bons-transfert-details.service';
 import { BonsTransfertService } from 'src/app/_services/bons-transfert.service';
 import { EntrepotsService } from 'src/app/_services/entrepots.service';
+import { PieceCategoriesService } from 'src/app/_services/piece-categories.service';
 import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service';
 
 @Component({
@@ -13,10 +14,9 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 })
 export class EditBonsTransfertComponent implements OnInit {
 
-  message:any=null;  entrepots:any=[]; list_detail_bonsT:any=[]; pieces:any=[];
+  message:any=null;  entrepots:any=[]; list_detail_bonsT:any=[]; pieces:any=[]; categorie_pieces:any=[];
   singleBonT:any={ id:null, source_entrepot_id:null, destination_entrepot_id:null, commentaire:null };
   singleDetailBT:any={id:null,numero:null, bon_transfert_id:null, piece_id:null, qte:null };
-
 
   constructor(
     private globale:Globale,
@@ -24,7 +24,8 @@ export class EditBonsTransfertComponent implements OnInit {
     private bonsTransfertService:BonsTransfertService,
     private bonsTransfertDetailsService: BonsTransfertDetailsService,
     private activatedRoute: ActivatedRoute,
-    private piecesRechangeService:PiecesRechangeService
+    private piecesRechangeService:PiecesRechangeService,
+    private pieceCategoriesService:PieceCategoriesService
   ) { }
 
   ngOnInit(): void {
@@ -33,10 +34,26 @@ export class EditBonsTransfertComponent implements OnInit {
       if (id){
         this.getBonReceptionById(id);
         this.getAllDetailsBT(id);
-        this.getAllpiecesRechange();
+        this.getAllCategoriesOfPieces();
         this.getAllEntrepots();
       } 
     });
+  }
+
+  getAllCategoriesOfPieces(){
+    this.pieceCategoriesService.getAll().subscribe(
+      async res =>{
+        const pieces= [...new Map([...await this.piecesRechangeService.getAll().toPromise()].map(item => [item['categorie_id'], item.categorie_id])).values()];
+        this.categorie_pieces= [...res].filter(i=> pieces.includes(i.id));
+      } 
+    )
+  }
+
+
+ changeCategorie(e:any){
+    this.piecesRechangeService.getPiecesByCategorie(e.target.value).subscribe(
+      res=> this.pieces =res
+    )
   }
 
   getAllpiecesRechange(){
@@ -55,7 +72,6 @@ export class EditBonsTransfertComponent implements OnInit {
     if(!form.id){
       this.bonsTransfertDetailsService.create(form).subscribe(
         res=>{
-          this.message="Bien ajouter !";
           this.getAllDetailsBT(this.singleDetailBT.bon_transfert_id);
           this.globale.closeModal();
         } 
@@ -64,7 +80,6 @@ export class EditBonsTransfertComponent implements OnInit {
     else{
       this.bonsTransfertDetailsService.update(form).subscribe(
         res=>{
-          this.message="Bien modifie !";
           this.getAllDetailsBT(this.singleDetailBT.bon_transfert_id);
           this.globale.closeModal();
         } 
@@ -79,7 +94,6 @@ export class EditBonsTransfertComponent implements OnInit {
   deleteDetailBT(id:number){
     this.bonsTransfertDetailsService.delete(id).subscribe(
       res=>{
-        this.message='bien sup !';
         this.getAllDetailsBT(this.singleDetailBT.bon_transfert_id);
         this.globale.closeModal();
       } 
@@ -109,14 +123,14 @@ export class EditBonsTransfertComponent implements OnInit {
 
   updateBonT(form:any){
     this.bonsTransfertService.update(form).subscribe(
-      res => this.message="Bon reception bien modifie"
+      res => this.message="Bon transfert est modifie avec succès !"
     )
   }
 
   valide(id:number){
     this.bonsTransfertService.valide({id: id}).subscribe(
       res => {
-        this.message ="Bon transfert bien validé !";
+        this.message ="Bon transfert est validé avec succès !";
         this.getBonReceptionById(id);
       }
     )

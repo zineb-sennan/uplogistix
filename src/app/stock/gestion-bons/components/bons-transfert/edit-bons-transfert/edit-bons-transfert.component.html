@@ -1,5 +1,4 @@
-<section>
-    <!-- *** *** Titre *** ***  -->
+<section class="app">
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
@@ -9,12 +8,10 @@
                 Bons transfert
             </h2>
         </div>
-    </div>
-    <!-- *** *** Content *** ***  -->
+    </div><!-- ./Titre -->
     <div class="container-fluid">
         <div class="row">
             <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #roleForm="ngForm">
-                <!-- *** *** *** Forms *** *** *** -->
                 <div class="row">
                     <form #bonTForm="ngForm" (ngSubmit)="updateBonT(bonTForm.value)">
                         <input type="hidden" name="id"  [(ngModel)]="singleBonT.id">
@@ -67,17 +64,14 @@
 
         <div class="row">
             <div class="col-md-12 shadow p-3 mb-5 bg-white rounded">
-
                 <div class="header md-5">
                     <div class="header-body">
                         <h2 class="header-title">Detail bons transfert</h2>
                     </div>
                 </div>
-
                 <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;" (click)="cleareDetailBT()" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">
                     <i class="fa-solid fa-plus"></i>
                 </button> <br><br>
-
                 <table class="table table-sm table-nowrap card-table">
                     <thead>
                         <tr>
@@ -101,12 +95,9 @@
                         </tr>
                     </tbody>
                 </table>
-
-
             </div>
         </div>
-    </div>
-    <!-- *** *** *** *** ***-->
+    </div><!-- ./container-fluid -->
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -122,15 +113,22 @@
                             <input type="hidden" name="id" [(ngModel)]="singleDetailBT.id">
                             <input type="hidden" name="bon_transfert_id" [(ngModel)]="singleDetailBT.bon_transfert_id">
                             <div class="form-group">
+                                <label class="form-label">Catégorie de pièce</label>
+                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" required>
+                                    <option selected disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let cat of categorie_pieces" [value]="cat.id">{{cat.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label class="form-label">Pieces</label>
-                                <select class="form-select" name="piece_id" [(ngModel)]="singleDetailBT.piece_id" required>
+                                <select class="form-select form-select-sm" name="piece_id" [(ngModel)]="singleDetailBT.piece_id" required>
                                     <option value=null disabled>Veuillez choisir...</option>
                                     <option *ngFor="let piece of pieces" [value]="piece.id">{{piece.designation}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Qte</label>
-                                <input type="text" class="form-control" name="qte" [(ngModel)]="singleDetailBT.qte" placeholder="qte">
+                                <label class="form-label">Quantité</label>
+                                <input type="text" class="form-control form-control-sm" name="qte" [(ngModel)]="singleDetailBT.qte" placeholder="Quantité">
                             </div>
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary mb-2 mt-4 float-right">Enregister</button>
@@ -141,8 +139,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- *** *** *** *** -->
+    </div><!-- ./modal -->
     <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-confirm">
             <div class="modal-content">
@@ -165,6 +162,5 @@
                 </div>
             </div>
         </div>
-    </div> 
-
+    </div><!-- ./modal --> 
 </section>

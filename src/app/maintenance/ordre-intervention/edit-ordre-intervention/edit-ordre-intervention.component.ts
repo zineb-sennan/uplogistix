@@ -49,7 +49,7 @@ export class EditOrdreInterventionComponent implements OnInit {
     this.getAllUtilisateurs();
     this.getAllTiers();
     this.getInterventions();
-    this.getAllPiecesRechange();
+    //sthis.getAllPiecesRechange();
 
     this.activatedRoute.data.subscribe((data) => {
       this.type = data['title'];
@@ -68,12 +68,6 @@ export class EditOrdreInterventionComponent implements OnInit {
         } 
       });
     })
-  }
-
-  getAllPiecesRechange(){
-    this.piecesRechangeService.getAll().subscribe(
-      res => this.pieces=res
-    )
   }
 
   getOrderById(id: number){
@@ -183,7 +177,6 @@ export class EditOrdreInterventionComponent implements OnInit {
             }
             this.taches.push(item);
             this._addTache=false;
-            console.log(this.taches, item)
           }
         }
         else{
@@ -203,9 +196,12 @@ export class EditOrdreInterventionComponent implements OnInit {
     )
   }
 
-  getInterventions(){
+   getInterventions(){
     this.tachesService.getInterventions().subscribe(
-      res=> this.interventions=res
+      async res=>{
+        const pieces= [...new Map([...await this.piecesRechangeService.getAll().toPromise()].map(item => [item['categorie_id'], item.categorie_id])).values()];
+        this.interventions= [...res].filter(i=> pieces.includes(i.id));
+      } 
     )
   }
 
@@ -294,11 +290,8 @@ export class EditOrdreInterventionComponent implements OnInit {
           piece.total= Number(this.singlePieceTache.qte)*Number(this.singlePieceTache.prix_unitaire)
           piece.isEdit=false;
           //Les couts
-          console.log(piece)
           tache.cout_tache = [...tache.pieces].reduce((prev,next)=>prev+Number(next.prix_unitaire*next.qte),0);
           this.singleOrder.cout_total = [...this.taches].reduce((prev,next)=>prev+Number(next.cout_tache),0);
-          //
-          console.log(this.taches, 'taches');
         }
       } 
     )
@@ -351,6 +344,13 @@ export class EditOrdreInterventionComponent implements OnInit {
     if(type == 'qtn') item.qte = e.target.value;
     else if(type == 'prix') item.prix_unitaire = e.target.value;
     if(item.qte && item.prix_unitaire) item.total = Number(item.qte)*Number(item.prix_unitaire);
+  }
+
+
+  changeIntervention(e :any){
+    this.piecesRechangeService.getPiecesByCategorie(e.target.value).subscribe(
+      res => this.pieces=res
+    )
   }
 
 }

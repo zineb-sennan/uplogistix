@@ -466,7 +466,7 @@
                                                         *ngIf="!singleOrder.date_intervention">*</strong>
                                                 </label>
                                                 <select class="form-select form-select-sm" name="intervention_id"
-                                                    [(ngModel)]="singleTache.intervention_id" required>
+                                                    [(ngModel)]="singleTache.intervention_id" (change)="changeIntervention($event)" required>
                                                     <option value=null disabled>Veuillez choisir...</option>
                                                     <option *ngFor="let intervention of interventions"
                                                         value="{{intervention.id}}">

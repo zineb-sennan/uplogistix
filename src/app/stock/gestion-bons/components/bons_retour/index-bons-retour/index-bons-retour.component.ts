@@ -52,7 +52,7 @@ export class IndexBonsRetourComponent implements OnInit {
         this.getAllBonsRetour();
         this.globale.closeModal();
         this.message="Bien ajouter !";
-        this.router.navigate(['stock/bons-reception/'+res.id+'/edit']);
+        this.router.navigate(['stock/bons-retour/'+res.id+'/edit']);
       } 
     )
   }

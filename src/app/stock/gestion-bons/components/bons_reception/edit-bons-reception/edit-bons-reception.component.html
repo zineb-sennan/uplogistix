@@ -1,22 +1,23 @@
-<section>
-    <!-- *** *** Titre *** ***  -->
+<section class="app">
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
                 Stock
             </h6>
             <h2 class="header-title">
-                Bons reception
+                Bon réception
             </h2>
         </div>
-    </div>
-    <!-- *** *** Content *** ***  -->
+    </div><!-- ./titre-->
+
     <div class="container-fluid">
         <div class="row">
             <div class="validation">
                 <div style="width: 200px;" class="float-right">
                     <img src="assets/img/validation.png" *ngIf="singleBonR.validated_at && singleBonR.validated_by">
-                    <span class="date-validation">{{singleBonR.validated_at | date: "dd/MM/yyyy HH:mm:ss"}}</span>
+                    <span class="date-validation" *ngIf="singleBonR.validated_at && singleBonR.validated_by">
+                        Le {{singleBonR.validated_at | date: "dd/MM/yyyy HH:mm:ss"}}
+                    </span>
                 </div>
             </div>
 
@@ -26,7 +27,7 @@
                     <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <div class="row">
-                    <form #bonRForm="ngForm" (ngSubmit)="updateBonR(bonRForm.value)">
+                    <form #bonRForm="ngForm" (ngSubmit)="updateBonR(bonRForm.value)" class="frm-br">
                         <input type="hidden" name="id"  [(ngModel)]="singleBonR.id">
                         <div class="form-group">
                             <label class="form-label">
@@ -83,7 +84,7 @@
 
                 <div class="header md-5">
                     <div class="header-body">
-                        <h2 class="header-title">Detail bons reception</h2>
+                        <h2 class="header-title">Détail bon réception</h2>
                     </div>
                 </div>
 
@@ -98,12 +99,12 @@
                 <table class="table table-sm table-nowrap card-table">
                     <thead>
                         <tr>
-                            <th>Categorie</th>
+                            <th>Catégorie</th>
                             <th>Marque</th>
-                            <th>Qte</th>
+                            <th>Quantité</th>
                             <th>Prix unitaire</th>
                             <th>Total</th>
-                            <th>Éditer</th>
+                            <th>Options</th>
                         </tr>
                     </thead>
                     <tbody class="list">
@@ -127,15 +128,15 @@
 
             </div>
         </div>
-    </div>
-    <!-- *** *** *** *** ***-->
+    </div><!-- ./container-fluid -->
+    
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-card card" data-list=''>
                     <div class="card-header">
                         <h4 class="card-header-title" id="exampleModalCenterTitle">
-                            Detail bon de reception
+                            Détail bon réception
                         </h4>
                         <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -144,19 +145,26 @@
                             <input type="hidden" name="id" [(ngModel)]="singleDetailBR.id">
                             <input type="hidden" name="bon_reception_id" [(ngModel)]="singleDetailBR.bon_reception_id">
                             <div class="form-group">
+                                <label class="form-label">Catégorie de pièce</label>
+                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" required>
+                                    <option selected disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let cat of categorie_pieces" [value]="cat.id">{{cat.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label class="form-label">Pieces</label>
-                                <select class="form-select" name="piece_id" [(ngModel)]="singleDetailBR.piece_id" required>
+                                <select class="form-select form-select-sm" name="piece_id" [(ngModel)]="singleDetailBR.piece_id" required>
                                     <option value=null disabled>Veuillez choisir...</option>
                                     <option *ngFor="let piece of pieces" [value]="piece.id">{{piece.designation}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Qte</label>
-                                <input type="number" class="form-control" name="qte" [(ngModel)]="singleDetailBR.qte" placeholder="qte">
+                                <label class="form-label">Quantité</label>
+                                <input type="number" class="form-control form-control-sm" name="qte" [(ngModel)]="singleDetailBR.qte" placeholder="Quantité">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Prix unitaire</label>
-                                <input type="number" class="form-control" name="prix_unitaire" [(ngModel)]="singleDetailBR.prix_unitaire" placeholder="prix_unitaire">
+                                <input type="number" class="form-control form-control-sm" name="prix_unitaire" [(ngModel)]="singleDetailBR.prix_unitaire" placeholder="Prix unitaire">
                             </div>
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary mb-2 mt-4 float-right">Enregister</button>
@@ -167,8 +175,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- *** *** *** *** -->
+    </div><!-- ./modal -->
+
     <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-confirm">
             <div class="modal-content">
@@ -191,6 +199,6 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div><!-- ./modal -->
 
-</section>
+</section><!-- ./app -->

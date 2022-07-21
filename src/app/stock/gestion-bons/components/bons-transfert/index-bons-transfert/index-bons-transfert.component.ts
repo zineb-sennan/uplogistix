@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Globale } from 'src/app/_globale/globale';
 import { BonsTransfertService } from 'src/app/_services/bons-transfert.service';
 import { EntrepotsService } from 'src/app/_services/entrepots.service';
@@ -16,6 +17,7 @@ export class IndexBonsTransfertComponent implements OnInit {
   constructor(
     private bonsTransfertService: BonsTransfertService,
     private entrepotsService:EntrepotsService,
+    private router: Router,
     private globale:Globale
   ) { }
 
@@ -51,7 +53,8 @@ export class IndexBonsTransfertComponent implements OnInit {
       res => {
         this.getAllBonsTransfert();
         this.globale.closeModal();
-        this.message="Bien ajouter !";
+        this.message="Bon transfert est ajouté avec succès !";
+        this.router.navigate(['stock/bons-transfert/'+res.id+'/edit']);
       } 
     )
  }

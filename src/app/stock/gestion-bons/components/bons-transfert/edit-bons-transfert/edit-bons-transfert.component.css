@@ -1,0 +1,14 @@
+.date-validation{
+    color: #0c8f0c !important;
+    font-weight: 800;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.frm-edit-bt{
+    width: 85%;
+    margin: auto;
+    margin-top: 30px;
+    box-shadow: rgb(50 50 93 / 25%) 0px 2px 5px -1px, rgb(0 0 0 / 30%) 0px 1px 3px -1px;
+    padding: 15px 45px;
+}

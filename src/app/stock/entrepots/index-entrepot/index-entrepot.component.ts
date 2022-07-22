@@ -9,7 +9,7 @@ import { EntrepotsService } from 'src/app/_services/entrepots.service';
 })
 export class IndexEntrepotComponent implements OnInit {
 
-  entrepots:any=[]; message:any=''; entrepot_id:number=0;
+  entrepots:any=[]; message:any=''; entrepot_id:number=0; pieces:any=[];
 
   constructor(
     private entrepotsService:EntrepotsService,
@@ -32,6 +32,14 @@ export class IndexEntrepotComponent implements OnInit {
         this.getAllEntrepots();
         this.message = "L'entrepot est supprimé avec succès !";
         this.globale.closeModal();
+      }
+    )
+  }
+
+  getPiecesByEntrepot(id:number){
+    this.entrepotsService.getPiecesByEntrepot(id).subscribe(
+      res => {
+        this.pieces=res;
       }
     )
   }

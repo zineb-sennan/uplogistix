@@ -12,13 +12,21 @@
 
     <div class="container-fluid">
         <div class="row">
+            <div class="validation">
+                <div style="width: 200px;" class="float-right">
+                    <img src="assets/img/validation.png" *ngIf="singleBonR.validated_at && singleBonR.validated_by">
+                    <span class="date-validation" *ngIf="singleBonR.validated_at && singleBonR.validated_by">
+                        Le {{singleBonR.validated_at | date: "dd/MM/yyyy HH:mm:ss"}}
+                    </span>
+                </div>
+            </div><!-- ./validation -->
             <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-br" #roleForm="ngForm">
-                <div *ngIf="message" class="alert alert-success" role="alert">
+                <div class="alert alert-success" role="alert" *ngIf="message">
                     {{message}}
                     <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                </div><!-- ./message  -->
                 <div class="row">
-                    <form #bonRForm="ngForm" (ngSubmit)="updateBonR(bonRForm.value)" class="frm-br">
+                    <form #bonRForm="ngForm" (ngSubmit)="updateBonR(bonRForm.value)" class="frm-edit-br">
                         <input type="hidden" name="id"  [(ngModel)]="singleBonR.id">
                         <div class="form-group">
                             <label class="form-label">
@@ -51,8 +59,15 @@
                             <textarea class="form-control" rows="3" name="commentaire" [(ngModel)]="singleBonR.commentaire"></textarea>
                         </div>
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!bonRForm.valid">Enregister</button>
-                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">Annuler</button>
+                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!bonRForm.valid">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                            </button>
+                            <button type="button" class="btn btn-success mb-2 mt-4 float-right" [disabled]="singleBonR.validated_at && singleBonR.validated_by" (click)="valide(singleBonR.id)" style="margin-right: 5px;">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">
+                                <i class="fas fa-undo"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -60,40 +75,41 @@
                 <small class="text-danger">*: Ce champ est obligatoire.</small>
             </form>
         </div>
-
         <div class="row">
             <div class="col-md-12 shadow p-3 mb-5 bg-white rounded">
-
                 <div class="header md-5">
                     <div class="header-body">
-                        <h2 class="header-title">Detail bons retour</h2>
+                        <h2 class="header-title">Pièces</h2>
                     </div>
-                </div>
-
-                <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;" (click)="cleareDetailBR()">
-                    <i class="fa-solid fa-plus"></i>
-                </button> <br><br>
-
+                </div><!-- ./titre -->
+                <div *ngIf="!singleBonR.validated_at">
+                    <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;" (click)="cleareDetailBR()">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <br><br>
+                </div><!-- ./btn-add -->
                 <table class="table table-sm table-nowrap card-table">
                     <thead>
                         <tr>
-                            <th>Categorie</th>
-                            <th>Marque</th>
-                            <th>Qte</th>
-                            <th>Prix unitaire</th>
-                            <th>Total</th>
-                            <th>Éditer</th>
+                            <th>Pièce</th>
+                            <th width="160">Categorie</th>
+                            <th width="160">Marque</th>
+                            <th width="100" class="text-center">Quantité</th>
+                            <th width="100" class="text-center">Prix unitaire</th>
+                            <th width="100" class="text-center">Total</th>
+                            <th width="80" *ngIf="!singleBonR.validated_at">Options</th>
                         </tr>
                     </thead>
                     <tbody class="list">
                         <tr *ngFor="let dbr of detailsBRs">
-                            <td class="categorie"> {{dbr.categorie}} </td>
-                            <td class="marque"> {{dbr.marque}} </td>
-                            <td class="qte"> {{dbr.qte}} </td>
-                            <td class="prix unitaire"> {{dbr.prix_unitaire}} </td>
-                            <td class="total"> {{dbr.total}} </td>
-                            <td width="75">
-                                <button type="button" ng-show="" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailBrById(dbr.id)">
+                            <td class="piece">{{dbr.designation}}</td>
+                            <td class="categorie">{{dbr.categorie}}</td>
+                            <td class="marque">{{dbr.marque}}</td>
+                            <td class="qte text-center">{{dbr.qte}}</td>
+                            <td class="prix_unitaire text-center">{{dbr.prix_unitaire}}</td>
+                            <td class="total text-center">{{dbr.total}}</td>
+                            <td width="75" *ngIf="!singleBonR.validated_at">
+                                <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailBrById(dbr.id)">
                                     <i class="fa-solid fa-pen"></i>
                                 </button> &nbsp;
                                 <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="singleDetailBR.id=dbr.id">
@@ -106,14 +122,13 @@
             </div>
         </div>
     </div><!-- ./container -->
-
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-card card" data-list=''>
                     <div class="card-header">
                         <h4 class="card-header-title" id="exampleModalCenterTitle">
-                            Detail bon de reception
+                            Pièce
                         </h4>
                         <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -123,8 +138,8 @@
                             <input type="hidden" name="bon_retour_id" [(ngModel)]="singleDetailBR.bon_retour_id">
                             <div class="form-group">
                                 <label class="form-label">Catégorie de pièce</label>
-                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" required>
-                                    <option selected disabled>Veuillez choisir...</option>
+                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" name="categorie_id" [(ngModel)]="singleDetailBR.categorie_id" required>
+                                    <option value=null disabled>Veuillez choisir...</option>
                                     <option *ngFor="let cat of categorie_pieces" [value]="cat.id">{{cat.nom}}</option>
                                 </select>
                             </div>

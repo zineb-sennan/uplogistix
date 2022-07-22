@@ -28,6 +28,9 @@ export class EntrepotsService {
   getEntrepot(id:number){
     return this.http.get<any>(environment.apiURL + '/stock/entrepots/'+id)
   }
-
+ 
+  getPiecesByEntrepot(id:number){
+    return this.http.get<any>(environment.apiURL + '/stock/entrepots/'+id+'/stock')
+  }
 
 }

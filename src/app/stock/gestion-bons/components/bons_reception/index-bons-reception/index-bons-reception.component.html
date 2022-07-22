@@ -11,13 +11,13 @@
         <table class="table table-sm table-nowrap card-table">
             <thead>
                 <tr>
-                    <th>Numero</th>
-                    <th>Fournisseur</th>
-                    <th>Entrepot</th>
-                    <th class="text-center">validé le</th>
+                    <th width="150">Numéro</th>
+                    <th width="200">Fournisseur</th>
+                    <th width="200">Entrepot</th>
+                    <th width="110" class="text-center">validé le</th>
                     <th>Commentaire</th>
-                    <th class="text-center">Statut</th>
-                    <th>Options</th>
+                    <th width="120" class="text-center">Statut</th>
+                    <th width="75">Options</th>
                 </tr>
             </thead>
             <tbody class="list">
@@ -30,10 +30,17 @@
                     <td class="entrepot">{{bonR.entrepot}}</td>
                     <td class="valide-le text-center">{{bonR.validated_at | date:"dd/MM/yyyy HH:mm"}}</td>
                     <td class="commentaire">{{bonR.commentaire}}</td>
-                    <td class="statut text-center">
-                        <i class="fa-solid fa-thumbs-up text-success h3" *ngIf="bonR.validated_at"></i>
+                    <td class="statut text-center"> 
+                        <div class="text-success" *ngIf="bonR.validated_at">
+                            Validé 
+                            <i class="fa-solid fa-check"></i>
+                        </div> 
+                        <div class="text-danger" *ngIf="!bonR.validated_at">
+                           Non validé
+                           <i class="fas fa-exclamation-triangle"></i>
+                        </div>
                     </td>
-                    <td width="75">
+                    <td>
                         <a [routerLink]="['/stock/bons-reception/',bonR.id,'edit']" type="button"
                             class="btn btn-operation">
                             <i class="fa-solid fa-pen"></i>

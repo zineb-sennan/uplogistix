@@ -24,5 +24,9 @@ export class BonsRetourService {
   getBonReception(id:number){
     return this.http.get<any>(environment.apiURL + '/stock/bons_retour/'+id)
   }
+
+  valide(record:any){
+    return this.http.post(environment.apiURL + '/stock/bons_retour/'+record.id+'/validate', record)
+  }
   
 }

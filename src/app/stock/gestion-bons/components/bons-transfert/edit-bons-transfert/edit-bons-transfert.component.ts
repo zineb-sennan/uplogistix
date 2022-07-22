@@ -16,7 +16,7 @@ export class EditBonsTransfertComponent implements OnInit {
 
   message:any=null;  entrepots:any=[]; list_detail_bonsT:any=[]; pieces:any=[]; categorie_pieces:any=[];
   singleBonT:any={ id:null, source_entrepot_id:null, destination_entrepot_id:null, commentaire:null };
-  singleDetailBT:any={id:null,numero:null, bon_transfert_id:null, piece_id:null, qte:null };
+  singleDetailBT:any={id:null,numero:null, bon_transfert_id:null, piece_id:null, qte:null, categorie_id:null };
 
   constructor(
     private globale:Globale,
@@ -49,11 +49,15 @@ export class EditBonsTransfertComponent implements OnInit {
     )
   }
 
-
- changeCategorie(e:any){
-    this.piecesRechangeService.getPiecesByCategorie(e.target.value).subscribe(
+  getPiecesByCategorie(id:number){
+    this.piecesRechangeService.getPiecesByCategorie(id).subscribe(
       res=> this.pieces =res
     )
+  }
+
+
+ changeCategorie(e:any){
+    this.getPiecesByCategorie(e.target.value)
   }
 
   getAllpiecesRechange(){
@@ -64,7 +68,10 @@ export class EditBonsTransfertComponent implements OnInit {
 
   getDetailBtById(id:number){
     this.bonsTransfertDetailsService.getDetailsBT(id).subscribe(
-      res => this.singleDetailBT= res
+      res =>{
+        this.singleDetailBT= res;
+        this.getPiecesByCategorie(res.categorie_id);
+      }
     )
   }
 
@@ -88,7 +95,8 @@ export class EditBonsTransfertComponent implements OnInit {
   }
 
   cleareDetailBT(){
-    this.singleDetailBT ={id:null, piece_id:null, bon_transfert_id:this.singleDetailBT.bon_transfert_id, qte:null};
+    this.singleDetailBT ={id:null, piece_id:null, bon_transfert_id:this.singleDetailBT.bon_transfert_id, qte:null, categorie_id:null};
+    this.pieces=[];
   }
 
   deleteDetailBT(id:number){
@@ -123,14 +131,14 @@ export class EditBonsTransfertComponent implements OnInit {
 
   updateBonT(form:any){
     this.bonsTransfertService.update(form).subscribe(
-      res => this.message="Bon transfert est modifie avec succès !"
+      res => this.message="Bon de transfert est modifie avec succès !"
     )
   }
 
   valide(id:number){
     this.bonsTransfertService.valide({id: id}).subscribe(
       res => {
-        this.message ="Bon transfert est validé avec succès !";
+        this.message ="Bon de transfert est validé avec succès !";
         this.getBonReceptionById(id);
       }
     )

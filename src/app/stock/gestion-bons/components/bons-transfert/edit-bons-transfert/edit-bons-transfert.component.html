@@ -11,17 +11,30 @@
     </div><!-- ./Titre -->
     <div class="container-fluid">
         <div class="row">
-            <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #roleForm="ngForm">
+            <div class="validation">
+                <div style="width: 200px;" class="float-right">
+                    <img src="assets/img/validation.png" *ngIf="singleBonT.validated_at && singleBonT.validated_by">
+                    <span class="date-validation" *ngIf="singleBonT.validated_at && singleBonT.validated_by">
+                        Le {{singleBonT.validated_at | date: "dd/MM/yyyy HH:mm:ss"}}
+                    </span>
+                </div>
+            </div><!-- ./validation -->
+            <form class="mb-4 shadow p-3 mb-5 bg-white rounded">
                 <div class="row">
-                    <form #bonTForm="ngForm" (ngSubmit)="updateBonT(bonTForm.value)">
+                    <div class="alert alert-success" role="alert" *ngIf="message">
+                        {{message}}
+                        <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div><!-- ./message  -->
+
+                    <form #bonTForm="ngForm" (ngSubmit)="updateBonT(bonTForm.value)" class="frm-edit-bt">
                         <input type="hidden" name="id"  [(ngModel)]="singleBonT.id">
                         <div class="form-group">
-                            <label class="form-label">Numero</label>
+                            <label class="form-label">Numéro</label>
                             <input class="form-control" type="text" placeholder="Numero" name="numero" [(ngModel)]="singleBonT.numero" disabled>
                         </div>
                         <div class="form-group">
                             <label class="form-label">
-                                source_entrepot
+                                L'entrepôt source
                                 <strong class="text-danger" *ngIf="!singleBonT.source_entrepot_id">*</strong>
                             </label>
                             <select class="form-select" name="source_entrepot_id"  [(ngModel)]="singleBonT.source_entrepot_id" required>
@@ -31,7 +44,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">
-                                destination entrepôt
+                                L'entrepôt destination 
                                 <strong class="text-danger" *ngIf="!singleBonT.destination_entrepot_id">*</strong>
                             </label>
                             <select class="form-select" name="destination_entrepot_id" [(ngModel)]="singleBonT.destination_entrepot_id" required>
@@ -40,20 +53,20 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">commentaire</label>
+                            <label class="form-label">Commentaire</label>
                             <textarea class="form-control" rows="3" name="commentaire" [(ngModel)]="singleBonT.commentaire"></textarea>
                         </div>
-
-                        <div class="form-check" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">
-                            <input class="form-check-input" type="checkbox" (click)="valide(singleBonT.id)">
-                            <label class="form-check-label">
-                                Validé <i class="fa-solid fa-question"></i>
-                            </label>
-                        </div>
-
+                        
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!bonTForm.valid" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">Enregister</button>
-                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">Annuler</button>
+                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!bonTForm.valid || singleBonT.validated_at">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                            </button>
+                            <button type="button" class="btn btn-success mb-2 mt-4 float-right" [disabled]="singleBonT.validated_at && singleBonT.validated_by" (click)="valide(singleBonT.id)" style="margin-right: 5px;">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">
+                                <i class="fas fa-undo"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -66,7 +79,7 @@
             <div class="col-md-12 shadow p-3 mb-5 bg-white rounded">
                 <div class="header md-5">
                     <div class="header-body">
-                        <h2 class="header-title">Detail bons transfert</h2>
+                        <h2 class="header-title">Pièces</h2>
                     </div>
                 </div>
                 <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;" (click)="cleareDetailBT()" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">
@@ -76,13 +89,15 @@
                     <thead>
                         <tr>
                             <th>Piece</th>
-                            <th>Qte</th>
-                            <th>Éditer</th>
+                            <th width="150">Catégorie</th>
+                            <th width="100">Quantité</th>
+                            <th width="80" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">Options</th>
                         </tr>
                     </thead>
                     <tbody class="list">
                         <tr *ngFor="let dbt of list_detail_bonsT">
-                            <td class="marque"> {{dbt.pieces}} </td>
+                            <td class="piece"> {{dbt.designation}} </td>
+                            <td class="categorie">{{dbt.categorie}}</td>
                             <td class="qte"> {{dbt.qte}} </td>
                             <td width="75" *ngIf="!singleBonT.validated_at && !singleBonT.validated_by">
                                 <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailBtById(dbt.id)">
@@ -104,7 +119,7 @@
                 <div class="modal-card card" data-list=''>
                     <div class="card-header">
                         <h4 class="card-header-title" id="exampleModalCenterTitle">
-                            Detail bon de transfer
+                            Pièce
                         </h4>
                         <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -114,24 +129,30 @@
                             <input type="hidden" name="bon_transfert_id" [(ngModel)]="singleDetailBT.bon_transfert_id">
                             <div class="form-group">
                                 <label class="form-label">Catégorie de pièce</label>
-                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" required>
-                                    <option selected disabled>Veuillez choisir...</option>
+                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" name="categorie_id" [(ngModel)]="singleDetailBT.categorie_id" required>
+                                    <option value=null disabled>Veuillez choisir...</option>
                                     <option *ngFor="let cat of categorie_pieces" [value]="cat.id">{{cat.nom}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Pieces</label>
+                                <label class="form-label">
+                                    Pieces
+                                    <strong class="text-danger" *ngIf="!singleDetailBT.piece_id">*</strong>
+                                </label>
                                 <select class="form-select form-select-sm" name="piece_id" [(ngModel)]="singleDetailBT.piece_id" required>
                                     <option value=null disabled>Veuillez choisir...</option>
                                     <option *ngFor="let piece of pieces" [value]="piece.id">{{piece.designation}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Quantité</label>
-                                <input type="text" class="form-control form-control-sm" name="qte" [(ngModel)]="singleDetailBT.qte" placeholder="Quantité">
+                                <label class="form-label">
+                                    Quantité
+                                    <strong class="text-danger" *ngIf="!singleDetailBT.qte">*</strong>
+                                </label>
+                                <input type="text" class="form-control form-control-sm" name="qte" [(ngModel)]="singleDetailBT.qte" placeholder="Quantité" required>
                             </div>
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary mb-2 mt-4 float-right">Enregister</button>
+                                <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!detailsBonTForm.valid">Enregister</button>
                                 <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" data-bs-dismiss="modal" style="margin-right: 5px;">Annuler</button>
                             </div>
                         </form>

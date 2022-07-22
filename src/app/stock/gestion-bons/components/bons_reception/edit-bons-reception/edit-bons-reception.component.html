@@ -19,7 +19,7 @@
                         Le {{singleBonR.validated_at | date: "dd/MM/yyyy HH:mm:ss"}}
                     </span>
                 </div>
-            </div>
+            </div><!-- ./validation -->
 
             <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #roleForm="ngForm">
                 <div *ngIf="message" class="alert alert-success" role="alert">
@@ -31,9 +31,9 @@
                         <input type="hidden" name="id"  [(ngModel)]="singleBonR.id">
                         <div class="form-group">
                             <label class="form-label">
-                                Numero
+                                Numéro
                             </label>
-                            <input class="form-control" type="text" name="numero"  [(ngModel)]="singleBonR.numero" disabled>
+                            <input class="form-control" type="text" name="numero" [(ngModel)]="singleBonR.numero" disabled>
                         </div>
                         <div class="form-group">
                             <label class="form-label">
@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">
-                                Entrepot
+                                Entrepôt
                                 <strong class="text-danger" *ngIf="!singleBonR.entrepot_id">*</strong>
                             </label>
                             <select class="form-select" name="entrepot_id"  [(ngModel)]="singleBonR.entrepot_id" required>
@@ -56,21 +56,19 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">commentaire</label>
+                            <label class="form-label">Commentaire</label>
                             <textarea class="form-control" rows="2" name="commentaire" [(ngModel)]="singleBonR.commentaire"></textarea>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" 
-                                (click)="valideStock(singleBonR.id)"
-                                [disabled]="singleBonR.validated_at && singleBonR.validated_by" 
-                                [checked]="singleBonR.validated_at && singleBonR.validated_by">
-                            <label class="form-check-label">
-                                Validé <i class="fa-solid fa-question"></i>
-                            </label>
-                        </div>
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!bonRForm.valid || (singleBonR.validated_at && singleBonR.validated_by)">Enregister</button>
-                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">Annuler</button>
+                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!bonRForm.valid || singleBonR.validated_at">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                            </button>
+                            <button type="button" class="btn btn-success mb-2 mt-4 float-right" [disabled]="singleBonR.validated_at" (click)="valide(singleBonR.id)" style="margin-right: 5px;">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">
+                                <i class="fas fa-undo"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -84,38 +82,41 @@
 
                 <div class="header md-5">
                     <div class="header-body">
-                        <h2 class="header-title">Détail bon réception</h2>
+                        <h2 class="header-title">Pièces</h2>
                     </div>
-                </div>
+                </div><!-- ./header -->
 
-                <button 
-                    [disabled]="singleBonR.validated_at && singleBonR.validated_by" 
-                    class="btn btn-sm btn-outline-primary float-right align-middle" 
-                    data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;"
-                    (click)="cleareDetailBR()">
+                <div *ngIf="!singleBonR.validated_at"> 
+                    <button 
+                       class="btn btn-sm btn-outline-primary float-right align-middle" 
+                       data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;"
+                       (click)="cleareDetailBR()">
                        <i class="fa-solid fa-plus"></i>
-                </button><br><br>
+                    </button><br><br>
+                </div><!-- ./btn-ajouter -->
 
                 <table class="table table-sm table-nowrap card-table">
                     <thead>
                         <tr>
-                            <th>Catégorie</th>
-                            <th>Marque</th>
-                            <th>Quantité</th>
-                            <th>Prix unitaire</th>
-                            <th>Total</th>
-                            <th>Options</th>
+                            <th>Pièces</th>
+                            <th width="180">Catégorie</th>
+                            <th width="160">Marque</th>
+                            <th width="100" class="text-center">Quantité</th>
+                            <th width="100" class="text-center">Prix unitaire</th>
+                            <th width="100" class="text-center">Total</th>
+                            <th width="75" *ngIf="!singleBonR.validated_at">Options</th>
                         </tr>
                     </thead>
                     <tbody class="list">
                         <tr *ngFor="let dbr of detailsBRs">
-                            <td class="categorie"> {{dbr.categorie}} </td>
-                            <td class="marque"> {{dbr.marque}} </td>
-                            <td class="qte"> {{dbr.qte}} </td>
-                            <td class="prix_unitaire"> {{dbr.prix_unitaire}} </td>
-                            <td class="total"> {{dbr.total}} </td>
-                            <td width="75" *ngIf="!singleBonR.validated_at && !singleBonR.validated_by">
-                                <button type="button" ng-show="" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailBrById(dbr.id)">
+                            <td class="piece">{{dbr.designation}}</td>
+                            <td class="categorie">{{dbr.categorie}}</td>
+                            <td class="marque">{{dbr.marque}}</td>
+                            <td class="qte text-center">{{dbr.qte}} </td>
+                            <td class="prix_unitaire text-center">{{dbr.prix_unitaire}}</td>
+                            <td class="total text-center">{{dbr.total}}</td>
+                            <td *ngIf="!singleBonR.validated_at">
+                                <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailBrById(dbr.id)">
                                     <i class="fa-solid fa-pen"></i>
                                 </button> &nbsp;
                                 <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="singleDetailBR.id=dbr.id">
@@ -125,7 +126,7 @@
                         </tr>
                     </tbody>
                 </table>
-
+                
             </div>
         </div>
     </div><!-- ./container-fluid -->
@@ -146,8 +147,8 @@
                             <input type="hidden" name="bon_reception_id" [(ngModel)]="singleDetailBR.bon_reception_id">
                             <div class="form-group">
                                 <label class="form-label">Catégorie de pièce</label>
-                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" required>
-                                    <option selected disabled>Veuillez choisir...</option>
+                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" name="categorie_id" [(ngModel)]="singleDetailBR.categorie_id" required>
+                                    <option value=null disabled>Veuillez choisir...</option>
                                     <option *ngFor="let cat of categorie_pieces" [value]="cat.id">{{cat.nom}}</option>
                                 </select>
                             </div>

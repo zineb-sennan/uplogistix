@@ -8,7 +8,6 @@ import { IndexPiecesRechangeComponent } from './pieces-rechange/index-pieces-rec
 import { EditPiecesRechangeComponent } from './pieces-rechange/edit-pieces-rechange/edit-pieces-rechange.component';
 import { IndexInventairesComponent } from './inventaires/index-inventaires/index-inventaires.component';
 import { EditInventairesComponent } from './inventaires/edit-inventaires/edit-inventaires.component';
-import { GestionBonsComponent } from './gestion-bons/gestion-bons.component';
 import { GlobaleComponent } from './gestion-bons/globale/globale.component';
 import { IndexBonsReceptionComponent } from './gestion-bons/components/bons_reception/index-bons-reception/index-bons-reception.component';
 import { EditBonsReceptionComponent } from './gestion-bons/components/bons_reception/edit-bons-reception/edit-bons-reception.component';
@@ -34,7 +33,6 @@ import { FormsModule } from '@angular/forms';
     EditBonsTransfertComponent,
     IndexInventairesComponent,
     EditInventairesComponent,
-    GestionBonsComponent,
     GlobaleComponent
   ],
   imports: [

@@ -18,9 +18,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                
-                <a [routerLink]="['/stock/pieces-rechange/edit']" type="button" class="btn btn-outline-primary float-right">
-                    <i class="fa-solid fa-plus"></i> 
+
+                <a [routerLink]="['/stock/pieces-rechange/edit']" type="button"
+                    class="btn btn-outline-primary float-right">
+                    <i class="fa-solid fa-plus"></i>
                 </a><br><br><br>
 
                 <div class="table-responsive row">
@@ -51,7 +52,12 @@
                                         class="btn btn-operation">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
-                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-delete" (click)="piece_id=piece.id">
+                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal"
+                                        data-bs-target="#modal-pieces-entrepot" (click)="getEntrepotsByPiece(piece.id)">
+                                        <i class="fa-solid fa-puzzle-piece"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal"
+                                        data-bs-target="#modal-delete" (click)="piece_id=piece.id">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </td>
@@ -62,30 +68,65 @@
             </div>
         </div>
     </div> <!-- ./container-fluid -->
-     
-    <!-- **** Modal de confirmation **** -->
-    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-confirm">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <div class="icon-box">
-                        <i class="material-icons">
-                            <i class="fa-solid fa-x"></i>
-                        </i>
+</div>
+
+<!-- **** Modal de confirmation **** -->
+<div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="material-icons">
+                        <i class="fa-solid fa-x"></i>
+                    </i>
+                </div>
+                <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
+                <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal"
+                    aria-label="Close">Annuler</button>
+                <button type="button" class="btn btn-danger" (click)="delete(piece_id)">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-pieces-entrepot" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-card card" data-list=''>
+                <div class="card-header">
+                    <h4 class="card-header-title" id="exampleModalCenterTitle">
+                        Liste de pieces
+                    </h4>
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive row">
+                        <table class="table table-sm table-nowrap card-table">
+                            <thead>
+                                <tr>
+                                    <th>Désignation</th>
+                                    <th>Catégorie</th>
+                                    <th>L'unite de mesure</th>
+                                    <th>Marque</th>
+                                    <th>Référence</th>
+                                    <th>Gérer le stock</th>
+                                    <th>Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <!-- *** *** -->
+                            </tbody>
+                        </table>
                     </div>
-                    <h4 class="modal-title w-100">Êtes-vous sûr?</h4>
-                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Voulez-vous vraiment supprimer ces enregistrements ? Ce processus ne peut pas être annulé.</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">Annuler</button>
-                    <button type="button" class="btn btn-danger" (click)="delete(piece_id)">Supprimer</button>
                 </div>
             </div>
         </div>
     </div>
-
-
-</div>
+</div><!-- ./modal -->

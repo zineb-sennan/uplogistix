@@ -33,4 +33,8 @@ export class PiecesRechangeService {
     return this.http.get<any>(environment.apiURL + '/stock/categorie/'+id+'/pieces')
   }
 
+  getEntrepotByPiece(id:number){
+    return this.http.get<any>(environment.apiURL + '/stock/pieces/'+id+'/stock')
+  }
+
 }

@@ -17,7 +17,7 @@ export class EditBonsRetourComponent implements OnInit {
 
   list_bons_reception:any=[]; pieces:any=[]; detailsBRs:any=[]; message:any=''; entrepots:any= []; categorie_pieces:any= [];
   singleDetailBR:any={id:null, bon_retour_id:null, piece_id:null, qte:null, prix_unitaire:null };
-  singleBonR:any={id:null, numero:null, entrepot_id:null, bon_reception_id:null, commentaire:null };
+  singleBonR:any={id:null, numero:null, entrepot_id:null, bon_reception_id:null, commentaire:null, categorie_id:null };
 
   constructor(
     private bonsReceptionService:BonsReceptionService,
@@ -61,8 +61,14 @@ export class EditBonsRetourComponent implements OnInit {
 
 
  changeCategorie(e:any){
-    this.piecesRechangeService.getPiecesByCategorie(e.target.value).subscribe(
-      res=> this.pieces =res
+    this.getPiecesByCategorie(e.target.value);
+  }
+
+  getPiecesByCategorie(id:number){
+    this.piecesRechangeService.getPiecesByCategorie(id).subscribe(
+      res=> {
+        this.pieces =res;
+      }
     )
   }
 
@@ -70,6 +76,7 @@ export class EditBonsRetourComponent implements OnInit {
     this.bonsRetourDetailsService.getDetailsBR(id).subscribe(
       res =>{
         this.singleDetailBR= res;
+        this.getPiecesByCategorie(res.categorie_id);
       } 
     )
   }
@@ -94,7 +101,7 @@ export class EditBonsRetourComponent implements OnInit {
   }
 
   cleareDetailBR(){
-    this.singleDetailBR ={id:null, piece_id:null, bon_retour_id:this.singleDetailBR.bon_retour_id, qte:null, prix_unitaire:null };
+    this.singleDetailBR ={id:null, piece_id:null, bon_retour_id:this.singleDetailBR.bon_retour_id, qte:null, prix_unitaire:null, categorie_id:null };
   }
 
   deleteDetailBR(id:number){
@@ -143,6 +150,15 @@ getAllEntrepots(){
 
 fermer(){
   this.globale.fermer();
+}
+
+valide(id:number){
+  this.bonsRetourService.valide({id: id}).subscribe(
+    res => {
+      this.message ="Bon de retour est validé avec succès !";
+      this.getBonRetourById(id);
+    }
+  )
 }
 
 }

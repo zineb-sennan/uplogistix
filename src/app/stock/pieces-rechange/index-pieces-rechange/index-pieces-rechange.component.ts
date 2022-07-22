@@ -9,7 +9,7 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 })
 export class IndexPiecesRechangeComponent implements OnInit {
 
-  list_pieces_rechange:any=[]; message:any=null; piece_id:number=0;
+  list_pieces_rechange:any=[]; message:any=null; piece_id:number=0; entrepot:any=[];
 
   constructor(
     private piecesRechangeService: PiecesRechangeService,
@@ -32,6 +32,14 @@ export class IndexPiecesRechangeComponent implements OnInit {
         this.getAllpiecesRechange();
         this.message = "Piece de rechange est supprimé avec succès .";
         this.globale.closeModal();
+      }
+    )
+  }
+
+  getEntrepotsByPiece(id:number){
+    this.piecesRechangeService.getEntrepotByPiece(id).subscribe(
+      res =>{
+        this.entrepot=res;
       }
     )
   }

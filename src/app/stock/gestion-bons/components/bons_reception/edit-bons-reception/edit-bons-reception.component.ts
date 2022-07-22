@@ -17,7 +17,7 @@ export class EditBonsReceptionComponent implements OnInit {
   
   message:any=null; detailsBRs:any=[]; pieces:any=[]; entrepots:any=[]; fournisseurs:any=[]; categorie_pieces:any=[];
   singleBonR:any= { id:null, numero:null, fournisseur_id:null, entrepot_id:null, commentaire:null, validated_at:null, validated_by:null };
-  singleDetailBR:any={id:null, bon_reception_id:null, piece_id:null, qte:null, prix_unitaire:null };
+  singleDetailBR:any={id:null, bon_reception_id:null, piece_id:null, qte:null, prix_unitaire:null, categorie_id:null };
 
   constructor(
     private bonsReceptionService:BonsReceptionService,
@@ -72,7 +72,7 @@ export class EditBonsReceptionComponent implements OnInit {
     if(!form.id){
       this.bonsReceptionDetailsService.create(form).subscribe(
         res=>{
-          this.message="Bien ajouter !";
+          //this.message="Bien ajouter !";
           this.getAllDetailsBR(this.singleDetailBR.bon_reception_id);
           this.globale.closeModal();
         } 
@@ -81,7 +81,7 @@ export class EditBonsReceptionComponent implements OnInit {
     else{
       this.bonsReceptionDetailsService.update(form).subscribe(
         res=>{
-          this.message="Bien modifie !";
+          //this.message="Bien modifie !";
           this.getAllDetailsBR(this.singleDetailBR.bon_reception_id);
           this.globale.closeModal();
         } 
@@ -90,13 +90,15 @@ export class EditBonsReceptionComponent implements OnInit {
   }
 
   cleareDetailBR(){
-    this.singleDetailBR ={id:null, piece_id:null, bon_reception_id:this.singleDetailBR.bon_reception_id, qte:null, prix_unitaire:null };
+    this.singleDetailBR = {id:null, piece_id:null, bon_reception_id:this.singleDetailBR.bon_reception_id, qte:null, prix_unitaire:null, categorie_id:null };
+
+    console.log(this.singleDetailBR,'kkk');
   }
 
   deleteDetailBR(id:number){
     this.bonsReceptionDetailsService.delete(id).subscribe(
       res=>{
-        this.message='bien sup !';
+        //this.message='bien sup !';
         this.getAllDetailsBR(this.singleDetailBR.bon_reception_id);
         this.globale.closeModal();
       } 
@@ -136,8 +138,7 @@ export class EditBonsReceptionComponent implements OnInit {
     )
   }
 
-  valideStock(id:number){
-    //
+  valide(id:number){
     this.bonsReceptionService.valideStock({id: id}).subscribe(
       res => {
         this.message ="Bon reception bien validé !";

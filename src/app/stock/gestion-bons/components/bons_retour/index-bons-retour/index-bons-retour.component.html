@@ -12,11 +12,13 @@
         <table class="table table-sm table-nowrap card-table">
             <thead>
                 <tr>
-                    <th>Numero</th>
-                    <th>Raison sociale</th>
-                    <th>Bon reception</th>
-                    <th>entrepot</th>
+                    <th width="150">Numéro</th>
+                    <th width="200">Raison sociale</th>
+                    <th width="150">Bon reception</th>
+                    <th width="200">Entrepôt</th>
+                    <th width="170" class="text-center">validé le</th>
                     <th>Commentaire</th>
+                    <th class="text-center">Statut</th>
                     <th>Options</th>
                 </tr>
             </thead>
@@ -26,10 +28,20 @@
                     <td class="raison_sociale">{{bonR.raison_sociale}}</td>
                     <td class="bon_reception"> {{bonR.bon_reception}} </td>
                     <td class="numero"> {{bonR.entrepot}} </td>
+                    <td class="valide-le text-center">{{bonR.validated_at | date:"dd/MM/yyyy HH:mm"}}</td>
                     <td class="commentaire"> {{bonR.commentaire}} </td>
+                    <td class="statut text-center">
+                        <div class="text-success" *ngIf="bonR.validated_at">
+                            Validé 
+                            <i class="fa-solid fa-check"></i>
+                        </div> 
+                        <div class="text-danger" *ngIf="!bonR.validated_at">
+                           Non validé
+                           <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </td>
                     <td width="75">
-                        <a [routerLink]="['/stock/bons-retour/',bonR.id,'edit']" type="button"
-                            class="btn btn-operation">
+                        <a [routerLink]="['/stock/bons-retour/',bonR.id,'edit']" type="button" class="btn btn-operation">
                             <i class="fa-solid fa-pen"></i>
                         </a>
                     </td>

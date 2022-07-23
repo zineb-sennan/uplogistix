@@ -1,3 +1,17 @@
 #modal-pieces-entrepot .modal-dialog {
-    max-width: 1000px !important;
+    max-width: 450px !important;
+}
+
+.list-group-item {
+    padding: 5px 10px !important;
+}
+
+.list-group-flush{
+    width: 370px;
+    display: block;
+    margin: auto;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    padding: 10px;
 }

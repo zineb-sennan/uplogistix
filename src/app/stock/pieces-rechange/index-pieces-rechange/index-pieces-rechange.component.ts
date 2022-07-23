@@ -9,7 +9,7 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 })
 export class IndexPiecesRechangeComponent implements OnInit {
 
-  list_pieces_rechange:any=[]; message:any=null; piece_id:number=0; entrepot:any=[];
+  list_pieces_rechange:any=[]; message:any=null; piece_id:number=0; entrepots:any=[];
 
   constructor(
     private piecesRechangeService: PiecesRechangeService,
@@ -18,6 +18,8 @@ export class IndexPiecesRechangeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllpiecesRechange();
+
+    this.getMovementsPieces();
   }
 
   getAllpiecesRechange(){
@@ -39,7 +41,16 @@ export class IndexPiecesRechangeComponent implements OnInit {
   getEntrepotsByPiece(id:number){
     this.piecesRechangeService.getEntrepotByPiece(id).subscribe(
       res =>{
-        this.entrepot=res;
+        this.entrepots=res;
+      }
+    )
+  }
+
+  getMovementsPieces(){
+    const record={date_debut:'2022-07-01', date_fin:'2022-07-23', piece_id:1};
+    this.piecesRechangeService.getMovementsPieces(record).subscribe(
+      res => {
+        console.log(res, '*** result ***');
       }
     )
   }

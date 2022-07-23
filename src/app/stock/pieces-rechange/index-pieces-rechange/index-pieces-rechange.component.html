@@ -101,29 +101,25 @@
             <div class="modal-card card" data-list=''>
                 <div class="card-header">
                     <h4 class="card-header-title" id="exampleModalCenterTitle">
-                        Liste de pieces
+                        Stock par entrepôts
                     </h4>
                     <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive row">
-                        <table class="table table-sm table-nowrap card-table">
-                            <thead>
-                                <tr>
-                                    <th>Désignation</th>
-                                    <th>Catégorie</th>
-                                    <th>L'unite de mesure</th>
-                                    <th>Marque</th>
-                                    <th>Référence</th>
-                                    <th>Gérer le stock</th>
-                                    <th>Stock</th>
-                                </tr>
-                            </thead>
-                            <tbody class="list">
-                                <!-- *** *** -->
-                            </tbody>
-                        </table>
+                    <div class="list-group list-group-flush my-n3" >
+                        <div class="list-group-item" *ngFor="let entrepot of entrepots">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h5 class="mb-0">{{entrepot.entrepot}}</h5>
+                                </div>
+                                <div class="col-auto">
+                                    <strong class="text-success" [ngClass]="{'text-danger':entrepot.stock==0}">
+                                        {{entrepot.stock}}
+                                    </strong>
+                                </div>
+                            </div>
+                        </div><!-- / .list-group-item -->
                     </div>
                 </div>
             </div>

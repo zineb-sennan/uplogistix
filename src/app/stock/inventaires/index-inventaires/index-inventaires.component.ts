@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Globale } from 'src/app/_globale/globale';
 import { EntrepotsService } from 'src/app/_services/entrepots.service';
 import { InventairesService } from 'src/app/_services/inventaires.service';
@@ -10,13 +11,14 @@ import { InventairesService } from 'src/app/_services/inventaires.service';
 })
 export class IndexInventairesComponent implements OnInit {
 
-  message:any=null;  entrepots:any=[]; list_inventaires:any=[];
+  entrepots:any=[]; list_inventaires:any=[];
   singleInventaire:any={ id:null, entrepot_id:null, commentaire:null };
 
   constructor(
     private entrepotsService:EntrepotsService,
     private inventairesService:InventairesService,
     private globale:Globale,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -41,7 +43,7 @@ export class IndexInventairesComponent implements OnInit {
       res => {
         this.getAllInventaires();
         this.globale.closeModal();
-        this.message="Bien ajouter !";
+        this.router.navigate(['stock/inventaires/'+res.id+'/edit']);
       } 
     )
  }

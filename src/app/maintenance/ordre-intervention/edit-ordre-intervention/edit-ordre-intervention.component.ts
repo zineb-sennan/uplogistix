@@ -256,6 +256,7 @@ export class EditOrdreInterventionComponent implements OnInit {
   onEditPiece(item:any, value:boolean){
     item.isPiece= value;
     this.singlePieceTache={id:null, oi_tache_id:item.id, piece_id:null, qte:null, prix_unitaire:null, total:null };
+    
   }
 
  addPieceTache(){
@@ -297,10 +298,12 @@ export class EditOrdreInterventionComponent implements OnInit {
     )
  }
 
+ /****************************************************************************** */
   onEditPieceOfTache(item:any, value:boolean){
     item.isEdit = value;
     this.singlePieceTache=item;
     this.singlePieceTache.total= this.singlePieceTache.qte * this.singlePieceTache.prix_unitaire;
+    this.getPiecesByInventaire(item.categorie_id);
   }
 
 /** *** *** **/
@@ -346,11 +349,14 @@ export class EditOrdreInterventionComponent implements OnInit {
     if(item.qte && item.prix_unitaire) item.total = Number(item.qte)*Number(item.prix_unitaire);
   }
 
-
-  changeIntervention(e :any){
-    this.piecesRechangeService.getPiecesByCategorie(e.target.value).subscribe(
+  getPiecesByInventaire(id:number){
+    this.piecesRechangeService.getPiecesByCategorie(id).subscribe(
       res => this.pieces=res
     )
+  }
+
+  changeIntervention(e :any){
+    this.getPiecesByInventaire(e.target.value);
   }
 
 }

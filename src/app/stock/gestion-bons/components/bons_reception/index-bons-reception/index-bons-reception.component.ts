@@ -12,7 +12,7 @@ import { FournisseursService } from 'src/app/_services/fournisseurs.service';
 })
 export class IndexBonsReceptionComponent implements OnInit {
 
-  message:any=null;  list_bon_receptions:any=[]; entrepots:any=[]; fournisseurs:any=[];
+  list_bon_receptions:any=[]; entrepots:any=[]; fournisseurs:any=[];
   singleBonR:any={ fournisseur_id:null, entrepot_id:null, commentaire:null }
 
   constructor(
@@ -52,7 +52,6 @@ export class IndexBonsReceptionComponent implements OnInit {
       res=>{
         this.getAllBonReceptions();
         this.globale.closeModal();
-        this.message="Bien ajouter !";
         this.router.navigate(['stock/bons-reception/'+res.id+'/edit']);
       } 
     )

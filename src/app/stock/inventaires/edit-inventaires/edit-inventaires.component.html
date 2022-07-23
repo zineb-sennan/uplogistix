@@ -1,5 +1,4 @@
 <section>
-    <!-- *** *** Titre *** ***  -->
     <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
         <div class="align-items-end">
             <h6 class="header-pretitle">
@@ -9,17 +8,27 @@
                 Inventaire
             </h2>
         </div>
-    </div>
-    <!-- *** *** Content *** ***  -->
+    </div><!-- ./titre -->
     <div class="container-fluid">
         <div class="row">
+            <div class="validation">
+                <div style="width: 200px;" class="float-right" *ngIf="singleInventaire.validated_at">
+                    <img src="assets/img/validation.png">
+                    <span class="date-validation">
+                        Le {{singleInventaire.validated_at | date: "dd/MM/yyyy HH:mm:ss"}}
+                    </span>
+                </div>
+            </div><!-- ./validation -->
             <form class="mb-4 shadow p-3 mb-5 bg-white rounded frm-client" #roleForm="ngForm">
-                <!-- *** *** *** Forms *** *** *** -->
+                <div *ngIf="message" class="alert alert-success" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div><!-- ./message -->
                 <div class="row">
-                    <form #inventaireForm="ngForm" (ngSubmit)="updateInventaire(inventaireForm.value)">
+                    <form #inventaireForm="ngForm" (ngSubmit)="updateInventaire(inventaireForm.value)" class="frm-inv">
                         <input type="hidden" name="id"  [(ngModel)]="singleInventaire.id">
                         <div class="form-group">
-                            <label class="form-label">Numero</label>
+                            <label class="form-label">Numéro</label>
                             <input class="form-control" type="text" placeholder="Numero" name="numero" [(ngModel)]="singleInventaire.numero" disabled>
                         </div>
                         <div class="form-group">
@@ -38,42 +47,51 @@
                         </div>
 
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!inventaireForm.valid">Enregister</button>
-                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">Annuler</button>
+                            <button type="submit" class="btn btn-primary mb-2 mt-4 float-right" [disabled]="!inventaireForm.valid || singleInventaire.validated_at">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                            </button>
+                            <button type="button" class="btn btn-success mb-2 mt-4 float-right" [disabled]="singleInventaire.validated_at" (click)="valide(singleInventaire.id)" style="margin-right: 5px;">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary mb-2 mt-4 float-right" style="margin-right: 5px;" (click)="fermer()">
+                                <i class="fas fa-undo"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
                 <hr class="mt-4 mb-4">
                 <small class="text-danger">*: Ce champ est obligatoire.</small>
             </form>
-        </div>
-
+        </div><!-- ./row -->
         <div class="row">
             <div class="col-md-12 shadow p-3 mb-5 bg-white rounded">
-
                 <div class="header md-5">
                     <div class="header-body">
-                        <h2 class="header-title">Detail inventaire</h2>
+                        <h2 class="header-title">Pièces</h2>
                     </div>
                 </div>
-
-                <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;" (click)="clearDetailInventaire()">
-                    <i class="fa-solid fa-plus"></i>
-                </button> <br><br>
-
+                <div *ngIf="!singleInventaire.validated_at">
+                    <button class="btn btn-sm btn-outline-primary float-right align-middle" data-bs-toggle="modal" data-bs-target="#modal-edit" style="width: 60px;" (click)="clearDetailInventaire()">
+                        <i class="fa-solid fa-plus"></i>
+                    </button> <br><br>
+                </div><!-- ./btn-add -->
                 <table class="table table-sm table-nowrap card-table">
                     <thead>
                         <tr>
-                            <th>Piece</th>
-                            <th>Qte</th>
-                            <th>Éditer</th>
+                            <th>Pièces</th>
+                            <th width="180">Catégorie</th>
+                            <th width="160">Marque</th>
+                            <th width="100" class="text-center">Quantité</th>
+                            <th width="75" *ngIf="!singleInventaire.validated_at">Options</th>
                         </tr>
                     </thead>
                     <tbody class="list">
                         <tr *ngFor="let di of list_detail_inventaire">
-                            <td class="marque"> {{di.designation}} </td>
+                            <td class="piece">{{di.designation}}</td>
+                            <td class="categorie">_</td>
+                            <td class="marque"> {{di.marque}}</td>
                             <td class="qte"> {{di.qte}} </td>
-                            <td width="75">
+                            <td width="75" *ngIf="!singleInventaire.validated_at">
                                 <button type="button" class="btn btn-operation" data-bs-toggle="modal" data-bs-target="#modal-edit" (click)="getDetailInventaireById(di.id)">
                                     <i class="fa-solid fa-pen"></i>
                                 </button> &nbsp;
@@ -84,12 +102,9 @@
                         </tr>
                     </tbody>
                 </table>
-
-
             </div>
-        </div>
+        </div><!-- ./row -->
     </div>
-    <!-- *** *** *** *** ***-->
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -105,15 +120,22 @@
                             <input type="hidden" name="id" [(ngModel)]="singleDetailInventaire.id">
                             <input type="hidden" name="inventaire_id" [(ngModel)]="singleInventaire.id">
                             <div class="form-group">
+                                <label class="form-label">Catégorie de pièce</label>
+                                <select class="form-select form-select-sm" (change)="changeCategorie($event)" name="categorie_id" [(ngModel)]="singleDetailInventaire.categorie_id" required>
+                                    <option value=null disabled>Veuillez choisir...</option>
+                                    <option *ngFor="let cat of categorie_pieces" [value]="cat.id">{{cat.nom}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label class="form-label">Pieces</label>
-                                <select class="form-select" name="piece_id" [(ngModel)]="singleDetailInventaire.piece_id" required>
+                                <select class="form-select form-select-sm" name="piece_id" [(ngModel)]="singleDetailInventaire.piece_id" required>
                                     <option value=null disabled>Veuillez choisir...</option>
                                     <option *ngFor="let piece of pieces" [value]="piece.id">{{piece.designation}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Qte</label>
-                                <input type="number" class="form-control" name="qte" [(ngModel)]="singleDetailInventaire.qte" placeholder="Qte">
+                                <label class="form-label">Quantité</label>
+                                <input type="number" class="form-control form-control-sm" name="qte" [(ngModel)]="singleDetailInventaire.qte" placeholder="Quantité">
                             </div>
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary mb-2 mt-4 float-right">Enregister</button>
@@ -124,8 +146,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- *** *** *** *** -->
+    </div><!-- ./modal -->
     <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-confirm">
             <div class="modal-content">
@@ -148,6 +169,5 @@
                 </div>
             </div>
         </div>
-    </div> 
-
+    </div><!-- ./modal -->
 </section>

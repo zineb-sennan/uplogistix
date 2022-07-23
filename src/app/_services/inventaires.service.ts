@@ -14,7 +14,7 @@ export class InventairesService {
   }
 
   create(record: any) {
-    return this.http.post(environment.apiURL + '/stock/inventaires', record)
+    return this.http.post<any>(environment.apiURL + '/stock/inventaires', record)
   }
 
   update(record: any) {
@@ -23,6 +23,10 @@ export class InventairesService {
 
   getInventaire(id:number){
     return this.http.get<any>(environment.apiURL + '/stock/inventaires/'+id)
+  }
+
+  valide(record:any){
+    return this.http.post(environment.apiURL + '/stock/inventaires/'+record.id+'/validate', record)
   }
 
 }

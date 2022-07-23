@@ -1,8 +1,3 @@
-<div *ngIf="message" class="alert alert-success" role="alert">
-    {{message}}
-    <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-
 <div class="contient">
     <button class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#modal-edit">
         <i class="fa-solid fa-plus"></i>
@@ -23,7 +18,6 @@
             <tbody class="list">
                 <tr *ngFor="let bonR of list_bon_receptions">
                     <td class="numero">
-
                         {{bonR.numero}}
                     </td>
                     <td class="fournisseur">{{bonR.fournisseur}}</td>

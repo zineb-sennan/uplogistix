@@ -37,4 +37,8 @@ export class PiecesRechangeService {
     return this.http.get<any>(environment.apiURL + '/stock/pieces/'+id+'/stock')
   }
 
+  getMovementsPieces(record:any){
+    return this.http.post(environment.apiURL + '/stock/pieces/mouvements', record)
+  }
+
 }

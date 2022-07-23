@@ -96,7 +96,7 @@
             <div class="modal-card card" data-list=''>
                 <div class="card-header">
                     <h4 class="card-header-title" id="exampleModalCenterTitle">
-                        Liste de pieces
+                        Stock par pieces de rechange
                     </h4>
                     <button type="button" class="btn-close pb-0 mp-0" data-bs-dismiss="modal"
                         aria-label="Close"></button>
@@ -107,16 +107,26 @@
                             <thead>
                                 <tr>
                                     <th>Désignation</th>
-                                    <th>Catégorie</th>
-                                    <th>L'unite de mesure</th>
-                                    <th>Marque</th>
-                                    <th>Référence</th>
-                                    <th>Gérer le stock</th>
-                                    <th>Stock</th>
+                                    <th width="170">Catégorie</th>
+                                    <th width="100">L'unite de mesure</th>
+                                    <th width="100">Marque</th>
+                                    <th width="150">Référence</th>
+                                    <th width="100">Gérer le stock</th>
+                                    <th class="text-center" width="80">Stock</th>
                                 </tr>
                             </thead>
                             <tbody class="list">
-                                <!-- *** *** -->
+                                <tr *ngFor="let piece of pieces">
+                                    <td class="designation"> {{piece.designation}} </td>
+                                    <td class="piece_categories">{{piece.piece_categories}}</td>
+                                    <td class="unite_mesure"> {{piece.unite_mesure}} </td>
+                                    <td class="marque"> {{piece.marque}} </td>
+                                    <td class="reference"> {{piece.reference}} </td>
+                                    <td class="gerer_stock text-center"> {{piece.gerer_stock? 'true': 'false'}} </td>
+                                    <td class="stock text-center"> 
+                                        <strong class="text-success" [ngClass]="{'text-danger':piece.stock==0}">{{piece.stock}}</strong>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

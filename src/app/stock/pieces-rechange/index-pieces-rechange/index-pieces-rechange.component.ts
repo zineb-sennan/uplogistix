@@ -19,7 +19,7 @@ export class IndexPiecesRechangeComponent implements OnInit {
   ngOnInit(): void {
     this.getAllpiecesRechange();
 
-    this.getMovementsPieces();
+    //this.getMovementsPieces();
   }
 
   getAllpiecesRechange(){
@@ -38,21 +38,21 @@ export class IndexPiecesRechangeComponent implements OnInit {
     )
   }
 
-  getEntrepotsByPiece(id:number){
-    this.piecesRechangeService.getEntrepotByPiece(id).subscribe(
-      res =>{
-        this.entrepots=res;
-      }
-    )
-  }
+  // getEntrepotsByPiece(id:number){
+  //   this.piecesRechangeService.getEntrepotByPiece(id).subscribe(
+  //     res =>{
+  //       this.entrepots=res;
+  //     }
+  //   )
+  // }
 
-  getMovementsPieces(){
-    const record={date_debut:'2022-07-01', date_fin:'2022-07-23', piece_id:1};
-    this.piecesRechangeService.getMovementsPieces(record).subscribe(
-      res => {
-        console.log(res, '*** result ***');
-      }
-    )
-  }
+  // getMovementsPieces(){
+  //   const record={date_debut:'2022-07-01', date_fin:'2022-07-23', piece_id:1};
+  //   this.piecesRechangeService.getMovementsPieces(record).subscribe(
+  //     res => {
+  //       console.log(res, '*** result ***');
+  //     }
+  //   )
+  // }
 
 }

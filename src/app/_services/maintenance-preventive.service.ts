@@ -25,4 +25,8 @@ export class MaintenancePreventiveService {
     return this.http.post<any>(environment.apiURL + '/maintenance/cout', record)
   }
 
+  getStatistiquesByOrder(){
+    return this.http.get<any>(environment.apiURL + '/maintenance/ordres/statistiques')
+  }
+
 }

@@ -16,6 +16,7 @@ import { EditBonsRetourComponent } from './gestion-bons/components/bons_retour/e
 import { IndexBonsTransfertComponent } from './gestion-bons/components/bons-transfert/index-bons-transfert/index-bons-transfert.component';
 import { EditBonsTransfertComponent } from './gestion-bons/components/bons-transfert/edit-bons-transfert/edit-bons-transfert.component';
 import { FormsModule } from '@angular/forms';
+import { DetailPiecesRechangeComponent } from './pieces-rechange/detail-pieces-rechange/detail-pieces-rechange.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { FormsModule } from '@angular/forms';
     EditBonsTransfertComponent,
     IndexInventairesComponent,
     EditInventairesComponent,
-    GlobaleComponent
+    GlobaleComponent,
+    DetailPiecesRechangeComponent
   ],
   imports: [
     CommonModule,

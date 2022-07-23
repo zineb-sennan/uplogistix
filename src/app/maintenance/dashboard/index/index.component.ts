@@ -38,30 +38,35 @@ export class IndexComponent implements OnInit {
   }
 
   chartOrderIntervention() {
-    let chart: any = $('#chart-order-intervention');
-    new Chart(chart, {
-      type: 'doughnut',
-      data: {
-        labels: ['Ouvert', 'En instance', 'En réparation', 'Clôturer'],
-        datasets: [{
-          label: '# Total consommation',
-          data: [300, 50, 100, 40],
-          backgroundColor: [
-            '#1B509C',
-            '#4A92F0',
-            '#64A2F3',
-            '#8DBEFF'
-          ],
-          hoverOffset: 4
-        }],
-      },
-      options: {
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'left' }
-        }
+     this.maintenancePreventiveService.getStatistiquesByOrder().subscribe(
+      res=> {
+        const satistiques=res;
+        let chart: any = $('#chart-order-intervention');
+        new Chart(chart, {
+          type: 'doughnut',
+          data: {
+            labels: [...satistiques].map(r=> r.libelle),
+            datasets: [{
+              label: '# Total consommation',
+              data: [...satistiques].map(r=> r.nombre),
+              backgroundColor: [
+                '#1B509C',
+                '#4A92F0',
+                '#64A2F3',
+                '#8DBEFF'
+              ],
+              hoverOffset: 4
+            }],
+          },
+          options: {
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'left' }
+            }
+          }
+        });
       }
-    });
+     )
   }
 
   chartCoutMaintenance() {

@@ -1,0 +1,68 @@
+<div class="app">
+    <div class="header-body shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="align-items-end">
+            <h6 class="header-pretitle">
+                Stock
+            </h6>
+            <h2 class="header-title">
+                Pièces de rechange
+            </h2>
+        </div>
+    </div> <!-- ./titre -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive row">
+                            <table class="table table-sm table-nowrap card-table">
+                                <thead>
+                                    <tr>
+                                        <th>Numero</th>
+                                        <th>Origine</th>
+                                        <th>Entrepot</th>
+                                        <th>Credit</th>
+                                        <th>Debit</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="list">
+                                    <tr *ngFor="let mov of list_mov">
+                                        <td>{{mov.numero}}</td>
+                                        <td>{{mov.origine}}</td>
+                                        <td>{{mov.entrepot}}</td>
+                                        <td>{{mov.credit}}</td>
+                                        <td>{{mov.debit}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- ./col-md-8 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center gx-0">
+                            <div class="list-group list-group-flush my-n3" >
+                                <div class="list-group-item" *ngFor="let entrepot of entrepots">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h5 class="mb-0">{{entrepot.entrepot}}</h5>
+                                        </div>
+                                        <div class="col-auto">
+                                            <strong class="text-success" [ngClass]="{'text-danger':entrepot.stock==0}">
+                                                {{entrepot.stock}}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div><!-- / .list-group-item -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- / .col-md-4 -->
+        </div>
+    </div>    
+
+</div>

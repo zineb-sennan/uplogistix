@@ -16,6 +16,7 @@ import { EditBonsRetourComponent } from './gestion-bons/components/bons_retour/e
 import { IndexBonsTransfertComponent } from './gestion-bons/components/bons-transfert/index-bons-transfert/index-bons-transfert.component';
 import { EditBonsTransfertComponent } from './gestion-bons/components/bons-transfert/edit-bons-transfert/edit-bons-transfert.component';
 import { GlobaleComponent } from './gestion-bons/globale/globale.component';
+import { DetailPiecesRechangeComponent } from './pieces-rechange/detail-pieces-rechange/detail-pieces-rechange.component';
 
 
 const routes: Routes = [
@@ -33,15 +34,12 @@ const routes: Routes = [
       { path: 'pieces-rechange/:id/edit', component: EditPiecesRechangeComponent, canActivate: [AuthGuardUser] },
       { path: 'pieces-rechange/edit', component: EditPiecesRechangeComponent, canActivate: [AuthGuardUser] },
       /*** les bons reception ***/
-      // { path: 'bons-reception', component: IndexBonsReceptionComponent, canActivate: [AuthGuardUser] },
       { path: 'bons-reception/:id/edit', component: EditBonsReceptionComponent, canActivate: [AuthGuardUser] },
       { path: 'bons-reception/edit', component: EditBonsReceptionComponent, canActivate: [AuthGuardUser] },
       /*** les bons retour ***/
-      // { path: 'bons-retour', component: IndexBonsRetourComponent, canActivate: [AuthGuardUser] },
       { path: 'bons-retour/:id/edit', component: EditBonsRetourComponent, canActivate: [AuthGuardUser] },
       { path: 'bons-retour/edit', component: EditBonsRetourComponent, canActivate: [AuthGuardUser] },
       /*** les bons retour ***/
-      // { path: 'bons-transfert', component: IndexBonsTransfertComponent, canActivate: [AuthGuardUser] },
       { path: 'bons-transfert/:id/edit', component: EditBonsTransfertComponent, canActivate: [AuthGuardUser] },
       { path: 'bons-transfert/edit', component: EditBonsTransfertComponent, canActivate: [AuthGuardUser] },
        /*** les inventaires ***/
@@ -50,6 +48,8 @@ const routes: Routes = [
       { path: 'inventaires/edit', component: EditInventairesComponent, canActivate: [AuthGuardUser] },
       /*** la gestion des bons ***/
       { path: 'gestions-bons', component: GlobaleComponent , canActivate: [AuthGuardUser] },
+      /*** detail de piece de rechenge ***/
+      { path: 'pieces-rechange/detail/:id', component: DetailPiecesRechangeComponent, canActivate: [AuthGuardUser] }
     ]
   }
 ];

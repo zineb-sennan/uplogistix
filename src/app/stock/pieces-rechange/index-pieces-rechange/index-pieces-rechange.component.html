@@ -18,11 +18,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-
-                <a [routerLink]="['/stock/pieces-rechange/edit']" type="button"
-                    class="btn btn-outline-primary float-right">
-                    <i class="fa-solid fa-plus"></i>
-                </a><br><br><br>
+                <div>
+                    <a [routerLink]="['/stock/pieces-rechange/edit']" type="button"
+                       class="btn btn-outline-primary float-right">
+                       <i class="fa-solid fa-plus"></i>
+                    </a><br><br><br>
+                </div><!--./btn-add -->
 
                 <div class="table-responsive row">
                     <table class="table table-sm table-nowrap card-table">
@@ -52,14 +53,14 @@
                                         class="btn btn-operation">
                                         <i class="fa-solid fa-pen"></i>
                                     </a>
-                                    <button type="button" class="btn btn-operation" data-bs-toggle="modal"
-                                        data-bs-target="#modal-pieces-entrepot" (click)="getEntrepotsByPiece(piece.id)">
-                                        <i class="fa-solid fa-puzzle-piece"></i>
-                                    </button>
+                                    <a [routerLink]="['/stock/pieces-rechange/detail/',piece.id]" type="button"
+                                        class="btn btn-operation">
+                                        <i class="fa-solid fa-info"></i>
+                                    </a>
                                     <button type="button" class="btn btn-operation" data-bs-toggle="modal"
                                         data-bs-target="#modal-delete" (click)="piece_id=piece.id">
                                         <i class="fa-solid fa-trash"></i>
-                                    </button>
+                                    </button> 
                                 </td>
                             </tr>
                         </tbody>
@@ -95,7 +96,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-pieces-entrepot" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- <div class="modal fade" id="modal-pieces-entrepot" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-card card" data-list=''>
@@ -119,10 +120,10 @@
                                     </strong>
                                 </div>
                             </div>
-                        </div><!-- / .list-group-item -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div><!-- ./modal -->
+</div> -->

@@ -15,9 +15,9 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 })
 export class EditBonsRetourComponent implements OnInit {
 
-  list_bons_reception:any=[]; pieces:any=[]; detailsBRs:any=[]; message:any=''; entrepots:any= []; categorie_pieces:any= [];
+  list_bons_reception:any=[]; pieces:any=[]; detailsBRs:any=[]; message:any=''; categorie_pieces:any= [];
   singleDetailBR:any={id:null, bon_retour_id:null, piece_id:null, qte:null, prix_unitaire:null };
-  singleBonR:any={id:null, numero:null, entrepot_id:null, bon_reception_id:null, commentaire:null, categorie_id:null };
+  singleBonR:any={id:null, numero:null, bon_reception_id:null, commentaire:null, categorie_id:null };
 
   constructor(
     private bonsReceptionService:BonsReceptionService,
@@ -25,7 +25,6 @@ export class EditBonsRetourComponent implements OnInit {
     private bonsRetourService:BonsRetourService,
     private activatedRoute: ActivatedRoute,
     private piecesRechangeService: PiecesRechangeService,
-    private entrepotsService: EntrepotsService,
     private pieceCategoriesService: PieceCategoriesService,
     private globale:Globale
   ) { }
@@ -38,7 +37,6 @@ export class EditBonsRetourComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllBonReceptions();
-    this.getAllEntrepots();
     this.getAllCategoriesOfPieces();
 
     this.activatedRoute.params.subscribe(param => {
@@ -139,12 +137,6 @@ export class EditBonsRetourComponent implements OnInit {
  updateBonR(form:any){
   this.bonsRetourService.update(form).subscribe(
     res => this.message="Le bon de retour est modifié avec succès !"
-  )
-}
-
-getAllEntrepots(){
-  this.entrepotsService.getAll().subscribe(
-    res=> this.entrepots=res
   )
 }
 

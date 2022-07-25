@@ -34,16 +34,6 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">
-                                L'entrepôt source
-                                <strong class="text-danger" *ngIf="!singleBonT.source_entrepot_id">*</strong>
-                            </label>
-                            <select class="form-select" name="source_entrepot_id"  [(ngModel)]="singleBonT.source_entrepot_id" required>
-                                <option value=null disabled>Veuillez choisir...</option>
-                                <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">
                                 L'entrepôt destination 
                                 <strong class="text-danger" *ngIf="!singleBonT.destination_entrepot_id">*</strong>
                             </label>

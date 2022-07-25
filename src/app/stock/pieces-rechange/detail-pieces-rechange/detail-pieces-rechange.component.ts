@@ -11,7 +11,7 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 export class DetailPiecesRechangeComponent implements OnInit {
 
   entrepots:any=[]; list_mov:any=[]; date=new Date();
-  filter: any = { piece_id: null, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') };
+  search: any = { piece_id: null, date_debut: this.datePipe.transform((new Date(this.date.getFullYear(), this.date.getMonth(), 1)), "yyyy-MM-dd"), date_fin: this.datePipe.transform(this.date, 'yyyy-MM-dd') };
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -24,7 +24,7 @@ export class DetailPiecesRechangeComponent implements OnInit {
       const { id } = param;
       if (id) {
         this.getEntrepotsByPiece(id);
-        this.filter.piece_id=id;
+        this.search.piece_id=id;
         this.getMovementsPieces();
       }
     });
@@ -39,7 +39,7 @@ export class DetailPiecesRechangeComponent implements OnInit {
   }
 
   getMovementsPieces(){
-    this.piecesRechangeService.getMovementsPieces(this.filter).subscribe(
+    this.piecesRechangeService.getMovementsPieces(this.search).subscribe(
       res => {
         this.list_mov=res.records;
       }

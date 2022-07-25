@@ -15,8 +15,8 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 })
 export class EditBonsReceptionComponent implements OnInit {
   
-  message:any=null; detailsBRs:any=[]; pieces:any=[]; entrepots:any=[]; fournisseurs:any=[]; categorie_pieces:any=[];
-  singleBonR:any= { id:null, numero:null, fournisseur_id:null, entrepot_id:null, commentaire:null, validated_at:null, validated_by:null };
+  message:any=null; detailsBRs:any=[]; pieces:any=[]; fournisseurs:any=[]; categorie_pieces:any=[];
+  singleBonR:any= { id:null, numero:null, fournisseur_id:null, commentaire:null, validated_at:null, validated_by:null };
   singleDetailBR:any={id:null, bon_reception_id:null, piece_id:null, qte:null, prix_unitaire:null, categorie_id:null };
 
   constructor(
@@ -31,9 +31,7 @@ export class EditBonsReceptionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAllEntrepots();
     this.getAllFournisseurs();
-    
 
     this.activatedRoute.params.subscribe(param => {
       const { id } = param;
@@ -45,10 +43,16 @@ export class EditBonsReceptionComponent implements OnInit {
     });
   }
 
-  changeCategorie(e:any){
-    this.piecesRechangeService.getPiecesByCategorie(e.target.value).subscribe(
-      res=> this.pieces =res
+  getPiecesByCategorie(id:number){
+    this.piecesRechangeService.getPiecesByCategorie(id).subscribe(
+      res => {
+        this.pieces = res;
+      }
     )
+  }
+
+  changeCategorie(e:any){
+    this.getPiecesByCategorie(e.target.value);
   }
   
   getAllCategoriesOfPieces(){
@@ -60,11 +64,12 @@ export class EditBonsReceptionComponent implements OnInit {
     )
   }
 
-
-
   getDetailBrById(id:number){
     this.bonsReceptionDetailsService.getDetailsBR(id).subscribe(
-      res => this.singleDetailBR= res
+      res => {
+        this.singleDetailBR = res;
+        this.getPiecesByCategorie(res.categorie_id);
+      } 
     )
   }
 
@@ -100,15 +105,11 @@ export class EditBonsReceptionComponent implements OnInit {
     )
   }
 
-  getAllEntrepots(){
-    this.entrepotsService.getAll().subscribe(
-      res=> this.entrepots=res
-    )
-  }
-
   getAllDetailsBR(id:number){
     this.bonsReceptionDetailsService.getAll(id).subscribe(
-      res=> this.detailsBRs=res
+      res=>{
+        this.detailsBRs=res;
+      } 
     )
   }
 

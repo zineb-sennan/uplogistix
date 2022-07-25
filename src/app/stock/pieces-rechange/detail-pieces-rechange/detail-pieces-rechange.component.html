@@ -15,6 +15,28 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
+                        <form class="row form-search" #searchForm="ngForm">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="date_debut">Date début</label>
+                                    <input type="date" [(ngModel)]="search.date_debut" name="date_debut" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="date_fin">Date fin</label>
+                                    <div class="input-group">
+                                        <input type="date" [(ngModel)]="search.date_fin" name="date_fin" class="form-control form-control-sm">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-outline-primary btn-sm" style="margin-left: 12px;" (click)="getMovementsPieces()">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </form><!-- ./form search -->
                         <div class="table-responsive row">
                             <table class="table table-sm table-nowrap card-table">
                                 <thead>

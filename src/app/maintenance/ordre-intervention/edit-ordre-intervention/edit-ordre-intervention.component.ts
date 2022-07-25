@@ -49,7 +49,6 @@ export class EditOrdreInterventionComponent implements OnInit {
     this.getAllUtilisateurs();
     this.getAllTiers();
     this.getInterventions();
-    //sthis.getAllPiecesRechange();
 
     this.activatedRoute.data.subscribe((data) => {
       this.type = data['title'];
@@ -147,6 +146,7 @@ export class EditOrdreInterventionComponent implements OnInit {
     );
     this.taches= await taches$.toPromise();
     this.progresOrder();
+    this.singleOrder.cout_total = [...this.taches].reduce((prev,next)=>prev+Number(next.cout_tache),0);
   }
 
   getAllPiecesTache(tache: any){
@@ -162,7 +162,7 @@ export class EditOrdreInterventionComponent implements OnInit {
 
   addTache(index:number){
     this.tachesService.create(this.singleTache).subscribe(
-      res=> {
+      async res=> {
         if(this.type=='ajouter-maintenance-order'){
           if(index != -1) this.taches[index].id=res.id;
           else{
@@ -173,7 +173,8 @@ export class EditOrdreInterventionComponent implements OnInit {
               ordre_id:null,
               id: res.id,
               pieces_added:[],
-              pieces:[]
+              pieces:[],
+              list_pieces: await this.piecesRechangeService.getPiecesByCategorie(res.intervention_id).toPromise()
             }
             this.taches.push(item);
             this._addTache=false;
@@ -199,8 +200,10 @@ export class EditOrdreInterventionComponent implements OnInit {
    getInterventions(){
     this.tachesService.getInterventions().subscribe(
       async res=>{
-        const pieces= [...new Map([...await this.piecesRechangeService.getAll().toPromise()].map(item => [item['categorie_id'], item.categorie_id])).values()];
-        this.interventions= [...res].filter(i=> pieces.includes(i.id));
+        // const pieces= [...new Map([...await this.piecesRechangeService.getAll().toPromise()].map(item => [item['categorie_id'], item.categorie_id])).values()];
+        // this.interventions= [...res].filter(i=> pieces.includes(i.id));
+        
+        this.interventions=res;
       } 
     )
   }
@@ -253,10 +256,10 @@ export class EditOrdreInterventionComponent implements OnInit {
     }
   }
 
-  onEditPiece(item:any, value:boolean){
+  async onEditPiece(item:any, value:boolean){
     item.isPiece= value;
     this.singlePieceTache={id:null, oi_tache_id:item.id, piece_id:null, qte:null, prix_unitaire:null, total:null };
-    
+    item.list_pieces= await this.piecesRechangeService.getPiecesByCategorie(item.intervention_id).toPromise();
   }
 
  addPieceTache(){
@@ -277,6 +280,7 @@ export class EditOrdreInterventionComponent implements OnInit {
         tache.cout_tache = [...tache.pieces].reduce((prev,next)=>prev+Number(next.prix_unitaire*next.qte),0);
         this.singleOrder.cout_total = [...this.taches].reduce((prev,next)=>prev+Number(next.cout_tache),0);
       }
+      
     }
   )
  }
@@ -294,28 +298,29 @@ export class EditOrdreInterventionComponent implements OnInit {
           tache.cout_tache = [...tache.pieces].reduce((prev,next)=>prev+Number(next.prix_unitaire*next.qte),0);
           this.singleOrder.cout_total = [...this.taches].reduce((prev,next)=>prev+Number(next.cout_tache),0);
         }
+        
       } 
     )
  }
 
- /****************************************************************************** */
-  onEditPieceOfTache(item:any, value:boolean){
-    item.isEdit = value;
-    this.singlePieceTache=item;
+  async onEditPieceOfTache(tache:any, piece:any, value:boolean){
+    piece.isEdit = value;
+    this.singlePieceTache=piece;
     this.singlePieceTache.total= this.singlePieceTache.qte * this.singlePieceTache.prix_unitaire;
-    this.getPiecesByInventaire(item.categorie_id);
+    tache.list_pieces= await this.piecesRechangeService.getPiecesByCategorie(tache.intervention_id).toPromise();
   }
 
-/** *** *** **/
 
   getInfosMP(id:number){
+    console.log("bonjour function getInfosMP");
     this.maintenancePreventiveService.getPiecesByVehicule(id).subscribe(
-      res => {
+      async res => {
         this.taches = [...new Map([...res].map(item => [item['intervention_id'], item])).values()].map(t => ({ intervention_id: t.intervention_id, tache:t.intervention, cout_tache:0 }));
         for (let index = 0; index < this.taches.length; index++) {
           const item = [...res].filter(d=> d.intervention_id == this.taches[index].intervention_id).map(i=> ({ piece_id: i.piece_id, designation: i.designation, index:index }));
           this.taches[index].pieces_added = item;
           this.taches[index].pieces=[];
+          this.taches[index].list_pieces = await this.piecesRechangeService.getPiecesByCategorie(this.taches[index].intervention_id).toPromise();
         }
       }
     )
@@ -341,6 +346,9 @@ export class EditOrdreInterventionComponent implements OnInit {
 
   _deletePiece(item:any){
     this.taches[item.index].pieces_added = [...this.taches[item.index].pieces_added].filter(p=> p.piece_id != item.piece_id);
+    //Les couts
+    this.taches[item.index].cout_tache = [...this.taches[item.index].pieces].reduce((prev,next)=>prev+Number(next.prix_unitaire*next.qte),0);
+    this.singleOrder.cout_total = [...this.taches].reduce((prev,next)=>prev+Number(next.cout_tache),0);
   }
 
   changeInputPiece(e:any, type:any, item:any){

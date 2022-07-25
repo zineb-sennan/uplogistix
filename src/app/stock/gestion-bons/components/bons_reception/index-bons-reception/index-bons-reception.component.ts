@@ -13,7 +13,7 @@ import { FournisseursService } from 'src/app/_services/fournisseurs.service';
 export class IndexBonsReceptionComponent implements OnInit {
 
   list_bon_receptions:any=[]; entrepots:any=[]; fournisseurs:any=[];
-  singleBonR:any={ fournisseur_id:null, entrepot_id:null, commentaire:null }
+  singleBonR:any={ fournisseur_id:null, commentaire:null }
 
   constructor(
     private bonsReceptionService:BonsReceptionService,

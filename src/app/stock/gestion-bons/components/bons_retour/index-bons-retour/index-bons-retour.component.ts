@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class IndexBonsRetourComponent implements OnInit {
   list_bons_retour:any=[]; list_bons_reception:any=[]; message:any=''; entrepots:any= [];
-  singleBonR:any={entrepot_id:null, bon_reception_id:null, commentaire:null }
+  singleBonR:any={bon_reception_id:null, commentaire:null }
 
   constructor(
     private bonsReceptionService: BonsReceptionService,

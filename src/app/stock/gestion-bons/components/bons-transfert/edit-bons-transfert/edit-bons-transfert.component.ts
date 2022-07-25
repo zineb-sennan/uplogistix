@@ -15,7 +15,7 @@ import { PiecesRechangeService } from 'src/app/_services/pieces-rechange.service
 export class EditBonsTransfertComponent implements OnInit {
 
   message:any=null;  entrepots:any=[]; list_detail_bonsT:any=[]; pieces:any=[]; categorie_pieces:any=[];
-  singleBonT:any={ id:null, source_entrepot_id:null, destination_entrepot_id:null, commentaire:null };
+  singleBonT:any={ id:null, destination_entrepot_id:null, commentaire:null };
   singleDetailBT:any={id:null,numero:null, bon_transfert_id:null, piece_id:null, qte:null, categorie_id:null };
 
   constructor(

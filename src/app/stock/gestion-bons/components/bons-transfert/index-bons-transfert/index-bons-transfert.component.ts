@@ -12,7 +12,7 @@ import { EntrepotsService } from 'src/app/_services/entrepots.service';
 export class IndexBonsTransfertComponent implements OnInit {
 
   message:any=null;  entrepots:any=[]; list_bons_transfert:any=[];
-  singleBonT:any={ id:null, source_entrepot_id:null, destination_entrepot_id:null, commentaire:null };
+  singleBonT:any={ id:null, destination_entrepot_id:null, commentaire:null };
 
   constructor(
     private bonsTransfertService: BonsTransfertService,

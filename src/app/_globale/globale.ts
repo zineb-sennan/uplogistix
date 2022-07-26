@@ -29,11 +29,12 @@ import { map, switchMap } from 'rxjs/operators';
         $('.modal-backdrop').remove();
         $('body').removeAttr("style");
     }
-    //02-
+    //02
+    //03-
     fermer() {
         this.location.back();
     }
-    //03-
+    //04-
     getAuth(){
         const promise = this.utilisateurService.getUtilisateur(this.payload.id).toPromise();
     }

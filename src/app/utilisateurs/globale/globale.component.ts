@@ -8,6 +8,7 @@ import { RolesService } from '../../_services/roles.service';
 import { TokenService } from '../../_services/token.service';
 import { SecuriteClass } from '../../_globale/securite';
 import { Globale } from '../../_globale/globale';
+import { EntrepotsService } from 'src/app/_services/entrepots.service';
 
 @Component({
   selector: 'app-globale',
@@ -24,28 +25,38 @@ export class GlobaleComponent implements OnInit {
     private regionsService: RegionsService,
     private villesService: VillesService,
     private rolesService:RolesService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private entrepotsService:EntrepotsService
   ) { }
 
-  message:any=null; roles: any[] = [];
+  message:any=null; roles: any[] = [];  entrepots:any=[];
   utilisateurs: any=[]; pays: any[] = []; regions: any[] = []; villes: any[] = [];
-  singleUtilisateur: any = { id:null,type_compte:null, role_id:null, nom: null, prenom:null, cni:null, email:null, tel:null, password:null, adresse:null, ville_id:null, region_id:null, pays_id: null,locked_by:null };
+  singleUtilisateur: any = { id:null,type_compte:null, role_id:null, nom: null, prenom:null, cni:null, email:null, tel:null, password:null, adresse:null, ville_id:null, region_id:null, pays_id: null,locked_by:null, entrepot_id:null };
 
   ngOnInit(): void {
     this.getAllUtilisateurs();
     this.getAllPays();
     this.getAllRoles();
+    this.getAllEntrepots();
+  }
+
+  getAllEntrepots(){
+    this.entrepotsService.getAll().subscribe(
+      res =>{
+        this.entrepots=res;
+      }
+    )
   }
 
   clear(){
-    this.singleUtilisateur={ id:null, type_compte:null, role_id:null, nom: null, prenom:null, cni:null, email:null, tel:null, password:null, adresse:null, ville_id:null, region_id:null, pays_id: null,locked_by:null };
+    this.singleUtilisateur={ id:null, type_compte:null, role_id:null, nom: null, prenom:null, cni:null, email:null, tel:null, password:null, adresse:null, ville_id:null, region_id:null, pays_id: null,locked_by:null, entrepot_id:null };
   }
 
   getAllPays() {
     this.paysService.getAll().subscribe(
       result => this.pays = result,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllPays();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getAllPays();
       }
     );
   }
@@ -53,8 +64,8 @@ export class GlobaleComponent implements OnInit {
   getAllRoles(){
     this.rolesService.getAll().subscribe(
       res=> this.roles=res,
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllRoles();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getAllRoles();
       }
     )
   }
@@ -65,8 +76,8 @@ export class GlobaleComponent implements OnInit {
         this.regions = result;
         this.singleUtilisateur.pays_id = id;
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getRegionsByPays(id);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getRegionsByPays(id);
     });
   }
 
@@ -77,8 +88,8 @@ export class GlobaleComponent implements OnInit {
         this.villes = result;
         this.singleUtilisateur.region_id = id;
     },
-    error => {
-      if(error.status==401 && this.securiteClass.refreshToken()) this.getVillesByRegion(id);
+    async error => {
+      if(error.status==401 && await this.securiteClass.refreshToken()) this.getVillesByRegion(id);
     });
   }
 
@@ -96,8 +107,8 @@ export class GlobaleComponent implements OnInit {
         const payload = this.tokenService.payload(this.tokenService.getToken() ?? '');
         this.utilisateurs = result.filter((u:any)=>u.id!=payload.id);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllUtilisateurs();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getAllUtilisateurs();
       }
     );
   }
@@ -110,8 +121,8 @@ export class GlobaleComponent implements OnInit {
         this.getRegionsByPays(res.pays_id);
         this.getVillesByRegion(res.region_id);
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.getAllUtilisateurs();
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.getAllUtilisateurs();
       }
     )
   }
@@ -124,8 +135,8 @@ export class GlobaleComponent implements OnInit {
           this.message = "L'utilisateur est ajouté avec succès !";
           this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
       })
     } else {
       this.utilisateurService.update(form).subscribe(
@@ -134,8 +145,8 @@ export class GlobaleComponent implements OnInit {
           this.message = "L'utilisateur est modifié avec succès !";
           this.globale.closeModal();
       },
-      error => {
-        if(error.status==401 && this.securiteClass.refreshToken()) this.update(form);
+      async error => {
+        if(error.status==401 && await this.securiteClass.refreshToken()) this.update(form);
       })
     }
   }
@@ -150,8 +161,8 @@ export class GlobaleComponent implements OnInit {
         if(this.singleUtilisateur.locked_by) this.message="L'utilisateur est débloqué avec succès !";
         this.globale.closeModal();
       },
-      error => {
-       if(error.status==401 && this.securiteClass.refreshToken()) this.lock();
+      async error => {
+       if(error.status==401 && await this.securiteClass.refreshToken()) this.lock();
     });
   }
 

@@ -12,6 +12,9 @@ import { VehiculeService } from 'src/app/_services/vehicule.service';
 import { map, switchMap } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import { MaintenancePreventiveService } from 'src/app/_services/maintenance-preventive.service';
+import { BonsReceptionService } from 'src/app/_services/bons-reception.service';
+import { BonsReceptionDetailsService } from 'src/app/_services/bons-reception-details.service';
+import { FournisseursService } from 'src/app/_services/fournisseurs.service';
 
 @Component({
   selector: 'app-edit-ordre-intervention',
@@ -24,9 +27,9 @@ export class EditOrdreInterventionComponent implements OnInit {
   singleOrder:any={id:null, numero:null, vehicule_id:null, conducteur_id:null, utilisateur_id:null, tiers_id:null, priorite:'Normale', date_limite:null, note:null, en_reparation:null, en_instance:null, closed_at:null, user_affecter:null, progresOrder:null}
   singleTache:any={ordre_id_taches:null, intervention_id:null, note:null, id:null}
 
-  singlePieceTache:any ={id:null, oi_tache_id:null, piece_id:null, qte:null, prix_unitaire:null, total:null }; type:any='ajouter-maintenance-order';
+  singlePieceTache:any ={id:null, oi_tache_id:null, piece_id:null, qte:null, prix_unitaire:null, total:null }; type:any='ajouter-maintenance-order'; orders_error:any=[];
 
-  error:any=null;
+  error:any=null; fournisseurs:any=[];
 
   constructor(
     private ordreInterventionService:OrdreInterventionService,
@@ -39,7 +42,10 @@ export class EditOrdreInterventionComponent implements OnInit {
     private piecesTachesService :PiecesTachesService,
     private piecesRechangeService: PiecesRechangeService,
     private maintenancePreventiveService:MaintenancePreventiveService,
-    private globale:Globale
+    private globale:Globale,
+    private bonsReceptionService:BonsReceptionService,
+    private bonsReceptionDetailsService:BonsReceptionDetailsService,
+    private fournisseursService:FournisseursService
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +55,7 @@ export class EditOrdreInterventionComponent implements OnInit {
     this.getAllUtilisateurs();
     this.getAllTiers();
     this.getInterventions();
+    this.getAllFournisseurs();
 
     this.activatedRoute.data.subscribe((data) => {
       this.type = data['title'];
@@ -158,7 +165,7 @@ export class EditOrdreInterventionComponent implements OnInit {
         }
       ))
     );
- }
+  }
 
   addTache(index:number){
     this.tachesService.create(this.singleTache).subscribe(
@@ -199,10 +206,7 @@ export class EditOrdreInterventionComponent implements OnInit {
 
    getInterventions(){
     this.tachesService.getInterventions().subscribe(
-      async res=>{
-        // const pieces= [...new Map([...await this.piecesRechangeService.getAll().toPromise()].map(item => [item['categorie_id'], item.categorie_id])).values()];
-        // this.interventions= [...res].filter(i=> pieces.includes(i.id));
-        
+      res=>{
         this.interventions=res;
       } 
     )
@@ -234,7 +238,54 @@ export class EditOrdreInterventionComponent implements OnInit {
     )
   }
 
+  openModal(){
+    //console.log("Bonjour !");
+    $("body").append("<div class='modal-backdrop fade show'></div>");
+    $("#modal-add-bons-reception").addClass("show");
+    $("#modal-add-bons-reception").css("display", "block");
+    $("body").css("display", "block");
+  }
+
+  closeModal(){
+    $('#modal-add-bons-reception').hide();
+    $('.modal-backdrop').remove();
+    $('body').removeAttr("style");
+  }
+
+  createBonsReception(order:any){
+    console.log('Order: ',order, order.fournisseur_id);
+    if(order.fournisseur_id){
+      this.bonsReceptionService.create({fournisseur_id: order.fournisseur_id}).subscribe(
+        res=>{
+          //console.log("Bons R bien ajouter !");
+          order.order_id_add= res;
+          const record= {bon_reception_id:res.id, piece_id:order.piece_id, qte:order.qte_manquante, prix_unitaire:order.prix_unitaire, categorie_id:order.categorie_id};
+          //console.log(record, order, 'add details');
+          this.bonsReceptionDetailsService.create(record).subscribe(
+            res=>{
+              //console.log("dtail bons reception bien ajouter !")
+            } 
+          )
+        } 
+      )
+    }
+    else console.log("Pas de order !");
+    
+  }
+
+  changeFournisseur(e:any, item:any){
+    item.fournisseur_id= e.target.value;
+    //console.log(item, "***");
+  }
+
+  getAllFournisseurs(){
+    this.fournisseursService.getAllFournisseurs().subscribe(
+      res=> this.fournisseurs=res
+    )
+  }
+
   validateTache(tache:any, value:boolean){
+    /** validation de la tache **/
     if(!this.singleOrder.closed_at){
       this.tachesService.validateTache({id:tache.id, ordre_id:tache.ordre_id, valider:value }).subscribe(
         res => {
@@ -242,6 +293,14 @@ export class EditOrdreInterventionComponent implements OnInit {
           else {
             tache.terminated_at= new Date();
             this.progresOrder();
+          }
+        },
+        error =>{
+          this.openModal();
+          this.orders_error=error.error;
+          this.orders_error.pieces=tache.pieces;
+          for (let index = 0; index < this.orders_error.length; index++) {
+            this.orders_error[index].prix_unitaire = [...tache.pieces].filter(p=>p.id==tache.pieces[index].id)[0].prix_unitaire;
           }
         }
       )

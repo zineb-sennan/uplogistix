@@ -187,6 +187,13 @@
                                                 <option *ngFor="let pay of pays" [value]="pay.id">{{pay.nom}}</option>
                                             </select>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="pays_id" class="form-label">Entrepôt</label>
+                                            <select class="form-select form-select-sm" name="entrepot_id" [ngModel]="singleUtilisateur.entrepot_id">
+                                                <option value=null disabled>Veuillez choisir...</option>
+                                                <option *ngFor="let entrepot of entrepots" [value]="entrepot.id">{{entrepot.nom}}</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="pwd" class="form-label">Adresse</label>

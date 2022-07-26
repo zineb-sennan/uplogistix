@@ -42,7 +42,6 @@
                                 [disabled]="singleOrder.en_instance || singleOrder.closed_at"
                                 (click)="changerStatutOrder('en_instance')">En instance</button>&nbsp;
                             
-
                             <button type="button" class="btn btn-outline-primary"
                                 [ngClass]="{'_disabled':singleOrder.closed_at}" [disabled]="singleOrder.closed_at"
                                 (click)="changerStatutOrder('cloturer')">Clôturer</button>
@@ -617,3 +616,43 @@
         </div>
     </div>
 </div>
+
+<!-- *** *** *** *** *** *** *** *** *** -->
+<div class="modal fade" id="modal-add-bons-reception" tabindex="-1" role="dialog" class="modal fade" aria-modal="true" >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-card card" data-list=''>
+                <div class="card-header">
+                    <h4 class="card-header-title" id="exampleModalCenterTitle">
+                        Ordre d'intervention
+                    </h4>
+                    <button type="button" class="btn-close pb-0 mp-0" (click)="closeModal()"></button>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <table class="table">
+                            <tbody>
+                              <tr *ngFor="let order of orders_error">
+                                <td width="80">
+                                    {{order.designation}}
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" required (change)="changeFournisseur($event, order)">
+                                        <option selected disabled>Veuillez choisir...</option>
+                                        <option *ngFor="let fournisseur of fournisseurs" [value]="fournisseur.id">{{fournisseur.raison_sociale}}</option>
+                                    </select>
+                                </td>
+                                <td width="100">
+                                    <button type="button" class="btn btn-success" (click)="createBonsReception(order)">
+                                        <i class="fa-solid fa-floppy-disk"></i>
+                                    </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- *** -->

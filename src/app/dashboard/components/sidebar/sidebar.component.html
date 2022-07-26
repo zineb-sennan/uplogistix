@@ -152,7 +152,7 @@
                             </div>
                         </li>
                         <!-- stock + maintenance -->
-                        <li class="nav-item" *ngIf="!isAdmin">
+                        <li class="nav-item" *ngIf="!isAdmin && this.utilisateur?.entrepot_id">
                             <a href="#sidebarStock" class="nav-link collapsed" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarStock">
                             <img src="assets/img/icones/icon-stock.png" width="25"
